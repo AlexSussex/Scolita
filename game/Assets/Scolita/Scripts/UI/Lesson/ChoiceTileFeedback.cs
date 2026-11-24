@@ -6,14 +6,14 @@ namespace Scolita.UI.Lesson
 {
     /// <summary>
     /// The feedback of a row of <see cref="ChoiceTile"/> cards, one of which is the answer
-    /// (<c>ListenAndPick</c>, <c>FirstSound</c>): a miss wobbles the card and fades it, the answer shown
+    /// (<c>ListenAndPick</c>, <c>FirstSound</c>, <c>ReadAndMatch</c>): a miss wobbles the card and fades it, the answer shown
     /// glows yellow, the right one sparkles, a card heard bounces. One place, so both kinds feel the same.
     /// </summary>
     public static class ChoiceTileFeedback
     {
         /// <summary>
         /// Shows <paramref name="feedback"/> on <paramref name="tiles"/>; called by
-        /// <see cref="ListenAndPickView"/> and <see cref="FirstSoundView"/>.
+        /// <see cref="ListenAndPickView"/>, <see cref="FirstSoundView"/> and <see cref="ReadAndMatchView"/>.
         /// </summary>
         public static void Show(IReadOnlyList<ChoiceTile> tiles, in StepFeedback feedback)
         {
@@ -49,7 +49,7 @@ namespace Scolita.UI.Lesson
                 return;
             }
 
-            if (hint.Cue == HintCue.FadeChoice)
+            if (hint.Cue == HintCue.FadeChoice || hint.Cue == HintCue.SpellOut)
             {
                 tiles[hint.Choice].SetFaded(true);
             }

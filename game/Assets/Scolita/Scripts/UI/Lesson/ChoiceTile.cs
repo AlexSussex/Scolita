@@ -50,6 +50,9 @@ namespace Scolita.UI.Lesson
         /// <summary>The text it shows (empty for a picture shown without its word).</summary>
         public string ShownText => label.text;
 
+        /// <summary>Whether its picture is shown.</summary>
+        public bool IsPictureShown => picture != null && picture.enabled;
+
         /// <summary>Its index among the round's choices.</summary>
         public int Index => index;
 
@@ -139,6 +142,20 @@ namespace Scolita.UI.Lesson
         public void SetGlowing(bool on)
         {
             SetGlowingTo(on);
+        }
+
+        /// <summary>
+        /// Shows <paramref name="text"/> (rich text allowed) instead of its text, or its picture or not; called by
+        /// <see cref="ReadAndMatchView"/> (the word's letters lit one by one) and <see cref="TwinCard"/> (its picture
+        /// revealed).
+        /// </summary>
+        public void Restyle(string text, bool pictureShown)
+        {
+            label.SetText(text);
+            if (picture != null)
+            {
+                picture.enabled = pictureShown && picture.sprite != null;
+            }
         }
 
         /// <summary>Sends the tap to the activity; called by the EventSystem.</summary>
