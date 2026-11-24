@@ -90,7 +90,122 @@ _Kept by `words` while the brief is in flight._
   Batch mode at `11df670`: EditMode 413/413, PlayMode 10/10, `BuildAndroidDebug` exit 0, no `warning CS`
   or `error CS`. Nothing changes on screen yet: the four kinds have no views, so their steps are still
   skipped (the registry's "not built yet" list).
-- **Next:** the views slice (the four views, their prefabs, the registry's rows, PlayMode tests).
+- **Views slice pushed:** `416a587`, `6efa205` `ui:` the four views; `9d58180`, `719bae6` `game:` the prefabs, the registry's rows, the PlayMode tests, and the second review's fixes (below).
+- **Next:** the close-out (release 0.6.0).
+
+### The views slice
+
+- `ui:` `SyllablesView` + `SyllableDrum` (the drum takes the beat on the finger's touch, so quick beats keep
+  their rhythm), `BuildWordView` + `RocketWindow` + `DraggedTile` (on the same object as a `ChoiceTile`: a tap is
+  the tile's own, a drag places it), `ReadAndMatchView`, `WordTwinsView` + `TwinCard` + `JoinLine`, and
+  `DiscGraphic` (a round shape drawn as a mesh, lit from the top left like `StarGraphic`: the beats, the drum's
+  head, the windows, the rocket's nose and flame, crisp at any size with no new art). `ChoiceTile.Restyle` (a
+  text with the lit letter, a picture revealed); `ChoiceTileFeedback` fades the missed choice on `SpellOut` too.
+- `game:` `Prefabs/Lesson/SyllablesView.prefab`, `BuildWordView.prefab`, `ReadAndMatchView.prefab`,
+  `WordTwinsView.prefab` (made by a throwaway Editor script from `look`'s cards, tiles, badges and the existing
+  `ChoiceTile` cards, not committed), four rows in `ActivityRegistry.asset` and the four kinds off its "not built
+  yet" list (only `TraceLetter` and `TraceWord` stay); `LessonScene.FinishLesson` answers the four kinds; the
+  PlayMode tests `WordActivitiesTests`.
+
+### Decisions while building
+
+- **The rocket is built from `look`'s pieces** (a long white body, a pink round nose, purple fins, an orange
+  flame, round windows), not the map's upright rocket: the design's rocket lies on its side with a long body,
+  and the windows (120 reference pixels, smaller for a word of 5 or 6 letters) need room in a row. `look` may
+  draw a proper one (a follow-up).
+- **The drum** is a pink body, a cream head, gold rims and two sticks, from the same pieces.
+- **`ReadAndMatch` lights the word's letters at a steady pace** (one every 0.8 s, after 1.6 s for "Citește
+  cuvântul sunet cu sunet."), not in step with the voice's sounds: the view doesn't hear the voice's parts. A
+  follow-up for the lesson's voice (letting a view follow `VoiceRouter.PartStarted`).
+- **`WordTwins`' cards** show a readable word written (its picture beside it once revealed or joined) and a
+  listen-only word as its picture; the word in play gets a yellow ring; each pair joined gets a green line.
+- **A tile or a picture that is done leaves the screen** (`BuildWord`'s tile flies to its window); the extra
+  tiles stay until the step ends.
+
+### Usability (the new screens)
+
+- **Spoken:** every instruction, hint, shown answer and praise is said and shown in the bubble; a tile tapped says
+  its sound; a word card tapped says the word (in `ReadAndMatch` only after her first try); the picture card
+  says its word again (`Syllables`, `BuildWord`); the mascot repeats the last line.
+- **Touch targets** (1280 × 800 reference): the drum 320 × 360 (its head and body take the tap), the tick 150 ×
+  150, letter tiles 130 × 130 (the design's size), windows up to 120, picture cards 260 × 240 to 400 × 340,
+  twin cards 300 × 120, the word card 480 × 200.
+- **Kind feedback:** a wrong count clears the dots and the picture card wobbles; a wrong tile floats back and
+  wobbles; a wrong picture wobbles and fades; a wrong line disappears and the card wobbles; the hints show (the
+  word in syllables, the letters lit, the pictures revealed), the answer shown glows (or, in `Syllables`, the
+  empty circles pulse); no red, no buzzer, no score.
+- **Nothing gives the answer away:** no word written on `BuildWord`'s picture card or on `ReadAndMatch`'s
+  pictures; `Syllables`' circles only once the answer is shown.
+- **The language in two ways:** every card, tile and picture carries its star "RO" or ringed planet "EN", and the
+  two `WordTwins` columns carry both.
+- **Nothing under the HUD:** the cards, the rocket and the drum stay below the mascot's bubble at 2000 × 1200 and
+  1280 × 800 (checked on the emulator).
+
+### Test results (2026-11-24, at the views slice)
+
+- **Batch mode:** EditMode **413/413**, PlayMode **14/14** (`WordActivitiesTests`: the four kinds with taps, real
+  drag events and lines, through a hint and the answer shown), `BuildAndroidDebug` exit 0; no `warning CS` or
+  `error CS` in any log.
+- **Emulator** (`emulator-5602`, AVD `Scolita_Tablet_lesson`, no TTS voice, so every line showed in the bubble):
+  - **2000 × 1200**, `ro-words-1` from its start: `Syllables` (mama): one beat and the tick cleared the dot and
+    said "Ascultă cum spun cuvântul pe silabe. ma-ma."; three beats and the tick showed two pulsing circles
+    ("ma-ma. Bate toba o dată pentru fiecare silabă."); two beats filled them and the tick finished; apa the same.
+    `BuildWord` (tata with m) with real drags (`adb shell input swipe`): m to the rocket floated back, then a
+    made t glow ("Litera care urmează strălucește."); t, a, t, a filled the windows ("t…", "a…") and the rocket
+    flew off ("Racheta pornește! t-a-t-a. tata"); pat the same. `ReadAndMatch` (mama): a wrong picture faded,
+    "Citește cuvântul sunet cu sunet. m-a-m-a", and the letters lit pink one by one; the right picture, a praise.
+    `party-1`'s `WordTwins`: the Romanian "pat" and the planet picture on the left, the English ones on the right;
+    a line from "pat" to the English planet: the line followed the finger, then both "pat" pictures appeared; a
+    second wrong line: the English "pat" glowed, "Uite, acesta este cuvântul potrivit. Unește cele două
+    cuvinte!"; a tap on it joined them (a green line); a line between the planets: "Sunt gemeni!".
+  - **1280 × 800**, `en-words-1` in English: `Syllables` (planet, its picture only, being listen-only; "Listen to
+    the word and tap the drum once for each beat. planet. When you have finished, tap the green tick."),
+    `BuildWord` (map with t, mat with p, real drags), `ReadAndMatch` (map); `party-1`'s `WordTwins` with a real
+    line: the same layouts, nothing under the bubble.
+  - **Logcat:** the information line names only `TraceLetter` and `TraceWord`; no error.
+  - Screenshots in the scratch folder (`emu-syll-2000.png`, `emu-syll-shown.png`, `emu-build-2000.png`,
+    `emu-build-shown.png`, `emu-build-two.png`, `emu-read-spell.png`, `emu-twins-shown.png`, `emu-twins-done.png`,
+    `emu-syll-1280-en.png`, `emu-build-1280-en.png`, `emu-read-1280-en.png`, `emu-twins-1280.png`).
+- **Allocations** (Editor Play mode, a temporary `ProfilerRecorder` "GC Allocated In Frame" probe in a PlayMode
+  test, not committed; 150 frames each after 90 to settle): `Syllables`, `BuildWord`, `BuildWord` while dragging a
+  tile every frame, `ReadAndMatch`, `ReadAndMatch` while its letters light, `WordTwins` and `WordTwins` while
+  drawing a line every frame all read **288 B per frame on average (290 B at most)**: the test harness's own, as
+  on the map in earlier briefs, so the views add **0 B**. Not measured on a device.
+- **Screen sizes:** 2000 × 1200 and 1280 × 800 (the brief's). Not checked: the large, 4:3, phone and cut-out
+  sizes (the views are laid out from the activity area as every lesson screen so far; a follow-up with `look`'s
+  final screens).
+- **Not run:** the Editor's Device Simulator (batch mode; `wm size` stood in), listening by ear (no voice on the
+  emulator; the human hears the lines with this release's rows), the device Profiler.
+
+### Fresh-eyes review of the views slice (2026-11-24)
+
+A second agent that didn't write it read `f5d6ce8..9d58180` against AGENTS.md, this note and the earlier
+briefs' conventions. No blockers; it found Core still owning every rule (the views draw `Places`,
+`PlacesFilled`, `PlacedOn`, `StateOf`, `Current`, `Answer`), a reused view resetting fully, nothing giving the
+answer away, nothing allocated per frame or per drag, the touch targets large enough, the prefabs wired and the
+registry rows right, and `LessonScene.FinishLesson` answering the four kinds right. Its 10 findings, and what was
+done:
+
+1. **Every drop on the rocket was also a tap** (the tile is a `ChoiceTile` too; uGUI clicks before the drop ends):
+   a `ChoiceTile` now ignores the click when it was dragged away from where she pressed it (a shaky tap still
+   counts).
+2. **Nothing that moves had a nested canvas:** the rocket, the tiles, the drum, the beats and the lines each have
+   their own `Canvas` now (with a `GraphicRaycaster` where they take taps); checked on the emulator.
+3. **A line drawn from a word is silent until it lands** (only a tap says a word): kept, a decision for the human
+   (saying it on the line's start would join it at once when the word in play is its partner); a tap says it.
+4. **`ReadAndMatch`'s letters light at a steady pace, not with the voice:** kept (a follow-up for the lesson's
+   voice); any later answer now stops it and puts the plain word back.
+5. **The `BuildWord` test didn't prove a drop off the rocket is no miss:** it counts the hints now (none after a tap
+   and a drop off the rocket, one after the wrong tile on it).
+6. **Test gaps:** `WordTwins` now checks a line let go on nothing, a line within a column, a line from a joined word
+   and the pictures shown once joined. The `ReadAndMatch` test still waits for the letters to light (about 5
+   seconds of real time): the rule is about time.
+7. **Room at the limits:** the tiles' spacing shrinks to fit the screen (eight tiles on a 4:3 tablet); four pairs
+   of twins sit in rows of 124 reference pixels, under the bubble. The phone size stays a follow-up.
+8. **No feedback for the tick before any beat:** the drum bounces (with "Bate toba o dată pentru fiecare
+   silabă."). A wrong line wobbles the card it starts from only: kept.
+9. **The take-off's numbers were in code:** serialized fields now.
+10. **A revealed picture could overlap a long written word:** the word's box narrows beside its picture.
 
 ### Fresh-eyes review of the Core slice (2026-11-24)
 
@@ -290,3 +405,118 @@ of stars). `WordTwins` is "join pairs across two columns" (an instrument and its
   listening; only a line drawn to a wrong word is a miss.
 - **No sound effects yet** (the drum, the soft sound of a miss, the rocket's take-off): `sound-feel`
   brings them; the drum bounces without a sound until then.
+- **A line drawn from a word is silent until it lands** (a tap says a word); saying it as the line starts would
+  join it at once when the word in play is its partner. Agreed?
+
+## How to test locally
+
+Commands are for Git Bash from the worktree (or checkout) root, with
+`UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"`,
+`ADB="$LOCALAPPDATA/Android/Sdk/platform-tools/adb"`, `EMU=emulator-5602` (your own emulator),
+`S=<your scratch folder, written C:/...>` and `export MSYS_NO_PATHCONV=1 ADB_LOCAL_TRANSPORT_MAX_PORT=5699`.
+Close your Editor on this project before any batch-mode run. Start the app with
+`"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`;
+reset its saves with `"$ADB" -s $EMU shell pm clear com.softshack.scolita`. The lesson file is
+`F=/storage/emulated/0/Android/data/com.softshack.scolita/files/profiles/child-1/lesson-run.json`.
+(On this PC a Unity build can stop the adb server: start it again detached with PowerShell's
+`$env:ADB_LOCAL_TRANSPORT_MAX_PORT='5699'; Start-Process adb start-server` if `adb devices` shows nothing.)
+
+**To open a lesson:** stop the app, push `{"version":1,"lessonId":"ro-words-1","stepNumber":1,"stepsSignature":""}`
+to `$F`, start the app and tap **Hai!**. `ro-words-1` plays `Syllables` (mama, then apa), `BuildWord` (tata, then
+pat), `ReadAndMatch` (twice); `en-words-1` the same in English (planet; map, mat; map). **To open a later step**
+(`party-1`'s `WordTwins` is step 5): open the lesson once as above, read the signature it saved
+(`"$ADB" -s $EMU shell cat $F`), then push the same file with the step number and that signature, start the app
+and tap **Hai!** (a wrong signature starts the lesson from its first step, by design). `TraceWord` steps are
+skipped until `handwriting` builds them. Drags: `"$ADB" -s $EMU shell input swipe <x1> <y1> <x2> <y2> 600`.
+
+### Core slice
+
+1. **EditMode tests:**
+   `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
+   Expected: every test passes (413 at this slice), no `warning CS` or `error CS` in the log. Among them:
+   - `SyllablesRulesTests`: mama, apa and planet have 2 places, a made-up pe-pe-ne 3; drum taps are beats (never
+     an answer), the tick with no beat asks for the beats, the right count then the tick is done and says
+     "ma-ma", a wrong count is a miss that starts again, 7 beats for 6 syllables is still a miss; the hints
+     ("Ascultă cum spun cuvântul pe silabe." + ma-ma), the circles shown (`ShowPlaces`); through the run: Wrong,
+     Wrong, Practised.
+   - `BuildWordRulesTests` (tata with m): t a t a m tiles, four windows, either t fills the first, a wrong tile is
+     a miss, a tap says the tile's sound, the last tile says "Racheta pornește!", t-a-t-a, tata; the slow-word hint,
+     the next tile glowing; English map with t.
+   - `ReadAndMatchRulesTests`: the word is never said before her first miss (the prompt is the instruction), then
+     the prompt is the word; the spell-out hint, then "tap the word", then the blend; English map in `party-1`.
+   - `WordTwinsRulesTests` (`party-1`): Romanian words first, each column shuffled; a tap selects, a tap on the
+     partner joins, a tap on another word only says it (never a miss), a line to a wrong word is a miss; twins say
+     "Sunt gemeni!", false friends "Se scriu la fel, dar înseamnă altceva!"; the hints (spelled for false friends,
+     pictures for twins), the partner glowing.
+   - `ContentRulesTests`: a `Syllables` word of 7 syllables, a `BuildWord` word of 8 letters, an extra tile in the
+     word or not taught yet, a word without its slow line, two `ReadAndMatch` words with one picture, `WordTwins`
+     words that aren't partners, uneven columns, a word listed twice, a word with both its twin and its false friend,
+     and a listen-only false friend all fail.
+2. **A `WordTwins` step whose words don't pair up fails the import:** add
+   `party-1,WordTwins,,,ro-mama en-map,,` at the end of `content/steps.csv` and run
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile $S/import.log; echo $?`.
+   Expected: exit 1, and the log says the step's "words pair up, and the twin or false friend of ro-mama isn't in the
+   step". Undo with `git checkout content/steps.csv`.
+
+### Content slice
+
+1. In `content/voice-lines.csv`: `syll-tick`, `twins-hint-spelled` and `twins-hint-show` in both languages; the
+   English `syll` and `syll-hint-once` say "tap the drum". The import (Core slice, step 2, without the added row)
+   exits 0, "imported, with 17 warnings", and `git status` shows nothing changed.
+
+### Game and UI slices
+
+1. **PlayMode tests:**
+   `"$UNITY" -batchmode -projectPath game -runTests -testPlatform PlayMode -testResults $S/playmode.xml -logFile $S/playmode.log`.
+   Expected: 14/14, among them `WordActivitiesTests` (the four kinds run to their ends with taps, drags and lines,
+   through a hint and the answer shown). They keep the Editor's own `child-1` files as they were.
+2. **The debug build:**
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`,
+   then `"$ADB" -s $EMU install -r <worktree, written C:/...>/game/Builds/Android/Scolita-<version>-debug.apk`; then
+   `"$ADB" -s $EMU shell wm size 2000x1200; "$ADB" -s $EMU shell wm density 240`.
+3. **`Syllables` (`ro-words-1`, step 1):** the picture card (a coloured circle, "mama" under it, a speaker, the gold
+   "RO" star), a pink drum with a cream head and two sticks, and a green tick bottom right; no dots yet. Said:
+   "Ascultă cuvântul și bate toba pentru fiecare silabă. mama. Când ai terminat, atinge bifa verde."
+   - Tap the tick first: "Bate toba o dată pentru fiecare silabă." (no miss).
+   - Tap the drum once (it bounces, a yellow dot lights under the card), then the tick: the dot goes, the mascot
+     thinks, "Ascultă cum spun cuvântul pe silabe. ma-ma."
+   - Tap the drum three times, then the tick: two glowing white circles under the card, "ma-ma. Bate toba o dată
+     pentru fiecare silabă."
+   - Tap the drum twice (the circles fill yellow), then the tick: a sparkle, a praise, then apa.
+   - Tap the picture card: "mama" again.
+4. **`BuildWord` (`ro-words-1`, step 3):** the picture card (no word written), the rocket lying on its side with
+   four round windows (the first one's rim glowing yellow), and five tiles t a t a m (shuffled), each with its star.
+   Said: "Ascultă cuvântul și pune literele în ferestrele rachetei. tata"
+   - Tap a tile: it bounces and says its sound. Drag a tile and let go off the rocket: it floats back, no miss.
+   - Drag m to the rocket: it floats back and wobbles, "Ascultă cuvântul încet: t-a-t-a." (said sound by sound).
+     Drag an a: t glows, "Litera care urmează strălucește."
+   - Drag t, a, t, a in turn: each fills the next window ("t…", "a…"), the next window's rim glows; the last makes
+     the rocket fly up and off, "Racheta pornește! t-a-t-a. tata", then a praise.
+5. **`ReadAndMatch` (`ro-words-1`, step 5):** the word "mama" on a cream card, and three picture cards **without
+   words**. Said: "Citește cuvântul și atinge poza potrivită." **The word is never said before her first try:** tap
+   the word card: the instruction again, not the word.
+   - Tap a wrong picture: it wobbles and fades, "Citește cuvântul sunet cu sunet. m-a-m-a" (said sound by sound),
+     and after about two seconds the word's letters turn pink one by one.
+   - Tap the word card: now "mama" is said. Tap another wrong picture: the right one glows, "Unește sunetele:
+     m-a-m-a… mama!". Tap it: a sparkle, a praise.
+6. **`WordTwins` (`party-1`, step 5):** "pat" with its star on the left above the picture of a planet (listen-only:
+   a picture, no word); "pat" with the ringed "EN" planet and the planet picture on the right (the columns are
+   shuffled). Said: "Unește cuvintele care seamănă: unul în română, unul în engleză."
+   - Tap the Romanian "pat": a yellow ring, "pat" said. Tap the English planet picture: "planet" said, the ring moves
+     to it (no miss).
+   - Drag a line from the Romanian "pat" to the English planet picture: a yellow line follows the finger; let go: it
+     goes, the card wobbles, the pictures of both "pat" cards appear, "Caută cuvântul care se scrie la fel." Again:
+     the English "pat" glows, "Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!".
+   - Tap the English "pat" (the Romanian one still ringed): a green line joins them, "Se scriu la fel, dar înseamnă
+     altceva!". Drag a line between the two planet pictures: a second green line, "Sunt gemeni!", a praise, the end.
+7. **The other size and English:** `"$ADB" -s $EMU shell wm size 1280x800; "$ADB" -s $EMU shell wm density 160`, open
+   `en-words-1`: the same screens with the ringed "EN" badges and the English lines ("Listen to the word and tap the
+   drum once for each beat. planet. When you have finished, tap the green tick."; the planet shown as its picture
+   only, being listen-only), nothing under the bubble. Reset with `wm size reset; wm density reset`.
+8. **The Console stays clean** (`"$ADB" -s $EMU logcat -d -s Unity`): the information line names only `TraceLetter`
+   and `TraceWord` as not built yet; no error but the development build's socket lines and, without installed
+   voices, the voice's "no installed voice" warning.
+
+### Cleanup
+
+`"$ADB" -s $EMU shell pm clear com.softshack.scolita`; `wm size reset; wm density reset`.
