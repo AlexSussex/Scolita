@@ -99,8 +99,59 @@ _Kept by `content` while the brief is in flight._
 ### Status
 
 - **Claimed** in `b775670`.
-- **Design note** (below) written. This is a large change, so **I am
-  waiting for the human's agreement** before writing any code.
+- **Design note** (below) pushed in `b830308`. **The human agreed it on
+  2026-11-24, all of it, with no changes** (relayed by the lead): the
+  model and its layers; a planet holds both languages, its lessons marked
+  `ro`, `en` or `both`; seven CSVs (`lessons.csv` one row per lesson,
+  `steps.csv` one row per step); the adjusted picture rule; the row order
+  as the teaching order; a deleted row refused (retire it instead).
+- **Built, in four slices** (Core, the content types, the importer, planet
+  1's content). The commits and the test run are recorded below as they
+  are pushed.
+
+### Decisions while building (within the agreed note)
+
+- **A step's language in a `both` lesson** is written `ro` or `en` (a
+  planet party has steps of each). Empty means the lesson's language, and
+  the bridge kinds (`TwoSounds`, `WordTwins`) are always in both. A step
+  in a `ro` or `en` lesson can't name the other language.
+- **Voice line ids are ASCII,** like every id. The draft's
+  `ro-word-albină` becomes `ro-word-albina`. Its text keeps the
+  diacritics.
+- **The placeholder pictures are drawn from Andika's distance-field
+  atlas** (`Andika-Regular SDF.asset`, read on the CPU). TextMeshPro
+  can't add glyphs to a new atlas in batch mode with `-nographics`. The
+  circle's colour comes from the picture's id (the rainbow path's six
+  colours). The letter is the first letter of the first word using the
+  picture.
+- **Pictures are imported as single sprites** without mipmaps. The 2D
+  template imports PNGs as "Multiple" sprites, so the importer sets the
+  mode, and the freshness test checks it.
+- **What a step needs is in one table,** Core's `ActivityKinds`. For each
+  kind: its letter and word counts, how it shows its words (heard,
+  pictured, read), the extra word lines it needs (`Syllables` → the
+  syllables line), whether it bridges both languages, its options
+  (`TraceLetter`: `form`, `case`, both required) and its instruction
+  lines (the first line of each kind in the draft). The kinds' own briefs
+  add their hints and checkpoints there.
+- **Small Core additions:** `StableIdText` (the one `[a-z0-9-]+` check,
+  now shared by `ProfileId` and `ContentId`) and `LanguageMixExtensions`
+  (`Includes`, `Languages`, `Alone`).
+- **Planet 1's sample content** follows curriculum §4.1:
+  - **Lessons:** one per letter in each language
+    (`ro-a`, `en-a`, … `en-p`), `ro-words-1`, `en-words-1`, `capitals-1`
+    and `party-1`: 12 lessons and 71 steps.
+  - **Words:** the TraceWord words (mama, tata, pat, apa; map, mat, tap,
+    pat), with the false friends pat / pat. Ten listen-only words for the
+    letters' pictures and `TwoSounds`: avion, albină, muzică, tobă,
+    planetă; apple, astronaut, moon, tiger, planet (planetă / planet are
+    twins).
+  - **Pictures:** 17, all placeholders.
+  - **Voice lines:** 279, text only, no clips. They are the sounds and
+    names of a m t p in both languages, the words' word, slow and
+    syllables lines, and all 224 general lines of the agreed draft.
+  - `ListenAndPick` in `ro-a` uses a, m and t, as `lesson-engine`'s
+    acceptance expects.
 
 ### Design note (large change: the content model and the importer)
 

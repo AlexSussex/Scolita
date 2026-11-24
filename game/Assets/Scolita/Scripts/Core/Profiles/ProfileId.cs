@@ -1,5 +1,5 @@
 using System;
-using System.Text.RegularExpressions;
+using Scolita.Core.Ids;
 
 namespace Scolita.Core.Profiles
 {
@@ -10,8 +10,6 @@ namespace Scolita.Core.Profiles
     /// </summary>
     public readonly struct ProfileId : IEquatable<ProfileId>
     {
-        private static readonly Regex Pattern = new Regex(@"^[a-z0-9-]+\z", RegexOptions.CultureInvariant);
-
         private readonly string value;
 
         private ProfileId(string value)
@@ -89,7 +87,7 @@ namespace Scolita.Core.Profiles
 
         private static bool IsValidText(string text)
         {
-            return text != null && Pattern.IsMatch(text);
+            return StableIdText.IsValid(text);
         }
     }
 }
