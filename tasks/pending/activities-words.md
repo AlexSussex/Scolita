@@ -82,6 +82,40 @@ _Kept by `words` while the brief is in flight._
   AVD `Scolita_Tablet_lesson`, reused).
 - **Design note** below (a medium change: four activity kinds). No content-model change; the decisions
   it takes inside the brief, and the lines to check, are listed under "For the human".
+- **Core slice pushed:** `d8f39d7` `content:` the tick, twins hint and shown lines (and the English
+  "clap" lines reworded to the drum); `f862054` `core:` the four kinds' rules, the round's `Places` and
+  `PlacesFilled`, the `Place` and `Join` gestures, the `Word` and `Control` looks, the `SpellOut`,
+  `RevealPictures` and `ShowPlaces` cues, `ActivityLimits`, the validator's word rules, with their
+  EditMode tests; `fa272c0` `content:` and `11df670` `core:` the fresh-eyes review's fixes (below).
+  Batch mode at `11df670`: EditMode 413/413, PlayMode 10/10, `BuildAndroidDebug` exit 0, no `warning CS`
+  or `error CS`. Nothing changes on screen yet: the four kinds have no views, so their steps are still
+  skipped (the registry's "not built yet" list).
+- **Next:** the views slice (the four views, their prefabs, the registry's rows, PlayMode tests).
+
+### Fresh-eyes review of the Core slice (2026-11-24)
+
+A second agent that didn't write it read `d8f39d7..f862054` against AGENTS.md, this note and the earlier
+briefs' conventions. No blockers; it found the rules true to the note, every gesture refused where it
+isn't taken, `Begin` resetting each kind, nothing allocated per answer (`ContentId` is `IEquatable`, the
+lines made in the constructors), the validator rules and the tests sound, and the Romanian lines
+grammatical. Its 11 findings, and what was done:
+
+1. **A `WordTwins` word listed twice passed the validator** and would throw when the lesson is built:
+   `PairsUp` now checks each word once (test).
+2. **A word's twin and false friend both in one step** would pair up wrongly: refused (test).
+3. **7 beats for a word of 6 syllables were capped to 6 and judged right:** one beat past the row is
+   counted now (test with a made-up six-syllable word).
+4. **Tapping a Romanian word, then an English one to hear it, was a miss:** a tap joins only the
+   partner; a tap on another word only says it. Only a line drawn to a wrong word is a miss (for the
+   human).
+5. **A line within a column, or to a joined word, is no answer** (`Neutral`): the note says so now.
+6. **`Syllables`' circles under `GlowAnswer` with no choice:** a cue of their own, `ShowPlaces`.
+7. **`ActivityChoice.OfControl`:** the note's name fixed.
+8. **„Unește-le!” had no plural before it:** „Unește cele două cuvinte!” / "Join the two words!"; „bifa
+   verde” is for the human to confirm.
+9. **A listen-only false friend** (shown as a picture) would make "spelled the same" untrue: refused.
+10. **`ReadAndMatch`'s pictures must not show their words:** written in the note's Unity side.
+11. **Progress pushed with the slice:** this section, in a `docs:` commit.
 
 ### Design note (medium change: four activity kinds)
 
@@ -111,10 +145,11 @@ _Kept by `words` while the brief is in flight._
    mama!").
 5. **`WordTwins`:** the Romanian words on the left (star badges), the English ones on the right (ringed
    planets); a word she can read is shown written, a listen-only word by its picture. Touching a word
-   says it; she joins two by dragging a line from one to the other, or by tapping one then the other.
+   says it; she joins two by dragging a line from one to the other, or by tapping one then its partner
+   (a tap on another word only says it: she may be listening, so it is never a miss).
    A twin pair stays joined ("Sunt gemeni!"); a false friend pair stays joined too, both its pictures
-   appear and the mascot giggles ("Se scriu la fel, dar înseamnă altceva!"). A wrong join is a miss:
-   the hint shows the pictures of the word she started from and of its partner; the answer shown glows
+   appear and the mascot giggles ("Se scriu la fel, dar înseamnă altceva!"). A line to a wrong word is a
+   miss: the hint shows the pictures of the word she started from and of its partner; the answer shown glows
    the partner.
 6. **The human's rules hold:** a `BuildWord`'s extra tiles are taught letters, never in the word; every
    word shown to read uses only taught letters (listen-only words appear only as pictures); a
@@ -134,18 +169,19 @@ _Kept by `words` while the brief is in flight._
 - **The choices** (`ActivityChoiceLook`) gain `Word` (a word written to read, its picture shown only
   when the round reveals it: `ReadAndMatch`'s card, a readable `WordTwins` word) and `Control` (a part of
   the activity drawn by the view by its index: `Syllables`' drum and tick). `ActivityChoice.OfWordToRead`
-  and `ActivityChoice.Control` make them.
+  and `ActivityChoice.OfControl` make them.
 - **The cues** (`HintCue`) gain `SpellOut` (the subject word's letters light one by one; the choice
   missed fades: `ReadAndMatch`) and `RevealPictures` (the pictures of `Round.Current` and
-  `Round.Answer` appear: `WordTwins`). `GlowAnswer` serves the rest (the next tile, the right picture,
-  the partner, `Syllables`' circles).
+  `Round.Answer` appear: `WordTwins`) and `ShowPlaces` (one empty place per `Round.Places` still to fill:
+  `Syllables`' circles). `GlowAnswer` serves the rest (the next tile, the right picture, the partner).
 - **`SyllablesRules`** (`ro-words-1`: mama, apa; `en-words-1`: planet): choices `Drum` (0) and `Tick`
   (1), the word as the subject; `Places` = the word's syllables. A drum tap is `Neutral` and adds a
-  beat (at most `SyllablesRules.MostBeats`, 6; more are ignored); the tick is `Done` when the beats
+  beat (the row shows at most `SyllablesRules.MostBeats`, 6; one more is counted, so 7 beats for a word
+  of 6 syllables is still a miss; more are ignored); the tick is `Done` when the beats
   equal the syllables, else `Wrong` and the beats go back to 0. A tick with no beat is `Neutral` (she
   hasn't tried). Instruction: `syll` + the word + `syll-tick` (new); prompt: the word. Hints:
   `syll-hint-listen` + the syllables line, then `syll-hint-count` + the syllables line; shown: the
-  syllables line + `syll-hint-once`, cue `GlowAnswer` (the view draws `Places` empty circles).
+  syllables line + `syll-hint-once`, cue `ShowPlaces` (the view draws `Places` empty circles).
 - **`BuildWordRules`** (`ro-words-1`: tata with m, pat with m; `en-words-1`: map with t, mat with p):
   the tiles are the choices (the word's letters, one tile each, then the step's other letters), shuffled;
   the word's picture is the subject (`OfWord`); `Places` = the word's letters (at most
@@ -165,10 +201,11 @@ _Kept by `words` while the brief is in flight._
 - **`WordTwinsRules`** (`party-1`: pat / pat, planetă / planet): the Romanian words first, then the
   English ones, each column shuffled on its own; a readable word is `OfWordToRead`, a listen-only one
   `OfWord` (its picture). `Tap(word)` says it and selects it (`Round.Current`, its partner
-  `Round.Answer`); a tap on a word of the other column while one is selected is a join, as is
-  `Join(word, other)`. A join of partners marks both `Done`, places each on the other, and is `Right`
+  `Round.Answer`); a tap on its partner while one is selected joins them (a tap on any other word only
+  says it and selects it); `Join(word, other)` joins any two words of the two columns, and a line within
+  one column or to a joined word is no answer (`Neutral`: the view takes the line back). A join of partners marks both `Done`, places each on the other, and is `Right`
   (the last `Done`), with `twins-done` for twins and `false-friends` for false friends (the view shows
-  both pictures); any other join is `Wrong` and keeps the first word selected. A tap on a joined word
+  both pictures); a line to another word is `Wrong` and keeps the first word selected. A tap on a joined word
   says it again. Hints: `twins-hint-pictures` (twins) or `twins-hint-spelled` (new, false friends), cue
   `RevealPictures`; then `twins-hint-sound`; shown: `twins-hint-show` (new), cue `GlowAnswer` on the
   partner. It speaks its lesson's language (Romanian in `party-1`, D1), as `TwoSounds` does.
@@ -182,7 +219,9 @@ _Kept by `words` while the brief is in flight._
   - `ReadAndMatch`: the slow line required; item rule `PicturesDiffer` (each word once, no two with the
     same picture, so only one picture is right).
   - `WordTwins`: item rule `PairsUp` (the content-model follow-up): every word's twin or false friend is
-    in the step, as many Romanian words as English, at most 4 pairs.
+    in the step, never both (the pairs are one to one), each word once, a false friend one she can read
+    (false friends are "spelled the same", so they are shown written), as many Romanian words as English,
+    at most 4 pairs.
   - Each kind's hint lines in `ActivityKinds`, so the validator checks them in both languages;
     broken-CSV tests for each new rule.
 
@@ -197,7 +236,8 @@ _Kept by `words` while the brief is in flight._
     `HeldPicture`): the rocket (`look`'s rocket turned on its side) with six windows, eight tiles; let
     go over the rocket: `Place`; elsewhere: it floats back. Done: the rocket flies up and off.
   - `ReadAndMatchView`: the word card (Andika, the letters lit one by one for `SpellOut` from texts
-    made when the step begins) and three picture cards (`ChoiceTile`).
+    made when the step begins) and three picture cards (`ChoiceTile`), **without their words written**
+    (she would match the text to the text).
   - `WordTwinsView` + `TwinCard` + `JoinLine` (a stretched, rotated image): two columns of four cards,
     the line following her finger, a line per joined pair.
 - **`ActivityRegistry.asset`:** four rows, pushed early (`tracing` adds one after); the four kinds off
@@ -243,7 +283,10 @@ of stars). `WordTwins` is "join pairs across two columns" (an instrument and its
   word and tap the drum once for each beat." and "Tap the drum once for each beat."
 - **New lines:** „Caută cuvântul care se scrie la fel.” / "Look for the word that is spelled the same."
   (a false friend's hint: its pictures differ, so "they show the same thing" would be untrue);
-  „Uite, acesta este cuvântul potrivit. Unește-le!” / "Look, this is the right word. Join them!"
-  (`WordTwins`' answer shown, worded like `pick-hint-show`).
+  „Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!” / "Look, this is the right word. Join
+  the two words!" (`WordTwins`' answer shown, worded like `pick-hint-show`). Does she know „bifă” (the
+  tick)?
+- **`WordTwins`: a tap on a word that isn't the partner only says it** (never a miss), since she may be
+  listening; only a line drawn to a wrong word is a miss.
 - **No sound effects yet** (the drum, the soft sound of a miss, the rocket's take-off): `sound-feel`
   brings them; the drum bounces without a sound until then.
