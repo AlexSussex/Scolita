@@ -51,8 +51,8 @@ accepted: a bigger APK (about 40–60 MB against 15) and a slower first start
 
 | Decision point | Lightest MVP (recommended) | Trade-off / what you give up |
 | --- | --- | --- |
-| Anchor language (D1) | Romanian first, English beside it, both on | English first would suit a child stronger in English; the order is data, so it can switch |
-| Letter case (D2) | Lower case first to trace, both shown to read | Romanian abecedars show both together; upper case to trace comes right after |
+| Anchor language (D1) | **Answered 2026-11-24:** Romanian first, English beside it, both on | English first would suit a child stronger in English; the order is data, so it can switch |
+| Letter case (D2) | **Answered 2026-11-24:** lower case first to trace, capitals later in the same planet, both shown to read | Romanian abecedars show both together; upper case to trace comes right after |
 | Handwriting (D3) | **Answered 2026-11-24:** print and handwritten letters both in the MVP, print first in each lesson; joined words by hand | The MVP grows by one brief (`handwriting`) and one activity kind (`TraceWord`) |
 | Voices (D4) | You record the Romanian sounds and words; the English ones too, or the tablet's voice until someone records them | All system voice is quicker but poor for pure sounds ("m" said as "em") |
 | Tracing check | Own stroke-corridor check in Core (start, direction, coverage, and the entry, exit and joins of handwritten letters) | A handwriting-recognition library would need the internet or a large model |
@@ -156,14 +156,14 @@ After the MVP, each is a brief of its own: `content-letters-2` (planets
 None blocks step 1. Answers go in `local/for-human-next-steps.md` → "Open
 decisions" (the details are in `local/todo/03-decisions.md`).
 
-- **D1. The anchor language and the mix** — Romanian first with English
-  beside it (assumed), English first, or both equal. Needed by step 2.
-- **D2. Letter case** — lower case first to trace (recommended), or both.
-  Needed by step 6.
+- **D1. The anchor language and the mix** — *answered 2026-11-24:*
+  Romanian first with English beside it, both on.
+- **D2. Letter case** — *answered 2026-11-24:* lower case first to trace,
+  capitals later in the same planet; print letters in the English
+  top-start order (`docs/curriculum.md`).
 - **D3. Handwriting** — *answered 2026-11-24:* handwritten letters and
-  joined words by hand are in the MVP (step 7). Still to confirm: the
-  handwriting model, assumed the Romanian school's "litere de mână" for
-  both languages. Needed by step 7.
+  joined words by hand are in the MVP (step 7), in the Romanian school's
+  "litere de mână" for both languages.
 - **D4. Whose voices** — who records Romanian and English. Needed by step 15.
 - **D5. The mascot** — a unicorn astronaut (recommended, named by her),
   with her purple cat from SeliSnake as a co-pilot or not. Needed by step 16.

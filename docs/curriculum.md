@@ -14,9 +14,11 @@ on learning to read two languages. The research, with every source, is in
 human's call (`AGENTS.md` → "Do not, without asking"). What changed from
 v0 is listed at the end.
 
-**Assumed until the human answers:** D1 Romanian as the anchor, both
-languages on; D3 the Romanian "litere de mână" for both languages; D4
-British English.
+**Decided by the human (2026-11-24):** D1 Romanian as the anchor, both
+languages on; D2 lower case first, capitals later in the same planet, print
+letters in the English top-start order; D3 the Romanian "litere de mână"
+for both languages. **Assumed until the human answers:** D4 British
+English.
 
 ## 1. The approach
 
@@ -26,7 +28,7 @@ British English.
   helps the other (research §5). Școlița builds those skills on purpose,
   in both: first sounds, syllables, blending, splitting a word into its
   sounds.
-- **Romanian is the anchor** (decision D1; to confirm). Romanian is
+- **Romanian is the anchor** (decision D1, the human, 2026-11-24). Romanian is
   written almost exactly as it is said, and children learning such a
   spelling read familiar words almost perfectly by the end of their first
   year, while English learners take more than twice as long (research
@@ -268,8 +270,8 @@ small letter first, its capital in the next lesson (research §2.2).
   with stroke data (start, direction, order) on the writing lines.
   Romanian schools prescribe no print stroke order (they write by hand);
   English schools start every letter at the top, round letters
-  anticlockwise. **Proposed for D2:** the English top-start order, lower
-  case first, capitals later in the same planet. Drawn for the 10 letters
+  anticlockwise. **Decided for D2 (the human, 2026-11-24):** the English
+  top-start order, lower case first, capitals later in the same planet. Drawn for the 10 letters
   in [`print-stroke-order-draft.svg`](../design/research/print-stroke-order-draft.svg)
   (research §7).
 - **To write, by hand (MVP; the human, 2026-11-24, decision D3):** the
