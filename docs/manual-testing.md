@@ -39,6 +39,18 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.3.1 (2026-11-24): the ledger of released ids
+
+Nothing changes on the tablet. These rows are in Unity, in your own project
+(`C:\Projects\Scolita\game`), after `git pull`.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.3.1-1 | Unity, your project | Școlița → Import content | A dialog: "imported, with 17 warnings" (the pictures still to draw) | |
+| 0.3.1-2 | Unity, the Project window | Open `Assets/Scolita/Content/Pictures/` and click `mother.png`, then `moon.png` | Each is a plain coloured circle, with no letter on it | |
+| 0.3.1-3 | Unity, your project | Școlița → Record released ids | A dialog: "every id is in the ledger already; nothing was added." `git status` shows no change | |
+| 0.3.1-4 | A text editor | Open `content/released-ids.txt` | A few comment lines, then `# 0.2.0` and one line per id (`letters.csv a`, `words.csv ro-mama`, …) | |
+
 ### 0.3.0 (2026-11-24): the voice
 
 The app speaks. On the tablet, the lesson placeholder has a row of

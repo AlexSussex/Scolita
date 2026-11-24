@@ -18,6 +18,50 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.3.1 (2026-11-24)
+
+A chore for the content, with nothing new on the tablet. Her progress names
+letters, words and lessons by their ids, so an id that has been released is
+now kept for good. The pictures still to draw no longer give an answer away.
+
+- **For the child:** nothing changes yet. The placeholder pictures (still on
+  every picture until its art is drawn) are a plain coloured circle, with
+  no letter. A letter on them would have told her the answer in "which
+  sound does it start with?".
+- **For the parent:**
+  - **A list of every id ever released,** `content/released-ids.txt`. The
+    content import (Școlița → Import content) refuses a change that
+    deletes one of them, even when its imported file is deleted too, and
+    asks for the row to be retired instead.
+  - **Școlița → Record released ids** adds each release's new ids to the
+    list. The agents run it when they close out a release.
+
+### Technical notes
+
+- **Editor** (`Scripts/Editor/ContentImport`):
+  - `ReleasedIdLedger` reads the ledger (`<file> <id>` lines under
+    `# <version>` lines; a missing, malformed, non-UTF-8 or repeated line
+    is an error). `ContentImportPlan.Make` refuses a released id missing
+    from its CSV.
+  - `ReleasedIdsRecorder` adds the new ids, under `VERSION`, at a
+    close-out (menu item and `RecordFromCommandLine`). It refuses when
+    `VERSION` is not after the ledger's latest release.
+  - `PlaceholderPicture.Render(pictureId)` draws a plain circle.
+- **Content:**
+  - `content/released-ids.txt` is seeded with the 331 ids released in
+    0.2.0 (0.3.0 added none).
+  - The 17 placeholder PNGs under `Assets/Scolita/Content/Pictures/` are
+    re-imported.
+  - No letter, word or voice line was added.
+- **The close-out** of every release now runs Record released ids after
+  raising `VERSION` (`AGENTS.md` → "Versioning and releases",
+  `tasks/README.md` → "Lifecycle", `content/README.md` → "The ledger of
+  released ids").
+- **Tests:** EditMode 296 (was 280), PlayMode 6.
+- No new package and no save-format change. The human has nothing to do
+  but the 0.3.1 rows in `docs/manual-testing.md`, in Unity.
+- **Brief:** [tasks/done/content-ledger.md](tasks/done/content-ledger.md).
+
 ## 0.3.0 (2026-11-24)
 
 The app speaks. Every line has its voice:

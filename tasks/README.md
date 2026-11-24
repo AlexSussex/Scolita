@@ -70,7 +70,7 @@ Each brief file therefore reads, top to bottom:
 | 15 | `feature/content-letters-1` | After 2 and 3, in parallel (decision D4) | [pending/content-letters-1.md](pending/content-letters-1.md) |
 | 16 | `feature/look` | In progress (look) | [pending/look.md](pending/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
-| 18 | `feature/content-ledger` | In progress (ledger): a chore from `content-model`'s follow-ups | [pending/content-ledger.md](pending/content-ledger.md) |
+| 18 | `feature/content-ledger` | Done 2026-11-24, released as 0.3.1 (a chore from `content-model`'s follow-ups) | [done/content-ledger.md](done/content-ledger.md) |
 
 ### After the MVP
 
@@ -100,12 +100,11 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| ledger | [content-ledger](pending/content-ledger.md) | `Scripts/Editor/ContentImport/` (the importer), `Tests/EditMode/Content/`, new `content/released-ids.txt`, `content/README.md`, the placeholder picture assets under `Assets/Scolita/Content/Pictures/`; one line each in `tasks/README.md` (Lifecycle 5) and `AGENTS.md` (Versioning) | emulator-5600 | 2026-11-24 | Slices pushed (ledger check, recorder, plain placeholders), reviewed; closing out as 0.3.1 |
 | lesson | [lesson-engine](pending/lesson-engine.md) | New: `Scripts/Core/Lessons/`, `Scripts/Core/Activities/`, `Scripts/Game/Lessons/` (beyond `LessonRunner`), `Scripts/UI/Lesson/` (new scripts; `LessonHud.cs` only if needed), `Prefabs/Lesson/` (the lesson screen, the activity views, `ActivityRegistry.asset`), `Settings/LearningRules.asset`; changes: `Scenes/Lesson.unity`, `Scripts/Game/Lessons/LessonRunner.cs`, `Scripts/Core/Content/ActivityKinds.cs` and `Rules/StepRules.cs` (hint lines, taught choices), `content/voice-lines.csv` and `content/steps.csv` (new rows at the end; planet 1's first lessons if the taught-choices rule needs it) with their imported assets. Not `MapScreen.prefab` or `LessonHud.prefab` (look's) | emulator-5602 | 2026-11-24 | Design note agreed by the human (2026-11-24); building the Core slice |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `voice` (voice done, release 0.3.0)._
+_Last updated 2026-11-24 by agent `ledger` (content-ledger done, release 0.3.1)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -131,6 +130,10 @@ _Update this section whenever a slice is pushed or a brief is finished._
   Lesson placeholder; `voice-lines.csv`'s `status` column; the recording kit
   (Școlița → Make recording scripts, Import / Accept recording session,
   Check voice clips; ffmpeg agreed as an Editor-only tool).
+- **Done 2026-11-24:** `content-ledger`, release 0.3.1:
+  `content/released-ids.txt` lists every released id, and the import
+  refuses one deleted instead of retired. Each close-out runs Școlița →
+  Record released ids. The placeholder pictures are plain circles.
 - **Next:** `lesson-engine` (it replaces the voice sampler), beside `look` (in flight). The human: open the
   project in Unity Hub and try 0.1.0/0.2.0 on the tablet
   (`local/for-human-next-steps.md`).
@@ -147,13 +150,8 @@ _Update this section whenever a slice is pushed or a brief is finished._
   - The guide's mouth and bubble words can follow `VoiceRouter.PartStarted`.
 
 - **From `content-model`** (full list in its completion record):
-  - A ledger of released ids, so a row deleted with its asset is still
-    caught: **the human said yes (2026-11-24)**: `content/released-ids.txt`,
-    added to at each release and checked by the importer. To be built after
-    `voice` (which is changing the importer now), before planet 2 ships.
-  - **Placeholder pictures: a plain circle, no letter** (the human,
-    2026-11-24), so `FirstSound`'s answer isn't given away; with the
-    ledger, after `voice`.
+  - ~~A ledger of released ids~~ and ~~plain placeholder pictures~~: done
+    in `content-ledger` (0.3.1).
   - **Wrong choices are only taught letters** (the human, 2026-11-24):
     `ListenAndPick` and `LetterHunt` never show a letter not yet taught as
     a choice (so the first lessons have fewer choices); for

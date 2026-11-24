@@ -1,7 +1,7 @@
 # Task: feature/content-ledger
 
-> **Status: In progress (ledger).** Both follow-ups were answered by the
-> human on 2026-11-24 (content-model's Q2 and Q4).
+> **Status: Done 2026-11-24, released as 0.3.1.** Both follow-ups were
+> answered by the human on 2026-11-24 (content-model's Q2 and Q4).
 
 Read `AGENTS.md` first (especially "Versioning and releases" → "Progress
 survives updates"), `content/README.md`, and the completion records
@@ -173,9 +173,7 @@ way) and against the tags. Its findings, and what was done:
 
 ### Next
 
-Push the slices. Then the close-out as 0.3.1: VERSION, CHANGELOG,
-`docs/manual-testing.md`, Record released ids (nothing new expected), and
-the tag.
+None: closed out as 0.3.1 (see "Completion record").
 
 ## How to test locally
 
@@ -238,3 +236,92 @@ the EditMode tests cover each one on a temporary copy.
    that every opaque pixel has the circle's colour, and
    `ContentFreshnessTests` checks that the committed PNGs match what the
    importer draws.
+
+## Completion record
+
+_Finished 2026-11-24 by `ledger`; released as 0.3.1 (tag `v0.3.1`)._
+
+### What was built
+
+- **Pushed:**
+  - `f776133` the claim;
+  - `21a40c0` `content:` the seeded ledger;
+  - `8b200b2` `build:` the check and the recorder;
+  - `7dd8f3d` `build:` the plain placeholders, with the re-imported PNGs;
+  - `06f1e77` `build:` the review's fixes;
+  - `eb41a34` `content:` the conflict advice;
+  - `88ebd4c` `docs:` Progress and the test steps;
+  - the close-out.
+- **The ledger**, `content/released-ids.txt`: 331 ids, one `<file> <id>`
+  line each, under `# 0.2.0`.
+- **In the importer** (`Scripts/Editor/ContentImport/`):
+  - `ReleasedIdLedger` reads it and checks it against the CSVs.
+    `ContentImportPlan.Make` refuses a released id missing from its CSV.
+  - `ReleasedIdsRecorder` (Școlița → Record released ids, or
+    `RecordFromCommandLine`) adds the new ids under `VERSION`, and refuses
+    a version no later than the ledger's latest.
+  - `ContentFolder.ReleasedIdsText` reads it as strict UTF-8.
+  - `ReleasedId` and `ReleasedIdsRecord` are its values.
+- **Placeholders:** `PlaceholderPicture.Render(pictureId)` draws a plain
+  circle in a rainbow colour picked from the id. No letter is drawn and
+  the font is no longer read.
+- **Docs:**
+  - `content/README.md` → "The ledger of released ids";
+  - the close-out step in `tasks/README.md` → "Lifecycle" step 5 and in
+    `AGENTS.md` → "Versioning and releases".
+- **Tests:** EditMode 296 (was 280): `ReleasedIdLedgerTests` (10), four
+  more in `ContentImporterTests`, and `PlaceholderPictureTests` rewritten.
+
+### Conventions for later briefs
+
+- **Every close-out**, after raising `VERSION`, runs **Școlița → Record
+  released ids** and commits `content/released-ids.txt` in its `docs:`
+  commit, even when nothing is added (then there is no change).
+- **Never edit the ledger by hand.** On a rebase conflict in it, take
+  `origin/main`'s ledger, raise `VERSION` to the next free number, and
+  record again.
+- **An id that has been released is retired, never deleted:** the import
+  names the file and the id.
+- **Test content for the importer** needs a ledger file: the tests'
+  `RunInTemporaryFolders` writes an empty one unless the test gives one
+  under `ReleasedIdLedger.FileName`.
+
+### How it was tested
+
+In Progress → "Test results":
+- batch mode at the final state: EditMode, PlayMode and `BuildAndroidDebug`,
+  with no warnings;
+- the import and the record step in batch mode;
+- the placeholders looked at;
+- Record released ids run for real at this close-out, with `VERSION`
+  0.3.1: "nothing was added".
+
+Reviewed by a second agent before the push (Progress → "Fresh-eyes
+review").
+
+Not run: the emulator, the Device Simulator, the Profiler (no screen or
+runtime change), and the by-hand delete, retire and record checks on the
+repository's own content. The session wasn't allowed to delete and restore
+files under `content/`; the EditMode tests cover the same cases on a copy.
+
+### Decisions and deviations
+
+- **The check lives in the Editor's importer,** not in Core: it is a rule
+  for importing content, not a learning rule.
+- **The ledger names each id's CSV,** so the same text in two files never
+  clashes.
+- **The placeholder commit carries the re-imported PNGs** with the code
+  (`build:`). Otherwise the freshness test would fail between two
+  commits.
+- **The error message has no quotes around the id** (the acceptance
+  criterion showed `'<id>'`).
+- **The close-out's `docs:` commit carries `content/released-ids.txt`,**
+  as it carries `VERSION`.
+
+### Follow-ups
+
+- **A release-build check** that every current id is in the ledger, so a
+  forgotten Record step can't ship. It is out of scope here; small, if
+  wanted.
+- **A ledger line deleted by hand,** together with its row and asset, is
+  caught only by review.
