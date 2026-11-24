@@ -1,6 +1,6 @@
 # Task: feature/activities-words
 
-> **Status: Ready after `activities-letters`.**
+> **Status: In progress (words).**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "The five seams" → 3, "Usability",
 "Learning"), and the completion records in `tasks/done/`.
