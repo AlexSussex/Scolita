@@ -50,6 +50,20 @@ namespace Scolita.Editor.ContentImport
                 }
             }
 
+            string shapesFolder = Path.Combine(Root, LetterShapeCodes.Folder);
+            if (Directory.Exists(shapesFolder))
+            {
+                foreach (string path in Directory.GetFiles(shapesFolder, "*" + LetterShapeCodes.Extension))
+                {
+                    string fileName = LetterShapeCodes.Folder + "/" + Path.GetFileName(path);
+                    string text = ReadStrictUtf8(fileName, problems);
+                    if (text != null)
+                    {
+                        texts.Add(fileName, text);
+                    }
+                }
+            }
+
             return texts;
         }
 

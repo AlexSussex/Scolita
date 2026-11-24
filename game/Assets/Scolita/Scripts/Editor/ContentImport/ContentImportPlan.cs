@@ -6,6 +6,7 @@ using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Csv;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Tracing;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -68,7 +69,7 @@ namespace Scolita.Editor.ContentImport
         public static ContentImportPlan Make(ContentFolder source, ContentAssetPaths paths)
         {
             ContentProblems problems = new ContentProblems();
-            Dictionary<string, string> csvs = source.ReadCsvs(problems);
+            Dictionary<string, string> csvs = source.ReadTexts(problems);
             string filledVoiceLines = FilledVoiceLines(source, csvs);
             if (filledVoiceLines != null)
             {
@@ -243,6 +244,13 @@ namespace Scolita.Editor.ContentImport
                 planned.Add(new PlannedAsset(paths.VoiceLine(line.Id.Value), asset));
             }
 
+            foreach (LetterShape shape in curriculum.Shapes.All)
+            {
+                LetterShapeAsset asset = New<LetterShapeAsset>(shape.Id);
+                asset.Fill(shape);
+                planned.Add(new PlannedAsset(paths.Shape(shape.Id.Value), asset));
+            }
+
             foreach (Lesson lesson in curriculum.AllLessons)
             {
                 LessonAsset asset = New<LessonAsset>(lesson.Id);
@@ -287,7 +295,8 @@ namespace Scolita.Editor.ContentImport
                 Catalog<WordCatalog, WordAsset>(curriculum.Words.All.Select(word => paths.Word(word.Id.Value))),
                 Catalog<PictureCatalog, PictureAsset>(curriculum.Pictures.All.Select(picture => paths.Picture(picture.Id.Value))),
                 Catalog<VoiceLineCatalog, VoiceLineAsset>(curriculum.VoiceLines.All.Select(line => paths.VoiceLine(line.Id.Value))),
-                Catalog<DomainCatalog, DomainAsset>(curriculum.Domains.Select(domain => paths.Domain(domain.Id.Value)))
+                Catalog<DomainCatalog, DomainAsset>(curriculum.Domains.Select(domain => paths.Domain(domain.Id.Value))),
+                Catalog<LetterShapeCatalog, LetterShapeAsset>(curriculum.Shapes.All.Select(shape => paths.Shape(shape.Id.Value)))
             };
         }
 
@@ -355,6 +364,7 @@ namespace Scolita.Editor.ContentImport
                 .Concat(curriculum.Words.All.Select(word => Typed<WordAsset>(paths.Word(word.Id.Value))))
                 .Concat(curriculum.Pictures.All.Select(picture => Typed<PictureAsset>(paths.Picture(picture.Id.Value))))
                 .Concat(curriculum.VoiceLines.All.Select(line => Typed<VoiceLineAsset>(paths.VoiceLine(line.Id.Value))))
+                .Concat(curriculum.Shapes.All.Select(shape => Typed<LetterShapeAsset>(paths.Shape(shape.Id.Value))))
                 .Concat(curriculum.AllLessons.Select(lesson => Typed<LessonAsset>(paths.Lesson(lesson.Id.Value))))
                 .Concat(curriculum.Domains.SelectMany(domain => domain.Units).Select(unit => Typed<UnitAsset>(paths.Unit(unit.Id.Value))))
                 .Concat(curriculum.Domains.Select(domain => Typed<DomainAsset>(paths.Domain(domain.Id.Value))))
@@ -362,7 +372,8 @@ namespace Scolita.Editor.ContentImport
                 .Append(Typed<WordCatalog>(paths.Catalog(nameof(WordCatalog))))
                 .Append(Typed<PictureCatalog>(paths.Catalog(nameof(PictureCatalog))))
                 .Append(Typed<VoiceLineCatalog>(paths.Catalog(nameof(VoiceLineCatalog))))
-                .Append(Typed<DomainCatalog>(paths.Catalog(nameof(DomainCatalog))));
+                .Append(Typed<DomainCatalog>(paths.Catalog(nameof(DomainCatalog))))
+                .Append(Typed<LetterShapeCatalog>(paths.Catalog(nameof(LetterShapeCatalog))));
         }
 
         private static KeyValuePair<string, Type> Typed<TAsset>(string path)

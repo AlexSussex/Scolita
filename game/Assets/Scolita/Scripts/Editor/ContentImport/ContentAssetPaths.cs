@@ -16,6 +16,7 @@ namespace Scolita.Editor.ContentImport
         private const string Domains = "Domains";
         private const string Units = "Domains/Units";
         private const string Lessons = "Domains/Lessons";
+        private const string Strokes = "Strokes";
 
         /// <summary>Creates the paths under <paramref name="folder"/> (a project path, <c>Assets/…</c>); called by <see cref="ContentImportPlan"/>.</summary>
         public ContentAssetPaths(string folder)
@@ -33,7 +34,7 @@ namespace Scolita.Editor.ContentImport
         public IReadOnlyList<string> OwnedFolders => new[]
         {
             Under(Letters), Under(Words), Under(Pictures), Under(Voice), Under(Domains), Under(Units),
-            Under(Lessons)
+            Under(Lessons), Under(Strokes)
         };
 
         /// <summary>A letter's asset; called by <see cref="ContentImportPlan"/>.</summary>
@@ -91,6 +92,12 @@ namespace Scolita.Editor.ContentImport
         public string Lesson(string id)
         {
             return Under(Lessons) + "/" + id + ".asset";
+        }
+
+        /// <summary>A letter shape's asset; called by <see cref="ContentImportPlan"/>.</summary>
+        public string Shape(string id)
+        {
+            return Under(Strokes) + "/" + id + ".asset";
         }
 
         /// <summary>A catalog's asset (<c>LetterCatalog</c>), at the folder's top.</summary>
