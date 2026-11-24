@@ -178,7 +178,8 @@ _Update this section whenever a slice is pushed or a brief is finished._
     manual test 0.1.0-2 confirms Vulkan on the tablet, or a fix drops it.
   - `BootLoader` could take its save root from the test, for an
     end-to-end "corrupt settings at boot" PlayMode test.
-  - Keep one `.broken.json` or each damaged copy: a question for the
-    human before `progress-review`.
+  - **Each damaged save is kept, dated** (the human, 2026-11-24, Q1):
+    `<name>.broken-<date-time>.json`, never replaced by the next one; for
+    `progress-review` (it touches `SaveStore`).
   - `AGENTS.md`'s repo layout: add `Assets/Scolita/Settings`,
     `Assets/Plugins/Android` and the `ThirdParty` packs' `SOURCE.md`.

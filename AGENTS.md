@@ -456,8 +456,9 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   `SaveStore`), and a change to the content never loses progress: letters,
   words and lessons have **stable ids** that are never reused or renamed
   (a retired item keeps its id, marked retired). A save that can't be read
-  is set aside as `<name>.broken.json` and the defaults are used, never a
-  crash.
+  is set aside as `<name>.broken-<date-time>.json` (each damaged copy kept,
+  so progress can be rescued by hand; the human, 2026-11-24) and the
+  defaults are used, never a crash.
 
 ## Task briefs
 

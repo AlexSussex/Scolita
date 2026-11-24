@@ -1,7 +1,9 @@
 # Task: feature/progress-review
 
 > **Status: Ready after `activities-words`, `handwriting` and `galaxy-map`.** Decision D1
-> (the language mix) is read from the settings.
+> (the language mix) is read from the settings. The human, 2026-11-24 (Q1):
+> each damaged save is kept, dated (`<name>.broken-<date-time>.json`), never
+> replaced by the next.
 
 Read `AGENTS.md` first (especially "Learning" → learned and reviewed,
 "Versioning and releases" → "Progress survives updates", "Fresh-eyes
