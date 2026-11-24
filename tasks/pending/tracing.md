@@ -100,8 +100,53 @@ _Kept by `tracing` while the brief is in flight._
 - **Design note** (below): treated as a **large change**, because it adds a
   content type to the content model (the letters' shapes, a new catalog in
   the `Curriculum`) and changes which steps the lesson engine can play.
-  **Waiting for the human to agree it** (the questions at its end) before
-  any code is written.
+  **The human agreed it on 2026-11-24** (relayed by the lead): questions 1,
+  3, 4, 5, 6 and 7 as recommended; question 2 answered **two strokes** (see
+  "The human's answers" below). Being built: Core first.
+
+### The human's answers (2026-11-24)
+
+1. The stroke format, shapes as content with their own catalog, not in the
+   ledger of released ids: **yes**.
+2. **The print „a” is two strokes:** the round, then the stem as a separate
+   stroke with the pencil lifted, as design screen 3 draws it (so `look`
+   needn't redraw it). The human's words: "a is 2 strokes if I try to use a
+   pencil and actually write the a that is being printed by the majority of
+   fonts. An 'a' on a font that would look like it was written by hand would
+   have 3 strokes." The draft's one-stroke `a` is split into two strokes in
+   `a-lower-print.json`. **For `handwriting`** (a follow-up): the "3 strokes"
+   is read by the lead as the handwritten „a” (litera de mână, with its
+   entry stroke); still to be checked against her manual (Follow-ups →
+   "`handwriting`: the handwritten a").
+3. Only print tracing until `handwriting` (no tracing in the English lessons
+   yet): **yes**.
+4. Planet 1's capitals A M T P in print too: **yes**.
+5. A faint fourth line below the baseline: **yes**.
+6. The round labels as pictures, without words, for now: **yes**.
+7. A lifted finger ends the stroke, judged as it is: **yes**.
+
+### Follow-ups
+
+- **`handwriting`: the handwritten a** (the human, 2026-11-24, still to be
+  checked against her manual). The human's words: "An 'a' on a font that
+  would look like it was written by hand would have 3 strokes", and "the
+  hand written a looks a lot more like @ but with 2 small legs". The lead's
+  reading: an oval opened like the inside of an @; the stem coming down its
+  right side; the two "legs" are the small entry and exit hooks at the
+  bottom. **Compared with the draft** (`handwriting-model-draft.svg`, the
+  points in `strokes-draft.json` → `handwritten.a`): the shape agrees in
+  part and the strokes don't.
+  - It agrees on the oval drawn anticlockwise from its top right, the
+    stem down its right side, and a small exit hook to the right at the
+    bottom.
+  - It differs in two ways. The draft is **one continuous stroke** (entry,
+    oval, stem, exit, without lifting), not three. Its entry is **a long
+    rising line** from the baseline at the left, (0, 200), up to the oval's
+    top right, (50, 112): not a small leg at the bottom.
+  - So `handwriting` should settle, from her manual, whether the a is one
+    stroke or three, and what the entry looks like. The draft is unchanged
+    (that's `handwriting`'s job, after the human checks the manual).
+    Nothing changes for print tracing.
 
 ### Design note (a new content type, a new activity kind, a small lesson-engine change)
 
