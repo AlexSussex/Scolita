@@ -1,0 +1,170 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using NUnit.Framework;
+using Scolita.Content;
+using Scolita.Core.Content;
+using Scolita.Core.Languages;
+using Scolita.Editor.ContentImport;
+using Scolita.Tests.EditMode.Fakes;
+using UnityEditor;
+
+namespace Scolita.Tests.EditMode.Content
+{
+    /// <summary>
+    /// Tests <see cref="ContentImporter.Import"/> and <see cref="ContentImportPlan"/> on a copy of the
+    /// test content in a temporary folder, imported into a temporary asset folder (both deleted
+    /// after each test).
+    /// </summary>
+    public sealed class ContentImporterTests
+    {
+        /// <summary>
+        /// Tests that importing a changed <c>words.csv</c> updates the word's asset in place: the same
+        /// GUID, the new value, and the plan finds the assets fresh afterwards (the brief's acceptance).
+        /// </summary>
+        [Test]
+        public void TestImport_UpdatesAnAssetInPlaceKeepingItsGuid()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImportPlan first = ContentImporter.Import(source, paths);
+                Assert.That(first.HasErrors, Is.False, string.Join("\n", first.Problems));
+                string wordPath = paths.Word("ro-mama");
+                string guid = AssetDatabase.AssetPathToGUID(wordPath);
+                Assert.That(ContentImportPlan.Make(source, paths).Differences(), Is.Empty);
+
+                ContentCsvs.ReplaceRow(csvs, ContentFileNames.Words, "ro-mama,", "ro-mama,ro,mama,m a m a,ma-ma,plane,,,,,");
+                WriteCsvs(source.Root, csvs);
+                Assert.That(ContentImportPlan.Make(source, paths).Differences(), Does.Contain(wordPath + " differs from the CSVs."));
+                ContentImportPlan second = ContentImporter.Import(source, paths);
+
+                Assert.That(second.HasErrors, Is.False);
+                Assert.That(AssetDatabase.AssetPathToGUID(wordPath), Is.EqualTo(guid));
+                Assert.That(EditorJsonUtility.ToJson(AssetDatabase.LoadAssetAtPath<WordAsset>(wordPath)), Does.Contain("\"picture\":\"plane\""));
+                Assert.That(ContentImportPlan.Make(source, paths).Differences(), Is.Empty);
+            });
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentImporter.Import"/> writes the whole tree: every item, the
+        /// placeholders as sprites, and catalogs that build the same curriculum as the CSVs.
+        /// </summary>
+        [Test]
+        public void TestImport_WritesItemsSpritesAndCatalogs()
+        {
+            RunInTemporaryFolders(ContentCsvs.Valid(), (source, paths) =>
+            {
+                ContentImporter.Import(source, paths);
+
+                Curriculum fromAssets = CurriculumAssets.Build(
+                    AssetDatabase.LoadAssetAtPath<DomainCatalog>(paths.Catalog("DomainCatalog")),
+                    AssetDatabase.LoadAssetAtPath<LetterCatalog>(paths.Catalog("LetterCatalog")),
+                    AssetDatabase.LoadAssetAtPath<WordCatalog>(paths.Catalog("WordCatalog")),
+                    AssetDatabase.LoadAssetAtPath<PictureCatalog>(paths.Catalog("PictureCatalog")),
+                    AssetDatabase.LoadAssetAtPath<VoiceLineCatalog>(paths.Catalog("VoiceLineCatalog")));
+                Curriculum fromCsvs = ContentCsvs.Read(ContentCsvs.Valid());
+
+                PictureAsset mother = AssetDatabase.LoadAssetAtPath<PictureAsset>(paths.Picture("mother"));
+                Assert.That(mother.Sprite, Is.Not.Null);
+                Assert.That(mother.Sprite.texture.width, Is.EqualTo(PlaceholderPicture.Size));
+                Assert.That(fromAssets.Words.All.Select(word => word.Id), Is.EqualTo(fromCsvs.Words.All.Select(word => word.Id)));
+                Assert.That(fromAssets.VoiceLines.All.Count, Is.EqualTo(fromCsvs.VoiceLines.All.Count));
+                Assert.That(fromAssets.AllLessons.Select(lesson => lesson.Id), Is.EqualTo(fromCsvs.AllLessons.Select(lesson => lesson.Id)));
+                Assert.That(fromAssets.AllLessons.SelectMany(lesson => lesson.Steps).Select(step => step.Kind),
+                    Is.EqualTo(fromCsvs.AllLessons.SelectMany(lesson => lesson.Steps).Select(step => step.Kind)));
+                Assert.That(string.Join(" ", fromAssets.Track(ContentId.Create("reading"), Language.English).Letters),
+                    Is.EqualTo("a m t"));
+            });
+        }
+
+        /// <summary>Tests that <see cref="ContentImportPlan.Make"/> refuses a deleted row (its asset stays) and writes nothing.</summary>
+        [Test]
+        public void TestMake_RefusesADeletedRow()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImporter.Import(source, paths);
+                csvs[ContentFileNames.Words] = string.Join("\n", csvs[ContentFileNames.Words].Split('\n')
+                    .Where(row => !row.StartsWith("ro-am,", StringComparison.Ordinal)));
+                csvs[ContentFileNames.VoiceLines] = string.Join("\n", csvs[ContentFileNames.VoiceLines].Split('\n')
+                    .Where(row => !row.StartsWith("ro-word-am,", StringComparison.Ordinal)));
+                WriteCsvs(source.Root, csvs);
+
+                ContentImportPlan plan = ContentImporter.Import(source, paths);
+
+                ContentCsvs.AssertError(plan.Problems.Where(problem => problem.IsError).ToArray(), paths.Word("ro-am"), 0,
+                    "never deleted", "retired");
+                Assert.That(AssetDatabase.LoadAssetAtPath<WordAsset>(paths.Word("ro-am")), Is.Not.Null);
+            });
+        }
+
+        /// <summary>Tests that <see cref="ContentImporter.Import"/> writes nothing at all when the content has an error.</summary>
+        [Test]
+        public void TestImport_AnErrorWritesNothing()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Pictures, "Moon,,,");
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImportPlan plan = ContentImporter.Import(source, paths);
+
+                Assert.That(plan.HasErrors, Is.True);
+                Assert.That(AssetDatabase.IsValidFolder(paths.Folder), Is.False);
+                Assert.That(() => plan.Apply(), Throws.InvalidOperationException);
+            });
+        }
+
+        /// <summary>Tests that <see cref="ContentFolder.ReadCsvs"/> reports a file saved as ANSI instead of misreading it, and reads a byte order mark.</summary>
+        [Test]
+        public void TestReadCsvs_RefusesAnsiAndReadsByteOrderMark()
+        {
+            string root = Path.Combine(Path.GetTempPath(), "scolita-csv-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(root);
+            try
+            {
+                File.WriteAllBytes(Path.Combine(root, ContentFileNames.Units), new byte[] { 0xEF, 0xBB, 0xBF, 0x69, 0x64, 0x0A });
+                File.WriteAllBytes(Path.Combine(root, ContentFileNames.Pictures), new byte[] { 0x69, 0x64, 0x0A, 0xBA, 0x0A });
+                ContentProblems problems = new ContentProblems();
+
+                Dictionary<string, string> texts = new ContentFolder(root).ReadCsvs(problems);
+
+                Assert.That(texts.Keys, Is.EqualTo(new[] { ContentFileNames.Units }));
+                Assert.That(texts[ContentFileNames.Units], Is.EqualTo("\uFEFFid\n"));
+                Assert.That(problems.All.Single().ToString(), Does.StartWith("pictures.csv: the file is not UTF-8"));
+            }
+            finally
+            {
+                Directory.Delete(root, true);
+            }
+        }
+
+        private static void RunInTemporaryFolders(Dictionary<string, string> csvs, Action<ContentFolder, ContentAssetPaths> test)
+        {
+            string suffix = Guid.NewGuid().ToString("N").Substring(0, 8);
+            string sourceRoot = Path.Combine(Path.GetTempPath(), "scolita-content-" + suffix);
+            ContentAssetPaths paths = new ContentAssetPaths("Assets/ScolitaImportTest-" + suffix);
+            Directory.CreateDirectory(sourceRoot);
+            try
+            {
+                WriteCsvs(sourceRoot, csvs);
+                test(new ContentFolder(sourceRoot), paths);
+            }
+            finally
+            {
+                AssetDatabase.DeleteAsset(paths.Folder);
+                Directory.Delete(sourceRoot, true);
+            }
+        }
+
+        private static void WriteCsvs(string root, Dictionary<string, string> csvs)
+        {
+            foreach (KeyValuePair<string, string> csv in csvs)
+            {
+                File.WriteAllText(Path.Combine(root, csv.Key), csv.Value);
+            }
+        }
+    }
+}
