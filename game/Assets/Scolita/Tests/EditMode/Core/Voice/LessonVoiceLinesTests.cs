@@ -32,5 +32,24 @@ namespace Scolita.Tests.EditMode.Core.Voice
             Assert.That(ids.Where(id => !id.StartsWith("ro-", System.StringComparison.Ordinal)), Is.Empty);
             Assert.That(lines.All(line => curriculum.VoiceLines.Contains(line.Id)), Is.True);
         }
+
+        /// <summary>
+        /// Tests that <see cref="LessonVoiceLines.Of"/> also lists the hint lines of the lesson's kinds
+        /// and the lines every lesson says (the praise and the end), in the lesson's language.
+        /// </summary>
+        [Test]
+        public void TestOf_HintsPraiseAndTheEnd()
+        {
+            ContentFolder folder = ContentImporter.RepositoryContent();
+            ContentProblems problems = new ContentProblems();
+            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            curriculum.TryGetLesson(ContentId.Create("ro-t"), out Lesson lesson);
+
+            string[] ids = LessonVoiceLines.Of(curriculum, lesson).Select(line => line.ToString()).ToArray();
+
+            Assert.That(ids, Does.Contain("ro-line-pick-hint-show").And.Contain("ro-line-listen-again"));
+            Assert.That(ids, Does.Contain("ro-line-praise-1").And.Contain("ro-line-praise-10").And.Contain("ro-line-lesson-done"));
+            Assert.That(ids, Does.Not.Contain("en-line-praise-1"));
+        }
     }
 }

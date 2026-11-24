@@ -26,7 +26,7 @@ namespace Scolita.Core.Voice
 
         /// <summary>
         /// A sequence of <paramref name="lines"/>, in order; throws an <see cref="ArgumentException"/>
-        /// for none. Called by the activities, the voice sampler and the voice tests.
+        /// for none. Called by the activities, the lesson's voice and the voice tests.
         /// </summary>
         public static VoiceSequence Of(params VoiceLineId[] lines)
         {

@@ -88,7 +88,7 @@ namespace Scolita.Core.Voice
         /// <summary>
         /// Says <paramref name="sequence"/>, stopping whatever was being said. Throws an
         /// <see cref="InvalidOperationException"/> for a slot left without its fill. Called by the
-        /// activities, the voice sampler and the voice tests.
+        /// activities, the lesson's voice and the voice tests.
         /// </summary>
         public void SpeakSequence(VoiceSequence sequence)
         {

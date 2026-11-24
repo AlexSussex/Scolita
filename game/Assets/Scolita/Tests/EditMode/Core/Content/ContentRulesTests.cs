@@ -339,5 +339,62 @@ namespace Scolita.Tests.EditMode.Core.Content
 
             ContentCsvs.AssertError(errors, ContentFileNames.Pictures, row, "../secret.png must be a file name", "no folder");
         }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>ListenAndPick</c> step whose letters
+        /// (its choices) include one not yet taught by its lesson, in its language's track.
+        /// </summary>
+        [Test]
+        public void TestCheck_ChoicesAreTaughtLetters()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,ListenAndPick,,a m,,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "letters are its choices",
+                "not taught yet in the ro track by the lesson ro-a: m (taught: a)");
+        }
+
+        /// <summary>Tests that <see cref="ContentRules.Check"/> fails a <c>ListenAndPick</c> step that lists a choice twice.</summary>
+        [Test]
+        public void TestCheck_ChoicesOnce()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "en-t,ListenAndPick,,t a t,,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "each once", "t is listed more than once");
+        }
+
+        /// <summary>Tests that <see cref="ContentRules.Check"/> fails a step whose kind's hint line is missing in its language.</summary>
+        [Test]
+        public void TestCheck_HintLinesExist()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-pick-hint-other,", "en-line-unused,en,line,Unused.,,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, 7, "en-line-pick-hint-other is not in voice-lines.csv");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a language with steps but without the lines
+        /// every lesson says (its end, its first praise), at its first step.
+        /// </summary>
+        [Test]
+        public void TestCheck_LessonLinesExist()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-lesson-done,", "en-line-unused,en,line,Unused.,,,");
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-praise-1,", "en-line-unused-2,en,line,Unused.,,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-lesson-done is not in voice-lines.csv");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-praise-1 is not in voice-lines.csv");
+        }
     }
 }

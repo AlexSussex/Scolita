@@ -8,8 +8,9 @@ namespace Scolita.Core.Voice
     /// <summary>
     /// The voice lines a lesson can say, so its clips are loaded when it starts and unloaded after
     /// (AGENTS.md → "Performance", audio): in each step's languages, its letters' sounds and names, its
-    /// words' lines (word, slow, syllables) and the sounds of their letters, and its kind's instruction
-    /// lines. Only lines that are in the content are listed.
+    /// words' lines (word, slow, syllables) and the sounds of their letters, its kind's instruction and
+    /// hint lines, and the lines every lesson says (<see cref="LessonLines"/>: the praise and the end).
+    /// Only lines that are in the content are listed.
     /// </summary>
     public static class LessonVoiceLines
     {
@@ -20,12 +21,20 @@ namespace Scolita.Core.Voice
         public static IReadOnlyList<VoiceLineId> Of(Curriculum curriculum, Lesson lesson)
         {
             List<VoiceLineId> found = new List<VoiceLineId>();
+            HashSet<Language> languages = new HashSet<Language>();
             foreach (Step step in lesson.Steps)
             {
                 foreach (Language language in step.Languages.Languages())
                 {
                     found.AddRange(StepLines(curriculum, step, language));
+                    languages.Add(language);
                 }
+            }
+
+            foreach (Language language in languages)
+            {
+                found.AddRange(LessonLines.Praise(curriculum, language));
+                found.Add(LessonLines.LessonDone(language));
             }
 
             return found
@@ -46,7 +55,9 @@ namespace Scolita.Core.Voice
                 .Select(curriculum.Words.Get)
                 .Where(word => word.Language == language)
                 .SelectMany(word => WordLines(curriculum, word));
-            IEnumerable<VoiceLineId> instructions = ActivityKinds.Of(step.Kind).InstructionLines
+            ActivityKindRequirements needs = ActivityKinds.Of(step.Kind);
+            IEnumerable<VoiceLineId> instructions = needs.InstructionLines
+                .Concat(needs.HintLines)
                 .Select(key => VoiceLineIds.For(language, VoiceLineKind.Line, key));
             return instructions.Concat(letters).Concat(words);
         }

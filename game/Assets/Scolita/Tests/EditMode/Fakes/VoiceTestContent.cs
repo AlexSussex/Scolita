@@ -27,7 +27,6 @@ namespace Scolita.Tests.EditMode.Fakes
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "ro-sound-m,", "ro-sound-m,ro,sound,/m/," + SoundM + ",recorded,,");
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "ro-sound-a,", "ro-sound-a,ro,sound,/a/," + SoundA + ",recorded,,");
             ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-slow-mama,ro,slow,m-a-m-a,,sounds,,");
-            ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-line-pick-letter-x,ro,line,Atinge litera {x}.,,,,");
             ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-line-hello-name,ro,line,\"Bun\u0103, {name}! Hai s\u0103 zbur\u0103m!\",,,,");
             return csvs;
         }

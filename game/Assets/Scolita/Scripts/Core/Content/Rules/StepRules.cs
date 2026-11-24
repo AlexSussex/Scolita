@@ -8,8 +8,10 @@ namespace Scolita.Core.Content.Rules
     /// <summary>
     /// The rules on each step of a lesson in use: the items its kind needs
     /// (<see cref="ActivityKinds"/>), in its languages; pictures where its kind shows them; no
-    /// listen-only word where words are read; only letters taught in the word's track by its lesson;
-    /// its options; and its voice lines. Part of <see cref="ContentRules"/>.
+    /// listen-only word where words are read; only letters taught in the word's track by its lesson,
+    /// and only taught letters as choices; its options; its instruction and hint lines; and the
+    /// lines every lesson says (<see cref="LessonLines"/>) in each language a step is in. Part of
+    /// <see cref="ContentRules"/>.
     /// </summary>
     public static class StepRules
     {
@@ -21,12 +23,23 @@ namespace Scolita.Core.Content.Rules
                 .Where(unit => !unit.Retired)
                 .SelectMany(unit => unit.Lessons)
                 .Where(lesson => !lesson.Retired);
+            Dictionary<Language, ContentSource> firstStepIn = new Dictionary<Language, ContentSource>();
             foreach (Lesson lesson in lessonsInUse)
             {
                 foreach (Step step in lesson.Steps)
                 {
                     CheckStep(curriculum, lesson, step, problems);
+                    foreach (Language language in step.Languages.Languages().Where(language => !firstStepIn.ContainsKey(language)))
+                    {
+                        firstStepIn.Add(language, step.Source);
+                    }
                 }
+            }
+
+            foreach (KeyValuePair<Language, ContentSource> language in firstStepIn)
+            {
+                VoiceLineRules.Line(curriculum, LessonLines.LessonDone(language.Key), language.Value, problems);
+                VoiceLineRules.Line(curriculum, LessonLines.PraiseLine(language.Key, 1), language.Value, problems);
             }
         }
 
@@ -45,6 +58,12 @@ namespace Scolita.Core.Content.Rules
                 }
             }
 
+            if (needs.LettersAreChoices)
+            {
+                CheckChoicesTaught(curriculum, lesson, step, problems);
+                CheckChoicesOnce(step, problems);
+            }
+
             foreach (ContentId wordId in step.Words)
             {
                 Word word = References.InUse(curriculum.Words, wordId, step.Source, "word", ContentFileNames.Words,
@@ -58,7 +77,7 @@ namespace Scolita.Core.Content.Rules
 
             foreach (Language language in step.Languages.Languages())
             {
-                foreach (string key in needs.InstructionLines)
+                foreach (string key in needs.InstructionLines.Concat(needs.HintLines))
                 {
                     VoiceLineRules.Line(curriculum, VoiceLineIds.For(language, VoiceLineKind.Line, key), step.Source,
                         problems);
@@ -192,14 +211,56 @@ namespace Scolita.Core.Content.Rules
             }
         }
 
-        private static void CheckTaughtLetters(Curriculum curriculum, Lesson lesson, Step step, Word word,
-            ContentProblems problems)
+        private static void CheckChoicesTaught(Curriculum curriculum, Lesson lesson, Step step, ContentProblems problems)
         {
-            List<ContentId> taught = curriculum.LettersTaughtBefore(lesson, word.Language).ToList();
-            if (lesson.Introduces.IsSet && lesson.Languages == word.Language.Alone())
+            foreach (Language language in step.Languages.Languages())
+            {
+                List<ContentId> taught = TaughtBy(curriculum, lesson, language);
+                ContentId[] untaught = step.Letters
+                    .Where(letter => !taught.Contains(letter))
+                    .Distinct()
+                    .ToArray();
+                if (untaught.Length > 0)
+                {
+                    string known = taught.Count == 0 ? "none yet" : string.Join(" ", taught);
+                    problems.Error(step.Source, "a " + ContentCodes.CodeOf(step.Kind) + " step's letters are its choices, and "
+                        + "some are not taught yet in the " + LanguageCodes.CodeOf(language) + " track by the lesson "
+                        + lesson.Id + ": " + string.Join(" ", untaught) + " (taught: " + known
+                        + "); a wrong choice is never a letter still to come.");
+                }
+            }
+        }
+
+        private static void CheckChoicesOnce(Step step, ContentProblems problems)
+        {
+            ContentId[] repeated = step.Letters
+                .Concat(step.Words)
+                .GroupBy(item => item)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key)
+                .ToArray();
+            if (repeated.Length > 0)
+            {
+                problems.Error(step.Source, "a " + ContentCodes.CodeOf(step.Kind) + " step's items are its choices, each once; "
+                    + string.Join(" ", repeated) + " is listed more than once.");
+            }
+        }
+
+        private static List<ContentId> TaughtBy(Curriculum curriculum, Lesson lesson, Language language)
+        {
+            List<ContentId> taught = curriculum.LettersTaughtBefore(lesson, language).ToList();
+            if (lesson.Introduces.IsSet && lesson.Languages == language.Alone())
             {
                 taught.Add(lesson.Introduces);
             }
+
+            return taught;
+        }
+
+        private static void CheckTaughtLetters(Curriculum curriculum, Lesson lesson, Step step, Word word,
+            ContentProblems problems)
+        {
+            List<ContentId> taught = TaughtBy(curriculum, lesson, word.Language);
 
             ContentId[] untaught = word.Letters
                 .Where(letter => !taught.Contains(letter))

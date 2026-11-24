@@ -5,15 +5,17 @@ namespace Scolita.Core.Content
     /// <summary>
     /// What a step of one activity kind needs from the content, checked by the content rules: how
     /// many letters and words, whether its words need pictures or are shown to read, whether it
-    /// bridges both languages, its options, and the instruction lines it speaks
-    /// (<c>&lt;language&gt;-line-&lt;key&gt;</c>). One row of <see cref="ActivityKinds"/>.
+    /// bridges both languages, whether its letters are choices (and so must all be taught), its
+    /// options, and the instruction and hint lines it speaks (<c>&lt;language&gt;-line-&lt;key&gt;</c>).
+    /// One row of <see cref="ActivityKinds"/>.
     /// </summary>
     public sealed class ActivityKindRequirements
     {
         /// <summary>Creates a kind's requirements; called by <see cref="ActivityKinds"/>.</summary>
         public ActivityKindRequirements(ActivityKind kind, ItemRange letters, ItemRange words, ItemRange items,
             ActivityItemRules itemRules, ActivityWordUse wordUse, IReadOnlyList<VoiceLineKind> wordLines, bool isBridge,
-            IReadOnlyList<ActivityOption> options, IReadOnlyList<string> instructionLines)
+            bool lettersAreChoices, IReadOnlyList<ActivityOption> options, IReadOnlyList<string> instructionLines,
+            IReadOnlyList<string> hintLines)
         {
             ItemRules = itemRules;
             Kind = kind;
@@ -24,7 +26,9 @@ namespace Scolita.Core.Content
             WordLines = wordLines;
             IsBridge = isBridge;
             Options = options;
+            LettersAreChoices = lettersAreChoices;
             InstructionLines = instructionLines;
+            HintLines = hintLines;
         }
 
         /// <summary>The kind.</summary>
@@ -58,10 +62,23 @@ namespace Scolita.Core.Content
         /// </summary>
         public bool IsBridge { get; }
 
+        /// <summary>
+        /// Whether a step's letters are the choices she taps among (<see cref="ActivityKind.ListenAndPick"/>),
+        /// so every one of them must be taught by the step's lesson in its language: a wrong choice is
+        /// never a letter still to come (the human, 2026-11-24).
+        /// </summary>
+        public bool LettersAreChoices { get; }
+
         /// <summary>The options a step of the kind takes.</summary>
         public IReadOnlyList<ActivityOption> Options { get; }
 
         /// <summary>The keys of the instruction lines it speaks, in each of a step's languages (<c>pick-letter</c>).</summary>
         public IReadOnlyList<string> InstructionLines { get; }
+
+        /// <summary>
+        /// The keys of the lines its hints and its shown answers speak, in each of a step's languages
+        /// (<c>pick-hint-show</c>); checked by the content rules like its instruction lines.
+        /// </summary>
+        public IReadOnlyList<string> HintLines { get; }
     }
 }
