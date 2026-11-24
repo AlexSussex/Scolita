@@ -1,6 +1,6 @@
 # Task: feature/lesson-engine
 
-> **Status: Ready after `voice`.** D6 answered: the gold star "RO" and the
+> **Status: In progress (lesson).** D6 answered: the gold star "RO" and the
 > blue ringed planet "EN" (design/README.md). The human, 2026-11-24: wrong
 > choices are only letters already taught, never one still to come.
 
