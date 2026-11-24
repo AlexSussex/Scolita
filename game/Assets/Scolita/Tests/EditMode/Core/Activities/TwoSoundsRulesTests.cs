@@ -76,13 +76,15 @@ namespace Scolita.Tests.EditMode.Core.Activities
 
         /// <summary>
         /// Tests that each picture dropped on the planet of its word's language is one part (the next picture
-        /// comes, its word said), on the other planet a miss, and the last one finishes the step.
+        /// comes, its word said, and the round says where it was placed, <see cref="ActivityRound.PlacedOn"/>),
+        /// on the other planet a miss, and the last one finishes the step.
         /// </summary>
         [Test]
         public void TestJudge_EachPictureToItsPlanet()
         {
             IActivityRules rules = Sorting();
 
+            int placedBefore = rules.Round.PlacedOn(TwoSoundsRules.FirstPicture);
             AnswerVerdict avion = rules.Judge(ActivityAnswer.Drop(TwoSoundsRules.RomanianPlanet));
             string[] next = SequenceLines.Of(rules.Response);
             AnswerVerdict wrong = rules.Judge(ActivityAnswer.Drop(TwoSoundsRules.EnglishPlanet));
@@ -99,6 +101,10 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(Enumerable.Range(TwoSoundsRules.FirstPicture, 4).All(index => rules.Round.StateOf(index) == ChoiceState.Done),
                 Is.True);
             Assert.That(rules.Round.Current, Is.EqualTo(-1));
+            Assert.That(placedBefore, Is.EqualTo(-1));
+            Assert.That(rules.Round.PlacedOn(TwoSoundsRules.FirstPicture), Is.EqualTo(TwoSoundsRules.RomanianPlanet));
+            Assert.That(rules.Round.PlacedOn(TwoSoundsRules.FirstPicture + 3), Is.EqualTo(TwoSoundsRules.EnglishPlanet));
+            Assert.That(rules.Round.PlacedOn(TwoSoundsRules.RomanianPlanet), Is.EqualTo(-1));
         }
 
         /// <summary>

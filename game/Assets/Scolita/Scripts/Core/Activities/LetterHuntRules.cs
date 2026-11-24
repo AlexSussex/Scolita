@@ -13,8 +13,9 @@ namespace Scolita.Core.Activities
     /// by, some carrying the letter to find (the step's first letter, small and capital), the rest the
     /// step's other letters (taught ones, in both cases too); she pops every star with the letter. Each
     /// right star is one part of the step, said with its sound; the last one finishes it. The first
-    /// miss makes the right stars twinkle; the answer shown glows one of them. How many stars there are
-    /// comes from <see cref="LetterHuntTuning"/>.
+    /// miss makes the right stars twinkle; the answer shown names a star still to find (every one of
+    /// them is the answer, so the view makes them all glow). How many stars there are comes from
+    /// <see cref="LetterHuntTuning"/>.
     /// </summary>
     public sealed class LetterHuntRules : IActivityRules
     {

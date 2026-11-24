@@ -17,6 +17,7 @@ namespace Scolita.Core.Activities
     {
         private readonly ActivityChoice[] choices;
         private readonly ChoiceState[] states;
+        private readonly int[] placedOn;
 
         /// <summary>
         /// Creates a round of <paramref name="choices"/>, the answer being the choice of
@@ -40,10 +41,12 @@ namespace Scolita.Core.Activities
             Language = language;
             this.choices = choices;
             states = new ChoiceState[choices.Length];
+            placedOn = new int[choices.Length];
             AnswerItem = answerItem;
             Subject = subject;
             Answer = IndexOf(answerItem);
             Current = -1;
+            Reset();
         }
 
         /// <summary>The activity kind.</summary>
@@ -94,6 +97,21 @@ namespace Scolita.Core.Activities
         }
 
         /// <summary>
+        /// The choice the choice <paramref name="choice"/> was put on (<c>TwoSounds</c>: the planet a picture
+        /// was sorted to); -1 when it wasn't. Throws an <see cref="ArgumentOutOfRangeException"/> for an index
+        /// out of the choices. Called by the activity views after each answer, and the tests.
+        /// </summary>
+        public int PlacedOn(int choice)
+        {
+            if (choice < 0 || choice >= placedOn.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(choice), choice, "The round has " + placedOn.Length + " choices.");
+            }
+
+            return placedOn[choice];
+        }
+
+        /// <summary>
         /// Puts the choices in a new order taken from <paramref name="random"/> (the answer is found
         /// again), allocating nothing. Called by the activities' rules when a step begins.
         /// </summary>
@@ -118,6 +136,9 @@ namespace Scolita.Core.Activities
                 ChoiceState keptState = states[last];
                 states[last] = states[other];
                 states[other] = keptState;
+                int keptPlace = placedOn[last];
+                placedOn[last] = placedOn[other];
+                placedOn[other] = keptPlace;
             }
 
             Answer = IndexOf(AnswerItem);
@@ -132,6 +153,7 @@ namespace Scolita.Core.Activities
             for (int index = 0; index < states.Length; index++)
             {
                 states[index] = ChoiceState.Open;
+                placedOn[index] = -1;
             }
 
             Current = -1;
@@ -141,6 +163,12 @@ namespace Scolita.Core.Activities
         internal void Mark(int choice, ChoiceState state)
         {
             states[choice] = state;
+        }
+
+        /// <summary>Records that the choice <paramref name="choice"/> was put on <paramref name="target"/>; called by the activities' rules.</summary>
+        internal void Place(int choice, int target)
+        {
+            placedOn[choice] = target;
         }
 
         /// <summary>

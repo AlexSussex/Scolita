@@ -210,6 +210,7 @@ namespace Scolita.Core.Activities
             }
 
             Round.Mark(Round.Current, ChoiceState.Done);
+            Round.Place(Round.Current, target);
             int next = Round.Current + 1;
             if (next >= Round.Choices.Count)
             {
