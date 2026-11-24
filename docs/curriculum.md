@@ -1,18 +1,36 @@
-# Școlița — Curriculum (draft v1)
+# Școlița — Curriculum (v1)
 
-Nov 24, 2026 · @Alex · v1 by agent `curriculum`, waiting for the human to agree it
+Nov 24, 2026 · @Alex · v1 by agent `curriculum`, **agreed by the human on 2026-11-24**
 
 How she learns to read and write in Romanian and English at once: the
 approach, the two alphabets, the order of the letters, the shape of a
-lesson, the activities and the first words. **Draft v1**: v0 checked
+lesson, the activities and the first words. **v1**: v0 checked
 against five Romanian clasa I manuals, the Romanian programme and a
 clasa pregătitoare guide, two English phonics programmes and the research
 on learning to read two languages. The research, with every source, is in
 [`design/research/curriculum-research.md`](../design/research/curriculum-research.md)
-(cited below as "research §n"). The human agrees v1 before
-`content-letters-1` starts; changes to the order or the approach are the
-human's call (`AGENTS.md` → "Do not, without asking"). What changed from
-v0 is listed at the end.
+(cited below as "research §n"). The human agreed v1 on 2026-11-24, so
+`content-letters-1` can start from it; changes to the order or the
+approach are the human's call (`AGENTS.md` → "Do not, without asking").
+What changed from v0 is listed at the end. How the curriculum grows
+(planets 4–9, letter names, sentences, joined capitals) is researched in
+its own briefs first, for both languages (`tasks/README.md` → "After the
+MVP").
+
+**How v1's open questions were answered** (the human, 2026-11-24; research §10):
+
+1. English planet 1 keeps its 7 readable words (no swap of t and n).
+2. Names come later: in planets 1–3 a letter is spoken of by its sound
+   only (`activities-letters` and design screen 2's name button follow).
+3. The familiar words mami, tati, tanti, nani and papa stay, marked.
+4. Whether ă moves earlier is decided in `curriculum-research-2`; the
+   order is unchanged for now.
+5. The handwriting drawings are still to be compared with her school's
+   manual or notebook, before `tracing` and `handwriting` make their
+   strokes final.
+6. The lines in research §9.2 are agreed as drafted; the human hears them
+   again in each release's rows of `docs/manual-testing.md`.
+7. British English is still assumed, open as part of D4.
 
 **Decided by the human (2026-11-24):** D1 Romanian as the anchor, both
 languages on; D2 lower case first, capitals later in the same planet, print
@@ -51,7 +69,7 @@ English.
   both school systems teach it first and the letter's name later (the
   English name of e, "ee", is even the Romanian sound of i). In planets
   1–3 every letter is met and spoken of by its **sound**; the names are
-  taught later, on their own (research §6.7; to agree). Sounds are said
+  taught later, on their own (research §6.7; agreed 2026-11-24). Sounds are said
   pure, with no extra vowel (/mmm/, not "muh"; /t/ short, not "tuh").
 - **Letters made by hand, not only typed** (the human, 2026-11-24). She
   reads print letters, and she learns to write each letter the way a hand
@@ -93,10 +111,10 @@ systems (research §4.1).
 | 1 *(MVP)* | a m t p | mama, tata, pat, apa, pata, papa, pa, tam-tam (am) | map, mat, tap, pat (at, am, Pam) | English has 7 readable words here, Romanian 9 (research §4.1); "pat" is a bed in Romanian and a pat in English |
 | 2 *(MVP)* | s i n | nas, masa, pian, nai, pin, sat, ananas, pas, spin, sita, mami, tati, nani (Ana) | pin, sit, man, tin, pan, ant, nap, sip (tip, sat, in, it, is, Sam); mint, pants | Music already: pian and nai; pin and sat are false friends |
 | 3 *(MVP)* | o d e | pom, pod, dinte, stea, mop, dop, pepene, domino, desen, dans, nota, ponei, pisoi, panda, piton, tenis, sanie, patine, mops, nod, stop | dot, pen, mop, ten, pot, top, net, dad, pet, pod, nod (on, not); tent, nest, pond, stop, spot, mops | **stea** (star) is readable here; mop and stop are twins; pod, nod, mops are false friends |
-| 4 | u r c l | lună (with ă, see the note), cal, rac, cer (soft c later) | cat, cup, run, red, lot, sun | r, c and u get `TwoSounds`. **Consider ă here** (research §4.2) |
+| 4 | u r c l | lună (with ă, see the note), cal, rac, cer (soft c later) | cat, cup, run, red, lot, sun | r, c and u get `TwoSounds`. Whether ă comes here: `curriculum-research-2` (research §4.2) |
 | 5 | b f g h | balon, bufniță (listen only), floare | bat, bus, fan, fog, hat, hop | g: hard first; soft g with the Romanian groups |
 | 6 | v z j k | vulpe, zebră (listen only), vioară (listen only) | van, zip, jet, kit | j gets `TwoSounds`; then the letter names (an alphabet song) |
-| 7 (Romanian) | ă â î ș ț | rachetă, așa, țară | — | The "little hats and tails" planet (ă perhaps earlier, see planet 4) |
+| 7 (Romanian) | ă â î ș ț | rachetă, așa, țară | — | The "little hats and tails" planet (ă may move earlier: `curriculum-research-2`) |
 | 7 (English) | ck sh ch th ng | — | duck, ship, chip, moth, ring | The English-only planet, in parallel |
 | 8 | w x y q | — (only in borrowed words) | wet, box, yes, quiz | |
 | 9 (Romanian) | ce ci che chi ge gi ghe ghi | cerc, cireașă, ochi, ghete | — | |
@@ -210,7 +228,7 @@ asset.
 - **Romanian before ă:** many Romanian nouns end in ă, so planets 1–3 use
   their article forms (apa "the water", masa, pata, nota, sita), which are
   everyday words. Familiar words (mami, tati, tanti, nani, papa) are
-  marked; the human decides whether to keep them. Words were checked on
+  marked, and kept (the human, 2026-11-24). Words were checked on
   dexonline; "som" and "pisi" were dropped (not standard).
 - **Chosen from her world** where possible: space (stea now; rachetă,
   planetă, lună, astronaut, cometă later), rainbows and unicorns (ponei
@@ -331,8 +349,8 @@ planets 1–3 is
 
 Every line is a complete, correct sentence, with its verb and the right
 agreement ("litera" is feminine: "leag-o"), never a shortcut ("Bravo,
-m!"). She learns her language from it. The lines the agent is unsure of
-are in research §9.2, for the human.
+m!"). She learns her language from it. The lines the agent was unsure of
+(research §9.2) were agreed by the human as drafted.
 
 ## Sources
 
@@ -365,12 +383,12 @@ The full list, with what was read and what could not be, is in research
 
 1. **Planets 1–3 kept** (a m t p · s i n · o d e), now checked against
    five Romanian manuals and two English phonics programmes (§3; research
-   §4.1). English planet 1 has 7 readable words, not 8: accepted, for the
-   human to agree.
+   §4.1). English planet 1 has 7 readable words, not 8: accepted by the
+   human.
 2. **Sounds first, names later** (§1, §4.2): in planets 1–3 letters are
    met and spoken of by their sound; `MeetLetter` drops the name, and
    design screen 2's name button waits until names are taught. Both school
-   systems do this. *Needs the human's agreement.*
+   systems do this. *Agreed by the human, 2026-11-24.*
 3. **The words of planets 1–3** (§3, §6): full lists in both languages,
    checked letter by letter and on dexonline. "stea" (star) is readable
    from planet 3, not 7. Dropped: "som", "pisi" (not standard; v0's "pisi"
@@ -395,11 +413,11 @@ The full list, with what was read and what could not be, is in research
    hook, not from the baseline (design screen 8's text to follow); o joins
    high; dots and bars after the word.
 9. **The voice lines** (§8): a full draft for planets 1–3 (584 lines),
-   checked against "Romanian, checked"; the lines the agent is unsure of
-   are listed for the human.
+   checked against "Romanian, checked"; the lines the agent was unsure of
+   (research §9.2) were agreed by the human as drafted.
 10. **English needs more practice** (§5): a note for `progress-review`.
 11. **Planets 4–9** (§3): ă is taught much earlier in Romanian school than
-    planet 7; consider moving it to planet 4 or 5 (for
-    `content-letters-2`, the human's call). Letter names after planet 6.
+    planet 7; whether it moves to planet 4 or 5 is researched in
+    `curriculum-research-2` (the human's call). Letter names after planet 6.
 12. **Sources** for every claim about Romanian or English teaching, in the
     research note.

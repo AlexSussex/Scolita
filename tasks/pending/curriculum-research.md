@@ -141,7 +141,10 @@ emulator._
   with a hook. `activities-letters`: `MeetLetter` without the name in
   planets 1–3 (screen 2's name button). `progress-review`: more practice
   for English items. `content-letters-2`: ă earlier.
-- **Waiting for the human to agree v1** (since 2026-11-24; the step is in
+- **Agreed: the human agreed v1 on 2026-11-24**, with the recommendations of
+  research §10 (how each question resolved is at the top of
+  `docs/curriculum.md`); D1–D3 recorded by the lead in `ab7abf8`.
+- ~~Waiting for the human to agree v1~~ (since 2026-11-24; the step is in
   `local/for-human-next-steps.md` → "Now"). The worktree is removed;
   the next agent starts a fresh one from `origin/main`.
 - **Next:** when the human answers, make the changes asked for (or
