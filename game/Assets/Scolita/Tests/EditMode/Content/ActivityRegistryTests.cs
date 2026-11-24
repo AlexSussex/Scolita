@@ -66,7 +66,11 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(withViews, Is.Unique);
             Assert.That(withViews.Intersect(registry.NotBuiltYet), Is.Empty);
             Assert.That(withViews.All(ActivityRulesFactory.Has), Is.True);
-            Assert.That(withViews, Is.EquivalentTo(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }));
+            Assert.That(withViews, Is.EquivalentTo(new[]
+            {
+                ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
+                ActivityKind.TwoSounds
+            }));
         }
 
         private static string RegistryPath => "Assets/Scolita/Prefabs/Lesson/ActivityRegistry.asset";
