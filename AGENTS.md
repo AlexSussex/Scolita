@@ -450,7 +450,13 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   the debug APK built from the close-out commit to
   `C:/Projects/Scolita/local/apks/Scolita-<version>-debug.apk`, and
   name it in `local/for-human-next-steps.md`, so each release can be tried
-  on the tablet at once.
+  on the tablet at once. **Between releases too:** when something important
+  needs the human's tablet before its release (how tracing feels under her
+  finger, a speed, a size), build a debug APK from your tested worktree,
+  copy it there as `Scolita-<version>-<what>-debug.apk` (for example
+  `Scolita-0.6.0-tracing-try-debug.apk`), and add a step saying what to try
+  and what to report. A test APK never stands in for the tests before a
+  push.
 - **Two agents, one number.** Take the next number from `origin/main` while
   writing the close-out; after `git rebase origin/main`, a conflict in
   `CHANGELOG.md` or a `VERSION` that no longer shows your bump means
