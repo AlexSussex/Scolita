@@ -93,10 +93,14 @@ namespace Scolita.Tests.PlayMode.Lessons
                 Assert.That(view.PictureCard.ShownText, Is.Empty, "the word isn't written: she builds it");
 
                 DraggedTile extra = tiles.First(tile => tile.Tile.ShownText == "m");
+                int misses = 0;
+                runner.Run.HintGiven += hint => misses++;
                 LessonScene.Tap(extra.Tile);
                 DragTo(extra, new Vector2(2f, 2f));
-                Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing));
+                Assert.That(misses, Is.EqualTo(0), "a tap and a drop off the rocket are no answers");
                 DragTo(extra, Centre(view.Rocket));
+                Assert.That(misses, Is.EqualTo(1), "a wrong tile on the rocket is a miss");
+                Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing));
                 Assert.That(extra.gameObject.activeSelf, Is.True, "a wrong tile slides back");
                 DragTo(tiles.First(tile => tile.Tile.ShownText == "a"), Centre(view.Rocket));
                 Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.AnswerShown));
@@ -196,6 +200,10 @@ namespace Scolita.Tests.PlayMode.Lessons
 
                 LessonScene.Tap(romanianPat.Tile);
                 Assert.That(romanianPat.IsSelected, Is.True);
+                DrawLineTo(romanianPat, new Vector2(2f, 2f));
+                DrawLine(romanianPat, planeta, false);
+                Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing));
+                Assert.That(romanianPat.Tile.IsPictureShown, Is.False, "a line on nothing or within a column is no answer");
                 DrawLine(romanianPat, planet, true);
                 Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing));
                 Assert.That(view.Dragged.gameObject.activeSelf, Is.False);
@@ -205,8 +213,11 @@ namespace Scolita.Tests.PlayMode.Lessons
                 Assert.That(englishPat.Tile.IsGlowing, Is.True);
                 LessonScene.Tap(englishPat.Tile);
                 Assert.That(view.Joined.Count(line => line.gameObject.activeSelf), Is.EqualTo(1));
+                DrawLine(englishPat, planet, false);
+                Assert.That(view.Joined.Count(line => line.gameObject.activeSelf), Is.EqualTo(1), "a line from a joined word is no answer");
                 DrawLine(planet, planeta, false);
                 Assert.That(view.Joined.Count(line => line.gameObject.activeSelf), Is.EqualTo(2));
+                Assert.That(planet.Tile.IsPictureShown && planeta.Tile.IsPictureShown, Is.True);
                 Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.StepDone));
             }
             finally
@@ -245,6 +256,14 @@ namespace Scolita.Tests.PlayMode.Lessons
                 Assert.That(SceneSearch.FindInActiveScene<WordTwinsView>().Dragged.gameObject.activeSelf, Is.True, "the line follows her finger");
             }
 
+            from.OnEndDrag(pointer);
+        }
+
+        private static void DrawLineTo(TwinCard from, Vector2 screenPoint)
+        {
+            PointerEventData pointer = new PointerEventData(EventSystem.current) { position = screenPoint, pressPosition = Centre(from.transform) };
+            from.OnBeginDrag(pointer);
+            from.OnDrag(pointer);
             from.OnEndDrag(pointer);
         }
 
