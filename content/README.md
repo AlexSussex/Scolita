@@ -83,8 +83,10 @@ ro-mama,ro,mama,m a m a,ma-ma,mother,,,,,TraceWord
 
 Each word needs its **word** line (`ro-word-mama`, saying exactly the
 word's text); a word in a `Syllables` step also needs its **syllables**
-line (`ro-syllables-mama`). Its **slow** line (`ro-slow-mama`) is
-optional.
+line (`ro-syllables-mama`), and a word in a `FirstSound` step its
+**stretched** line (`ro-stretched-mama`: its first sound held, "mmmama", or
+bounced when it can't be held, "t-t-tata"). Its **slow** line
+(`ro-slow-mama`) is optional.
 
 ### `pictures.csv`: one row per picture
 
@@ -105,7 +107,7 @@ bed,,,ro pat
 | --- | --- |
 | `id` | `<language>-<kind>-<key>` (`ro-sound-m`, `en-word-pat`, `ro-line-try-again`); it must match the next two columns |
 | `language` | `ro` or `en` |
-| `kind` | `sound`, `name`, `word`, `slow`, `syllables` or `line` |
+| `kind` | `sound`, `name`, `word`, `slow`, `syllables`, `stretched` or `line` |
 | `text` | What is said (and shown in the bubble), a whole, correct sentence for a line (AGENTS.md → "Romanian, checked"); `{x}`, `{y}`, `{word}`, `{slow}`, `{stretched}`, `{name}` are spliced parts |
 | `clip` | Its recordings' file names in `content/voice/`, one per spoken part of the text, separated by spaces; empty while the tablet's voice says it. A line without `{…}` has one clip, `<id>.ogg` (`ro-sound-m.ogg`); a line with spliced parts has one per part of its own text, `<id>.1.ogg <id>.2.ogg …` ("Atinge litera {x}." has one part, "Atinge litera"; a "." or "!" alone isn't a part). **Accept recording session** fills it. A named clip that isn't there yet is a warning |
 | `status` | **Filled by the importer, never typed:** `recorded` (every clip named is in `content/voice/`), `missing` (a named clip isn't there), `sounds` (a slow word with no clip: the app says its letters' sounds), or empty (still to record: the tablet's voice says it) |
@@ -173,6 +175,17 @@ ro-m,TraceLetter,,m,,form=handwritten;case=lower,
 What each kind needs (how many letters and words, pictures, its
 instruction lines such as `ro-line-pick-letter`) is in
 `Scripts/Core/Content/ActivityKinds.cs`; the import says which is missing.
+
+- **The letters a step chooses among are taught letters** (`ListenAndPick`,
+  `LetterHunt`, `FirstSound`): each is taught by the step's lesson in its
+  language, each once, so a wrong choice is never a letter still to come
+  (the human, 2026-11-24). The first letter is the one asked for
+  (`ListenAndPick`, `LetterHunt`); `FirstSound`'s answer is the letter its
+  word starts with.
+- **`TwoSounds`** takes one letter whose sound differs between the
+  languages (`vowel-differs` or `sound-differs`) and 4 to 6 words of both
+  languages, each starting with that letter and with that letter's sound in
+  its language (the import can't hear that: check it).
 
 ## The ledger of released ids
 
