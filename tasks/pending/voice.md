@@ -22,7 +22,7 @@ Read `AGENTS.md` first (especially "The five seams" → 4, "Audio" and
    loads a lesson's clips when the lesson starts and unloads them after.
 3. **`AndroidTextToSpeechVoice`:** Android's `TextToSpeech` through
    `AndroidJavaObject` (no plugin, no permission), with the line's
-   language (`ro-RO` or `en-GB`, decision D4 may make it `en-US`); checks
+   language (`ro-RO` or `en-GB`: decision D4, British English); checks
    at start whether each language is available and says so in the log;
    used for any line with no clip. In the Editor, a `SilentVoice` that
    logs the line stands in (or the Windows voice, if it costs nothing).

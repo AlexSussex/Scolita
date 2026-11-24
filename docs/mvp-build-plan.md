@@ -167,8 +167,9 @@ decisions" (the details are in `local/todo/03-decisions.md`).
 - **D4. Whose voices** — *answered for now, 2026-11-24:* the tablet's voice
   for every line to start with; the family (the human and her mother)
   will record later, once the recording is made quick (batch sessions, not
-  one file per line). Who records which language, and British or American
-  English, are still open (British assumed). Needed by step 15.
+  one file per line); British English (`en-GB`). Who records which
+  language is still open; neural voices for the words and sentences are
+  being sampled for the human. Needed by step 15.
 - **D5. The mascot** — *answered 2026-11-24:* the unicorn astronaut, named
   by her, with her purple cat from SeliSnake as the co-pilot. The guide is
   built as data, so more characters to choose from can come later as art

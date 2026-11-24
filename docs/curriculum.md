@@ -30,13 +30,14 @@ MVP").
    strokes final.
 6. The lines in research §9.2 are agreed as drafted; the human hears them
    again in each release's rows of `docs/manual-testing.md`.
-7. British English is still assumed, open as part of D4.
+7. British English (D4, the human, 2026-11-24).
 
 **Decided by the human (2026-11-24):** D1 Romanian as the anchor, both
 languages on; D2 lower case first, capitals later in the same planet, print
 letters in the English top-start order; D3 the Romanian "litere de mână"
-for both languages. **Assumed until the human answers:** D4 British
-English.
+for both languages; D4 British English (`en-GB`) for the voice, the
+spelling and the words, the tablet's voice for every line until the family
+records.
 
 ## 1. The approach
 
