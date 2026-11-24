@@ -39,6 +39,24 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.4.0 (2026-11-24): the first lessons
+
+On the tablet, with the 0.4.0 APK (README → "Build a release APK" from tag `v0.4.0`,
+then "Install on the tablet"). If the tablet's Romanian and English voices are
+installed (0.3.0-1), every line is said; without them it shows in the bubble only.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.4.0-1 | The map | Tap **Hai!** | The first lesson: a big card with **a A** and a gold star "RO", a card with a coloured circle and **avion** (its a in pink), one dot at the top, the unicorn top right saying "Hai să cunoaștem o literă nouă! Ascultă: a… a… avion! Atinge litera ca s-o auzi din nou.", the same words in its bubble | |
+| 0.4.0-2 | The lesson | Tap the **a** card, then the picture | The letter's sound, "Acum atinge poza."; then "avion", a praise (for example "Bravo, ai reușit!"), the dot turns green, the unicorn cheers: "Ai terminat lecția. Bravo!" and a big yellow **Mai departe** | |
+| 0.4.0-3 | The end of the lesson | Tap **Mai departe**, then **Hai!** | The map, then the English lesson: blue ringed planets "EN" on the cards and the bubble, "Let's meet a new letter! Listen: a… a… apple! Tap the letter to hear it again." | |
+| 0.4.0-4 | The lessons | Play on (**Hai!** after each) to the third lesson (`ro-m`) | After meeting **m**: two cards, **m** and **a**, "Ascultă și atinge litera potrivită. Atinge litera m." | |
+| 0.4.0-5 | Hear it, find it | Tap the wrong letter, then the wrong one again | First: the card wobbles and fades, the unicorn thinks, "Ascultă încă o dată." and the sound. Second: the right card glows yellow, "Uite, aceasta este litera m. Atinge-o!" No red, no buzzer | |
+| 0.4.0-6 | Hear it, find it | Tap **Ascultă**, then the unicorn, then the right card | "Atinge litera m." again; the last line again; then a sparkle and a praise | |
+| 0.4.0-7 | Any lesson step | Tap the home button (top left), then **Hai!** | The map at once (no question); then the same lesson at the same step, the steps before it green | |
+| 0.4.0-8 | Any lesson step | While the unicorn speaks, press the tablet's Home button; come back | The voice stops at once; back in the app, the sentence starts again from its beginning | |
+| 0.4.0-9 | The lines | Listen to every line in rows 1–6 in both languages | Each is a whole, correct sentence, in the right language, not cut off; tell the agent any word said wrong. The one to check: "Uite răspunsul. Acum fă-o și tu." (not used yet, for picture questions) | |
+
 ### 0.3.1 (2026-11-24): the ledger of released ids
 
 Nothing changes on the tablet. These rows are in Unity, in your own project

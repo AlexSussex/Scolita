@@ -57,7 +57,7 @@ Each brief file therefore reads, top to bottom:
 | 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
 | 3 | `feature/content-model` | Done 2026-11-24, released as 0.2.0 | [done/content-model.md](done/content-model.md) |
 | 4 | `feature/voice` | Done 2026-11-24, released as 0.3.0 | [done/voice.md](done/voice.md) |
-| 5 | `feature/lesson-engine` | In progress (lesson) | [pending/lesson-engine.md](pending/lesson-engine.md) |
+| 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
 | 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
 | 8 | `feature/activities-letters` | Ready after 5, beside 6 and 7 | [pending/activities-letters.md](pending/activities-letters.md) |
@@ -100,11 +100,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| lesson | [lesson-engine](pending/lesson-engine.md) | New: `Scripts/Core/Lessons/`, `Scripts/Core/Activities/`, `Scripts/Game/Lessons/` (beyond `LessonRunner`), `Scripts/UI/Lesson/` (new scripts; `LessonHud.cs` only if needed), `Prefabs/Lesson/` (the lesson screen, the activity views, `ActivityRegistry.asset`), `Settings/LearningRules.asset`; changes: `Scenes/Lesson.unity`, `Scripts/Game/Lessons/LessonRunner.cs`, `Scripts/Core/Content/ActivityKinds.cs` and `Rules/StepRules.cs` (hint lines, taught choices), `content/voice-lines.csv` and `content/steps.csv` (new rows at the end; planet 1's first lessons if the taught-choices rule needs it) with their imported assets. Not `MapScreen.prefab` or `LessonHud.prefab` (look's) | emulator-5602 | 2026-11-24 | Built, reviewed and tested (Progress); closing out as 0.4.0 |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `ledger` (content-ledger done, release 0.3.1)._
+_Last updated 2026-11-24 by agent `lesson` (lesson-engine done, release 0.4.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -134,18 +133,33 @@ _Update this section whenever a slice is pushed or a brief is finished._
   `content/released-ids.txt` lists every released id, and the import
   refuses one deleted instead of retired. Each close-out runs Școlița →
   Record released ids. The placeholder pictures are plain circles.
-- **Next:** `lesson-engine` (it replaces the voice sampler), beside `look` (in flight). The human: open the
-  project in Unity Hub and try 0.1.0/0.2.0 on the tablet
+- **Done 2026-11-24:** `lesson-engine`, release 0.4.0: Go opens the
+  lesson in progress or the next one; Core's `LessonRun` with one hint
+  ladder for every kind, `IActivityRules` / `IActivityView` /
+  `ActivityRegistry`, `MeetLetter` and `ListenAndPick`, the mascot's
+  bubble for every line, `lesson-run.json` per profile. Kinds not built
+  yet are skipped (the registry's list).
+- **Next:** `tracing` (then `handwriting`), `activities-letters` and
+  `galaxy-map` in parallel, each touching its own folders (a new kind:
+  `lesson-engine`'s completion record, "Conventions"); `content-letters-1`
+  (content only); `look` in flight. The human: try 0.4.0 on the tablet
   (`local/for-human-next-steps.md`).
-- **Parallel work possible** now: `content-letters-1` (content only); once
-  `lesson-engine` is done: `tracing` (then `handwriting`),
-  `activities-letters` and `galaxy-map`, each touching its own folders.
 
 ### Open follow-ups across briefs
 
+- **From `lesson-engine`** (full list in its completion record):
+  - Each activity brief takes its kind off `ActivityRegistry.asset`'s
+    "not built yet" list and adds its rules, view, registry row and hint
+    lines.
+  - The device Profiler check of 0 B per frame in a lesson; a tap costs
+    about 15 KB in the voice's planning (a follow-up for the voice).
+  - `look`: the lesson screen is `Prefabs/Lesson/LessonScreen.prefab`;
+    `LessonHud.prefab`'s placeholder card is hidden in the scene.
+  - `rewards`: design screen 6 replaces the end panel.
+
 - **From `voice`** (full list in its completion record):
-  - `lesson-engine`: load a lesson's clips with `VoiceHost.LoadLines`, and
-    replace the voice sampler on the Lesson placeholder.
+  - ~~`lesson-engine`: load a lesson's clips, replace the voice sampler~~:
+    done in 0.4.0.
   - `sound-feel`: duck the music on `IVoice.Started` / `Finished`.
   - The guide's mouth and bubble words can follow `VoiceRouter.PartStarted`.
 
@@ -153,14 +167,14 @@ _Update this section whenever a slice is pushed or a brief is finished._
   - ~~A ledger of released ids~~ and ~~plain placeholder pictures~~: done
     in `content-ledger` (0.3.1).
   - **Wrong choices are only taught letters** (the human, 2026-11-24):
-    `ListenAndPick` and `LetterHunt` never show a letter not yet taught as
-    a choice (so the first lessons have fewer choices); for
-    `lesson-engine` and `activities-letters`, and the content validator.
+    done for `ListenAndPick` in 0.4.0 (`ActivityKinds.LettersAreChoices`,
+    checked by the validator); `activities-letters` sets it for
+    `LetterHunt` and `FirstSound` and fixes their `ro-a` / `en-a` rows.
   - `activities-letters`: `TwoSounds` only on letters whose sounds differ;
     which letter of a step is the answer, and whether it must be taught.
     `activities-words`: `WordTwins` words pair up.
-  - `lesson-engine`: steps have no ids, so a lesson in progress resumes by
-    step number; each kind's hint lines go in Core's `ActivityKinds`.
+  - ~~`lesson-engine`: resume by step number, hint lines in `ActivityKinds`~~:
+    done in 0.4.0 (`LessonSignature`, `ActivityKinds.HintLines`).
   - `content-letters-1`: capitals for "English only" (`capitals-1` is
     `ro`); the other TraceWord words; planets 2–3.
   - `voice`: copy and link the clips named in `voice-lines.csv`.

@@ -1,6 +1,6 @@
 # Task: feature/lesson-engine
 
-> **Status: In progress (lesson).** D6 answered: the gold star "RO" and the
+> **Status: Done 2026-11-24, released as 0.4.0** (agent `lesson`). D6 answered: the gold star "RO" and the
 > blue ringed planet "EN" (design/README.md). The human, 2026-11-24: wrong
 > choices are only letters already taught, never one still to come.
 
@@ -691,3 +691,103 @@ Reset its saves with `"$ADB" -s $EMU shell pm clear com.softshack.scolita`.
 
 `"$ADB" -s $EMU shell pm clear com.softshack.scolita` (the app's saves, among them
 `lesson-run.json`); `wm size reset; wm density reset`.
+
+## Completion record
+
+_Finished 2026-11-24 by `lesson`; released as 0.4.0 (tag `v0.4.0`)._
+
+### What was built
+
+- **Pushed:**
+  - `90f98d7` `content:` `ro-a` without `ListenAndPick`, `ro-m`'s is `m a` (the human's
+    answer 1 A);
+  - `801b986` `core:` the lesson engine, the two kinds' rules, the validator's new rules;
+  - `80470b7` `game:` the runner, its voice, the registry, the save, the rules asset type;
+  - `72e7e6d` `ui:` the lesson screen, the views, the cards, the dots, the mascot, the badge;
+  - `0bc7319` `game:` the Lesson scene, the prefabs, the registry and rules assets, the
+    PlayMode tests (the voice sampler removed);
+  - `4927f00` `core:` the bubble's punctuation;
+  - `1079428` `docs:` Progress and test steps; the close-out.
+- **The engine** (Core): `LessonRun` steps through a `LessonPlan` (review steps first,
+  then the lesson's steps from where it resumes, without a language she doesn't learn or
+  a kind not built), with **one hint ladder for every kind** (first miss: the kind's hint;
+  the miss reaching `LearningRules.TriesBeforeAnswerShown`: the answer shown; right with
+  the answer shown: practice) and the events `AnswerChecked`, `HintGiven`,
+  `StepCompleted`, `LessonCompleted`. `LessonOrder` and `LessonResume` choose what Go
+  opens; `LessonSignature` catches a lesson whose steps changed; `PraisePicker` varies the
+  praise.
+- **The activity contract:** `IActivityRules` (made per step by `ActivityRulesFactory`)
+  and `IActivityView` (`ActivityView` prefabs listed in `ActivityRegistry`), with the
+  rules and views of `MeetLetter` and `ListenAndPick`.
+- **The Lesson scene:** `LessonRunner` (its composition root), `LessonVoice` (every line
+  said and shown in the mascot's bubble), the lesson screen (dots, mascot, bubble, the
+  end), the language badge on every card, `lesson-run.json` per profile.
+- **Tests:** EditMode 360, PlayMode 7 (the voice sampler's test
+  replaced by two lesson flows).
+
+### Conventions for later briefs
+
+- **A new activity kind** is: its rules class implementing `IActivityRules` (in
+  `Scripts/Core/Activities`, one line in `ActivityRulesFactory`), its hint lines (and
+  `LettersAreChoices` if its letters are choices) in `ActivityKinds`, a view prefab whose
+  root is an `ActivityView` (in `Scripts/UI/<Area>`, prefab in `Prefabs/Lesson/`), a row in
+  `ActivityRegistry.asset`, and **its kind taken off the registry's "not built yet"
+  list**. `ActivityRegistryTests` fails if a kind the content uses has neither.
+- **Rules judge, the run decides:** a kind's rules return `Right` (a part done), `Done`,
+  `Wrong` or `Neutral` and give their hint for miss n and their shown answer; they never
+  count tries. Everything they can say is a `VoiceSequence` made in their constructor and
+  listed in `Lines`; views never speak and never judge.
+- **Taps go through `IActivityInput.Answer(ActivityAnswer)`**; a kind that needs more than
+  a choice index (a stroke for `tracing`) extends `ActivityAnswer`.
+- **Listen to the run's events** (`AnswerChecked` with `Right`, `Wrong`,
+  `WrongWithAnswerShown`, `Practised`; `StepCompleted`; `LessonCompleted`) for progress and
+  rewards; review steps go into `LessonPlan.Of`'s `reviewSteps`.
+- **Numbers the child meets** go in `LearningRulesAsset` (`Settings/LearningRules.asset`)
+  and Core's `LearningRules`.
+- **The lesson in progress** is `profiles/<id>/lesson-run.json` (`LessonRunData`, version
+  1); `galaxy-map` and `progress-review` replace "the next lesson" with the map's stops and
+  her progress (`LessonOrder.After` and `LessonResume`).
+- **Letters that are choices are taught letters,** each once (the validator).
+- **The bubble's words** come from `VoiceSequenceText` (a sound shows as the letter held,
+  "a…").
+
+### How it was tested
+
+Batch mode at the pushed commits (EditMode 360/360, PlayMode 7/7, `BuildAndroidDebug` of
+0.3.1 and of 0.4.0, no compiler warning), the import refusing a choice not taught, the
+emulator at 2000 × 1200 and 1280 × 800 (both kinds, both languages, a hint, the answer
+shown, home and resume, the background mid-line), and a fresh-eyes review (Progress →
+"Fresh-eyes review", 14 findings resolved or recorded). The per-frame allocation was
+measured in the Editor only (Progress → "Test results"). Not run: the Device Simulator,
+the device Profiler, listening by ear.
+
+### Decisions and deviations
+
+- **The human's answers to the Design note** (2026-11-24): 1 A, 2 A, 3 A, 4 yes (Progress →
+  "Status"). So the acceptance test "`ListenAndPick` with a, m, t" runs on `ro-t`, not on
+  the first lesson, and the lessons skip the kinds not built yet.
+- **While building** (Progress → "Decisions while building"): one bubble for every line;
+  no new voice line (the first hint is "Ascultă încă o dată." + the sound, not "… mai
+  încet"); praise only when a step is done; the kinds not built yet logged as information;
+  `WrongWithAnswerShown`; `MeetLetter` takes exactly one word; `LessonResume` in Core
+  (from the review).
+
+### Follow-ups
+
+- **`activities-letters`:** `LetterHunt` and `FirstSound` in `ro-a` and `en-a` have
+  letters not taught yet (m, t): set `LettersAreChoices` for them in `ActivityKinds` and
+  fix those rows; take the kinds off the registry's list.
+- **`tracing`, `handwriting`, `activities-words`:** the same for their kinds.
+- **The voice:** a line starting allocates (`VoicePlanner`'s `foreach` over interfaces,
+  `AddSay`'s strings): about 15 KB on a tap's frame. Per tap, not per frame; worth making
+  allocation-free when the voice is next touched.
+- **The device Profiler:** 0 B per frame while a step runs, measured on the tablet (the
+  Editor shows 40 B per frame more on a lesson step than on the map, not attributed).
+- **`ListenAndPick` with pictures:** split its required lines when picture steps come
+  (now it needs both its letter and its picture lines).
+- **`look`:** `LessonHud.prefab`'s placeholder card and letters are hidden in the Lesson
+  scene (overrides), and the lesson screen is `Prefabs/Lesson/LessonScreen.prefab`; the
+  `ListenAndPick` screen isn't on the canvas yet (built from `look`'s parts); the larger,
+  4:3, phone and cut-out sizes to check with the final screens.
+- **`rewards`:** design screen 6 replaces the end panel (`LessonScreen.ShowEnd`).
+- **For the human:** "Uite răspunsul. Acum fă-o și tu." (`show-answer`), not said yet.

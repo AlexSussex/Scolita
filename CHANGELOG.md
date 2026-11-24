@@ -18,6 +18,56 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.4.0 (2026-11-24)
+
+The first lessons she can play. **Hai!** opens a lesson: the unicorn introduces a
+letter, says its sound and a word that starts with it, and asks her to tap the letter
+and the picture; from the second lesson of each language she also hears a sound and
+finds its letter among the letters she already knows. A miss gets a gentle hint, a
+second miss shows the answer, and every line is said and shown in the unicorn's bubble.
+
+- **For the child:**
+  - **Meet a letter** (planet 1: a, m, t, p, in Romanian, then in English): the letter
+    big and small, a picture card with its word, the gold star "RO" or the blue ringed
+    planet "EN" on every card.
+  - **Hear it, find it** (from `ro-m` and `en-m` on): 2 to 4 cream cards; a miss wobbles
+    the card and fades it with "Ascultă încă o dată." and the sound; a second miss makes
+    the answer glow ("Uite, aceasta este litera t. Atinge-o!"); right gets a sparkle
+    and a praise, never the same one twice in a row. "Ascultă" says the question again.
+  - **The unicorn** speaks every instruction, hint and praise, with the same words in
+    its bubble; tap it to hear the last line again. Dots at the top show the steps.
+  - **The end of a lesson:** "Ai terminat lecția. Bravo!" and a big yellow
+    **Mai departe** back to the map; **Hai!** then opens the next lesson.
+  - **Home** (top left) leaves at once; **Hai!** brings her back to the same step.
+    When the tablet sleeps mid-sentence, the sentence starts again when she comes back.
+- **For the parent:** the lessons play in the order of the content (`ro-a`, `en-a`,
+  `ro-m`, …), skipping for now the activities still to be built (tracing, the letter
+  hunt, first sounds, words); each later release adds them back to the same lessons.
+
+### Technical notes
+
+- **Core:** the lesson engine (`Scripts/Core/Lessons`: `LessonRun` with the one hint
+  ladder for every kind, `LessonPlan`, `LessonOrder`, `LessonResume`,
+  `LessonSignature`, `PraisePicker`, `LearningRules`, the events `AnswerChecked`,
+  `HintGiven`, `StepCompleted`, `LessonCompleted`) and the activity contract
+  (`Scripts/Core/Activities`: `IActivityRules`, `ActivityRulesFactory`,
+  `MeetLetterRules`, `ListenAndPickRules`).
+- **Unity:** `LessonRunner` (the Lesson scene's composition root), `LessonVoice`,
+  `ActivityRegistry` (`Prefabs/Lesson/ActivityRegistry.asset`, with the kinds not built
+  yet), the learning rules asset (`Settings/LearningRules.asset`: 2 tries, praise not
+  repeated within 3), the lesson screen and the two views (`Prefabs/Lesson/`); the voice
+  sampler is gone.
+- **A new save file per profile:** `profiles/<id>/lesson-run.json` (version 1: the lesson
+  in progress or next, the step to resume at, the signature of its steps).
+- **Content** (agreed by the human, 2026-11-24): wrong choices are only taught letters,
+  so `ro-a` no longer has a `ListenAndPick` step and `ro-m`'s is `m a`; the validator
+  refuses a choice not taught yet, a choice listed twice, and a kind's missing hint
+  lines; `MeetLetter` takes exactly one word. No new letter, word or voice line (no new
+  id for the ledger).
+- **For the human:** try the first lessons on the tablet (rows 0.4.0-1 to -9 below), and
+  listen to the lines.
+- The brief: [`tasks/done/lesson-engine.md`](tasks/done/lesson-engine.md).
+
 ## 0.3.1 (2026-11-24)
 
 A chore for the content, with nothing new on the tablet. Her progress names
