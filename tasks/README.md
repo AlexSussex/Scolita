@@ -73,11 +73,16 @@ Each brief file therefore reads, top to bottom:
 
 | Feature | Status | Brief |
 | --- | --- | --- |
-| `feature/content-letters-2` | Idea: planets 4–6 (u r c l, b f g h, v z j k), content only | — |
-| `feature/content-letters-3` | Idea: planets 7–9 (ă â î ș ț and ck sh ch th ng; w x y q; the Romanian groups and the English vowel teams) | — |
+| `feature/curriculum-research-2` | Ready (docs only): planets 4–6 in both languages, ă earlier or not; the human agrees the curriculum version | [pending/curriculum-research-2.md](pending/curriculum-research-2.md) |
+| `feature/curriculum-research-names` | Ready (docs only): when and how letter names come in, both languages | [pending/curriculum-research-names.md](pending/curriculum-research-names.md) |
+| `feature/content-letters-2` | Idea: planets 4–6 (u r c l, b f g h, v z j k), content only; after `curriculum-research-2` (and `-names` for the names after planet 6) | — |
+| `feature/curriculum-research-3` | After `curriculum-research-2` (docs only): planets 7–9, the Romanian groups, the English digraphs, vowel teams and tricky words | [pending/curriculum-research-3.md](pending/curriculum-research-3.md) |
+| `feature/content-letters-3` | Idea: planets 7–9 (ă â î ș ț and ck sh ch th ng; w x y q; the Romanian groups and the English vowel teams); after `curriculum-research-3` | — |
 | `feature/drawing-pad` | Idea (PRD §3.9): "Atelierul", rainbow brushes, sticker stamps, letter stencils; first after the MVP | — |
-| `feature/handwriting-2` | Idea: joined capitals (names, the start of a sentence), then free writing without a guide | — |
-| `feature/sentences` | Idea (PRD §3.10): short sentences, then little stories read aloud with words lighting up | — |
+| `feature/handwriting-research-2` | After `handwriting` (docs only): joined capitals, the rest of the alphabet by hand, free writing, both languages | [pending/handwriting-research-2.md](pending/handwriting-research-2.md) |
+| `feature/handwriting-2` | Idea: joined capitals (names, the start of a sentence), then free writing without a guide; after `handwriting-research-2` | — |
+| `feature/curriculum-research-sentences` | After `curriculum-research-3` (docs only): sentences and short stories, both languages | [pending/curriculum-research-sentences.md](pending/curriculum-research-sentences.md) |
+| `feature/sentences` | Idea (PRD §3.10): short sentences, then little stories read aloud with words lighting up; after `curriculum-research-sentences` | — |
 | `feature/domain-music` | Idea (PRD §3.10): instruments, high and low, rhythm, a rainbow xylophone; a large change, the human agrees the Design note first | — |
 | `feature/domain-numbers` | Idea (PRD §3.10): counting stars, numbers 0–20 in both languages | — |
 | `feature/portrait` | Idea: portrait as well as landscape | — |
