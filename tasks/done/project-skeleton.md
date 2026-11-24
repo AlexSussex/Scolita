@@ -1,6 +1,6 @@
 # Task: feature/project-skeleton
 
-> **Status: In progress (skeleton)** — Unity 6000.3.29f1 (as SeliSnake); the Galaxy Tab A7,
+> **Status: Done (skeleton, 2026-11-24), released as 0.1.0** — Unity 6000.3.29f1 (as SeliSnake); the Galaxy Tab A7,
 > minimum API 26; landscape left and right.
 
 Read `AGENTS.md` first. This is the first brief; it builds the foundation
@@ -168,7 +168,7 @@ _Kept by `skeleton` while the brief is in flight._
   `a0dd323` ui (the prefabs), and the `game:` commit with the scenes, the
   PlayMode tests and this Progress. Reviewed before the push (see
   "Fresh-eyes review"), tested at the last of them (see "Test results").
-- **Next:** the close-out (release 0.1.0).
+- **Closed out** as release 0.1.0 (see "Completion record").
 
 ### Design note (medium change)
 
@@ -619,3 +619,133 @@ flag).
   files; `"$ADB" -s $EMU uninstall com.softshack.scolita` removes the app.
 - `game/Builds/` is ignored by git; delete it to free space. Delete the
   throwaway keystore with your scratch folder.
+
+## Completion record
+
+_Finished 2026-11-24 by `skeleton`; released as 0.1.0 (tag `v0.1.0`)._
+
+### What was built
+
+- **The Unity project** in `game/` (Unity 6000.3.29f1, Universal 2D
+  template), its packages (`game/Packages/manifest.json`) and settings
+  (`game/ProjectSettings/`), the URP 2D assets in
+  `game/Assets/Scolita/Settings/`, TextMeshPro's essential resources in
+  `game/Assets/TextMesh Pro/`, and in `game/Assets/Plugins/Android/` the
+  launcher manifest without `INTERNET` and the launcher Gradle template
+  that signs release builds.
+- **Core** (`Scripts/Core`, no engine references): `Randomness/`
+  (`IRandom`, `SeededRandom`), `Timing/` (`IClock`, `CalendarDay`),
+  `Languages/` (`Language`, `LanguageMix`, `LanguageCodes`,
+  `RomanianSpelling`, `CedillaFinding`), `Profiles/ProfileId`.
+- **Content** (`Scripts/Content`): `IValidatableContent`; the validator is
+  `Tests/EditMode/Content/ContentValidatorTests.cs`, the diacritics check
+  `CedillaCheckTests.cs`; `Assets/Scolita/Content/` exists (empty).
+- **Game** (`Scripts/Game`): `Boot/BootLoader`, `Scenes/AppScene` +
+  `SceneNavigator`, `Saving/` (`SaveStore`, `ISaveData<T>`,
+  `SaveLoadResult<T>`, `SaveLoadOutcome`), `Settings/`
+  (`TabletSettingsData`, `LearningSettingsData`), `Timing/SystemClock`,
+  `Profiles/BuiltInProfiles`, `Lessons/LessonRunner`.
+- **UI** (`Scripts/UI`): `Map/MapScreen`, `Map/VersionLabel`,
+  `Lesson/LessonHud`, `Layout/SafeAreaFitter`; prefabs
+  `Prefabs/UI/MapScreen.prefab`, `LessonHud.prefab`, `EventSystem.prefab`.
+- **Scenes:** `Scenes/Boot.unity` (build index 0), `Map.unity`,
+  `Lesson.unity`.
+- **Editor** (`Scripts/Editor`): `BuildScript` (`BuildAndroidDebug`,
+  `BuildAndroidRelease`), `AppVersion`, `ReleaseSigning`,
+  `GradleSigningFile` + `GradleSigningContents`, `AndroidBuildTools`,
+  `ApkPermissions`, `ApkBadging`, `ApkSigner`, `AndroidSettingsSnapshot`,
+  `AndroidBuildKind`; `Fonts/FontAssetBuilder` (Școlița → Rebuild font
+  assets), `FontAssetSpec`, `FontCharacterSet`.
+- **Fonts:** `Assets/ThirdParty/Andika` (Andika 7.000 Regular) and
+  `Assets/ThirdParty/Baloo2` (Baloo 2 1.700), each with `LICENSE.txt` and
+  `SOURCE.md`; atlases `Assets/Scolita/Fonts/Andika-Regular SDF.asset` and
+  `Baloo2 SDF.asset`.
+- **Tests:** EditMode 154 (`Tests/EditMode/Core`, `Content`, `Saving`,
+  `Game`, `Build`, `Fonts`), PlayMode 3 (`Tests/PlayMode/SceneFlowTests.cs`).
+- **`VERSION`** at the repository root.
+
+### Conventions for later briefs
+
+- **Core takes randomness only from `IRandom` and time only from
+  `IClock`;** days are `CalendarDay`s (`DaysSince` counts calendar days on
+  the tablet). Tests build a fake clock with the day they need (none yet:
+  write `FakeClock` in `Tests/EditMode/Fakes/` when a rule first needs
+  one). `CoreAssemblyTests` fails if Core gains a Unity reference.
+- **Language codes** in saves and content are `LanguageCodes`' `ro`, `en`
+  and `both`; never an enum's name.
+- **Scenes are loaded by `AppScene` through `SceneNavigator`,** never by a
+  name in text. A new scene is a new enum value, named as its file, added
+  to the build settings in that order (Boot first).
+- **Saving:** a tablet file goes through `SaveStore.ForTablet(root)`, a
+  learner's file through `SaveStore.ForProfile(root, profileId)` (into
+  `profiles/<id>/`). Every save file is a `[Serializable]` class with
+  `[SerializeField] private` fields implementing `ISaveData<T>`: a
+  `version`, and an `Upgraded()` that migrates by version (JsonUtility
+  loads a missing field as false/0/null), clamps values and keeps unknown
+  codes (read as the default). Outcomes: `Loaded`; `Missing` (save the
+  defaults); `SetAside` (damaged: renamed `.broken.json`; save the
+  defaults); `Unreadable` (locked, from a newer app, or not set aside:
+  kept, and the store refuses to save over it). Names are `[a-z0-9_-]+`.
+- **The first profile is `BuiltInProfiles.FirstChild` (`child-1`);**
+  `profiles` adds the list (`profiles.json` beside `settings.json`) and
+  keeps `child-1` first.
+- **Screens** are prefabs under `Prefabs/UI` with a thin controller
+  holding `[SerializeField] private` references; each scene with buttons
+  holds the `EventSystem` prefab; the canvas scales from 1280 × 800 (match
+  0.5); buttons and labels sit inside a `SafeAreaFitter` panel.
+- **Text** uses `Baloo2 SDF` for the app's words and `Andika-Regular SDF`
+  for what she reads; a character outside `FontCharacterSet` must be added
+  there and the fonts rebuilt (Școlița → Rebuild font assets), or it shows
+  as missing.
+- **Content:** every ScriptableObject under `Assets/Scolita/Content`
+  implements `IValidatableContent`; every string table entry and
+  `content/**/*.csv` is checked for cedillas (`CedillaCheckTests`). The
+  content importer should reuse `RomanianSpelling.FindCedillas`.
+- **Builds:** only through `BuildScript`. Every APK is checked for
+  `INTERNET`; a release APK also for the release key and not debuggable.
+  The release key reaches Gradle only through `SCOLITA_SIGNING_FILE`
+  (never `PlayerSettings.Android.keystorePass`); keep
+  `useCustomKeystore` off and no custom Gradle properties template
+  (`LauncherGradleTemplateTests`).
+- **Emulators:** the x86_64 AVDs run the ARM64 APK through translation
+  and need `-e unity -force-gles`. `adb shell wm size` stands in for the
+  Device Simulator. The app's files on Android are in
+  `/storage/emulated/0/Android/data/com.softshack.scolita/files/`.
+- **Escapes for look-alike letters in C#:** write Romanian letters in code
+  as `ș`-style escapes (comments may use the letters themselves).
+
+### How it was tested
+
+EditMode 154/154 and PlayMode 3/3 in batch mode with no compiler warnings
+or errors; `BuildAndroidDebug` and throwaway-key `BuildAndroidRelease`
+(success, then a wrong alias) with every check in "Test results"; the
+debug APK on `emulator-5600` at 2560 × 1600, 2000 × 1200 and 1280 × 800,
+in both landscape directions and held in portrait, through pause and
+resume, with corrupt save files. The close-out's `VERSION` 0.1.0 was built
+and shown on the emulator (version code 100). The Editor's Play mode,
+the Device Simulator and the human's tablet were not used.
+
+### Decisions and deviations
+
+All in Progress → "Decisions and deviations", "Release signing without
+passwords in Gradle" and "Fresh-eyes review". In short: two settings
+files (per tablet and per profile, AGENTS.md's seam 5 over the brief's
+one file); the release key handed to Gradle in a temporary file named by
+`SCOLITA_SIGNING_FILE` instead of two password variables (a variable
+Gradle can read is one Unity prints when Gradle fails); SplitMix64 as
+SeliSnake; Graphics APIs automatic as SeliSnake (Vulkan unconfirmed on
+the Tab A7); SpriteShape left out; the IDE packages kept; `CalendarDay`
+added to Core for the clock's date.
+
+### Follow-ups
+
+- **SeliSnake's `release-signing`:** the approach here (Unity never holds
+  the key; a JSON file per build in `%TEMP%`, named by one variable, read
+  by the launcher Gradle template; leftovers swept; the APK's signer and
+  debuggable flag checked) works on this PC and leaves no password in the
+  log, `Library/`, or Gradle's caches; written to
+  `local/for-human-next-steps.md` for SeliSnake's lead.
+- The other follow-ups are in Progress → "Follow-ups": `BootLoader`'s
+  save root for tests, several broken copies (a question for the human),
+  Vulkan on the Tab A7, `AGENTS.md`'s repo layout, the app's words in the
+  string tables.

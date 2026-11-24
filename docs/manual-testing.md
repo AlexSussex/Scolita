@@ -39,4 +39,20 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
-No releases yet.
+### 0.1.0 (2026-11-24): the foundation
+
+The first APK: placeholder screens only. Install it on the Tab A7
+(`Scolita-0.1.0.apk`, built from the tag with the release key).
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.1.0-1 | Home screen of the tablet | Look for the new app icon | It is labelled **Școlița**, with a comma under the Ș and under the ț (not a little hook) | |
+| 0.1.0-2 | Home screen of the tablet | Tap the Școlița icon | Within 5 seconds: a purple screen with "Școlița" at the top and a big yellow **Hai!** button; no Unity logo; the app doesn't close by itself (this is also the check that the tablet's graphics, Vulkan, work) | |
+| 0.1.0-3 | The map (purple, "Hai!") | Look at the bottom-right corner | Small pale text **0.1.0** | |
+| 0.1.0-4 | The map | Tap **Hai!** | A lesson screen: a cream card with **ă â î ș ț** and **Ă Â Î Ș Ț**, a's drawn the way she writes them (one round part, no hook on top), commas under ș ț Ș Ț; a cream **Acasă** button top left | |
+| 0.1.0-5 | The lesson screen | Tap **Acasă** | Back on the map at once, with no question asked | |
+| 0.1.0-6 | Any screen | Turn the tablet the other way round, then hold it upright | The picture turns to stay the right way up in landscape; held upright, the app stays landscape (with black bands) | |
+| 0.1.0-7 | The lesson screen | Leave the tablet alone for longer than its screen timeout | The screen stays on | |
+| 0.1.0-8 | The map | Leave the tablet alone for longer than its screen timeout | The screen turns off as usual | |
+| 0.1.0-9 | The lesson screen | Press the tablet's Home button, then tap the Școlița icon again | The app comes back on the lesson screen | |
+| 0.1.0-10 | The tablet's Settings → Apps → Școlița → Permissions | Look at the list | "No permissions requested" (or nothing allowed) | |

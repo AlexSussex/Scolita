@@ -26,10 +26,10 @@ instruments, space and animals) come later on the same engine.
 
 ## Status
 
-Planning: the rules, the spec, the curriculum and the briefs are written;
-no code yet. The first briefs are `project-skeleton` and
-`curriculum-research`, which can run side by side. See
-[`tasks/README.md`](tasks/README.md) → "Where we are".
+The foundation is built (release 0.1.0, `project-skeleton`): the Unity
+project, the build, saving, the fonts and three placeholder screens (Boot,
+Map, Lesson). No lessons yet. See [`tasks/README.md`](tasks/README.md) →
+"Where we are".
 
 ## Set up the PC
 
@@ -38,6 +38,26 @@ Already done for SeliSnake on this PC (`C:\Projects\SeliSnake\README.md` →
 `6000.3.29f1`** with Android Build Support (OpenJDK, Android SDK & NDK
 Tools), and Git LFS. Școlița uses the same Unity version, so nothing new
 to install.
+
+What the project uses (`game/Packages/manifest.json`, the versions
+SeliSnake uses):
+
+| Package | Version |
+| --- | --- |
+| Universal Render Pipeline (`com.unity.render-pipelines.universal`) | 17.3.0 |
+| Input System (`com.unity.inputsystem`) | 1.20.1 |
+| uGUI with TextMeshPro (`com.unity.ugui`) | 2.0.0 |
+| Localization (`com.unity.localization`, brings Addressables) | 1.5.8 |
+| Test Framework (`com.unity.test-framework`) | 1.6.0 |
+| 2D Sprite (`com.unity.2d.sprite`) | 1.0.0 |
+| Visual Studio / Rider editor support (editor only) | 2.0.26 / 3.1.0 |
+
+Fonts (OFL 1.1, in `game/Assets/ThirdParty/` with their `LICENSE.txt` and
+`SOURCE.md`): **Andika 7.000** Regular (SIL) for what she reads, and
+**Baloo 2 1.700** (the variable font from Google Fonts) for the app's own
+words. Their TextMeshPro atlases are in `game/Assets/Scolita/Fonts/`; to
+add a character, add it to `FontCharacterSet` and run **Școlița → Rebuild
+font assets** in the Editor.
 
 ## Open the app in Unity
 
@@ -110,9 +130,13 @@ SCOLITA_KEY_PASS="<from your password manager>" \
 ```
 
 The APK is written to `game/Builds/Android/Scolita-<version>.apk`. The
-signing keeps the passwords out of `build.gradle` and Gradle's caches from
-the start (SeliSnake's `release-signing` follow-up, built in
-`project-skeleton` here).
+passwords never reach Unity's settings, `build.gradle` or Gradle's caches:
+the build script hands the key to Gradle in a file of its own in your
+temporary folder (`%TEMP%\scolita-signing\`), read by the launcher's Gradle
+template (`game/Assets/Plugins/Android/launcherTemplate.gradle`) and
+deleted after the build. The build refuses an APK signed with the debug
+key. If a release build is killed half-way, delete `%TEMP%\scolita-signing\`
+(or run any build, which deletes it at its start).
 
 ## Install on the tablet
 

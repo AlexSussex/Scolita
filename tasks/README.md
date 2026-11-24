@@ -51,7 +51,7 @@ Each brief file therefore reads, top to bottom:
 
 | # | Feature | Status | Brief |
 | --- | --- | --- | --- |
-| 1 | `feature/project-skeleton` | In progress (skeleton) | [pending/project-skeleton.md](pending/project-skeleton.md) |
+| 1 | `feature/project-skeleton` | Done 2026-11-24, released as 0.1.0 | [done/project-skeleton.md](done/project-skeleton.md) |
 | 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
 | 3 | `feature/content-model` | Ready after 1 | [pending/content-model.md](pending/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
@@ -96,11 +96,10 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Slices pushed and tested; closing out as 0.1.0 |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `curriculum` (curriculum-research done; no code yet)._
+_Last updated 2026-11-24 by agent `skeleton` (project-skeleton done, release 0.1.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -112,10 +111,14 @@ _Update this section whenever a slice is pushed or a brief is finished._
 - **Done 2026-11-24:** `curriculum-research`. The curriculum v1 was
   agreed by the human (`docs/curriculum.md`). The growth research briefs
   are indexed under "After the MVP".
-- **Next:** `project-skeleton`. The human: answer D4–D9
-  (D1–D3 answered 2026-11-24; `local/for-human-next-steps.md`).
-- **Parallel work possible** once `project-skeleton` is done: `look`
-  (art only); once `content-model` is done: `content-letters-1`; once
+- **Done 2026-11-24:** `project-skeleton`, release 0.1.0: the Unity
+  project in `game/`, Core's foundation, saving per tablet and per
+  profile, the fonts, the build with release signing kept out of Gradle,
+  and the Boot → Map → Lesson placeholders.
+- **Next:** `content-model`, and beside it `look` (art only). The human:
+  open the project in Unity Hub and try 0.1.0 on the tablet
+  (`local/for-human-next-steps.md`).
+- **Parallel work possible** now: `look` beside `content-model`; once `content-model` is done: `content-letters-1`; once
   `lesson-engine` is done: `tracing` (then `handwriting`),
   `activities-letters` and `galaxy-map`, each touching its own folders.
 
@@ -129,9 +132,15 @@ _Update this section whenever a slice is pushed or a brief is finished._
   - The human checks the handwriting drawings against her manual
     before `tracing` and `handwriting` finalise their strokes.
 
-- **From SeliSnake, built in from the start here:** the release signing
-  that keeps the key's passwords out of `build.gradle` and Gradle's caches
-  (SeliSnake's `release-signing` follow-up) is part of `project-skeleton`.
-- **Vulkan on the Tab A7:** confirmed or not by SeliSnake's 0.1.0 test on
-  the tablet; `project-skeleton` takes the same Graphics APIs setting
-  SeliSnake ends up with.
+- **From `project-skeleton`** (full list in its completion record):
+  - Release signing keeps the key's passwords out of Unity's settings,
+    `build.gradle` and Gradle's caches (a temporary file read by the
+    launcher's Gradle template); SeliSnake's lead has the finding.
+  - **Vulkan on the Tab A7:** Graphics APIs stay automatic, as SeliSnake;
+    manual test 0.1.0-2 confirms Vulkan on the tablet, or a fix drops it.
+  - `BootLoader` could take its save root from the test, for an
+    end-to-end "corrupt settings at boot" PlayMode test.
+  - Keep one `.broken.json` or each damaged copy: a question for the
+    human before `progress-review`.
+  - `AGENTS.md`'s repo layout: add `Assets/Scolita/Settings`,
+    `Assets/Plugins/Android` and the `ThirdParty` packs' `SOURCE.md`.
