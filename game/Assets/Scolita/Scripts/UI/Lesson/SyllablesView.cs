@@ -98,11 +98,7 @@ namespace Scolita.UI.Lesson
             switch (feedback.Outcome)
             {
                 case FeedbackOutcome.Neutral:
-                    if (feedback.Choice == SyllablesRules.Drum)
-                    {
-                        drum.Bounce();
-                    }
-
+                    drum.Bounce();
                     break;
                 case FeedbackOutcome.TryAgain:
                     pictureCard.Wobble();

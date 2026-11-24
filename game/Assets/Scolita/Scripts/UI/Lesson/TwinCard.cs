@@ -94,10 +94,13 @@ namespace Scolita.UI.Lesson
                 return;
             }
 
-            float half = rect.rect.width / 4f;
-            picture.anchoredPosition = new Vector2(-half, 0f);
+            float width = rect.rect.width;
+            float pictureX = -width / 2f + pictureBesideTheWord / 2f + 12f;
+            picture.anchoredPosition = new Vector2(pictureX, 0f);
             picture.sizeDelta = new Vector2(pictureBesideTheWord, pictureBesideTheWord);
-            label.anchoredPosition = new Vector2(revealed ? half / 2f : 0f, label.anchoredPosition.y);
+            float labelWidth = revealed ? width - pictureBesideTheWord - 36f : width - 60f;
+            label.sizeDelta = new Vector2(labelWidth, label.sizeDelta.y);
+            label.anchoredPosition = new Vector2(revealed ? (pictureBesideTheWord + 12f) / 2f : 0f, label.anchoredPosition.y);
         }
     }
 }

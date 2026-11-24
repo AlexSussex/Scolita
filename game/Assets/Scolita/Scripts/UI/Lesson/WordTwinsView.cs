@@ -23,8 +23,8 @@ namespace Scolita.UI.Lesson
         [SerializeField] private JoinLine dragged;
         [SerializeField] private JoinLine[] joined = new JoinLine[0];
         [SerializeField] private float columnX = 300f;
-        [SerializeField] private float columnCentreY = -110f;
-        [SerializeField] private float rowStep = 136f;
+        [SerializeField] private float columnCentreY = -100f;
+        [SerializeField] private float rowStep = 124f;
         [SerializeField] private Color draggedColour = new Color(1f, 0.851f, 0.239f, 1f);
         [SerializeField] private Color joinedColour = new Color(0.298f, 0.851f, 0.482f, 1f);
 

@@ -11,7 +11,8 @@ namespace Scolita.UI.Lesson
     /// with its language badge; a tap asks for the prompt, which says the word only after her first try) and 2 to
     /// 3 picture cards. Its feedback is the picture cards' own (<see cref="ChoiceTileFeedback"/>); the first hint
     /// (<see cref="HintCue.SpellOut"/>) also lights the word's letters one by one, in pink, while their sounds are
-    /// said. The lit texts are made when a step begins, so lighting them allocates nothing. The prefab is
+    /// said (at a steady pace; any later answer stops it). The lit texts are made when a step begins, so lighting
+    /// them allocates nothing. The prefab is
     /// <c>Prefabs/Lesson/ReadAndMatchView.prefab</c>.
     /// </summary>
     public sealed class ReadAndMatchView : ActivityView
@@ -70,12 +71,16 @@ namespace Scolita.UI.Lesson
         public override void ShowFeedback(in StepFeedback feedback)
         {
             ChoiceTileFeedback.Show(pictures, feedback);
-            if (feedback.Outcome == FeedbackOutcome.TryAgain && feedback.Hint.Cue == HintCue.SpellOut && litTexts.Count > 0)
+            if (feedback.Outcome == FeedbackOutcome.Neutral)
             {
-                lit = 0;
-                nextLetterIn = secondsBeforeTheLetters;
-                wordCard.Restyle(plainText, false);
+                return;
             }
+
+            bool spellOut = feedback.Outcome == FeedbackOutcome.TryAgain && feedback.Hint.Cue == HintCue.SpellOut
+                && litTexts.Count > 0;
+            lit = spellOut ? 0 : -1;
+            nextLetterIn = secondsBeforeTheLetters;
+            wordCard.Restyle(plainText, false);
         }
 
         /// <inheritdoc/>

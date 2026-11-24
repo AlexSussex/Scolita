@@ -28,6 +28,9 @@ namespace Scolita.UI.Lesson
         [SerializeField] private float tileRowY = -255f;
         [SerializeField] private float takeOffSeconds = 1.6f;
         [SerializeField] private float takeOffHeight = 1000f;
+        [SerializeField] private float takeOffDrift = 0.35f;
+        [SerializeField] private float takeOffTilt = 25f;
+        [SerializeField] private float tileSize = 130f;
 
         private IActivityInput input;
         private ActivityRound round;
@@ -159,13 +162,15 @@ namespace Scolita.UI.Lesson
 
         private void PlaceTiles(IReadOnlyList<ActivityChoice> choices)
         {
-            float first = -((choices.Count - 1) * tileSpacing) / 2f;
+            float room = ((RectTransform)transform).rect.width - tileSize;
+            float spacing = choices.Count > 1 ? Mathf.Min(tileSpacing, room / (choices.Count - 1)) : tileSpacing;
+            float first = -((choices.Count - 1) * spacing) / 2f;
             for (int index = 0; index < tiles.Length; index++)
             {
                 if (index < choices.Count)
                 {
                     tiles[index].Tile.Show(index, choices[index], choices[index].Text, null, input);
-                    tiles[index].Home(this, new Vector2(first + index * tileSpacing, tileRowY));
+                    tiles[index].Home(this, new Vector2(first + index * spacing, tileRowY));
                 }
                 else
                 {
@@ -209,8 +214,8 @@ namespace Scolita.UI.Lesson
 
             takeOffLeft = Mathf.Max(0f, takeOffLeft - Time.unscaledDeltaTime);
             float done = 1f - takeOffLeft / takeOffSeconds;
-            rocket.anchoredPosition = rocketHome + new Vector2(done * takeOffHeight * 0.35f, done * done * takeOffHeight);
-            rocket.localRotation = Quaternion.Euler(0f, 0f, 25f * done);
+            rocket.anchoredPosition = rocketHome + new Vector2(done * takeOffHeight * takeOffDrift, done * done * takeOffHeight);
+            rocket.localRotation = Quaternion.Euler(0f, 0f, takeOffTilt * done);
         }
     }
 }

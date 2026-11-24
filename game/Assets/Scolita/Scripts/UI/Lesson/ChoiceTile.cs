@@ -158,10 +158,13 @@ namespace Scolita.UI.Lesson
             }
         }
 
-        /// <summary>Sends the tap to the activity; called by the EventSystem.</summary>
+        /// <summary>
+        /// Sends the tap to the activity, unless the tile was dragged away from where she pressed it (a
+        /// <c>BuildWord</c> tile let go on the rocket is a drop, not a tap); called by the EventSystem.
+        /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (input == null)
+            if (input == null || WasDraggedAway(eventData))
             {
                 return;
             }
@@ -175,6 +178,13 @@ namespace Scolita.UI.Lesson
             {
                 input.Answer(ActivityAnswer.Tap(index));
             }
+        }
+
+        private bool WasDraggedAway(PointerEventData eventData)
+        {
+            return eventData.dragging
+                && !RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, eventData.pressPosition,
+                    eventData.pressEventCamera);
         }
 
         private void Awake()
