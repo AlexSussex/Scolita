@@ -132,7 +132,16 @@ _Update this section whenever a slice is pushed or a brief is finished._
 
 - **From `content-model`** (full list in its completion record):
   - A ledger of released ids, so a row deleted with its asset is still
-    caught: a question for the human.
+    caught: **the human said yes (2026-11-24)**: `content/released-ids.txt`,
+    added to at each release and checked by the importer. To be built after
+    `voice` (which is changing the importer now), before planet 2 ships.
+  - **Placeholder pictures: a plain circle, no letter** (the human,
+    2026-11-24), so `FirstSound`'s answer isn't given away; with the
+    ledger, after `voice`.
+  - **Wrong choices are only taught letters** (the human, 2026-11-24):
+    `ListenAndPick` and `LetterHunt` never show a letter not yet taught as
+    a choice (so the first lessons have fewer choices); for
+    `lesson-engine` and `activities-letters`, and the content validator.
   - `activities-letters`: `TwoSounds` only on letters whose sounds differ;
     which letter of a step is the answer, and whether it must be taught.
     `activities-words`: `WordTwins` words pair up.

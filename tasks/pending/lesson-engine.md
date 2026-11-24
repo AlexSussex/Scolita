@@ -1,7 +1,8 @@
 # Task: feature/lesson-engine
 
-> **Status: Ready after `voice`** (decision D6: the language badges; until
-> answered, the star and circle badges in design/README.md).
+> **Status: Ready after `voice`.** D6 answered: the gold star "RO" and the
+> blue ringed planet "EN" (design/README.md). The human, 2026-11-24: wrong
+> choices are only letters already taught, never one still to come.
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "The five seams" → 1 and 3, "How the
 app is put together", "Usability" and "Learning"), and the completion
