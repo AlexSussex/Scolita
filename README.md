@@ -26,12 +26,17 @@ instruments, space and animals) come later on the same engine.
 
 ## Status
 
-The foundation is built (release 0.1.0, `project-skeleton`): the Unity
-project, the build, saving, the fonts and three placeholder screens (Boot,
-Map, Lesson). The content model is built (release 0.2.0, `content-model`):
-the lessons as CSV in `content/`, the importer and the validator, with
-planet 1 (a m t p) as sample content. No lesson can be played yet. See
-[`tasks/README.md`](tasks/README.md) → "Where we are".
+Release 0.6.0 (2026-11-24): planet 1 (a m t p) can be played in Romanian and
+English. **Hai!** opens the next lesson; the unicorn says every line (the
+tablet's installed voice until the family's clips are recorded) and shows it
+in its bubble. The activities so far: meet a letter, hear a sound and find its
+letter, hunt the stars with the letter, find a picture's first sound, sort by
+the two languages' sounds, drum a word's syllables, build a word in the
+rocket's windows, read a word and find its picture, and join word twins. Not
+built yet: tracing and handwriting, the galaxy map, stars and stickers,
+progress and reviews, the parent area and profiles, the chosen look, sound
+effects. See [`tasks/README.md`](tasks/README.md) → "Where we are", and the
+releases in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Set up the PC
 
@@ -164,3 +169,8 @@ adb -s <the tablet's serial> install -r game/Builds/Android/Scolita-<version>.ap
 Or copy the APK to the tablet and open it there. Every APK is signed with
 the same release key, so a new version installs over the old one and keeps
 her progress.
+
+A **debug APK** (signed with this PC's debug key) is for trying a release
+quickly. Android refuses to install a debug APK over a release one, or the
+other way round, until the app is uninstalled, which deletes its progress.
+So switch from debug to release APKs before her progress matters.

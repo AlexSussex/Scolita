@@ -104,7 +104,7 @@ progress visible"). Empty when nobody is at work.
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `words` (activities-words done, release 0.6.0)._
+_Last updated 2026-11-24 by the lead (release 0.6.0; what waits on whom)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -152,11 +152,13 @@ _Update this section whenever a slice is pushed or a brief is finished._
   (the word never said before her first try) and `WordTwins` (lines between the twins and false
   friends); the round's `Places`, the `Place` and `Join` gestures; the validator's word rules
   (`WordTwins` words pair up one to one). Only `TraceLetter` and `TraceWord` are left "not built yet".
-- **Next:** `tracing` (then `handwriting`) and
-  `galaxy-map` in parallel, each touching its own folders (a new kind:
-  `lesson-engine`'s completion record, "Conventions"); `content-letters-1`
-  (content only); `look` in flight. The human: try 0.4.0 on the tablet
-  (`local/for-human-next-steps.md`).
+- **Next** (lead, 2026-11-24): `tracing`'s Design note waits for the
+  human's answers (seven questions); `handwriting` follows it.
+  `galaxy-map` waits for `look` (both change `MapScreen.prefab`), and
+  `look` waits for the human's art choices. `content-letters-1` (planets
+  2–3) can follow `tracing`'s stroke format. `curriculum-research-2` (docs
+  only) can start whenever the human says. The human: try 0.6.0 on the
+  tablet (`local/for-human-next-steps.md`).
 
 ### Open follow-ups across briefs
 
