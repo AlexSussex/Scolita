@@ -18,6 +18,80 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.3.0 (2026-11-24)
+
+The app speaks. Every line has its voice:
+- a recorded clip when there is one;
+- else the tablet's own voice, in Romanian or British English;
+- else a speech bubble with the words.
+
+Tapping a letter or a word says it. A recording kit in Unity makes the
+family's recordings into clips, one session at a time.
+
+- **For the child:**
+  - On the lesson screen (still a placeholder), a row of Romanian letters
+    and words (gold star "RO") and a row of English ones (blue planet
+    "EN"): m, a, t, p, a word, and the word said slowly.
+  - Tapping one says it, and the tile pulses while it speaks.
+  - Tapping another stops the first; two never talk at once.
+  - A slow word ("m-a-m-a") is said as its letters' sounds, one after
+    another.
+- **For the parent:**
+  - **The tablet's voice** says every line for now. It uses only voices
+    installed on the tablet, so nothing it says leaves it. Check that
+    Google's Romanian and English (United Kingdom) voices are installed:
+    Settings → General management → Text-to-speech.
+  - **Without a voice for a language,** the line shows in a bubble with its
+    language's badge instead, and the app goes on.
+  - **Recording in batch sessions** (`local/todo/04-record-voices.md`):
+    - **Școlița → Make recording scripts** prints a numbered page per
+      session.
+    - You read one session into the Windows Voice Recorder.
+    - **Import recording session** cuts the take into clips, levels them,
+      and shows a page to listen to each one. It flags a missed or
+      repeated line, or a clip that is too quiet or clipped.
+    - **Accept recording session** puts the good clips into the app.
+    - **Check voice clips** measures every clip.
+
+### Technical notes
+
+- **Core** (`Scripts/Core/Voice`):
+  - `IVoice` and `VoiceRouter` (clip → system voice → bubble, driven by
+    `Tick`, events `Started`, `Finished`, `PartStarted`, `LineMissing`);
+  - `VoicePlanner`, `VoiceTemplate` (spliced `{x}` … slots),
+    `VoiceSequence`, `LessonVoiceLines`.
+- **Game** (`Scripts/Game/Voice`):
+  - `RecordedVoice` (clips loaded per lesson);
+  - `AndroidTextToSpeechVoice` (`TextToSpeech` through
+    `AndroidJavaObject`, `ro-RO` and `en-GB`, installed offline voices
+    only);
+  - `SilentVoice` (the Editor), `SpeechBubbleView`, `VoiceHost`, `Hearable`;
+  - prefabs `Prefabs/Voice/` (Voice, Hearable, VoiceSampler).
+- **Content format:**
+  - `voice-lines.csv` has a new `status` column, filled by the importer
+    (`recorded`, `missing`, `sounds`, or empty);
+  - the `clip` cell may name one clip per spoken part
+    (`<id>.1.ogg <id>.2.ogg`);
+  - the importer copies the clips into `Assets/Scolita/Content/Voice/Clips/`
+    and links them.
+- **The recording kit** (`Scripts/Editor/Voice`): WAV I/O, BS.1770
+  loudness, splitting a take at its pauses, matching it to its script,
+  levelling to −16 LUFS with a limiter, ffmpeg for M4A in and OGG out.
+- **A new Editor-only tool, agreed by the human:** ffmpeg (an LGPL build,
+  `C:\Tools\ffmpeg-n8.1.3-39-g660b5aa7db-win64-lgpl-8.1\`), named by
+  `SCOLITA_FFMPEG`. It is never in the repo or the APK. Added to
+  `AGENTS.md`'s stack.
+- **The manifest** declares the `TTS_SERVICE` query (Android 11
+  visibility). This is not a permission: the APK asks for no new one.
+- No new package, no save-format change, no clips yet (all 279 lines are
+  said by the tablet; the 8 slow words from their letters' sounds).
+- **For the human:**
+  - set `SCOLITA_FFMPEG` once (`local/todo/04-record-voices.md`, "Set up
+    once");
+  - check the tablet's voices;
+  - record the first session when ready.
+- Brief: [tasks/done/voice.md](tasks/done/voice.md).
+
 ## 0.2.0 (2026-11-24)
 
 The lessons are now data. Every letter, word, picture, voice line,

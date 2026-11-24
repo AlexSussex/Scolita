@@ -39,6 +39,27 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.3.0 (2026-11-24): the voice
+
+The app speaks. On the tablet, the lesson placeholder has a row of
+Romanian tiles and a row of English ones to tap. On the PC, the recording
+kit is in Unity's Școlița menu. Listen for the right language and for
+words that are said correctly; tell the agent about any word the tablet's
+voice says wrong.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.3.0-1 | The tablet's Settings | General management → Text-to-speech → Google (the gear) → Install voice data: install **Romanian (Romania)** and **English (United Kingdom)** | Both show as downloaded | |
+| 0.3.0-2 | The lesson (tap **Hai!**) | Look at the screen | The home button top left; a row with a gold star "RO" and m, a, t, p, mama, m-a-m-a at the top; the cream card in the middle; a row with a blue planet "EN" and m, a, t, p, map, m-a-p at the bottom; nothing overlaps | |
+| 0.3.0-3 | The lesson, RO row | Tap m, a, t, p, then mama | Each is said in Romanian by the tablet's voice (a letter alone may sound like its name, not its pure sound, until the sounds are recorded); the tile pulses while it speaks | |
+| 0.3.0-4 | The lesson, RO row | Tap m-a-m-a | The four letters said one after another with a short pause (m, a, m, a), not the word | |
+| 0.3.0-5 | The lesson, EN row | Tap m, a, t, p, map, m-a-p | Each in British English; m-a-p as three letters with pauses | |
+| 0.3.0-6 | The lesson | Tap m-a-m-a, and at once tap p | The slow word stops and p is said: never two at once | |
+| 0.3.0-7 | The lesson | Tap mama, then press Home at once, then come back | Nothing goes on talking in the background; the next tap speaks | |
+| 0.3.0-8 | The tablet's Settings, then the lesson | Remove the English (United Kingdom) voice data, come back to the app, tap EN map | A bubble in the middle with the blue "EN" planet and "map", for about two seconds, and no voice; the app goes on. Install the voice again afterwards | |
+| 0.3.0-9 | Unity, your project | Set `SCOLITA_FFMPEG` once (`local/todo/04-record-voices.md`, "Set up once"), restart Unity Hub, then Școlița → Make recording scripts | A dialog: "8 sessions, 281 lines to record …"; the folder `local\voice-inbox\scripts\` opens; `ro-planet-1-1.html` is a printable page starting with 0 "Unu, doi, trei, patru, cinci." then the sounds /a/ /m/ /t/ /p/ | |
+| 0.3.0-10 | `content/voice-lines.csv` | Read the new `status` column | Empty for every line (nothing recorded yet), `sounds` for the eight slow words | |
+
 ### 0.2.0 (2026-11-24): the content model
 
 Nothing new on the tablet: the lessons are now spreadsheets the app will

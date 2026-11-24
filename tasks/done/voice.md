@@ -1,6 +1,6 @@
 # Task: feature/voice
 
-> **Status: In progress (voice).** Decision D4 (2026-11-24): the
+> **Status: Done (voice, 2026-11-24), released as 0.3.0.** Decision D4 (2026-11-24): the
 > tablet's voice for every line to start with; the family (the human and
 > her mother) records, in batch sessions, since none of the neural voices
 > sampled (`local/voice-samples/2026-11-24/`) was right for every word.
@@ -622,3 +622,97 @@ Reset with `"$ADB" -s $EMU shell pm clear com.softshack.scolita`.
    (the voices are checked again on resume).
 6. **Pause:** tap RO **m-a-m-a**, press Home at once, come back: nothing goes on
    talking, and the next tap speaks.
+
+## Completion record
+
+_Finished 2026-11-24 by `voice`; released as 0.3.0 (tag `v0.3.0`)._
+
+### What was built
+
+- **Pushed:**
+  - `8810c7d` `core:`;
+  - `8665f27` `content:`;
+  - `9816f74` `build:`;
+  - `7f2728d` `game:`;
+  - `abfa3a2` `docs:` (Progress and test steps);
+  - the close-out.
+
+  What each holds is in Progress → "What was built".
+- **The voice:**
+  - `IVoice`, which `VoiceRouter` implements in Core. Each part goes to its
+    clip, else the tablet's installed voice in its language, else the
+    bubble. Lines are spliced from templates, a slow word is said from its
+    letters' sounds, and there is never an overlap.
+  - On the Unity side: `RecordedVoice`, `AndroidTextToSpeechVoice`,
+    `SilentVoice`, `SpeechBubbleView`, `VoiceHost` and `Hearable`, with the
+    Voice, Hearable and VoiceSampler prefabs.
+- **The content:** the `status` column, multi-part `clip` cells, and the
+  clips copied into `Assets/Scolita/Content/Voice/Clips/` and linked.
+- **The recording kit:** Make recording scripts, Import recording session,
+  Accept recording session and Check voice clips, with ffmpeg (agreed)
+  for M4A in and OGG out.
+- **Tests:**
+  - EditMode 280 (was 236): router, template, statuses, CSV writer, clip
+    rules, lesson lines, loudness, WAV, matcher, session import, planner;
+  - PlayMode 6 (was 3): `HearableTests`.
+
+### Conventions for later briefs
+
+- **Say everything through `IVoice`.**
+  - A line with slots is a `VoiceSequence`:
+    `VoiceSequence.Of(line).With(VoiceSlot.X, VoiceFill.OfLine(soundLine, "m"))`.
+    `Speak` refuses a line with an unfilled slot.
+  - The scene's voice comes from its `VoiceHost` (`Begin(curriculum)`, then
+    `Voice`), handed down by the composition root.
+- **Load a lesson's clips** with
+  `VoiceHost.LoadLines(LessonVoiceLines.Of(curriculum, lesson))` when it
+  starts. They are freed when the scene closes.
+- **Ducking and effects:** listen to `IVoice.Started` and `Finished`.
+  `Finished` also comes on a stop or a replace. `VoiceRouter.PartStarted`
+  says how each part is really said (a guide's mouth, a bubble's words).
+- **A clip from any source drops in:** name it `<line id>.ogg` (or
+  `<line id>.<n>.ogg` per spoken part), put it in `content/voice/`, name
+  it in the `clip` cell, then import. The importer fills `status`; never
+  type it.
+- **Tap to hear:** put the `Hearable` prefab (or the component on any UI
+  Graphic) and `Bind(voice, line)` it.
+- **The system voice uses installed voices only.** A spliced name never
+  goes to a network voice, and the development log never prints spoken
+  text.
+
+### How it was tested
+
+In Progress → "Test results":
+- batch mode at the final state, before the docs-only rebase;
+- the emulator: clips, system voices in ro-RO and en-GB, a language
+  missing, no overlap, pause, two screen sizes;
+- the kit on Piper test takes: good, a line missed, accept, check, no
+  ffmpeg.
+
+Reviewed by a second agent before the push (Progress → "Fresh-eyes
+review"). Not run: the Device Simulator, the Profiler, and listening by
+ear (the logs are the evidence; the human listens with 0.3.0's rows).
+
+### Decisions and deviations
+
+In Progress → "Decisions and deviations":
+- installed offline system voices only;
+- `OnUtteranceCompletedListener`;
+- sounds through the system voice said without slashes;
+- one clip per spoken part;
+- `{name}` lines left to the system voice;
+- the voice sampler on the Lesson placeholder (an addition to the brief's
+  Touches);
+- the kit's limiter;
+- the converter (ffmpeg, agreed 2026-11-24) and M4A takes from Voice
+  Recorder.
+
+### Follow-ups
+
+In Progress → "Follow-ups":
+- warm the voice list at init;
+- a smoothed limiter attack if a click is heard;
+- `PartStarted` for the guide;
+- `lesson-engine`: load lessons' clips, replace the sampler;
+- `sound-feel`: ducking;
+- the Tab A7's voices (the human, 0.3.0-1).
