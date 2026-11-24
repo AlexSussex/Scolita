@@ -34,7 +34,9 @@ straight to `main`, and several agents may work at once. The rules are in
    index below, and remove the "In flight" row. The same close-out commit
    is the brief's release: it raises `VERSION`, adds the entry at the top
    of `CHANGELOG.md` and the release's section in
-   `docs/manual-testing.md`; after it is pushed, push the tag
+   `docs/manual-testing.md`, and adds the release's new content ids to
+   `content/released-ids.txt` (Școlița → Record released ids, after
+   raising `VERSION`); after it is pushed, push the tag
    `v<version>` on it (`AGENTS.md`, "Versioning and releases").
 
 Each brief file therefore reads, top to bottom:
@@ -98,7 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| ledger | [content-ledger](pending/content-ledger.md) | `Scripts/Editor/ContentImport/` (the importer), `Tests/EditMode/Content/`, new `content/released-ids.txt`, `content/README.md`, the placeholder picture assets under `Assets/Scolita/Content/Pictures/`; one line each in `tasks/README.md` (Lifecycle 5) and `AGENTS.md` (Versioning) | emulator-5600 | 2026-11-24 | Claimed; building the ledger check and the plain placeholders |
+| ledger | [content-ledger](pending/content-ledger.md) | `Scripts/Editor/ContentImport/` (the importer), `Tests/EditMode/Content/`, new `content/released-ids.txt`, `content/README.md`, the placeholder picture assets under `Assets/Scolita/Content/Pictures/`; one line each in `tasks/README.md` (Lifecycle 5) and `AGENTS.md` (Versioning) | emulator-5600 | 2026-11-24 | Slices pushed (ledger check, recorder, plain placeholders), reviewed; closing out as 0.3.1 |
 | lesson | [lesson-engine](pending/lesson-engine.md) | New: `Scripts/Core/Lessons/`, `Scripts/Core/Activities/`, `Scripts/Game/Lessons/` (beyond `LessonRunner`), `Scripts/UI/Lesson/` (new scripts; `LessonHud.cs` only if needed), `Prefabs/Lesson/` (the lesson screen, the activity views, `ActivityRegistry.asset`), `Settings/LearningRules.asset`; changes: `Scenes/Lesson.unity`, `Scripts/Game/Lessons/LessonRunner.cs`, `Scripts/Core/Content/ActivityKinds.cs` and `Rules/StepRules.cs` (hint lines, taught choices), `content/voice-lines.csv` and `content/steps.csv` (new rows at the end; planet 1's first lessons if the taught-choices rule needs it) with their imported assets. Not `MapScreen.prefab` or `LessonHud.prefab` (look's) | emulator-5602 | 2026-11-24 | Design note agreed by the human (2026-11-24); building the Core slice |
 
 ## Where we are

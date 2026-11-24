@@ -427,6 +427,11 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   that moves the brief to `tasks/done/`) raises `VERSION` and adds the
   brief's entry at the top of `CHANGELOG.md`. The commits before it touch
   neither.
+- **Released ids:** after raising `VERSION`, the close-out runs Școlița →
+  Record released ids, and its `docs:` commit carries
+  `content/released-ids.txt` too (on a conflict there, take `origin/main`'s
+  ledger and record again under the next number; `content/README.md` →
+  "The ledger of released ids").
 - **The changelog entry:** `## <version> (<date>)`; a short summary in plain
   words; what changed for the child and for the parent, in bullets; then
   `### Technical notes`: new packages, save-format changes, content added
