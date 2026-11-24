@@ -51,7 +51,7 @@ Each brief file therefore reads, top to bottom:
 
 | # | Feature | Status | Brief |
 | --- | --- | --- | --- |
-| 1 | `feature/project-skeleton` | Ready | [pending/project-skeleton.md](pending/project-skeleton.md) |
+| 1 | `feature/project-skeleton` | In progress (skeleton) | [pending/project-skeleton.md](pending/project-skeleton.md) |
 | 2 | `feature/curriculum-research` | Ready, beside 1 (docs only; the human agrees v1) | [pending/curriculum-research.md](pending/curriculum-research.md) |
 | 3 | `feature/content-model` | Ready after 1 | [pending/content-model.md](pending/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
@@ -90,6 +90,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
+| skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Building |
 
 ## Where we are
 

@@ -1,6 +1,6 @@
 # Task: feature/project-skeleton
 
-> **Status: Ready** — Unity 6000.3.29f1 (as SeliSnake); the Galaxy Tab A7,
+> **Status: In progress (skeleton)** — Unity 6000.3.29f1 (as SeliSnake); the Galaxy Tab A7,
 > minimum API 26; landscape left and right.
 
 Read `AGENTS.md` first. This is the first brief; it builds the foundation
