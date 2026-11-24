@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Scolita.Content;
 using Scolita.Core.Content;
+using Scolita.Core.Content.Csv;
 using Scolita.Core.Content.Rules;
 using UnityEditor;
 using UnityEngine;
@@ -20,18 +21,27 @@ namespace Scolita.Editor.ContentImport
     /// </summary>
     public sealed class ContentImportPlan
     {
+        private const float ClipQuality = 0.7f;
+
+        private readonly ContentFolder source;
         private readonly ContentAssetPaths paths;
         private readonly ContentProblems problems;
         private readonly Curriculum curriculum;
         private readonly IReadOnlyList<PlannedImage> images;
+        private readonly IReadOnlyList<PlannedClip> clips;
+        private readonly string filledVoiceLines;
 
-        private ContentImportPlan(ContentAssetPaths paths, ContentProblems problems, Curriculum curriculum,
-            IReadOnlyList<PlannedImage> images)
+        private ContentImportPlan(ContentFolder source, ContentAssetPaths paths, ContentProblems problems,
+            Curriculum curriculum, IReadOnlyList<PlannedImage> images, IReadOnlyList<PlannedClip> clips,
+            string filledVoiceLines)
         {
+            this.source = source;
             this.paths = paths;
             this.problems = problems;
             this.curriculum = curriculum;
             this.images = images;
+            this.clips = clips;
+            this.filledVoiceLines = filledVoiceLines;
         }
 
         /// <summary>Every problem found, errors and warnings, in order.</summary>
@@ -49,19 +59,26 @@ namespace Scolita.Editor.ContentImport
         {
             ContentProblems problems = new ContentProblems();
             Dictionary<string, string> csvs = source.ReadCsvs(problems);
+            string filledVoiceLines = FilledVoiceLines(source, csvs);
+            if (filledVoiceLines != null)
+            {
+                csvs[ContentFileNames.VoiceLines] = filledVoiceLines;
+            }
+
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             ContentRules.Check(curriculum, source, problems);
             if (problems.HasErrors)
             {
-                return new ContentImportPlan(paths, problems, curriculum, new PlannedImage[0]);
+                return new ContentImportPlan(source, paths, problems, curriculum, new PlannedImage[0], new PlannedClip[0],
+                    null);
             }
 
             CheckNothingDeleted(curriculum, paths, problems);
             CheckAssetTypes(curriculum, paths, problems);
-            IReadOnlyList<PlannedImage> images = problems.HasErrors
-                ? new PlannedImage[0]
-                : PlanImages(source, paths, curriculum);
-            return new ContentImportPlan(paths, problems, curriculum, images);
+            bool good = !problems.HasErrors;
+            IReadOnlyList<PlannedImage> images = good ? PlanImages(source, paths, curriculum) : new PlannedImage[0];
+            IReadOnlyList<PlannedClip> clips = good ? PlanClips(source, paths, curriculum) : new PlannedClip[0];
+            return new ContentImportPlan(source, paths, problems, curriculum, images, clips, filledVoiceLines);
         }
 
         /// <summary>
@@ -73,6 +90,13 @@ namespace Scolita.Editor.ContentImport
         {
             ThrowIfErrors();
             List<string> differences = new List<string>();
+            if (filledVoiceLines != null)
+            {
+                differences.Add("content/" + ContentFileNames.VoiceLines + "'s status column is out of date.");
+            }
+
+            differences.AddRange(clips.Select(ClipDifference).Where(difference => difference != null));
+            differences.AddRange(StaleClips().Select(stale => stale + " is no longer named in the voice lines."));
             foreach (PlannedImage image in images)
             {
                 string difference = ImageDifference(image);
@@ -111,9 +135,29 @@ namespace Scolita.Editor.ContentImport
                 EnsureFolder(folder);
             }
 
+            if (filledVoiceLines != null)
+            {
+                source.WriteCsv(ContentFileNames.VoiceLines, filledVoiceLines);
+            }
+
             foreach (PlannedImage image in images)
             {
                 WriteImage(image);
+            }
+
+            foreach (string stale in StaleClips())
+            {
+                AssetDatabase.DeleteAsset(stale);
+            }
+
+            if (clips.Count > 0)
+            {
+                EnsureFolder(paths.VoiceClipFolder);
+            }
+
+            foreach (PlannedClip clip in clips)
+            {
+                WriteClip(clip);
             }
 
             foreach (Func<IReadOnlyList<PlannedAsset>> stage in Stages())
@@ -179,6 +223,7 @@ namespace Scolita.Editor.ContentImport
             {
                 VoiceLineAsset asset = New<VoiceLineAsset>(line.Id);
                 asset.Fill(line);
+                asset.LinkClips(LinkedClips(line));
                 planned.Add(new PlannedAsset(paths.VoiceLine(line.Id.Value), asset));
             }
 
@@ -429,6 +474,128 @@ namespace Scolita.Editor.ContentImport
                     Object.DestroyImmediate(planned.Desired);
                 }
             }
+        }
+
+        private IReadOnlyList<AudioClip> LinkedClips(VoiceLine line)
+        {
+            if (line.Status != VoiceLineStatus.Recorded)
+            {
+                return new AudioClip[0];
+            }
+
+            AudioClip[] linked = line.Clips
+                .Select(clip => AssetDatabase.LoadAssetAtPath<AudioClip>(paths.VoiceClip(clip)))
+                .ToArray();
+            return linked.Any(clip => clip == null) ? new AudioClip[0] : linked;
+        }
+
+        private static string FilledVoiceLines(ContentFolder source, Dictionary<string, string> csvs)
+        {
+            if (!csvs.TryGetValue(ContentFileNames.VoiceLines, out string text))
+            {
+                return null;
+            }
+
+            ContentProblems readProblems = new ContentProblems();
+            Curriculum read = ContentTables.Read(csvs, readProblems);
+            if (readProblems.HasErrors)
+            {
+                return null;
+            }
+
+            Dictionary<string, string> codes = VoiceLineStatuses.Of(read, source)
+                .ToDictionary(status => status.Key.Value, status => ContentCodes.CodeOf(status.Value));
+            string filled = CsvCellWriter.Write(ContentFileNames.VoiceLines, text, ContentTables.IdColumn,
+                ContentTables.StatusColumn, ContentTables.ClipColumn, codes, readProblems);
+            return filled == text ? null : filled;
+        }
+
+        private static IReadOnlyList<PlannedClip> PlanClips(ContentFolder source, ContentAssetPaths paths,
+            Curriculum curriculum)
+        {
+            return curriculum.VoiceLines.All
+                .Where(line => line.Clips.All(source.ClipExists))
+                .SelectMany(line => line.Clips)
+                .Distinct()
+                .Select(clip => new PlannedClip(paths.VoiceClip(clip), source.ClipPath(clip)))
+                .ToArray();
+        }
+
+        private IEnumerable<string> StaleClips()
+        {
+            string folder = FullPath(paths.VoiceClipFolder);
+            if (!Directory.Exists(folder))
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            HashSet<string> planned = new HashSet<string>(clips.Select(clip => clip.Path));
+            return Directory.GetFiles(folder)
+                .Where(file => !file.EndsWith(".meta", StringComparison.Ordinal))
+                .Select(file => paths.VoiceClipFolder + "/" + Path.GetFileName(file))
+                .Where(file => !planned.Contains(file))
+                .ToArray();
+        }
+
+        private static string ClipDifference(PlannedClip clip)
+        {
+            string fullPath = FullPath(clip.Path);
+            if (!File.Exists(fullPath))
+            {
+                return clip.Path + " is missing.";
+            }
+
+            if (!File.ReadAllBytes(fullPath).SequenceEqual(File.ReadAllBytes(clip.SourcePath)))
+            {
+                return clip.Path + " differs from its recording in content/voice/.";
+            }
+
+            return IsImportedAsVoice(AssetImporter.GetAtPath(clip.Path) as AudioImporter)
+                ? null
+                : clip.Path + " is not imported as a voice clip (mono, Vorbis, decompressed on load, not preloaded).";
+        }
+
+        private static void WriteClip(PlannedClip clip)
+        {
+            string fullPath = FullPath(clip.Path);
+            byte[] bytes = File.ReadAllBytes(clip.SourcePath);
+            if (!File.Exists(fullPath) || !File.ReadAllBytes(fullPath).SequenceEqual(bytes))
+            {
+                File.WriteAllBytes(fullPath, bytes);
+                AssetDatabase.ImportAsset(clip.Path, ImportAssetOptions.ForceUpdate);
+            }
+
+            AudioImporter importer = (AudioImporter)AssetImporter.GetAtPath(clip.Path);
+            if (!IsImportedAsVoice(importer))
+            {
+                importer.forceToMono = true;
+                importer.loadInBackground = false;
+                AudioImporterSampleSettings settings = importer.defaultSampleSettings;
+                settings.loadType = AudioClipLoadType.DecompressOnLoad;
+                settings.compressionFormat = AudioCompressionFormat.Vorbis;
+                settings.quality = ClipQuality;
+                settings.sampleRateSetting = AudioSampleRateSetting.PreserveSampleRate;
+                settings.preloadAudioData = false;
+                importer.defaultSampleSettings = settings;
+                importer.SaveAndReimport();
+            }
+        }
+
+        private static bool IsImportedAsVoice(AudioImporter importer)
+        {
+            if (importer == null)
+            {
+                return false;
+            }
+
+            AudioImporterSampleSettings settings = importer.defaultSampleSettings;
+            return importer.forceToMono
+                && !importer.loadInBackground
+                && settings.loadType == AudioClipLoadType.DecompressOnLoad
+                && settings.compressionFormat == AudioCompressionFormat.Vorbis
+                && Math.Abs(settings.quality - ClipQuality) < 0.001f
+                && settings.sampleRateSetting == AudioSampleRateSetting.PreserveSampleRate
+                && !settings.preloadAudioData;
         }
 
         private static void EnsureFolder(string folder)

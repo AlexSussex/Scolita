@@ -12,6 +12,7 @@ namespace Scolita.Editor.ContentImport
         private const string Words = "Words";
         private const string Pictures = "Pictures";
         private const string Voice = "Voice";
+        private const string VoiceClips = "Voice/Clips";
         private const string Domains = "Domains";
         private const string Units = "Domains/Units";
         private const string Lessons = "Domains/Lessons";
@@ -63,6 +64,15 @@ namespace Scolita.Editor.ContentImport
         public string VoiceLine(string id)
         {
             return Under(Voice) + "/" + id + ".asset";
+        }
+
+        /// <summary>The folder of the voice clips' copies, made only once there is a clip; called by <see cref="ContentImportPlan"/>.</summary>
+        public string VoiceClipFolder => Under(VoiceClips);
+
+        /// <summary>A voice clip's copy, by its file name in <c>content/voice/</c>; called by <see cref="ContentImportPlan"/>.</summary>
+        public string VoiceClip(string clipName)
+        {
+            return Under(VoiceClips) + "/" + clipName;
         }
 
         /// <summary>A domain's asset; called by <see cref="ContentImportPlan"/>.</summary>

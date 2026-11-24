@@ -70,7 +70,25 @@ namespace Scolita.Editor.ContentImport
         /// <inheritdoc/>
         public bool ClipExists(string fileName)
         {
-            return File.Exists(Path.Combine(Root, VoiceFolder, fileName));
+            return File.Exists(ClipPath(fileName));
+        }
+
+        /// <summary>The full path of the clip <paramref name="fileName"/> in <c>content/voice/</c>; called by the importer and the recording kit.</summary>
+        public string ClipPath(string fileName)
+        {
+            return Path.Combine(VoicePath, fileName);
+        }
+
+        /// <summary>The full path of <c>content/voice/</c>; called by the recording kit.</summary>
+        public string VoicePath => Path.Combine(Root, VoiceFolder);
+
+        /// <summary>
+        /// Writes <paramref name="text"/> as the CSV <paramref name="fileName"/>, in UTF-8 (a byte order
+        /// mark in the text is kept). Called by the importer (the <c>status</c> column) and the recording kit.
+        /// </summary>
+        public void WriteCsv(string fileName, string text)
+        {
+            File.WriteAllText(Path.Combine(Root, fileName), text, new UTF8Encoding(false));
         }
 
         private string FullArtPath(string fileName)
