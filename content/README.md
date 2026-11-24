@@ -34,7 +34,8 @@ model and its rules are in `tasks/done/content-model.md` (Design note).
   `planet-1`; no diacritics: `ro-albina` for "albină"). An id is **stable**:
   it is never renamed, never reused, and its row is never deleted (her
   progress names it). To stop using an item, write `yes` in its `retired`
-  cell; the importer refuses a deleted row.
+  cell; the importer refuses a deleted row, and an id of a release that
+  is missing from its CSV (see "The ledger of released ids" below).
 - **Yes/no cells** (`retired`, `listen_only`) are `yes` or empty.
 - **Languages** are `ro` or `en` (`both` for a lesson or step that mixes
   them).
@@ -90,7 +91,7 @@ optional.
 | Column | What it holds |
 | --- | --- |
 | `id` | Named by what it shows, in no language (`bed`, `moon`); twins share one |
-| `art` | Its PNG file in `content/pictures/` (`bed.png`); empty until it is drawn, and the importer draws a placeholder (a coloured circle with the word's first letter) |
+| `art` | Its PNG file in `content/pictures/` (`bed.png`); empty until it is drawn, and the importer draws a placeholder (a plain coloured circle, with no letter, so it never gives an answer away) |
 | `retired`, `notes` | See above |
 
 ```
@@ -173,9 +174,29 @@ What each kind needs (how many letters and words, pictures, its
 instruction lines such as `ro-line-pick-letter`) is in
 `Scripts/Core/Content/ActivityKinds.cs`; the import says which is missing.
 
+## The ledger of released ids
+
+`released-ids.txt` lists every id ever released, one per line as
+`<file> <id>` (`words.csv ro-mama`), under a `# <version>` line for the
+release that first shipped it (`#` lines are comments). It makes sure an id
+of a release is never deleted, even together with its imported asset:
+
+- **The importer refuses** an import where an id in the ledger is missing
+  from its CSV (`words.csv: the id ro-tata was released (released-ids.txt,
+  row 14), but its row is gone …`): put the row back and mark it retired.
+  A retired id is fine; a new id, not released yet, is fine.
+- **Each release's close-out adds its new ids,** after raising `VERSION`:
+  **Școlița → Record released ids** (or, in batch mode,
+  `-executeMethod Scolita.Editor.ContentImport.ReleasedIdsRecorder.RecordFromCommandLine`)
+  adds every id not in the ledger yet under the new version, and nothing
+  when there is none. Commit the ledger with the close-out.
+- **Never edit, reorder or delete a line** by hand. A conflict in it after
+  a rebase keeps both sides' lines.
+
 ## Folders
 
 - `pictures/`: the pictures' art (PNG, in Git LFS), named in `pictures.csv`.
+- `released-ids.txt`: the ledger of released ids (above).
 - `voice/`: the recorded clips (mono OGG Vorbis, 44.1 kHz, AGENTS.md →
   "Audio"), named in `voice-lines.csv`. They come from the recording kit
   (Școlița → Make recording scripts, Import recording session, Accept
