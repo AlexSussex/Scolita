@@ -1,7 +1,11 @@
 # Task: feature/look
 
-> **Status: After `project-skeleton`, in parallel** (decisions D5: the
-> mascot; D6: the badges; D7: where the art comes from).
+> **Status: After `project-skeleton`, in parallel.** Decisions answered
+> 2026-11-24: D5 the unicorn astronaut, named by her, with her purple cat
+> as the co-pilot; build the guide as data (its poses and moods as art in
+> a catalog), so more guides later are art only (`feature/guides`); D6 the
+> gold star "RO" and the blue ringed planet "EN"; D7 agents draw, AI tools
+> where they help, some of her drawings as stickers.
 
 Read `AGENTS.md` first, `design/README.md`, `design/screens.md` and the design canvas
 (source in `design/canvas/`), and the completion records in `tasks/done/`. SeliSnake's
