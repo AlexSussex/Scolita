@@ -120,6 +120,184 @@ _Kept by `lesson` while the brief is in flight._
      letter (or word) is the answer.
 
   The smaller points stand.
+- **Built, reviewed by a second agent, tested and pushed** in six slices (below),
+  then **closed out as release 0.4.0** (see "Completion record").
+
+### What was built (within the agreed note)
+
+- **Pushed** (rebased on `859f624`, release 0.3.1):
+  - `content:` `ro-a` loses its `ListenAndPick` step; `ro-m` picks between m and a
+    (the human's answer 1 A), with the two imported lesson assets;
+  - `core:` the lesson run, the hint ladder, the plan, the order, the resume, the praise,
+    the signature, the two kinds' rules, the validator's new rules and their tests;
+  - `game:` the runner, its voice, the registry, the save, the learning rules asset type;
+  - `ui:` the lesson screen, the two views, the cards, the dots, the mascot, the badge;
+  - `game:` the Lesson scene, the prefabs, `ActivityRegistry.asset`,
+    `LearningRules.asset`, the PlayMode tests; the voice sampler removed.
+
+  Their hashes are in the completion record.
+- **Core** (`Scripts/Core`, no engine reference):
+  - `Activities/`: `IActivityRules`, `ActivityRound`, `ActivityChoice` (+ `Look`),
+    `ActivityAnswer`, `AnswerVerdict`, `ActivityHint`, `HintCue`,
+    `ActivityRulesFactory`, `MeetLetterRules`, `ListenAndPickRules`.
+  - `Lessons/`: `LessonRun` (+ `LessonRunState`, `StepFeedback`, `FeedbackOutcome`,
+    `AnswerResult`, the events `AnswerChecked`, `HintGiven`, `StepCompleted`,
+    `LessonCompleted`), `LessonPlan` (+ `PlannedStep`), `LessonOrder`, `LessonResume`
+    (+ `ResumeReason`), `LessonSignature`, `PraisePicker`, `LearningRules`.
+  - `Content/`: `LessonLines` (praise and the end line); `ActivityKinds` gains each
+    kind's hint lines and "its letters are choices"; `StepRules` checks taught choices,
+    each choice once, hint lines and the lesson lines. `MeetLetter` now takes exactly
+    one word (its line says it).
+  - `Voice/`: `VoiceSequenceText` (the bubble's words of a sequence);
+    `LessonVoiceLines` also loads the hint, praise and end lines.
+- **Game** (`Scripts/Game/Lessons`): `LessonRunner` (the composition root),
+  `LessonVoice`, `ActivityRegistry`, `ActivityView` / `IActivityView`,
+  `IActivityInput`, `ActivityViewContext`, `PictureSprites`, `LessonScreenView`,
+  `ILessonScreenInput`, `GuideMood`, `LearningRulesAsset`, `LessonRunData`.
+  `VoiceHost` passes on `PartStarted`; `SpeechBubbleView.Hide` is safe once its
+  screen is gone.
+- **UI** (`Scripts/UI/Lesson`): `LessonScreen`, `MeetLetterView`,
+  `ListenAndPickView`, `ChoiceTile`, `StepDots`, `GuideFigure`, `LanguageBadge`.
+- **Assets:** `Prefabs/Lesson/LessonScreen.prefab`, `MeetLetterView.prefab`,
+  `ListenAndPickView.prefab`, `ActivityRegistry.asset`; `Settings/LearningRules.asset`
+  (2 tries, praise not repeated within 3); `Scenes/Lesson.unity` (the screen added,
+  `LessonHud`'s placeholder card and letters hidden, the voice's bubble is the
+  mascot's); `Prefabs/Voice/VoiceSampler.prefab` deleted (replaced, as `voice` asked).
+  The prefabs were made by a throwaway Editor script (not committed), from `look`'s
+  art: the cream card and tile, the bubble, the buttons, the icons, the badges, the
+  unicorn's frames and the star particle.
+
+### Decisions while building
+
+- **One way for every line said:** the bubble is the voice's own bubble (the
+  `VoiceHost`'s `SpeechBubbleView` is the mascot's), and `LessonVoice` shows each
+  whole line's words in it while the line is said (`VoiceSequenceText`, made at
+  load), also when a voice is installed. A letter's sound shows as the letter held
+  ("a…").
+- **No new voice line:** every line used was already in `voice-lines.csv` (the
+  agreed draft). The first hint of `ListenAndPick` is "Ascultă încă o dată." + the
+  sound, not "Ascultă încă o dată, mai încet." (`pick-hint-slow`): the sound clip
+  plays at its own speed, so "mai încet" would not be true. Then "Aproape! Încearcă
+  altă literă.", then "Uită-te bine la forma literei." (only with 3 or more tries).
+  With pictures: "Ascultă încă o dată." + the word, and the answer shown with
+  "Uite răspunsul. Acum fă-o și tu." + the word (no step uses pictures yet).
+- **Praise only when a step is done:** the letter tap in `MeetLetter` says its
+  sound and "Acum atinge poza.", not a praise, so praise isn't said twice per step.
+- **The kinds not built yet** are logged once as information when a lesson opens
+  (not as a warning: the Console stays clean during checks); the validator test
+  prints them.
+- **The step dots count the lesson's playable steps;** on resume the steps before
+  are shown done (green).
+- **The end of a lesson** (until `rewards`): the mascot cheers and says "Ai terminat
+  lecția. Bravo!", the dots all green, and a big yellow "Mai departe" opens the map.
+- **A missed answer after the answer is shown** is reported as
+  `AnswerResult.WrongWithAnswerShown`, so `progress-review` doesn't count it as a
+  real miss.
+
+### Usability (the new screens)
+
+- **Spoken:** every instruction, hint, praise and the end are said, the bubble shows
+  the same words at the same time, tapping the mascot says the last line again, and
+  "Ascultă" (listen again) says the question again.
+- **Touch targets** at the 1280 × 800 reference: letter cards 200 × 200 (about 200 dp
+  on the Tab A7), the `MeetLetter` cards 470 × 470 and 420 × 380, "Ascultă" 320 × 96,
+  "Mai departe" 380 × 96, the mascot 160 × 160, the home button 80 × 80 (`LessonHud`).
+- **Kind feedback:** a wobble and a fade on a miss, a yellow glow on the answer shown,
+  a sparkle and praise when right; no red, no buzzer, no score.
+- **The language in two ways:** every card and the bubble carry the star "RO" or the
+  ringed planet "EN"; letters in Andika (at least 140 px), the app's words in Baloo 2.
+- **A way out:** the home button top left on every step; leaving keeps the step.
+
+### Fresh-eyes review (2026-11-24)
+
+A second agent that didn't write the code read the whole diff against AGENTS.md. It
+found the seams, the hint ladder, the state machine, the events, the plan, the order,
+the signature, the save, the per-frame code (no allocation), the validator rules and
+the touch targets sound. Its 14 findings, and what was done:
+
+1. **The branch was behind `main`** (0.3.1 had landed): rebased on `859f624`, the
+   import rerun (no change), every test and the build rerun.
+2. **The resume decision was in the MonoBehaviour, untested:** moved to Core's
+   `LessonResume` (+ `ResumeReason`), with `LessonResumeTests` (nothing saved, same
+   signature, changed signature, past the end, unknown, nothing built, other language,
+   nothing to play); the runner logs a changed lesson or a step past the end.
+3. **A choice listed twice would judge wrong:** the validator refuses it
+   (`TestCheck_ChoicesOnce`), and `ListenAndPick` judges by item.
+4. **`LessonVoice` had no test:** it now takes Core's `ISpeechBubble`;
+   `LessonVoiceTests` (first then praise, a newer line replaces, tap again keeps the
+   praise, pause and resume).
+5. **A mascot tap dropped the praise waiting:** fixed (the line starts again, the
+   praise still follows).
+6. **The voice allocates when a line starts** (`VoicePlanner`): on a tap, not per
+   frame; measured (below) and a follow-up for the voice.
+7. **A missing picture showed a blank card and warned every time:** a placeholder
+   sprite (the purple planet) and one warning per picture.
+8. **Literal diacritics in a test:** escaped.
+9. **Doc comments still named the voice sampler:** updated.
+10. **Misses after the answer is shown:** `WrongWithAnswerShown`.
+11. **`?.` on a Unity object:** replaced.
+12. **The PlayMode tests depended on the Editor's learning settings:** they keep and
+    write both files.
+13. **`ListenAndPick` requires both its letter and its picture lines:** kept (all
+    exist in both languages); a follow-up for when picture steps come.
+14. **`KindsWithViews` allocated on each read:** now a method.
+
+### Test results (2026-11-24, rebased on `859f624`, at the commits pushed)
+
+- **Batch mode:** EditMode **360/360**, PlayMode **7/7**, `BuildAndroidDebug` exit 0
+  (`Scolita-0.3.1-debug.apk` before the close-out, then 0.4.0 at the close-out); no
+  `warning CS` or `error CS` in any log; the import after the rebase changed nothing
+  ("imported, with 17 warnings").
+- **Emulator** (`emulator-5602`, `Scolita_Tablet_lesson`: Pixel Tablet, Android 16,
+  x86_64; started with `-e unity -force-gles`; no installed TTS voice, so every line went
+  to the bubble, as on a tablet without voices):
+  - **2000 × 1200** (density 240): Go → `ro-a` (`MeetLetter`, star badges, one dot, the
+    bubble with the whole instruction); the picture first ("avion. Atinge litera …", no
+    miss), then the letter; the end ("Mai departe") → map → Go → `en-a` (ringed-planet
+    badges, English bubble). `ro-t` (pushed in `lesson-run.json`): `MeetLetter`, then
+    `ListenAndPick` with t, a, m shuffled; a miss faded the card and the mascot thought
+    ("Ascultă încă o dată. t…"); the second miss made t glow; **Ascultă** said "Atinge
+    litera t." again; t finished the lesson and `lesson-run.json` named `en-t`.
+  - **Home and resume:** home on the `ListenAndPick` step, then Go: `ro-t` at step 2,
+    reshuffled, its first dot green.
+  - **The background mid-line:** Ascultă, then the Home key 0.5 s later: the line stopped
+    (`onPause`); back in the app the same line ("Atinge litera t.") started again.
+  - **1280 × 800** (density 160): `MeetLetter` (`ro-t`: t T, tobă) and `ListenAndPick`
+    with a hint: the same layout, nothing cut off, the bubble's three lines fit.
+  - **Logcat:** the information line about the kinds not built yet; otherwise only the
+    development build's socket errors and the voice's "no installed voice" warnings.
+  - Screenshots in the scratch folder (`emu-meet-2000.png`, `emu-meet-en.png`,
+    `emu-pick-2000.png`, `emu-pick-miss1.png`, `emu-listen-again.png`, `emu-end-2000.png`,
+    `emu-resumed2.png`, `emu-meet-1280.png`, `emu-pick-1280.png`).
+- **Screen sizes:** the two the brief asks (2000 × 1200 and 1280 × 800). The large, 4:3
+  and phone sizes and a cut-out were not checked: the layout scales from 1280 × 800 like
+  every screen so far, and the activity area keeps clear of the corners; a follow-up for
+  `look`'s final screens.
+- **Allocations** (Editor Play mode, `ProfilerRecorder` "GC Allocated In Frame", a
+  temporary probe not committed): on a `MeetLetter` step at rest **370 B per frame**,
+  against **330 B per frame on the map** (the test harness's own). Turning off the
+  mascot's animation or every raycaster leaves 370 B, so the 40 B are not in the lesson's
+  `Update` code (which only does arithmetic); they are not attributed (most likely
+  Editor-only). A tap costs 15 KB in its frame and 3–5 KB the next (the voice planning
+  the line and the bubble's text): per tap, not per frame. **Not done:** the Profiler on
+  a device (batch mode has no Profiler connection): a follow-up for the human's tablet
+  or the next agent with an Editor window.
+- **Not run:** the Editor's Device Simulator (batch mode only; the emulator's `wm size`
+  stood in), listening by ear (no voice installed on the emulator; the human hears the
+  lines with rows 0.4.0-1 to -9), the Frame Debugger.
+
+### Voice lines (no new line; all from the agreed draft)
+
+Said by the two kinds and the lesson, in both languages: `meet-new`, `meet-listen`
+(spliced with the letter's sound and the word: a + avion / apple, m + muzică / moon,
+t + tobă / tiger, p + planetă / planet), `meet-tap-letter`, `meet-tap-picture`,
+`pick-letter`, `pick-letter-x` (with a, m, t, p), `listen-again` (+ the sound),
+`pick-hint-other`, `pick-hint-shape`, `pick-hint-show` (with a, m, t, p), `praise-1` …
+`praise-10`, `lesson-done`; for picture questions (not used yet) `pick-picture` and
+`show-answer`. Checked against "Romanian, checked": whole sentences, no agreement with the
+child, "s-o", "Atinge-o", "Uită-te" hyphenated, ș ț with the comma below. **For the
+human:** "Uite răspunsul. Acum fă-o și tu." (its "o" stands for the task, not
+"răspunsul"; not said by any step yet).
 
 ### Design note (large change: the lesson engine)
 
@@ -409,3 +587,107 @@ Smaller points, decided unless the human says otherwise: the end panel's
 the app's words move to the string tables (a `project-skeleton`
 follow-up). `ListenAndPick` isn't designed on the canvas yet: it is built
 from `look`'s parts by the rules of the look, and `look` may refine it.
+
+## How to test locally
+
+Commands are for Git Bash from the worktree (or checkout) root, with
+`UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"`,
+`ADB="$LOCALAPPDATA/Android/Sdk/platform-tools/adb"`, `EMU=emulator-5602` (your own
+emulator), `S=<your scratch folder>` and
+`export MSYS_NO_PATHCONV=1 ADB_LOCAL_TRANSPORT_MAX_PORT=5699`. Close your Editor on this
+project before any batch-mode run. Start the app on the emulator with
+`"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`.
+Reset its saves with `"$ADB" -s $EMU shell pm clear com.softshack.scolita`.
+
+### Core slice
+
+1. **EditMode tests:**
+   `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
+   Expected: every test passes, no `warning CS` or `error CS` in the log. Among them:
+   - `LessonRunTests` (the real `ro-t`): the steps in order with praise after each and
+     the end line; a miss gets "Ascultă încă o dată." and the sound, the second miss
+     glows the answer ("Uite, aceasta este litera /t/. Atinge-o!"), a miss after that
+     glows it again, and the right tap then counts as practice; one try in the rules
+     shows the answer at the first miss; misses start again each step; no answer
+     while no step waits; the resume point (1, then 2, then none; a review step
+     resumes at 1);
+   - `MeetLetterRulesTests` (`ro-a`: a and avion), `ListenAndPickRulesTests` (`ro-t`:
+     t among a and m; the pictures of mama and tata), `ActivityRulesFactoryTests`
+     (every step of a built kind in the content);
+   - `LessonPlanTests`, `LessonOrderTests` (planet 1 in both languages: `ro-a`,
+     `en-a`, … `en-p`, `party-1`; Romanian only; after the last, the first),
+     `PraisePickerTests` (never one of the last three), `LessonSignatureTests`,
+     `LearningRulesTests`, `VoiceSequenceTextTests`;
+   - `ContentRulesTests`: a `ListenAndPick` with a letter not taught yet fails
+     ("… some are not taught yet in the ro track by the lesson ro-a: m (taught: a);
+     a wrong choice is never a letter still to come."), a missing hint line fails, a
+     language without `lesson-done` or `praise-1` fails.
+2. **A choice not taught yet fails the import:** add the row
+   `ro-a,ListenAndPick,,a m t,,,` at the end of `content/steps.csv` and run
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile $S/import.log; echo $?`.
+   Expected: exit 1 and the message above (with `m t`) in the log. Undo with
+   `git checkout content/steps.csv`.
+
+### Content slice
+
+1. **Planet 1's picking steps** (the human, 2026-11-24): in `content/steps.csv`,
+   `ro-a` has no `ListenAndPick`, `ro-m`'s is `m a`, `ro-t`'s `t a m`, `ro-p`'s
+   `p a m t`. The import (Core slice, step 2, without the added row) exits 0,
+   "imported, with 17 warnings", and `git status` shows nothing changed.
+
+### Game and UI slices
+
+1. **PlayMode tests:**
+   `"$UNITY" -batchmode -projectPath game -runTests -testPlatform PlayMode -testResults $S/playmode.xml -logFile $S/playmode.log`.
+   Expected: 7/7, among them `LessonFlowTests`: the real `ro-t` runs to its end with
+   simulated taps (the letter, the picture, a miss on a that fades it, a miss on m that
+   makes t glow, then t), the end shows "Mai departe", which opens the map, and the
+   lesson file then names `en-t`; home on the `ListenAndPick` step, then Go, opens
+   `ro-t` at that step with its first dot green. They keep the Editor's own `child-1`
+   files as they were.
+2. **The debug build:**
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`,
+   then `"$ADB" -s $EMU install -r game/Builds/Android/Scolita-<version>-debug.apk`.
+3. **The first lesson, on the emulator at the Tab A7's size:**
+   `"$ADB" -s $EMU shell wm size 2000x1200; "$ADB" -s $EMU shell wm density 240`, reset,
+   start the app (see above), tap **Hai!**. Expected:
+   - `ro-a`: the letter card (a and A, a gold star "RO") and the picture card (a
+     placeholder circle, "avion" with its a in pink, the star); one yellow dot at the
+     top; the mascot top right; the bubble with its star says "Hai să cunoaștem o literă
+     nouă! Ascultă: a… a… avion! Atinge litera ca s-o auzi din nou." (said by the
+     tablet's Romanian voice if installed; on an emulator without it the bubble alone
+     shows each part in turn).
+   - Tap the picture first: "avion. Atinge litera ca s-o auzi din nou." (no miss).
+     Tap the letter: it sparkles, "a…", then a praise ("Bravo, ai reușit!" or another),
+     the dot turns green, the mascot cheers, "Ai terminat lecția. Bravo!" and the big
+     yellow **Mai departe**. Tap it: the map.
+   - **Hai!** again opens `en-a`: the same screen with the blue ringed planet "EN" on
+     each card and in the bubble, "Let's meet a new letter! Listen: a… a… apple! …".
+4. **`ListenAndPick` (on `ro-t`), with a hint and the answer shown:** stop the app, then
+   `printf '{"version":1,"lessonId":"ro-t","stepNumber":1,"stepsSignature":""}' > $S/ro-t.json`
+   and `"$ADB" -s $EMU push $S/ro-t.json /storage/emulated/0/Android/data/com.softshack.scolita/files/profiles/child-1/lesson-run.json`;
+   start, **Hai!**, do the `MeetLetter` step (letter, picture). Expected: two dots
+   (green, yellow); three cards m, a, t (shuffled) with their stars and **Ascultă**
+   under them; "Ascultă și atinge litera potrivită. Atinge litera t."
+   - Tap m: it wobbles and fades, the mascot thinks, "Ascultă încă o dată. t…".
+   - Tap a: it wobbles, t glows yellow, "Uite, aceasta este litera t. Atinge-o!".
+   - Tap **Ascultă**: "Atinge litera t." again. Tap the mascot: the last line again.
+   - Tap t: a sparkle and a praise, then the end. `lesson-run.json` then names `en-t`.
+5. **Home and resume:** on the `ListenAndPick` step, tap the home button: the map at
+   once. **Hai!**: the same lesson at the same step, its first dot green.
+6. **The background mid-line:** while the mascot speaks, press the emulator's Home
+   (`"$ADB" -s $EMU shell input keyevent KEYCODE_HOME`), wait, then bring the app back
+   (start it again without `-S`). Expected: the line stops at once, and on return the
+   line being said starts again from its start (the praise still after it);
+   `lesson-run.json` holds the current step.
+7. **The other size:** `"$ADB" -s $EMU shell wm size 1280x800; "$ADB" -s $EMU shell wm density 160`,
+   repeat 3 and 4: the same layout, nothing cut off, the bubble's text fits. Reset with
+   `wm size reset; wm density reset`.
+8. **The Console stays clean** (`"$ADB" -s $EMU logcat -d -s Unity`): one information
+   line names the kinds not built yet; no error but the development build's socket lines
+   and, without installed voices, the voice's "no installed voice" warning.
+
+### Cleanup
+
+`"$ADB" -s $EMU shell pm clear com.softshack.scolita` (the app's saves, among them
+`lesson-run.json`); `wm size reset; wm density reset`.
