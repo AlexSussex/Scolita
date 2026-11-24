@@ -21,7 +21,8 @@ namespace Scolita.Tests.PlayMode.Lessons
     /// <summary>
     /// Helpers the lesson PlayMode tests share: keeping and restoring the Editor's own <c>child-1</c>
     /// files, opening the Lesson scene at a lesson (and at one of its steps), waiting for the run, and
-    /// tapping. Used by <see cref="LessonFlowTests"/> and <see cref="LetterActivitiesTests"/>.
+    /// tapping. Used by <see cref="LessonFlowTests"/>, <see cref="LetterActivitiesTests"/> and
+    /// <see cref="WordActivitiesTests"/>.
     /// </summary>
     public static class LessonScene
     {
@@ -151,7 +152,31 @@ namespace Scolita.Tests.PlayMode.Lessons
                     break;
                 case ActivityKind.ListenAndPick:
                 case ActivityKind.FirstSound:
+                case ActivityKind.ReadAndMatch:
                     runner.Answer(ActivityAnswer.Tap(round.Answer));
+                    break;
+                case ActivityKind.Syllables:
+                    for (int beat = 0; beat < round.Places; beat++)
+                    {
+                        runner.Answer(ActivityAnswer.Tap(SyllablesRules.Drum));
+                    }
+
+                    runner.Answer(ActivityAnswer.Tap(SyllablesRules.Tick));
+                    break;
+                case ActivityKind.BuildWord:
+                    for (int window = 0; window < round.Places && round.Answer >= 0; window++)
+                    {
+                        runner.Answer(ActivityAnswer.Place(round.Answer));
+                    }
+
+                    break;
+                case ActivityKind.WordTwins:
+                    for (int word = 0; word < round.Choices.Count / 2; word++)
+                    {
+                        runner.Answer(ActivityAnswer.Tap(word));
+                        runner.Answer(ActivityAnswer.Join(word, round.Answer));
+                    }
+
                     break;
                 default:
                     Assert.Fail("FinishLesson can't answer a " + runner.Run.Current.Kind + " step yet: add it to LessonScene.AnswerRight.");

@@ -23,4 +23,12 @@ MonoBehaviour:
     view: {fileID: 6050825895117257328, guid: daf5ef49661d6bf49a6ffa9b9836b224, type: 3}
   - kind: 9
     view: {fileID: 5699833468558850288, guid: 34c3b7d367aaebe4e860674f1e0d2593, type: 3}
-  notBuiltYet: 04000000050000000600000007000000080000000a000000
+  - kind: 6
+    view: {fileID: 8700380214223525799, guid: a552763193413f74286fce5f0f4a7822, type: 3}
+  - kind: 7
+    view: {fileID: 221636220383366489, guid: 579e32803ed3a4b4ea72c9ae0640a0a8, type: 3}
+  - kind: 8
+    view: {fileID: 5729866009930156452, guid: 20b9763819f32ef49a807dfa44eeae19, type: 3}
+  - kind: 10
+    view: {fileID: 4396779205584840217, guid: 547adf93adce12949bab2eaac047d373, type: 3}
+  notBuiltYet: 0400000005000000

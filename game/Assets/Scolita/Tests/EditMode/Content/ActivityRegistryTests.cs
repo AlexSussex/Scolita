@@ -69,7 +69,8 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(withViews, Is.EquivalentTo(new[]
             {
                 ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
-                ActivityKind.TwoSounds
+                ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
+                ActivityKind.WordTwins
             }));
         }
 
