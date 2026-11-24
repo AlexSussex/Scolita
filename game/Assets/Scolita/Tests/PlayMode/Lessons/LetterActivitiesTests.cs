@@ -146,6 +146,12 @@ namespace Scolita.Tests.PlayMode.Lessons
                 LessonScene.Tap(english);
                 Assert.That(english.IsHeard, Is.True);
                 Assert.That(view.Held.gameObject.activeSelf, Is.True);
+                Assert.That(view.Held.Shown, Is.Not.Null);
+                Assert.That(view.Held.GetComponentInChildren<LanguageBadge>(true), Is.Null,
+                    "no badge on the picture in her hand: she sorts it by its sound");
+                LessonScene.Tap(view.LetterCard);
+                LessonScene.Tap(view.Held);
+                Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing), "tapping the letter or the picture is no answer");
 
                 SoundPlanet wrongPlanet = view.Planets[1 - round.Answer];
                 Drag(view.Held, wrongPlanet);
@@ -183,7 +189,8 @@ namespace Scolita.Tests.PlayMode.Lessons
                     Vector2 now = stars[index].Rect.anchoredPosition;
                     Vector2 moved = now - before[index];
                     before[index] = now;
-                    Assert.That(Mathf.Abs(now.y), Is.LessThanOrEqualTo(view.Field.rect.height * 0.5f), "a star left the field");
+                    Assert.That(Mathf.Abs(now.y) + stars[index].Rect.rect.height * 0.5f, Is.LessThanOrEqualTo(view.Field.rect.height * 0.5f),
+                        "a star left the field");
                     if (Mathf.Abs(moved.x) < fieldWidth * 0.5f && seconds > 0f)
                     {
                         fastestSeen = Mathf.Max(fastestSeen, moved.magnitude / seconds);

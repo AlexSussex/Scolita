@@ -143,14 +143,18 @@ namespace Scolita.Tests.PlayMode.Lessons
                 case ActivityKind.TwoSounds:
                     runner.Answer(ActivityAnswer.Tap(TwoSoundsRules.RomanianPlanet));
                     runner.Answer(ActivityAnswer.Tap(TwoSoundsRules.EnglishPlanet));
-                    while (round.Current >= 0)
+                    for (int picture = 0; picture < round.Choices.Count && round.Current >= 0; picture++)
                     {
                         runner.Answer(ActivityAnswer.Drop(round.Answer));
                     }
 
                     break;
-                default:
+                case ActivityKind.ListenAndPick:
+                case ActivityKind.FirstSound:
                     runner.Answer(ActivityAnswer.Tap(round.Answer));
+                    break;
+                default:
+                    Assert.Fail("FinishLesson can't answer a " + runner.Run.Current.Kind + " step yet: add it to LessonScene.AnswerRight.");
                     break;
             }
         }
