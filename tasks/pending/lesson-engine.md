@@ -102,8 +102,24 @@ _Kept by `lesson` while the brief is in flight._
 
 - **Claimed** in `78aa810` (worktree `C:\Projects\scolita-lesson`, emulator
   `emulator-5602`).
-- **Design note** (below): written, **waiting for the human to agree it**
-  (a large change). No code before that.
+- **Design note** (below) pushed in `ee8437d`. **The human agreed it on
+  2026-11-24, with every recommendation** (relayed by the lead):
+  1. **A:** the validator enforces "wrong choices are only taught letters"
+     for `ListenAndPick`; it starts in each track's second lesson (`ro-m`:
+     a m; `ro-t`: a m t; `ro-p`: a m t p). `ro-a`'s `ListenAndPick` row is
+     removed (a content change the human agreed), and the acceptance test
+     runs on `ro-t`. The same problem for `LetterHunt` and `FirstSound` in
+     `ro-a` and `en-a` is a follow-up for `activities-letters`.
+  2. **A:** Go opens the next lesson in her languages' order, skipping
+     lessons with nothing playable yet, kept in `lesson-run.json` until
+     `galaxy-map` and `progress-review` replace it.
+  3. **A:** the registry lists the kinds not built yet; the validator warns
+     instead of failing, and their steps are skipped. Each activity brief
+     takes its kind off the list.
+  4. **Yes:** one question per `ListenAndPick` step; the step's first
+     letter (or word) is the answer.
+
+  The smaller points stand.
 
 ### Design note (large change: the lesson engine)
 
