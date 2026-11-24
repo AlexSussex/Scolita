@@ -61,7 +61,7 @@ Each brief file therefore reads, top to bottom:
 | 6 | `feature/tracing` | In progress (tracing) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
-| 9 | `feature/activities-words` | Ready after 8 | [pending/activities-words.md](pending/activities-words.md) |
+| 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
 | 11 | `feature/progress-review` | Ready after 7, 9 and 10 | [pending/progress-review.md](pending/progress-review.md) |
 | 12 | `feature/rewards` | Ready after 10 | [pending/rewards.md](pending/rewards.md) |
@@ -101,11 +101,10 @@ progress visible"). Empty when nobody is at work.
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
 | tracing | [tracing](pending/tracing.md) | New: `Scripts/Core/Tracing`, `Scripts/Game/Tracing`, `Scripts/UI/Tracing`, `content/strokes/`, `Content/Strokes/` (imported), `Prefabs/Lesson/TraceLetterView.prefab`; changes: the importer (a stroke reader), `CurriculumAssets`, `LearningRules` (+ asset), `ActivityRegistry.asset` (one row), `Scenes/Lesson.unity` (the runner's stroke catalog field), `Core/Lessons` (which steps can be played), `steps.csv` / `voice-lines.csv` only if the note needs it | emulator-5600 | 2026-11-24 | Design note pushed (a large change); **waiting for the human to agree it** (brief → Progress) |
-| words | [activities-words](pending/activities-words.md) | New: `Scripts/Core/Activities/{Syllables,BuildWord,ReadAndMatch,WordTwins}Rules`, `Scripts/UI/Lesson/` (four views), `Prefabs/Lesson/{Syllables,BuildWord,ReadAndMatch,WordTwins}View.prefab`; changes: `Core/Activities` (the round, the answer, the cues), `Core/Content` (`ActivityKinds`, `StepRules`), `ActivityRegistry.asset` (four rows), `voice-lines.csv` (+ its imported assets), PlayMode `LessonScene` | emulator-5602 | 2026-11-24 | Core and views pushed; closing out (release 0.6.0) |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `letters` (activities-letters done, release 0.5.0)._
+_Last updated 2026-11-24 by agent `words` (activities-words done, release 0.6.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -148,13 +147,27 @@ _Update this section whenever a slice is pushed or a brief is finished._
   kind; wrong choices only taught letters (`ro-a`, `en-a`, `ro-m`, `en-m`
   changed). The round's `Subject`, `StateOf`, `Current`, `PlacedOn` and
   `ActivityAnswer.Drop` serve later hunts and sorts.
-- **Next:** `tracing` (then `handwriting`), `activities-words` and
+- **Done 2026-11-24:** `activities-words`, release 0.6.0: `Syllables` (a drum, a dot per
+  beat, then a green tick), `BuildWord` (letters dragged into the rocket's windows), `ReadAndMatch`
+  (the word never said before her first try) and `WordTwins` (lines between the twins and false
+  friends); the round's `Places`, the `Place` and `Join` gestures; the validator's word rules
+  (`WordTwins` words pair up one to one). Only `TraceLetter` and `TraceWord` are left "not built yet".
+- **Next:** `tracing` (then `handwriting`) and
   `galaxy-map` in parallel, each touching its own folders (a new kind:
   `lesson-engine`'s completion record, "Conventions"); `content-letters-1`
   (content only); `look` in flight. The human: try 0.4.0 on the tablet
   (`local/for-human-next-steps.md`).
 
 ### Open follow-ups across briefs
+
+- **From `activities-words`** (full list in its completion record):
+  - `sound-feel`: the drum's sound on each beat, the soft sound of a miss, the rocket's take-off.
+  - `look`: a drawn rocket for `BuildWord` (long, on its side) and a drum; the larger, 4:3, phone
+    and cut-out sizes of the word screens.
+  - The lesson's voice: let a view follow the parts said, so `ReadAndMatch`'s letters light with
+    their sounds.
+  - `content-letters-1`: planets 2–3's word lessons within `ActivityLimits` (6 syllables, 6
+    letters, 4 pairs), with slow lines, and the twins and false friends of curriculum §6.
 
 - **From `activities-letters`** (full list in its completion record):
   - `tracing`: add `TraceLetter` to PlayMode's `LessonScene.AnswerRight`;

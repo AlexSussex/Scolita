@@ -1,6 +1,7 @@
 # Task: feature/activities-words
 
-> **Status: In progress (words).**
+> **Status: Done 2026-11-24, released as 0.6.0** (agent `words`). The human, 2026-11-24: wrong
+> choices and extra tiles are only letters already taught; `WordTwins` words pair up.
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "The five seams" → 3, "Usability",
 "Learning"), and the completion records in `tasks/done/`.
@@ -91,7 +92,7 @@ _Kept by `words` while the brief is in flight._
   or `error CS`. Nothing changes on screen yet: the four kinds have no views, so their steps are still
   skipped (the registry's "not built yet" list).
 - **Views slice pushed:** `416a587`, `6efa205` `ui:` the four views; `9d58180`, `719bae6` `game:` the prefabs, the registry's rows, the PlayMode tests, and the second review's fixes (below).
-- **Next:** the close-out (release 0.6.0).
+- **Closed out** as release 0.6.0 (see "Completion record").
 
 ### The views slice
 
@@ -520,3 +521,82 @@ skipped until `handwriting` builds them. Drags: `"$ADB" -s $EMU shell input swip
 ### Cleanup
 
 `"$ADB" -s $EMU shell pm clear com.softshack.scolita`; `wm size reset; wm density reset`.
+
+## Completion record
+
+_Finished 2026-11-24 by `words`; released as 0.6.0 (tag `v0.6.0`)._
+
+### What was built
+
+- **Pushed:** `82cca71` the claim; `f871ead` the Design note;
+  - `d8f39d7` `content:` the tick, twins hint and shown lines (the English "clap" lines reworded to the drum);
+  - `f862054` `core:` the four kinds' rules, the round's places, the new gestures, looks and cues, the validator's word rules;
+  - `fa272c0` `content:` and `11df670` `core:` the first review's fixes; `f5d6ce8` `docs:`;
+  - `416a587` `ui:` the four views; `9d58180` `game:` the prefabs, the registry rows, the PlayMode tests;
+  - `6efa205` `ui:` and `719bae6` `game:` the second review's fixes (nested canvases); `462ab22` `docs:`;
+  - the close-out.
+- **Core** (`Scripts/Core`): `Activities/SyllablesRules`, `BuildWordRules`, `ReadAndMatchRules`,
+  `WordTwinsRules`; `ActivityRound.Places`, `PlacesFilled`, `ShuffleRange`; `ActivityAnswer.Place` and `Join`
+  (`Other`); `ActivityChoiceLook.Word` and `Control` (`ActivityChoice.OfWordToRead`, `OfControl`); `HintCue.SpellOut`,
+  `RevealPictures`, `ShowPlaces`; `TwoSoundsRules` refuses the new gestures; `Content/ActivityLimits`; the four
+  kinds' rows in `ActivityKinds` and the item rules `CountsSyllables`, `SpellsTheWord`, `PicturesDiffer`, `PairsUp`
+  in `StepRules`.
+- **Unity side:** `Scripts/UI/Lesson/SyllablesView`, `SyllableDrum`, `BuildWordView`, `RocketWindow`,
+  `DraggedTile`, `ReadAndMatchView`, `WordTwinsView`, `TwinCard`, `JoinLine`, `DiscGraphic`; `ChoiceTile.Restyle`;
+  `Prefabs/Lesson/SyllablesView.prefab`, `BuildWordView.prefab`, `ReadAndMatchView.prefab`, `WordTwinsView.prefab`;
+  four rows in `ActivityRegistry.asset` (only `TraceLetter` and `TraceWord` left "not built yet").
+- **Content:** `syll-tick`, `twins-hint-spelled`, `twins-hint-show` in both languages; the English `syll` and
+  `syll-hint-once` reworded to the drum.
+- **Tests:** EditMode 413 (was 388): `SyllablesRulesTests`, `BuildWordRulesTests`, `ReadAndMatchRulesTests`,
+  `WordTwinsRulesTests`, new `ContentRulesTests`; the fake content gained a twin pair. PlayMode 14 (was 10):
+  `WordActivitiesTests`; `LessonScene.FinishLesson` answers the four kinds.
+
+### Conventions for later briefs
+
+- **A round that fills places** (windows, beats) says so with `Places` and `PlacesFilled`; `PlacedOn` holds the
+  place (or the choice) a choice went to. `ShowPlaces` shows the empty places as the answer.
+- **Gestures:** `Place(choice)` (a dragged choice to the place waiting for it) and `Join(choice, other)` (a line
+  between two choices) join `Tap` and `Drop`; every kind refuses the ones it doesn't take.
+- **A word written to read** is `ActivityChoiceLook.Word` (its picture only when revealed); a listen-only word is
+  never written: it is its picture (`Picture`). A view's own controls (a drum, a tick) are `Control` choices.
+- **Exploring is never a miss:** a tap that only listens (a twin that isn't the partner, a tile, the tick before
+  any beat) is `Neutral`; only a real attempt (a count, a placed tile, a drawn line, a picture tapped) is judged.
+- **Screen limits** the content is checked against live in `ActivityLimits` (6 syllables, 6 windows, 4 pairs);
+  the views hold that many places.
+- **Round shapes drawn in code** use `DiscGraphic` (needs a `CanvasRenderer` added before it when built from an
+  Editor script); pulse them with `canvasRenderer.SetAlpha`, not `color`, so their mesh isn't rebuilt each frame.
+
+### How it was tested
+
+Batch mode at the pushed commits (EditMode 413/413, PlayMode 14/14, `BuildAndroidDebug`, no compiler warning),
+the import refusing a `WordTwins` step whose words don't pair up, the emulator at 2000 × 1200 and 1280 × 800 in
+both languages (the four kinds, hints, answers shown, real drags and lines), the allocations in the Editor (the
+views add 0 B per frame), and two fresh-eyes reviews (Progress). Not run: the Device Simulator, the device
+Profiler, listening by ear.
+
+### Decisions and deviations
+
+- **`Syllables` judges the count when she taps a green tick** (the brief: "done on the right count"), so a
+  wrong count can be missed and hinted; the dots aren't shown before the answer.
+- **The drum in both languages:** the English "clap" lines reworded to the drum.
+- **No sound effects** (the drum, the miss, the take-off): `sound-feel`'s scope.
+- **`ReadAndMatch` lights the letters at a steady pace**, not in step with the voice.
+- **`WordTwins`: a tap on a word that isn't the partner only says it**; only a drawn line is judged wrong.
+- **New lines** `syll-tick`, `twins-hint-spelled`, `twins-hint-show` (for the human).
+- **The rocket and the drum** are built from `look`'s pieces and mesh discs, not new art.
+- **A line drawn from a word is silent until it lands** (a tap says a word): for the human.
+
+### Follow-ups
+
+- **For the human:** the lines and choices in row 0.6.0-6.
+- **`sound-feel`:** the drum's sound on each beat (and the hint's beats), the soft sound of a miss, the rocket's
+  take-off.
+- **`look`:** a drawn rocket for `BuildWord` (long, on its side, room for six windows) and a drum; the large, 4:3,
+  phone and cut-out sizes of these screens.
+- **The lesson's voice:** let a view follow the parts said (`VoicePlanner`'s sounds), so `ReadAndMatch`'s letters
+  light exactly with their sounds; a bubble mixing the languages (`WordTwins` says English words in a Romanian
+  step) shows one badge.
+- **`content-letters-1`:** planets 2–3's word lessons: `Syllables` words up to 6 syllables, `BuildWord` words up
+  to 6 letters with 1–2 taught extra tiles and their slow lines, `ReadAndMatch` pictures that differ, and the
+  twins and false friends of curriculum §6 (pairs one to one, false friends readable).
+- **`handwriting`:** `TraceWord`, the last word kind.

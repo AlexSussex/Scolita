@@ -347,3 +347,11 @@ voice-lines.csv en-stretched-tiger
 voice-lines.csv en-stretched-pat
 voice-lines.csv ro-line-two-hint-show
 voice-lines.csv en-line-two-hint-show
+
+# 0.6.0
+voice-lines.csv ro-line-syll-tick
+voice-lines.csv en-line-syll-tick
+voice-lines.csv ro-line-twins-hint-spelled
+voice-lines.csv en-line-twins-hint-spelled
+voice-lines.csv ro-line-twins-hint-show
+voice-lines.csv en-line-twins-hint-show

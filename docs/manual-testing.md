@@ -39,6 +39,23 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.6.0 (2026-11-24): the drum, build a word, read and match, word twins
+
+On the tablet, with the 0.6.0 APK (README → "Build a release APK" from tag `v0.6.0`,
+then "Install on the tablet"). Play from the map with **Hai!**; the word lessons come after
+the four letters of planet 1 in both languages (`ro-words-1` after `en-p`), and the party
+(`party-1`) after the capitals. If the tablet's voices aren't installed, the lines show in the
+bubble only. The drum and the rocket make no sound yet (`sound-feel`).
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.6.0-1 | The drum (`ro-words-1`, first) | Listen, then tap the green tick before the drum | A picture with "mama" under it, a pink drum, a green tick; "Ascultă cuvântul și bate toba pentru fiecare silabă. mama. Când ai terminat, atinge bifa verde."; the tick alone: "Bate toba o dată pentru fiecare silabă." | |
+| 0.6.0-2 | The drum | Tap the drum once and the tick; then three times and the tick; then twice and the tick | Each tap bounces the drum and lights a yellow dot. One beat: the dots clear, "Ascultă cum spun cuvântul pe silabe. ma-ma." Three: two glowing white circles, "ma-ma. Bate toba o dată pentru fiecare silabă." Two: a praise, then the same with apa | |
+| 0.6.0-3 | Build a word (after the drum) | Drag the m to the rocket, then an a; then t, a, t, a | The picture (no word written), the rocket with four round windows, the tiles t a t a m. m floats back: "Ascultă cuvântul încet: t-a-t-a." (sound by sound); a: the t tile glows, "Litera care urmează strălucește." Each right tile fills the next window and says its sound; the last: the rocket flies off, "Racheta pornește! t-a-t-a. tata", a praise | |
+| 0.6.0-4 | Read and match (after build a word) | Tap the word card first; then a wrong picture; then the word card again; then the right picture | "mama" on a card and three pictures without words; "Citește cuvântul și atinge poza potrivită." The card first: the instruction again, **never the word**. A wrong picture fades, "Citește cuvântul sunet cu sunet." and its sounds, the letters lighting pink one by one; the card now says "mama"; the right picture: a praise | |
+| 0.6.0-5 | Word twins (`party-1`, last) | Tap the Romanian "pat", then the English planet; draw a line from "pat" to the English planet twice; tap the English "pat"; draw a line between the planets | Romanian left (stars), English right (ringed planets); "Unește cuvintele care seamănă: unul în română, unul în engleză." A tap says the word (a yellow ring); tapping another word only says it. A wrong line: both "pat" pictures appear, "Caută cuvântul care se scrie la fel."; again: the English "pat" glows, "Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!". Joined: a green line and "Se scriu la fel, dar înseamnă altceva!"; the planets: "Sunt gemeni!" | |
+| 0.6.0-6 | The new lines and choices | Listen to rows 1–5 in both languages (`en-words-1` is the English word lesson) | Each a whole, correct sentence. **To answer** (tell the agent): (1) „Când ai terminat, atinge bifa verde.” / "When you have finished, tap the green tick." — does she know „bifă”, and is a tick to finish right for her (without it she couldn't drum too few or too many)? (2) the English drum lines (they said "clap"; the screen has a drum in both languages): "Listen to the word and tap the drum once for each beat.", "Tap the drum once for each beat." (3) „Caută cuvântul care se scrie la fel.” and „Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!” (4) a tap on a word that isn't the partner only says it, never a miss: agreed? | |
+
 ### 0.5.0 (2026-11-24): the letter hunt, first sounds and two sounds
 
 On the tablet, with the 0.5.0 APK (README → "Build a release APK" from tag `v0.5.0`,

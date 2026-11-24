@@ -18,6 +18,50 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.6.0 (2026-11-24)
+
+Four word games in the lessons. Once a planet's letters are met, its word lessons let her
+drum a word's syllables, build a word in the rocket's windows, read a word and find its
+picture, and, at the planet's party, join the Romanian words to their English twins.
+
+- **For the child:**
+  - **The drum** (`ro-words-1`, `en-words-1`): a picture and its word said; she taps the
+    big drum once per syllable (in English, per beat), a yellow dot lighting for each, then
+    the green tick. A wrong count clears the dots and the word is said in syllables
+    ("ma-ma"); a second shows one glowing circle per syllable for her to fill.
+  - **Build a word:** a word said and pictured (not written); she drags the letters into the
+    rocket's windows in order (the next window glows). A wrong letter floats back and the
+    word is said slowly; a second makes the next letter glow. Built, the rocket flies off and
+    the word is said slowly, then blended.
+  - **Read and match:** a word written on a card and three pictures; she taps the picture.
+    The word is never said before her first try; a miss lights its letters one by one with
+    their sounds, and from then on she can tap the word to hear it.
+  - **Word twins** (`party-1`): Romanian words on the left, English on the right; she taps
+    one then its partner, or draws a line between them. Twins ("planetă / planet") say "Sunt
+    gemeni!"; false friends ("pat / pat") show both pictures and the unicorn giggles "Se scriu
+    la fel, dar înseamnă altceva!".
+- **For the parent:** the word lessons and the planet party now play (only the writing steps
+  wait for `tracing` and `handwriting`). Every extra letter in "build a word" is one she has
+  met.
+
+### Technical notes
+
+- No new package; no save-format change (the word lessons' steps are unchanged, so a lesson
+  in progress resumes where it was).
+- **Content:** new lines `syll-tick`, `twins-hint-spelled`, `twins-hint-show` in both
+  languages; the English `syll` and `syll-hint-once` say "tap the drum" (the brief: the drum in
+  both languages). The validator: a `Syllables` word has 1 to 6 syllables; a `BuildWord` word at
+  most 6 letters, its extra tiles taught and not in the word, its slow line present; a
+  `ReadAndMatch` step's pictures differ; a `WordTwins` step's words pair up one to one (twin or
+  false friend, never both), a false friend readable, as many Romanian as English.
+- **Core:** `SyllablesRules`, `BuildWordRules`, `ReadAndMatchRules`, `WordTwinsRules`; the round's
+  `Places` and `PlacesFilled`; the `Place` and `Join` gestures; the `Word` and `Control` looks; the
+  `SpellOut`, `RevealPictures` and `ShowPlaces` cues; `ActivityLimits`.
+- **For the human:** hear the new lines (rows 0.6.0-1 to -6); answer the three points in row
+  0.6.0-6 (the tick, "bifă", a tap on another twin never a miss). The drum's sound, the soft
+  sound of a miss and the rocket's take-off come with `sound-feel`.
+- Brief: [`tasks/done/activities-words.md`](tasks/done/activities-words.md).
+
 ## 0.5.0 (2026-11-24)
 
 Three new letter games in the lessons. She hunts the stars that carry the letter, finds
