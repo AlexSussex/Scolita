@@ -136,7 +136,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         public void TestAnswer_MissesStartAgainEachStep()
         {
             Curriculum curriculum = RealContent.Read();
-            LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "party-1"), LanguageMix.Both, Built,
+            LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "party-1"), LanguageMix.Both, new PlayableSteps(Built, curriculum),
                 new Step[0], 1);
             LessonRun run = new LessonRun(plan, curriculum, TestLearningRules.Default(), new FixedRandom());
             run.Start();
@@ -200,9 +200,9 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Lesson lesson = RealContent.Lesson(curriculum, "ro-t");
             Step review = RealContent.FirstStep(curriculum, "ro-m", ActivityKind.ListenAndPick);
 
-            LessonRun resumed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, Built, new Step[0], 2), curriculum,
+            LessonRun resumed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, new PlayableSteps(Built, curriculum), new Step[0], 2), curriculum,
                 TestLearningRules.Default(), new FixedRandom());
-            LessonRun reviewed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, Built, new[] { review }, 1), curriculum,
+            LessonRun reviewed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, new PlayableSteps(Built, curriculum), new[] { review }, 1), curriculum,
                 TestLearningRules.Default(), new FixedRandom());
             resumed.Start();
             reviewed.Start();
@@ -219,7 +219,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         public void TestLessonRun_NeedsAStep()
         {
             Curriculum curriculum = RealContent.Read();
-            LessonPlan empty = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-words-1"), LanguageMix.Both, Built,
+            LessonPlan empty = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-words-1"), LanguageMix.Both, new PlayableSteps(Built, curriculum),
                 new Step[0], 1);
 
             Assert.That(() => new LessonRun(empty, curriculum, TestLearningRules.Default(), new FixedRandom()),
@@ -237,7 +237,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         private static LessonRun RomanianT(LearningRules rules)
         {
             Curriculum curriculum = RealContent.Read();
-            LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-t"), LanguageMix.Both, Built, new Step[0], 1);
+            LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-t"), LanguageMix.Both, new PlayableSteps(Built, curriculum), new Step[0], 1);
             return new LessonRun(plan, curriculum, rules, new FixedRandom());
         }
 

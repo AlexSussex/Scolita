@@ -239,9 +239,9 @@ namespace Scolita.Tests.EditMode.Content
             });
         }
 
-        /// <summary>Tests that <see cref="ContentFolder.ReadCsvs"/> reports a file saved as ANSI instead of misreading it, and reads a byte order mark.</summary>
+        /// <summary>Tests that <see cref="ContentFolder.ReadTexts"/> reports a file saved as ANSI instead of misreading it, and reads a byte order mark.</summary>
         [Test]
-        public void TestReadCsvs_RefusesAnsiAndReadsByteOrderMark()
+        public void TestReadTexts_RefusesAnsiAndReadsByteOrderMark()
         {
             string root = Path.Combine(Path.GetTempPath(), "scolita-csv-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(root);
@@ -251,7 +251,7 @@ namespace Scolita.Tests.EditMode.Content
                 File.WriteAllBytes(Path.Combine(root, ContentFileNames.Pictures), new byte[] { 0x69, 0x64, 0x0A, 0xBA, 0x0A });
                 ContentProblems problems = new ContentProblems();
 
-                Dictionary<string, string> texts = new ContentFolder(root).ReadCsvs(problems);
+                Dictionary<string, string> texts = new ContentFolder(root).ReadTexts(problems);
 
                 Assert.That(texts.Keys, Is.EqualTo(new[] { ContentFileNames.Units }));
                 Assert.That(texts[ContentFileNames.Units], Is.EqualTo("\uFEFFid\n"));
@@ -286,7 +286,9 @@ namespace Scolita.Tests.EditMode.Content
         {
             foreach (KeyValuePair<string, string> csv in csvs)
             {
-                File.WriteAllText(Path.Combine(root, csv.Key), csv.Value);
+                string path = Path.Combine(root, csv.Key);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.WriteAllText(path, csv.Value);
             }
         }
     }

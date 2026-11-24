@@ -115,7 +115,7 @@ namespace Scolita.Game.Lessons
                 return;
             }
 
-            order = new LessonOrder(curriculum.Domains[0], mix, playable);
+            order = new LessonOrder(curriculum.Domains[0], mix, new PlayableSteps(playable, curriculum));
             LessonPlan plan = ChoosePlan();
             if (plan == null)
             {

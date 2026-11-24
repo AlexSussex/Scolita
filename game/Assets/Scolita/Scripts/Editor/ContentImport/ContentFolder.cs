@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Scolita.Core.Content;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Editor.ContentImport
 {
     /// <summary>
     /// The content's source folder (<c>content/</c> at the repository's root, or a test's copy): reads
-    /// its CSVs as strict UTF-8 and its ledger of released ids, and says which pictures' art and voice
+    /// its CSVs and shape files as strict UTF-8 and its ledger of released ids, and says which pictures' art and voice
     /// clips are there.
     /// </summary>
     public sealed class ContentFolder : IContentFiles
@@ -25,12 +26,13 @@ namespace Scolita.Editor.ContentImport
         public string Root { get; }
 
         /// <summary>
-        /// Reads every content CSV (<see cref="ContentFileNames.All"/>) that is there, by file name.
-        /// A missing file is left out (<see cref="ContentTables.Read"/> reports it); a file that isn't
-        /// UTF-8 (saved as ANSI) is reported into <paramref name="problems"/> and left out, never misread.
-        /// Called by <see cref="ContentImporter"/> and the content validator test.
+        /// Reads every content CSV (<see cref="ContentFileNames.All"/>) that is there, by file name, and every
+        /// shape file of <c>strokes/</c>, named <c>strokes/a-lower-print.json</c>. A missing CSV is left out
+        /// (<see cref="ContentTables.Read"/> reports it); a file that isn't UTF-8 (saved as ANSI) is reported
+        /// into <paramref name="problems"/> and left out, never misread. Called by <see cref="ContentImporter"/>,
+        /// the recording kit and the content tests.
         /// </summary>
-        public Dictionary<string, string> ReadCsvs(ContentProblems problems)
+        public Dictionary<string, string> ReadTexts(ContentProblems problems)
         {
             Dictionary<string, string> texts = new Dictionary<string, string>();
             foreach (string fileName in ContentFileNames.All)

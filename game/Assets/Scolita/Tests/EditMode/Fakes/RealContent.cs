@@ -17,7 +17,7 @@ namespace Scolita.Tests.EditMode.Fakes
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
             Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
             return curriculum;
         }

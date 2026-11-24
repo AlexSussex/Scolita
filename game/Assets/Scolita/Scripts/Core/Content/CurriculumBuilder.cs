@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Core.Languages;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Core.Content
 {
@@ -16,6 +17,7 @@ namespace Scolita.Core.Content
         private readonly List<Word> words = new List<Word>();
         private readonly List<Picture> pictures = new List<Picture>();
         private readonly List<VoiceLine> voiceLines = new List<VoiceLine>();
+        private readonly List<LetterShape> shapes = new List<LetterShape>();
         private readonly List<UnitEntry> units = new List<UnitEntry>();
         private readonly List<LessonEntry> lessons = new List<LessonEntry>();
         private readonly List<StepEntry> steps = new List<StepEntry>();
@@ -42,6 +44,12 @@ namespace Scolita.Core.Content
         public void Add(VoiceLine voiceLine)
         {
             voiceLines.Add(voiceLine);
+        }
+
+        /// <summary>Adds a letter's shape; called by <see cref="ContentTables"/> and the content assets.</summary>
+        public void Add(LetterShape shape)
+        {
+            shapes.Add(shape);
         }
 
         /// <summary>Adds a unit, in teaching order; called by <see cref="ContentTables"/> and the content assets.</summary>
@@ -74,7 +82,8 @@ namespace Scolita.Core.Content
             ItemCatalog<Word> wordCatalog = new ItemCatalog<Word>(Distinct(words, "word", problems));
             ItemCatalog<Picture> pictureCatalog = new ItemCatalog<Picture>(Distinct(pictures, "picture", problems));
             ItemCatalog<VoiceLine> lineCatalog = new ItemCatalog<VoiceLine>(Distinct(voiceLines, "voice line", problems));
-            return new Curriculum(letterCatalog, wordCatalog, pictureCatalog, lineCatalog, BuildDomains(problems));
+            ItemCatalog<LetterShape> shapeCatalog = new ItemCatalog<LetterShape>(Distinct(shapes, "shape", problems));
+            return new Curriculum(letterCatalog, wordCatalog, pictureCatalog, lineCatalog, shapeCatalog, BuildDomains(problems));
         }
 
         private IReadOnlyList<Domain> BuildDomains(ContentProblems problems)

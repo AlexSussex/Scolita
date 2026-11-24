@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Tracing;
 using Scolita.Editor.ContentImport;
 using UnityEditor;
 using UnityEngine;
@@ -45,8 +46,9 @@ namespace Scolita.Tests.EditMode.Content
 
         /// <summary>
         /// Tests that <see cref="ContentRules.Check"/> finds no error in the repository's
-        /// <c>content/*.csv</c>, and that its only warnings are pictures still on their placeholder
-        /// and clips not recorded yet (the tablet covers both).
+        /// <c>content/</c>, and that its only warnings are pictures still on their placeholder, clips not
+        /// recorded yet (the tablet covers both), letter shapes still drafts, and handwritten tracing steps
+        /// whose shapes aren't drawn yet (they are skipped).
         /// </summary>
         [Test]
         public void TestCheck_TheContentCsvsHaveNoError()
@@ -54,12 +56,14 @@ namespace Scolita.Tests.EditMode.Content
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
 
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
             ContentRules.Check(curriculum, folder, problems);
 
             Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
             Assert.That(problems.All
                 .Where(problem => problem.Source.File != ContentFileNames.Pictures && problem.Source.File != ContentFileNames.VoiceLines)
+                .Where(problem => !LetterShapeCodes.IsShapeFile(problem.Source.File) || problem.IsError)
+                .Where(problem => !problem.Reason.Contains("the step is skipped until it has one"))
                 .Select(problem => problem.ToString()), Is.Empty);
         }
 

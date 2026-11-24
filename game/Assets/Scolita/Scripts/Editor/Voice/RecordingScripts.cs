@@ -20,7 +20,7 @@ namespace Scolita.Editor.Voice
         /// </summary>
         public static IReadOnlyList<RecordingSession> Make(ContentFolder content, VoiceInbox inbox, ContentProblems problems)
         {
-            Curriculum curriculum = ContentTables.Read(content.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(content.ReadTexts(problems), problems);
             if (problems.HasErrors)
             {
                 return new RecordingSession[0];

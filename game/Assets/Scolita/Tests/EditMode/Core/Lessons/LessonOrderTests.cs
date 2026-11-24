@@ -70,7 +70,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         {
             Curriculum curriculum = RealContent.Read();
 
-            LessonOrder order = new LessonOrder(curriculum.Domains[0], LanguageMix.Both, new ActivityKind[0]);
+            LessonOrder order = new LessonOrder(curriculum.Domains[0], LanguageMix.Both, new PlayableSteps(new ActivityKind[0], curriculum));
 
             Assert.That(order.Playable, Is.Empty);
             Assert.That(order.After(ContentId.Create("ro-a")), Is.Null);
@@ -79,7 +79,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         private static LessonOrder Order(LanguageMix mix)
         {
             Curriculum curriculum = RealContent.Read();
-            return new LessonOrder(curriculum.Domains[0], mix, new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick });
+            return new LessonOrder(curriculum.Domains[0], mix, new PlayableSteps(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, curriculum));
         }
     }
 }

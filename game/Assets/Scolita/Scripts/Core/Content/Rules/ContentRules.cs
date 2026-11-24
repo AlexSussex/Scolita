@@ -2,8 +2,8 @@ namespace Scolita.Core.Content.Rules
 {
     /// <summary>
     /// The content validator's rules on a <see cref="Curriculum"/> read by
-    /// <see cref="ContentTables"/>: the words, the pictures, the voice lines, the lessons and the
-    /// steps (AGENTS.md → "Learning"; the brief <c>content-model</c>). Each problem names its file,
+    /// <see cref="ContentTables"/>: the words, the pictures, the voice lines, the lessons, the
+    /// steps and the letters' shapes (AGENTS.md → "Learning"; the brief <c>content-model</c>). Each problem names its file,
     /// its row and the reason.
     /// </summary>
     public static class ContentRules
@@ -20,6 +20,7 @@ namespace Scolita.Core.Content.Rules
             VoiceLineRules.Check(curriculum, files, problems);
             LessonRules.Check(curriculum, problems);
             StepRules.Check(curriculum, problems);
+            ShapeRules.Check(curriculum, problems);
         }
     }
 }

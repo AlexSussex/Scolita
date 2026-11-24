@@ -64,6 +64,18 @@ namespace Scolita.Tests.EditMode.Fakes
             + "ro-line-meet-listen,ro,line,Ascult\u0103: {x}\u2026 {x}\u2026 {word}!,,,\n"
             + "en-line-meet-listen,en,line,Listen: {x}\u2026 {x}\u2026 {word}!,,,\n"
             + "ro-line-trace-start,ro,line,\u00CEncepe de la punct \u0219i urmeaz\u0103 s\u0103geata.,,,\n"
+            + "ro-line-trace-print,ro,line,Scrie litera de tipar.,,,\n"
+            + "ro-line-trace-hand,ro,line,Scrie litera de m\u00E2n\u0103.,,,\n"
+            + "ro-line-trace-hint-dot,ro,line,\u00CEncepe de la punctul verde.,,,\n"
+            + "ro-line-trace-hint-arrow,ro,line,Urmeaz\u0103 s\u0103geata.,,,\n"
+            + "ro-line-trace-hint-stay,ro,line,R\u0103m\u00E2i pe linia punctat\u0103.,,,\n"
+            + "ro-line-trace-hint-slow,ro,line,\u00CEncet \u0219i cu grij\u0103: o s\u0103 reu\u0219e\u0219ti!,,,\n"
+            + "ro-line-trace-hint-watch,ro,line,\"Uit\u0103-te cum se scrie, apoi \u00EEncearc\u0103 tu.\",,,\n"
+            + "ro-line-trace-next-2,ro,line,Foarte bine! Acum mergi la punctul cu num\u0103rul doi.,,,\n"
+            + "ro-line-trace-next-3,ro,line,Foarte bine! Acum mergi la punctul cu num\u0103rul trei.,,,\n"
+            + "ro-line-trace-done,ro,line,\"Bravo, ai scris litera {x}!\",,,\n"
+            + "ro-line-trace-round-2,ro,line,Acum scrie pe umbr\u0103.,,,\n"
+            + "ro-line-trace-round-3,ro,line,\"Acum scrie f\u0103r\u0103 ajutor, de la punct.\",,,\n"
             + "ro-line-syll,ro,line,Ascult\u0103 cuv\u00E2ntul \u0219i bate toba pentru fiecare silab\u0103.,,,\n"
             + "ro-line-syll-tick,ro,line,\"C\u00E2nd ai terminat, atinge bifa verde.\",,,\n"
             + "ro-line-syll-hint-listen,ro,line,Ascult\u0103 cum spun cuv\u00E2ntul pe silabe.,,,\n"
@@ -135,6 +147,19 @@ namespace Scolita.Tests.EditMode.Fakes
             + "party,ListenAndPick,ro,a m,,,\n"
             + "party,WordTwins,,,ro-planeta en-planet,,\n";
 
+        /// <summary>The name of the valid set's one shape file, the print a; called by the content tests.</summary>
+        public const string ShapeFileName = "strokes/a-lower-print.json";
+
+        /// <summary>The valid set's one shape: the print a, its round and its stem; called by the content tests.</summary>
+        public const string Shape =
+            "{\n"
+            + "  \"status\": \"checked\",\n"
+            + "  \"strokes\": [\n"
+            + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[54, 108], [38, 100], [10, 125], [8, 175], [38, 200], [66, 175], [70, 140], [66, 118]] } ] },\n"
+            + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[70, 100], [70, 200]] } ] }\n"
+            + "  ]\n"
+            + "}\n";
+
         /// <summary>A fresh copy of the valid set, by file name; called by the content tests.</summary>
         public static Dictionary<string, string> Valid()
         {
@@ -146,7 +171,8 @@ namespace Scolita.Tests.EditMode.Fakes
                 { ContentFileNames.VoiceLines, VoiceLines },
                 { ContentFileNames.Units, Units },
                 { ContentFileNames.Lessons, Lessons },
-                { ContentFileNames.Steps, Steps }
+                { ContentFileNames.Steps, Steps },
+                { ShapeFileName, Shape }
             };
         }
 

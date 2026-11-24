@@ -17,7 +17,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Curriculum curriculum = RealContent.Read();
 
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-a"), LanguageMix.Both,
-                new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, new Step[0], 1);
+                new PlayableSteps(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, curriculum), new Step[0], 1);
 
             Assert.That(plan.Steps.Select(step => step.Step.Kind), Is.EqualTo(new[] { ActivityKind.MeetLetter }));
             Assert.That(plan.Steps.Single().IsReview, Is.False);
@@ -30,7 +30,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Curriculum curriculum = RealContent.Read();
 
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-t"), LanguageMix.Both,
-                new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, new Step[0], 2);
+                new PlayableSteps(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, curriculum), new Step[0], 2);
 
             Assert.That(plan.Steps.Select(step => step.Step.Number), Is.EqualTo(new[] { 2 }));
         }
@@ -42,7 +42,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Curriculum curriculum = RealContent.Read();
 
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "party-1"), LanguageMix.EnglishOnly,
-                new[] { ActivityKind.ListenAndPick, ActivityKind.WordTwins }, new Step[0], 1);
+                new PlayableSteps(new[] { ActivityKind.ListenAndPick, ActivityKind.WordTwins }, curriculum), new Step[0], 1);
 
             Assert.That(plan.Steps.Select(step => step.Step.Languages), Is.EqualTo(new[] { LanguageMix.EnglishOnly }));
         }
@@ -55,7 +55,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Step review = RealContent.FirstStep(curriculum, "ro-m", ActivityKind.ListenAndPick);
 
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-t"), LanguageMix.Both,
-                new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, new[] { review }, 1);
+                new PlayableSteps(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }, curriculum), new[] { review }, 1);
 
             Assert.That(plan.Steps.Select(step => step.IsReview), Is.EqualTo(new[] { true, false, false }));
             Assert.That(plan.Steps[0].Step, Is.SameAs(review));

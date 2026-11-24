@@ -20,7 +20,7 @@ namespace Scolita.Tests.EditMode.Voice
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
 
             IReadOnlyList<RecordingSession> sessions = RecordingSessionPlanner.Plan(curriculum, folder);
             RecordingItem[] items = sessions.SelectMany(session => session.Items.Skip(1)).ToArray();
@@ -43,7 +43,7 @@ namespace Scolita.Tests.EditMode.Voice
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
             RecordingSession session = RecordingSessionPlanner.Plan(curriculum, folder).First();
 
             RecordingSession read = RecordingSession.FromJson(session.ToJson());

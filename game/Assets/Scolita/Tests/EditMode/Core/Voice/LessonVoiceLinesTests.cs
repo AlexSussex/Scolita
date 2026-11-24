@@ -19,7 +19,7 @@ namespace Scolita.Tests.EditMode.Core.Voice
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
             curriculum.TryGetLesson(ContentId.Create("ro-m"), out Lesson lesson);
 
             IReadOnlyList<VoiceLineId> lines = LessonVoiceLines.Of(curriculum, lesson);
@@ -43,7 +43,7 @@ namespace Scolita.Tests.EditMode.Core.Voice
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
             curriculum.TryGetLesson(ContentId.Create("ro-t"), out Lesson lesson);
 
             string[] ids = LessonVoiceLines.Of(curriculum, lesson).Select(line => line.ToString()).ToArray();

@@ -46,13 +46,13 @@ namespace Scolita.Core.Lessons
                     return FromStart(order, saved, ResumeReason.StepsChanged);
                 }
 
-                LessonPlan resumed = LessonPlan.Of(saved, order.Mix, order.PlayableKinds, new Step[0], savedStep);
+                LessonPlan resumed = LessonPlan.Of(saved, order.Mix, order.PlayableSteps, new Step[0], savedStep);
                 if (resumed.Steps.Count == 0)
                 {
                     return FromStart(order, saved, ResumeReason.PastTheEnd);
                 }
 
-                int whole = LessonPlan.Of(saved, order.Mix, order.PlayableKinds, new Step[0], 1).Steps.Count;
+                int whole = LessonPlan.Of(saved, order.Mix, order.PlayableSteps, new Step[0], 1).Steps.Count;
                 return new LessonResume(resumed, whole - resumed.Steps.Count, ResumeReason.Resumed);
             }
 
@@ -67,7 +67,7 @@ namespace Scolita.Core.Lessons
 
         private static LessonResume FromStart(LessonOrder order, Lesson lesson, ResumeReason reason)
         {
-            return new LessonResume(LessonPlan.Of(lesson, order.Mix, order.PlayableKinds, new Step[0], 1), 0, reason);
+            return new LessonResume(LessonPlan.Of(lesson, order.Mix, order.PlayableSteps, new Step[0], 1), 0, reason);
         }
     }
 }

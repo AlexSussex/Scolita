@@ -14,32 +14,32 @@ namespace Scolita.Core.Lessons
     public sealed class LessonOrder
     {
         private readonly IReadOnlyList<Lesson> all;
-        private readonly HashSet<ContentId> playable;
+        private readonly HashSet<ContentId> playableIds;
 
         /// <summary>
         /// Orders <paramref name="domain"/>'s lessons for a learner of <paramref name="mix"/>, playing
-        /// only <paramref name="playableKinds"/>. Called by the Lesson scene's composition root and the tests.
+        /// only <paramref name="playable"/>'s steps. Called by the Lesson scene's composition root and the tests.
         /// </summary>
-        public LessonOrder(Domain domain, LanguageMix mix, IReadOnlyCollection<ActivityKind> playableKinds)
+        public LessonOrder(Domain domain, LanguageMix mix, PlayableSteps playable)
         {
             Mix = mix;
-            PlayableKinds = playableKinds;
+            PlayableSteps = playable;
             all = domain.Units
                 .Where(unit => !unit.Retired)
                 .SelectMany(unit => unit.Lessons)
                 .Where(lesson => !lesson.Retired)
                 .ToArray();
             Playable = all
-                .Where(lesson => LessonPlan.Of(lesson, mix, playableKinds, new Step[0], 1).Steps.Count > 0)
+                .Where(lesson => LessonPlan.Of(lesson, mix, playable, new Step[0], 1).Steps.Count > 0)
                 .ToArray();
-            playable = new HashSet<ContentId>(Playable.Select(lesson => lesson.Id));
+            playableIds = new HashSet<ContentId>(Playable.Select(lesson => lesson.Id));
         }
 
         /// <summary>The learner's language mix.</summary>
         public LanguageMix Mix { get; }
 
-        /// <summary>The kinds that can be played (rules and a view).</summary>
-        public IReadOnlyCollection<ActivityKind> PlayableKinds { get; }
+        /// <summary>The steps that can be played (rules, a view and the content they need).</summary>
+        public PlayableSteps PlayableSteps { get; }
 
         /// <summary>The lessons Go can open, in teaching order.</summary>
         public IReadOnlyList<Lesson> Playable { get; }
@@ -50,7 +50,7 @@ namespace Scolita.Core.Lessons
         /// </summary>
         public bool TryFind(ContentId id, out Lesson lesson)
         {
-            lesson = playable.Contains(id) ? Playable.First(candidate => candidate.Id == id) : null;
+            lesson = playableIds.Contains(id) ? Playable.First(candidate => candidate.Id == id) : null;
             return lesson != null;
         }
 
@@ -69,7 +69,7 @@ namespace Scolita.Core.Lessons
             int position = IndexOf(id);
             for (int later = position + 1; later < all.Count; later++)
             {
-                if (playable.Contains(all[later].Id))
+                if (playableIds.Contains(all[later].Id))
                 {
                     return all[later];
                 }

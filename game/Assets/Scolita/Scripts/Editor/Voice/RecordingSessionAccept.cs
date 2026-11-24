@@ -45,7 +45,7 @@ namespace Scolita.Editor.Voice
 
         private static void NameClips(ContentFolder content, ContentProblems problems)
         {
-            Dictionary<string, string> csvs = content.ReadCsvs(problems);
+            Dictionary<string, string> csvs = content.ReadTexts(problems);
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             if (problems.HasErrors)
             {

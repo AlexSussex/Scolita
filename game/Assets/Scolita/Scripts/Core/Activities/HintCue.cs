@@ -31,6 +31,15 @@ namespace Scolita.Core.Activities
         /// The pictures of the choice in play (<see cref="ActivityRound.Current"/>) and of its partner
         /// (<see cref="ActivityRound.Answer"/>) appear (<c>WordTwins</c>).
         /// </summary>
-        RevealPictures
+        RevealPictures,
+
+        /// <summary>The stroke she drew fades and the start dot of the stroke to draw pulses (<c>TraceLetter</c>).</summary>
+        PulseStart,
+
+        /// <summary>
+        /// The stroke to draw draws itself once, slowly, and its guide stays shown while she traces it
+        /// (<c>TraceLetter</c>'s answer shown).
+        /// </summary>
+        AnimateStroke
     }
 }

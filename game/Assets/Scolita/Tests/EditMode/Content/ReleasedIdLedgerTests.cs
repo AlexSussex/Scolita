@@ -178,7 +178,7 @@ namespace Scolita.Tests.EditMode.Content
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
 
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse(folder.ReleasedIdsText(problems), problems);
             ledger.CheckNoneDeleted(curriculum, problems);

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Core.Languages;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Core.Content
 {
     /// <summary>
     /// All the content, built from the CSVs (by the importer and the validator) or from the content
-    /// assets (in the app): the catalogs of letters, words, pictures and voice lines, the domains with
+    /// assets (in the app): the catalogs of letters, words, pictures, voice lines and the letters' shapes, the domains with
     /// their units, lessons and steps, each domain's track per language, and which letters are taught
     /// before a lesson. Made by <see cref="CurriculumBuilder"/>.
     /// </summary>
@@ -21,8 +22,9 @@ namespace Scolita.Core.Content
 
         /// <summary>Creates the curriculum; called by <see cref="CurriculumBuilder"/>.</summary>
         public Curriculum(ItemCatalog<Letter> letters, ItemCatalog<Word> words, ItemCatalog<Picture> pictures,
-            ItemCatalog<VoiceLine> voiceLines, IReadOnlyList<Domain> domains)
+            ItemCatalog<VoiceLine> voiceLines, ItemCatalog<LetterShape> shapes, IReadOnlyList<Domain> domains)
         {
+            Shapes = shapes;
             Letters = letters;
             Words = words;
             Pictures = pictures;
@@ -48,6 +50,9 @@ namespace Scolita.Core.Content
         /// <summary>Every voice line, in both languages.</summary>
         public ItemCatalog<VoiceLine> VoiceLines { get; }
 
+        /// <summary>Every letter's shapes (how it is written, per case and form).</summary>
+        public ItemCatalog<LetterShape> Shapes { get; }
+
         /// <summary>The domains, in the order their first unit appears.</summary>
         public IReadOnlyList<Domain> Domains { get; }
 
@@ -60,6 +65,22 @@ namespace Scolita.Core.Content
         public bool TryGetLesson(ContentId id, out Lesson lesson)
         {
             return lessons.TryGetValue(id, out lesson);
+        }
+
+        /// <summary>
+        /// The shape of <paramref name="letter"/> in <paramref name="letterCase"/> and <paramref name="form"/>;
+        /// false when it has none (no stroke data yet, or not for that case and form). Called by the
+        /// activities, the playable steps, the content rules and the tests.
+        /// </summary>
+        public bool TryGetShape(Letter letter, LetterCase letterCase, LetterForm form, out LetterShape shape)
+        {
+            if (!letter.Strokes.IsSet)
+            {
+                shape = null;
+                return false;
+            }
+
+            return Shapes.TryGet(LetterShapeCodes.IdOf(letter.Strokes, letterCase, form), out shape);
         }
 
         /// <summary>Finds the unit <paramref name="id"/>; called by the rules, and later the map.</summary>

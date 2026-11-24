@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Scolita.Core.Content.Csv;
 using Scolita.Core.Languages;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Core.Content
 {
     /// <summary>
-    /// Reads the seven content CSVs (<see cref="ContentFileNames"/>) into a <see cref="Curriculum"/>:
+    /// Reads the seven content CSVs (<see cref="ContentFileNames"/>) and the letters' shape files
+    /// (<see cref="LetterShapeReader"/>) into a <see cref="Curriculum"/>:
     /// checks each file's columns, each cell's code, id and spelling (no cedilla), and hands the rows
     /// to <see cref="CurriculumBuilder"/>. A row with a broken cell is reported and left out; the
     /// curriculum's own rules are <see cref="Rules.ContentRules"/>.
@@ -49,8 +51,8 @@ namespace Scolita.Core.Content
         };
 
         /// <summary>
-        /// Reads the files in <paramref name="textsByFileName"/> (each CSV's name and its text) and
-        /// builds the curriculum, reporting into <paramref name="problems"/> every missing file and
+        /// Reads the files in <paramref name="textsByFileName"/> (each CSV's name and its text, and each
+        /// shape file of <c>content/strokes/</c> as <c>strokes/a-lower-print.json</c>) and builds the curriculum, reporting into <paramref name="problems"/> every missing file and
         /// column, every unknown column, and every cell that can't be read. Called by the importer, the
         /// content validator test and <c>ContentTablesTests</c>.
         /// </summary>
@@ -64,7 +66,31 @@ namespace Scolita.Core.Content
             ReadTable(textsByFileName, ContentFileNames.Units, problems, (table, row) => ReadUnit(table, row, problems, builder));
             ReadTable(textsByFileName, ContentFileNames.Lessons, problems, (table, row) => ReadLesson(table, row, problems, builder));
             ReadTable(textsByFileName, ContentFileNames.Steps, problems, (table, row) => ReadStep(table, row, problems, builder));
+            ReadShapes(textsByFileName, problems, builder);
             return builder.Build(problems);
+        }
+
+        private static void ReadShapes(IReadOnlyDictionary<string, string> textsByFileName, ContentProblems problems,
+            CurriculumBuilder builder)
+        {
+            IEnumerable<KeyValuePair<string, string>> files = textsByFileName
+                .Where(file => LetterShapeCodes.IsShapeFile(file.Key))
+                .OrderBy(file => file.Key, StringComparer.Ordinal);
+            foreach (KeyValuePair<string, string> file in files)
+            {
+                foreach (CedillaFinding finding in RomanianSpelling.FindCedillas(file.Value))
+                {
+                    problems.Error(new ContentSource(file.Key, 0), "it has U+" + ((int)finding.Found).ToString("X4") + " "
+                        + finding.Found + " with a cedilla; Romanian writes U+" + ((int)finding.Correct).ToString("X4") + " "
+                        + finding.Correct + " with the comma below.");
+                }
+
+                LetterShape shape = LetterShapeReader.Read(file.Key, file.Value, problems);
+                if (shape != null)
+                {
+                    builder.Add(shape);
+                }
+            }
         }
 
         private static void ReadTable(IReadOnlyDictionary<string, string> textsByFileName, string fileName,

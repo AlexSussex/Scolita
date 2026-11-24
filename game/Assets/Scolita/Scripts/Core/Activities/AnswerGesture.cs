@@ -13,6 +13,9 @@ namespace Scolita.Core.Activities
         Place,
 
         /// <summary>She joined two choices with a line (<c>WordTwins</c>' words).</summary>
-        Join
+        Join,
+
+        /// <summary>She drew a stroke with her finger (<c>TraceLetter</c>): its points are <see cref="ActivityAnswer.Points"/>.</summary>
+        Trace
     }
 }

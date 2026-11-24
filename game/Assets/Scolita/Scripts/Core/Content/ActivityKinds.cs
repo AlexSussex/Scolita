@@ -34,7 +34,9 @@ namespace Scolita.Core.Content
                 {
                     new ActivityOption("form", new[] { "print", "handwritten" }, true),
                     new ActivityOption("case", new[] { "lower", "upper" }, true)
-                }, Lines("trace-start"), NoLines),
+                }, Lines("trace-print", "trace-hand", "trace-start"),
+                Lines("trace-hint-dot", "trace-hint-arrow", "trace-hint-stay", "trace-hint-slow", "trace-hint-watch",
+                    "trace-next-2", "trace-next-3", "trace-done", "trace-round-2", "trace-round-3")),
             Kind(ActivityKind.TraceWord, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.None,
                 ActivityWordUse.Read, NoWordLines, false, false, NoOptions, Lines("word-write"), NoLines),
             Kind(ActivityKind.Syllables, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.CountsSyllables,

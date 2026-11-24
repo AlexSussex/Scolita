@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Randomness;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Core.Activities
 {
@@ -11,7 +12,8 @@ namespace Scolita.Core.Activities
     /// the order they are shown, which one is the answer, what the question is about
     /// (<see cref="Subject"/>), where each choice stands (<see cref="StateOf"/>, <see cref="PlacedOn"/>),
     /// which one is in play (<see cref="Current"/>) and the places it fills (<see cref="Places"/>,
-    /// <see cref="PlacesFilled"/>). Owned and set up by the step's rules (<see cref="IActivityRules.Begin"/>,
+    /// <see cref="PlacesFilled"/>) or, when tracing, where the tracing is (<see cref="Trace"/>). Owned and set
+    /// up by the step's rules (<see cref="IActivityRules.Begin"/>,
     /// <see cref="IActivityRules.Judge"/>); the view only reads it.
     /// </summary>
     public sealed class ActivityRound
@@ -94,6 +96,11 @@ namespace Scolita.Core.Activities
         /// beats tapped).
         /// </summary>
         public int PlacesFilled { get; private set; }
+
+        /// <summary>
+        /// Where a <c>TraceLetter</c> step is (the shape, the round, the stroke); null for the other kinds.
+        /// </summary>
+        public TraceState Trace { get; private set; }
 
         /// <summary>
         /// Where the choice <paramref name="choice"/> stands; throws an <see cref="ArgumentOutOfRangeException"/>
@@ -182,6 +189,12 @@ namespace Scolita.Core.Activities
 
             Current = -1;
             PlacesFilled = 0;
+        }
+
+        /// <summary>Gives the round the tracing state its view draws; called by <c>TraceLetterRules</c> when a lesson is built.</summary>
+        internal void Attach(TraceState trace)
+        {
+            Trace = trace;
         }
 
         /// <summary>Sets how many places the round has to fill; called by the activities' rules when a lesson is built.</summary>

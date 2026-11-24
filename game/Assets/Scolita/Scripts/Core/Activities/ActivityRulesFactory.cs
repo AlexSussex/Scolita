@@ -4,6 +4,7 @@ using System.Linq;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
+using Scolita.Core.Tracing;
 
 namespace Scolita.Core.Activities
 {
@@ -18,7 +19,7 @@ namespace Scolita.Core.Activities
         {
             ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
             ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
-            ActivityKind.WordTwins
+            ActivityKind.WordTwins, ActivityKind.TraceLetter
         };
 
         /// <summary>The kinds that have rules.</summary>
@@ -30,7 +31,17 @@ namespace Scolita.Core.Activities
         /// </summary>
         public static bool Has(ActivityKind kind)
         {
-            return Array.IndexOf(KindsWithRules, kind) >= 0;
+            return HasRules(kind);
+        }
+
+        /// <summary>
+        /// Whether <paramref name="step"/> can be played with <paramref name="curriculum"/>'s content: its kind
+        /// has rules and, for a <see cref="ActivityKind.TraceLetter"/> step, its letter has the shape it asks
+        /// for (so the handwritten steps wait for their shapes). Called by the playable steps and the tests.
+        /// </summary>
+        public static bool CanCreate(Step step, Curriculum curriculum)
+        {
+            return HasRules(step.Kind) && (step.Kind != ActivityKind.TraceLetter || TryGetShape(step, curriculum, out _, out _));
         }
 
         /// <summary>
@@ -67,9 +78,37 @@ namespace Scolita.Core.Activities
                 case ActivityKind.WordTwins:
                     return new WordTwinsRules(step.Words.Select(curriculum.Words.Get).ToArray(),
                         LessonLanguageOf(step, curriculum));
+                case ActivityKind.TraceLetter:
+                    return TraceLetter(step, curriculum, rules);
                 default:
                     throw new ArgumentException("The kind " + step.Kind + " has no rules yet.", nameof(step));
             }
+        }
+
+        private static TraceLetterRules TraceLetter(Step step, Curriculum curriculum, LearningRules rules)
+        {
+            if (!TryGetShape(step, curriculum, out Letter letter, out LetterShape shape))
+            {
+                throw new KeyNotFoundException("The TraceLetter step " + step.Number + " of " + step.LessonId
+                    + " has no shape for its letter, case and form.");
+            }
+
+            return new TraceLetterRules(letter, shape, LanguageOf(step), rules.Tracing);
+        }
+
+        private static bool TryGetShape(Step step, Curriculum curriculum, out Letter letter, out LetterShape shape)
+        {
+            shape = null;
+            letter = null;
+            return step.Letters.Count == 1
+                && curriculum.Letters.TryGet(step.Letters[0], out letter)
+                && LetterShapeCodes.TryGetStepShape(step, out LetterCase letterCase, out LetterForm form)
+                && curriculum.TryGetShape(letter, letterCase, form, out shape);
+        }
+
+        private static bool HasRules(ActivityKind kind)
+        {
+            return Array.IndexOf(KindsWithRules, kind) >= 0;
         }
 
         private static FirstSoundRules FirstSound(Step step, Curriculum curriculum)

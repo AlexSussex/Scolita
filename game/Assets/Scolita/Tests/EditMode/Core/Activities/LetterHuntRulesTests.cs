@@ -173,7 +173,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
         {
             Curriculum curriculum = RealContent.Read();
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-m"), LanguageMix.Both,
-                new[] { ActivityKind.LetterHunt }, new Step[0], 1);
+                new PlayableSteps(new[] { ActivityKind.LetterHunt }, curriculum), new Step[0], 1);
             LessonRun run = new LessonRun(plan, curriculum, TestLearningRules.Default(), new FixedRandom());
             List<AnswerChecked> answers = new List<AnswerChecked>();
             run.AnswerChecked += answers.Add;
