@@ -1,8 +1,11 @@
 # Task: feature/voice
 
-> **Status: Ready after `content-model`.** Decision D4 (whose voices) is
-> not needed to build this: recorded clips and the system voice are both
-> built.
+> **Status: Ready after `content-model`.** Decision D4 (2026-11-24): the
+> tablet's voice for every line to start with; the family (the human and
+> her mother) records, in batch sessions, since none of the neural voices
+> sampled (`local/voice-samples/2026-11-24/`) was right for every word.
+> British English (`en-GB`). Items 8–10 (the recording kit) were added for
+> that on 2026-11-24.
 
 Read `AGENTS.md` first (especially "The five seams" → 4, "Audio" and
 "Security and privacy"), and the completion records in `tasks/done/`.
@@ -38,6 +41,27 @@ Read `AGENTS.md` first (especially "The five seams" → 4, "Audio" and
    loudness and silence at the ends against `AGENTS.md` → "Audio".
 7. **`content/voice-lines.csv` status column:** recorded or not, filled by
    the importer from the clips found.
+8. **Recording scripts** (Editor menu **Școlița → Make recording
+   scripts**): from `content/voice-lines.csv`, the lines not yet recorded,
+   grouped into sessions of at most about 50 lines (one language, one
+   planet, sounds first, then words, syllables, instructions), each a
+   printable, numbered page (HTML in `local/voice-inbox/scripts/`) with how
+   to say each kind (from `local/todo/04-record-voices.md`) and a short
+   test line at the start to set the level.
+9. **Import a recording session** (Editor menu **Școlița → Import
+   recording session**): one take per session (WAV; if the human's phone
+   records only M4A or similar, the Design note proposes how to convert,
+   for the human's agreement, since a new tool is not in the stack): split
+   at the pauses, matched to the session's script in order, each clip
+   trimmed, levelled and named per `AGENTS.md` → "Audio", and a report page
+   to listen to every clip beside its text, with the ones that don't fit
+   flagged (a missed or repeated line, too quiet, too long) so only those
+   are recorded again. Nothing reaches `content/voice/` until the human
+   says the session is good.
+10. **Slow words from the recorded sounds:** a "slow" line (`m-a-m-a`) is
+    played as its letters' sound clips in sequence with short pauses
+    (through `SpeakSequence`), unless a clip of its own exists, so the
+    slow words need no recording.
 
 ## Out of scope — do not build
 
@@ -54,6 +78,10 @@ Read `AGENTS.md` first (especially "The five seams" → 4, "Audio" and
 - **Check voice clips** flags a clip that is too quiet, clipped, or has a
   second of silence at its start.
 - No new Android permission in the APK.
+- A test session (an agent's own voice-test take of 10 lines, never the
+  family's voices) imports into 10 named, trimmed, levelled clips; a take
+  with a line missed is flagged, not silently shifted.
+- A slow word with no clip of its own plays its letters' sounds in order.
 
 ## Tests required
 
@@ -67,7 +95,9 @@ Read `AGENTS.md` first (especially "The five seams" → 4, "Audio" and
 ## Touches
 
 `Scripts/Core/Voice`, `Scripts/Game/Voice`, `Scripts/Editor/Voice`,
-`content/voice-lines.csv` (a column), the `Hearable` prefab (new).
+`content/voice-lines.csv` (a column), the `Hearable` prefab (new),
+`local/todo/04-record-voices.md` (the recording guide, rewritten for batch
+sessions).
 
 ## Screens
 
