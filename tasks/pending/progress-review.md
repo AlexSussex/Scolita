@@ -3,7 +3,9 @@
 > **Status: Ready after `activities-words`, `handwriting` and `galaxy-map`.** Decision D1
 > (the language mix) is read from the settings. The human, 2026-11-24 (Q1):
 > each damaged save is kept, dated (`<name>.broken-<date-time>.json`), never
-> replaced by the next.
+> replaced by the next, and removed by themselves once a newer version has
+> read and saved that file fine on several days (the exact rule in the
+> Design note).
 
 Read `AGENTS.md` first (especially "Learning" → learned and reviewed,
 "Versioning and releases" → "Progress survives updates", "Fresh-eyes

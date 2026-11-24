@@ -182,7 +182,10 @@ _Update this section whenever a slice is pushed or a brief is finished._
   - `BootLoader` could take its save root from the test, for an
     end-to-end "corrupt settings at boot" PlayMode test.
   - **Each damaged save is kept, dated** (the human, 2026-11-24, Q1):
-    `<name>.broken-<date-time>.json`, never replaced by the next one; for
-    `progress-review` (it touches `SaveStore`).
+    `<name>.broken-<date-time>.json`, never replaced by the next one, and removed by themselves once a
+    newer version has read and saved that file fine on several days (the
+    human: no point keeping them once the version is stable); for
+    `progress-review` (it touches `SaveStore`; its Design note sets the
+    exact rule).
   - `AGENTS.md`'s repo layout: add `Assets/Scolita/Settings`,
     `Assets/Plugins/Android` and the `ThirdParty` packs' `SOURCE.md`.

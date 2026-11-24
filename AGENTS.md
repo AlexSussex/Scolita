@@ -458,7 +458,9 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   (a retired item keeps its id, marked retired). A save that can't be read
   is set aside as `<name>.broken-<date-time>.json` (each damaged copy kept,
   so progress can be rescued by hand; the human, 2026-11-24) and the
-  defaults are used, never a crash.
+  defaults are used, never a crash. The copies are removed by themselves
+  once a newer version has read and saved that file without trouble on
+  several different days (no point keeping them then).
 
 ## Task briefs
 
