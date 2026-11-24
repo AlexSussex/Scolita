@@ -223,12 +223,13 @@ namespace Scolita.Game.Lessons
 
         private void Build(Curriculum curriculum, LessonPlan plan)
         {
-            run = new LessonRun(plan, curriculum, learningRules.ToRules(), new SeededRandom((ulong)DateTime.UtcNow.Ticks));
+            LearningRules rules = learningRules.ToRules();
+            run = new LessonRun(plan, curriculum, rules, new SeededRandom((ulong)DateTime.UtcNow.Ticks));
             lessonSignature = LessonSignature.Of(plan.Lesson);
             voice.LoadLines(LessonVoiceLines.Of(curriculum, plan.Lesson));
             lessonVoice = new LessonVoice(voice.Voice, screen.Bubble);
             lessonVoice.Prepare(curriculum, run.Lines);
-            context = new ActivityViewContext(this, new PictureSprites(pictures, missingPicture));
+            context = new ActivityViewContext(this, new PictureSprites(pictures, missingPicture), rules);
             foreach (PlannedStep step in plan.Steps)
             {
                 ActivityKind kind = step.Step.Kind;
