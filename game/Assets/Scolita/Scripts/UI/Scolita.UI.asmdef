@@ -1,0 +1,21 @@
+{
+    "name": "Scolita.UI",
+    "rootNamespace": "Scolita.UI",
+    "references": [
+        "Scolita.Core",
+        "Scolita.Content",
+        "Scolita.Game",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.Localization"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
