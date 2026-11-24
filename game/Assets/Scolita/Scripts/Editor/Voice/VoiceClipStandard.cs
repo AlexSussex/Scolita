@@ -60,6 +60,7 @@ namespace Scolita.Editor.Voice
                     return 3.0;
                 case VoiceLineKind.Syllables:
                 case VoiceLineKind.Slow:
+                case VoiceLineKind.Stretched:
                     return 6.0;
                 default:
                     return 12.0;

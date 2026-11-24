@@ -88,6 +88,11 @@ namespace Scolita.Editor.Voice
                 return "<b>Slow words:</b> stretched sound by sound (\"mmm-aaa-mmm-aaa\"), without stopping.";
             }
 
+            if (kind == ContentCodes.CodeOf(VoiceLineKind.Stretched))
+            {
+                return "<b>Stretched words:</b> the first sound held for about a second, then the rest of the word at once (\"mmm-ama\", \"aaa-vion\"); a sound that can't be held (t, p) is said three times, short and pure (\"t-t-tata\").";
+            }
+
             return "<b>Instructions and praise:</b> friendly and bright, as you would say them to her.";
         }
     }

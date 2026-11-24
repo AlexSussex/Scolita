@@ -37,7 +37,7 @@ namespace Scolita.Editor.Voice
         private static readonly VoiceLineKind[] KindOrder =
         {
             VoiceLineKind.Sound, VoiceLineKind.Name, VoiceLineKind.Word, VoiceLineKind.Syllables, VoiceLineKind.Slow,
-            VoiceLineKind.Line
+            VoiceLineKind.Stretched, VoiceLineKind.Line
         };
 
         /// <summary>
@@ -86,6 +86,7 @@ namespace Scolita.Editor.Voice
                     return NameSeconds;
                 case VoiceLineKind.Slow:
                 case VoiceLineKind.Syllables:
+                case VoiceLineKind.Stretched:
                     return WordStartSeconds + text.Length * SlowSecondsPerCharacter;
                 case VoiceLineKind.Word:
                     return WordStartSeconds + text.Length * SecondsPerCharacter;
