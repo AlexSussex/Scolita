@@ -58,7 +58,7 @@ Each brief file therefore reads, top to bottom:
 | 3 | `feature/content-model` | Done 2026-11-24, released as 0.2.0 | [done/content-model.md](done/content-model.md) |
 | 4 | `feature/voice` | Done 2026-11-24, released as 0.3.0 | [done/voice.md](done/voice.md) |
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
-| 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
+| 6 | `feature/tracing` | In progress (tracing) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
 | 8 | `feature/activities-letters` | In progress (letters) | [pending/activities-letters.md](pending/activities-letters.md) |
 | 9 | `feature/activities-words` | Ready after 8 | [pending/activities-words.md](pending/activities-words.md) |
@@ -101,6 +101,7 @@ progress visible"). Empty when nobody is at work.
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
 | letters | [activities-letters](pending/activities-letters.md) | `Scripts/Core/Activities`, `Scripts/Core/Content` (`ActivityKinds`, `StepRules`, a `stretched` voice line kind), `Scripts/Core/Lessons/LearningRules.cs`, `Scripts/Game/Lessons`, `Scripts/UI/Lesson`, `Scripts/Editor/Voice` (the new kind), new `Prefabs/Lesson/{LetterHunt,FirstSound,TwoSounds}View.prefab`; changes: `Prefabs/Lesson/ActivityRegistry.asset` (three rows), `Settings/LearningRules.asset`, `content/steps.csv` (`ro-a`, `en-a`, `ro-m`, `en-m`), `content/voice-lines.csv` (new rows) and their imported assets | emulator-5602 | 2026-11-24 | Claimed; Design note next |
+| tracing | [tracing](pending/tracing.md) | New: `Scripts/Core/Tracing`, `Scripts/Game/Tracing`, `Scripts/UI/Tracing`, `content/strokes/`, `Content/Strokes/` (imported), `Prefabs/Lesson/TraceLetterView.prefab`; changes: the importer (a stroke reader), `CurriculumAssets`, `LearningRules` (+ asset), `ActivityRegistry.asset` (one row), `Scenes/Lesson.unity` (the runner's stroke catalog field), `Core/Lessons` (which steps can be played), `steps.csv` / `voice-lines.csv` only if the note needs it | emulator-5600 | 2026-11-24 | Claimed; writing the Design note |
 
 ## Where we are
 

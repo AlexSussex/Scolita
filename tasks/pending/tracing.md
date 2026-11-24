@@ -1,6 +1,6 @@
 # Task: feature/tracing
 
-> **Status: Ready after `lesson-engine`** (decisions D2: lower case first;
+> **Status: In progress (tracing).** Ready after `lesson-engine` (decisions D2: lower case first;
 > D3 answered 2026-11-24: handwritten letters are in the MVP, built by
 > `handwriting` right after this brief — the stroke format made here must
 > carry a letter's print and handwritten forms, with entry and exit
