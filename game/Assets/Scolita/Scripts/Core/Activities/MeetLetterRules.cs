@@ -87,6 +87,11 @@ namespace Scolita.Core.Activities
         /// <inheritdoc/>
         public AnswerVerdict Judge(in ActivityAnswer answer)
         {
+            if (answer.Gesture != AnswerGesture.Tap)
+            {
+                throw new ArgumentOutOfRangeException(nameof(answer), answer.Gesture, "MeetLetter takes taps.");
+            }
+
             switch (answer.Choice)
             {
                 case LetterChoice:

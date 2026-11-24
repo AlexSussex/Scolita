@@ -100,11 +100,11 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests that <see cref="FirstSoundRules.FirstLetterOf"/> finds the letter a word starts with, the
-        /// longest when several match (a group such as ch before c), and refuses a word that starts with none.
+        /// Tests that <see cref="WordStarts.TryFind"/> finds the letter a word starts with, the longest when
+        /// several match (a group such as ch before c), and none for a word that starts with none.
         /// </summary>
         [Test]
-        public void TestFirstLetterOf_TheLongestThatMatches()
+        public void TestTryFind_TheLongestThatMatches()
         {
             Curriculum curriculum = RealContent.Read();
             Word pat = curriculum.Words.Get(ContentId.Create("ro-pat"));
@@ -114,17 +114,21 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Letter ch = new Letter(ContentId.Create("ch"), "ch", "Ch", LetterGroup.EnglishOnly, default, false, default);
             Letter[] planetOne = { Letter(curriculum, "a"), Letter(curriculum, "p"), Letter(curriculum, "t") };
 
-            Assert.That(FirstSoundRules.FirstLetterOf(pat, planetOne).Id.ToString(), Is.EqualTo("p"));
-            Assert.That(FirstSoundRules.FirstLetterOf(chip, new[] { c, ch }).Id.ToString(), Is.EqualTo("ch"));
-            Assert.That(() => FirstSoundRules.FirstLetterOf(chip, planetOne), Throws.ArgumentException);
+            Assert.That(WordStarts.TryFind(pat, planetOne, out Letter patStart), Is.True);
+            Assert.That(patStart.Id.ToString(), Is.EqualTo("p"));
+            Assert.That(WordStarts.TryFind(chip, new[] { c, ch }, out Letter chipStart), Is.True);
+            Assert.That(chipStart.Id.ToString(), Is.EqualTo("ch"));
+            Assert.That(WordStarts.TryFind(chip, planetOne, out Letter none), Is.False);
+            Assert.That(none, Is.Null);
+            Assert.That(() => new FirstSoundRules(planetOne, chip, Language.English, "ch-ch-chip"), Throws.ArgumentException);
         }
 
         /// <summary>
-        /// Tests the <c>FirstSound</c> step through <see cref="LessonRun"/>: a miss says the stretched word, the
+        /// Tests the <c>FirstSound</c> step through <see cref="LessonRun.Answer"/>: a miss says the stretched word, the
         /// second shows the answer, which then counts as practice.
         /// </summary>
         [Test]
-        public void TestLessonRun_HintThenShow()
+        public void TestAnswer_HintThenShowThroughTheRun()
         {
             Curriculum curriculum = RealContent.Read();
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-m"), LanguageMix.Both,

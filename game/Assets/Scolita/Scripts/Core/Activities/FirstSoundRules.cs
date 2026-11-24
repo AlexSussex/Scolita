@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Scolita.Core.Content;
-using Scolita.Core.Content.Rules;
 using Scolita.Core.Languages;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
@@ -35,7 +34,11 @@ namespace Scolita.Core.Activities
             }
 
             Language = language;
-            Letter answer = FirstLetterOf(word, letters);
+            if (!WordStarts.TryFind(word, letters, out Letter answer))
+            {
+                throw new ArgumentException("The word " + word.Id + " starts with none of the step's letters.", nameof(word));
+            }
+
             ActivityChoice[] choices = new ActivityChoice[letters.Count];
             for (int index = 0; index < letters.Count; index++)
             {
@@ -78,28 +81,6 @@ namespace Scolita.Core.Activities
 
         /// <inheritdoc/>
         public IReadOnlyList<VoiceSequence> Lines { get; }
-
-        /// <summary>
-        /// The letter <paramref name="word"/> starts with among <paramref name="letters"/>: the longest
-        /// that matches its spelling (a group such as <c>ch</c> before <c>c</c>). Throws an
-        /// <see cref="ArgumentException"/> when none does. Called by the constructor and the tests.
-        /// </summary>
-        public static Letter FirstLetterOf(Word word, IReadOnlyList<Letter> letters)
-        {
-            string spelling = WordRules.Spelling(word.Text);
-            Letter found = null;
-            foreach (Letter letter in letters)
-            {
-                bool starts = letter.Lower.Length > 0 && spelling.StartsWith(letter.Lower, StringComparison.Ordinal);
-                if (starts && (found == null || letter.Lower.Length > found.Lower.Length))
-                {
-                    found = letter;
-                }
-            }
-
-            return found ?? throw new ArgumentException("The word " + word.Id + " starts with none of the step's letters.",
-                nameof(word));
-        }
 
         /// <inheritdoc/>
         public void Begin(IRandom random)

@@ -115,10 +115,10 @@ namespace Scolita.Core.Activities
         /// <inheritdoc/>
         public AnswerVerdict Judge(in ActivityAnswer answer)
         {
-            if (answer.Choice < 0 || answer.Choice >= Round.Choices.Count)
+            if (answer.Gesture != AnswerGesture.Tap || answer.Choice < 0 || answer.Choice >= Round.Choices.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(answer), answer.Choice,
-                    "ListenAndPick has " + Round.Choices.Count + " choices.");
+                    "ListenAndPick takes taps on its " + Round.Choices.Count + " choices.");
             }
 
             return Round.Choices[answer.Choice].Item == Round.AnswerItem ? AnswerVerdict.Done : AnswerVerdict.Wrong;

@@ -130,6 +130,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(() => rules.HintFor(1, ActivityAnswer.Tap(0)), Throws.InstanceOf<InvalidOperationException>());
             Assert.That(() => rules.AnswerShown(), Throws.InstanceOf<InvalidOperationException>());
             Assert.That(() => rules.Judge(ActivityAnswer.Tap(2)), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => rules.Judge(ActivityAnswer.Drop(MeetLetterRules.LetterChoice)), Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         private static IActivityRules RomanianA()

@@ -62,8 +62,8 @@ namespace Scolita.Core.Activities
         public ContentId AnswerItem { get; }
 
         /// <summary>
-        /// The index of the answer in <see cref="Choices"/> (for the part in play, <see cref="Current"/>);
-        /// -1 when the round has no single answer.
+        /// The index of the answer in <see cref="Choices"/> (for the part in play, <see cref="Current"/>; for
+        /// <c>LetterHunt</c>, a star with the letter not found yet); -1 when there is none.
         /// </summary>
         public int Answer { get; private set; }
 

@@ -10,7 +10,9 @@ namespace Scolita.Core.Voice
     /// Turns what is to be said into the <see cref="VoiceUtterance"/>s <see cref="VoiceRouter"/> says
     /// in turn: each spoken segment by its clip when the clip voice has it, else by the system voice
     /// in the line's language when it speaks it, else in the bubble; slots by their fills; a slow line
-    /// without its own clip by its word's letters' sounds with pauses. Neighbouring texts for the
+    /// without its own clip by its word's letters' sounds with pauses, and a stretched line without its
+    /// own clip by its word's first sound, a pause, then the word (the tablet's voice can't hold a sound,
+    /// and would say "t-t-tata" as letter names). Neighbouring texts for the
     /// system voice (or the bubble) in one language are joined into one, so a spliced name keeps the
     /// sentence's tune. The lines' templates are split once, when the planner is made.
     /// </summary>
@@ -18,7 +20,7 @@ namespace Scolita.Core.Voice
     {
         private readonly ItemCatalog<VoiceLine> lines;
         private readonly Dictionary<ContentId, VoiceTemplate> templates;
-        private readonly Dictionary<ContentId, IReadOnlyList<VoiceLineId>> slowLinesSounds;
+        private readonly Dictionary<ContentId, IReadOnlyList<VoiceLineId>> saidInParts;
         private readonly IClipVoice clips;
         private readonly ISystemVoice system;
         private readonly VoiceTiming timing;
@@ -28,9 +30,14 @@ namespace Scolita.Core.Voice
         {
             lines = curriculum.VoiceLines;
             templates = curriculum.VoiceLines.All.ToDictionary(line => line.Id, line => VoiceTemplate.Parse(SpokenText(line)));
-            slowLinesSounds = curriculum.Words.All
+            saidInParts = curriculum.Words.All
                 .Where(word => !word.Retired)
                 .ToDictionary(word => word.SlowLine.Id, word => SoundsOf(curriculum, word));
+            foreach (Word word in curriculum.Words.All.Where(word => !word.Retired))
+            {
+                saidInParts[word.StretchedLine.Id] = FirstSoundThenWord(curriculum, word);
+            }
+
             this.clips = clips;
             this.system = system;
             this.timing = timing;
@@ -73,6 +80,14 @@ namespace Scolita.Core.Voice
                 .ToArray();
         }
 
+        private static IReadOnlyList<VoiceLineId> FirstSoundThenWord(Curriculum curriculum, Word word)
+        {
+            IEnumerable<Letter> letters = curriculum.Letters.All.Where(letter => letter.HasLanguage(word.Language));
+            return WordStarts.TryFind(word, letters, out Letter first)
+                ? new[] { first.SoundLine(word.Language), word.WordLine }
+                : new VoiceLineId[0];
+        }
+
         private void PlanItem(VoiceLineId id, VoiceSequenceItem item, List<VoiceUtterance> plan, List<VoiceLineId> missing)
         {
             if (!lines.TryGet(id.Id, out VoiceLine line))
@@ -113,8 +128,8 @@ namespace Scolita.Core.Voice
         private bool IsSaidAsSounds(VoiceLine line, out IReadOnlyList<VoiceLineId> sounds)
         {
             sounds = null;
-            return line.Kind == VoiceLineKind.Slow
-                && slowLinesSounds.TryGetValue(line.Id, out sounds)
+            return (line.Kind == VoiceLineKind.Slow || line.Kind == VoiceLineKind.Stretched)
+                && saidInParts.TryGetValue(line.Id, out sounds)
                 && sounds.Count > 0
                 && !(line.HasClip && line.Clips.All(clips.Has));
         }

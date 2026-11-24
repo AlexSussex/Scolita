@@ -460,6 +460,7 @@ namespace Scolita.Tests.EditMode.Core.Content
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, otherStart, "the word en-mat doesn't start with a");
             Assert.That(errors.Where(error => error.Source.Row == otherStart).Select(error => error.Reason),
                 Has.None.Contains("both languages"));
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, oneLanguage, "ro-avion is listed more than once");
         }
 
         /// <summary>

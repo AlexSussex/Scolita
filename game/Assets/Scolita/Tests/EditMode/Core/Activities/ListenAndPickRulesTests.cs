@@ -46,6 +46,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(rules.Judge(ActivityAnswer.Tap(rules.Round.Answer)), Is.EqualTo(AnswerVerdict.Done));
             Assert.That(rules.Response, Is.Null);
             Assert.That(() => rules.Judge(ActivityAnswer.Tap(3)), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => rules.Judge(ActivityAnswer.Drop(0)), Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         /// <summary>

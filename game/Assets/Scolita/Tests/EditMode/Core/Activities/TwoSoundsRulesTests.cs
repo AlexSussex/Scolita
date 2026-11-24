@@ -168,11 +168,11 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests the <c>TwoSounds</c> step through <see cref="LessonRun"/>: hearing the planets is never an
+        /// Tests the <c>TwoSounds</c> step through <see cref="LessonRun.Answer"/>: hearing the planets is never an
         /// answer, a miss says both sounds, the second shows the planet, and each picture sorted counts.
         /// </summary>
         [Test]
-        public void TestLessonRun_HintThenShow()
+        public void TestAnswer_HintThenShowThroughTheRun()
         {
             Curriculum curriculum = RealContent.Read();
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "en-a"), LanguageMix.Both,

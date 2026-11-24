@@ -65,8 +65,8 @@ namespace Scolita.Core.Activities
         private static FirstSoundRules FirstSound(Step step, Curriculum curriculum)
         {
             Word word = curriculum.Words.Get(step.Words[0]);
-            string stretched = curriculum.VoiceLines.TryGet(word.StretchedLine.Id, out VoiceLine line) ? line.Text : word.Text;
-            return new FirstSoundRules(LettersOf(step, curriculum), word, LanguageOf(step), stretched);
+            VoiceLine stretched = curriculum.VoiceLines.Get(word.StretchedLine.Id);
+            return new FirstSoundRules(LettersOf(step, curriculum), word, LanguageOf(step), stretched.Text);
         }
 
         private static Letter[] LettersOf(Step step, Curriculum curriculum)

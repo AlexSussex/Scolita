@@ -193,6 +193,27 @@ namespace Scolita.Tests.EditMode.Core.Voice
             Assert.That(log, Is.EqualTo(new[] { "clip ro-sound-m.ogg", "clip ro-sound-a.ogg", "clip ro-sound-m.ogg", "clip ro-sound-a.ogg" }));
         }
 
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Speak"/> says a stretched word with no clip of its own as its first
+        /// sound, a pause, then the word, never its text "mmmama" through the tablet's voice.
+        /// </summary>
+        [Test]
+        public void TestSpeak_StretchedWordFromItsFirstSound()
+        {
+            List<string> log = new List<string>();
+            Dictionary<string, string> csvs = VoiceTestContent.Csvs();
+            ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-stretched-mama,ro,stretched,mmmama,,,,");
+            FakeClipVoice clips = new FakeClipVoice(log, VoiceTestContent.SoundM, VoiceTestContent.SoundA);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian);
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(csvs), clips, system, new FakeSpeechBubble(log),
+                VoiceTestContent.Timing);
+
+            router.Speak(VoiceTestContent.Line("ro-stretched-mama"));
+            VoiceTestContent.Drain(router, clips, system);
+
+            Assert.That(log, Is.EqualTo(new[] { "clip ro-sound-m.ogg", "say ro mama" }));
+        }
+
         /// <summary>Tests that <see cref="VoiceRouter.Speak"/> plays a slow word's own clip when it has one.</summary>
         [Test]
         public void TestSpeak_SlowWordWithItsOwnClip()

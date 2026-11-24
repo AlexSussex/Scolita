@@ -62,6 +62,10 @@ namespace Scolita.Core.Content.Rules
             if (needs.LettersAreChoices)
             {
                 CheckChoicesTaught(curriculum, lesson, step, problems);
+            }
+
+            if (needs.LettersAreChoices || needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds)
+            {
                 CheckChoicesOnce(step, problems);
             }
 

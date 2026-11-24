@@ -141,6 +141,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
 
             Assert.That(shown.Cue, Is.EqualTo(HintCue.GlowAnswer));
             Assert.That(shown.Choice, Is.EqualTo(1));
+            Assert.That(rules.Round.Answer, Is.EqualTo(1));
             Assert.That(SequenceLines.Of(shown.Line), Is.EqualTo(new[] { "ro-line-pick-hint-show" }));
         }
 
@@ -164,11 +165,11 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests the <c>LetterHunt</c> step through <see cref="LessonRun"/>: a miss twinkles the stars, the
+        /// Tests the <c>LetterHunt</c> step through <see cref="LessonRun.Answer"/>: a miss twinkles the stars, the
         /// second shows one, and the star found with it shown counts as practice.
         /// </summary>
         [Test]
-        public void TestLessonRun_HintThenShow()
+        public void TestAnswer_HintThenShowThroughTheRun()
         {
             Curriculum curriculum = RealContent.Read();
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-m"), LanguageMix.Both,

@@ -88,6 +88,7 @@ namespace Scolita.Core.Activities
             Response = null;
             Round.Reset();
             Round.Shuffle(random);
+            Round.Play(-1, FirstStarLeft());
         }
 
         /// <inheritdoc/>
@@ -112,6 +113,7 @@ namespace Scolita.Core.Activities
             }
 
             Round.Mark(answer.Choice, ChoiceState.Done);
+            Round.Play(-1, FirstStarLeft());
             found++;
             Response = sound;
             return found >= rightStars ? AnswerVerdict.Done : AnswerVerdict.Right;

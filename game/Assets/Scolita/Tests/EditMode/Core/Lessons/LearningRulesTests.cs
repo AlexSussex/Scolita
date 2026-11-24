@@ -36,6 +36,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Assert.That(hunt.RightStars, Is.EqualTo(4));
             Assert.That(hunt.FastestSpeed, Is.EqualTo(60f).Within(0.001f));
             Assert.That(() => new LetterHuntTuning(LetterHuntTuning.MostStars + 1, 4, 60f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new LetterHuntTuning(LetterHuntTuning.FewestStars - 1, 4, 60f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new LetterHuntTuning(10, 0, 60f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new LetterHuntTuning(10, 10, 60f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new LetterHuntTuning(10, 4, 0f), Throws.InstanceOf<ArgumentOutOfRangeException>());
