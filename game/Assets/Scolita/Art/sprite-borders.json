@@ -1,0 +1,53 @@
+{
+  "borders": [
+    {
+      "path": "Board/board-slate",
+      "left": 80,
+      "bottom": 80,
+      "right": 80,
+      "top": 80
+    },
+    {
+      "path": "UI/button-yellow",
+      "left": 64,
+      "bottom": 76,
+      "right": 64,
+      "top": 52
+    },
+    {
+      "path": "UI/button-cream",
+      "left": 64,
+      "bottom": 76,
+      "right": 64,
+      "top": 52
+    },
+    {
+      "path": "UI/card-cream",
+      "left": 72,
+      "bottom": 72,
+      "right": 72,
+      "top": 72
+    },
+    {
+      "path": "UI/tile-cream",
+      "left": 56,
+      "bottom": 64,
+      "right": 56,
+      "top": 48
+    },
+    {
+      "path": "UI/bubble",
+      "left": 56,
+      "bottom": 56,
+      "right": 56,
+      "top": 56
+    },
+    {
+      "path": "UI/panel-translucent",
+      "left": 48,
+      "bottom": 48,
+      "right": 48,
+      "top": 48
+    }
+  ]
+}
