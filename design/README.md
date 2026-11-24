@@ -62,7 +62,7 @@ just one colour among many:
 - **The moon and the Earth** appear on the trips between planets; the
   Earth is "home" (the sticker scene's first backdrop).
 
-## The mascot (decision D5, proposed)
+## The mascot (decision D5, agreed 2026-11-24)
 
 - **A unicorn astronaut:** a white unicorn face in a round, glassy helmet
   (pale blue `#DDF1FF` at 35% with a white rim), a golden striped horn
@@ -77,11 +77,14 @@ just one colour among many:
   arcs, open smile, a sparkle: the end of a lesson), thinking (a hint: a
   paw on the chin, a bubble), sleepy (a session's end: "Racheta se
   odihnește").
-- **Optional co-pilot:** her purple cat with black spots and a pink scarf
-  (her request for SeliSnake), if she'd like it here too: purple, so it
+- **The co-pilot:** her purple cat with black spots and a pink scarf (her
+  request for SeliSnake), riding along beside the unicorn: purple, so it
   belongs.
+- **More guides later:** the guide is data (its poses and moods as art), so
+  more characters for her to choose from are art only (`feature/guides`,
+  after the MVP).
 
-## The language badges (decision D6, proposed)
+## The language badges (decision D6, agreed 2026-11-24)
 
 Every letter, word and voice line shows its language by a colour **and** a
 shape, never by colour alone:
@@ -93,7 +96,7 @@ shape, never by colour alone:
 
 Badges are 48–64 px on cards, 30–40 px in bubbles and the parent grid.
 Text on them is decoration: a child who can't read still tells a star from
-a planet. Small flags inside may come later if the human prefers (D6).
+a planet. No flags (D6).
 
 ## Rules of the look
 

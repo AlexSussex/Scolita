@@ -86,6 +86,7 @@ Each brief file therefore reads, top to bottom:
 | `feature/domain-music` | Idea (PRD §3.10): instruments, high and low, rhythm, a rainbow xylophone; a large change, the human agrees the Design note first | — |
 | `feature/domain-numbers` | Idea (PRD §3.10): counting stars, numbers 0–20 in both languages | — |
 | `feature/portrait` | Idea: portrait as well as landscape | — |
+| `feature/guides` | Idea (D5, 2026-11-24): more guides for her to choose from beside the unicorn and the cat co-pilot, chosen per profile; each new guide is art only (its poses and moods), since `look` builds the guide as data | — |
 | `feature/ios` | Idea: needs a Mac and Apple's developer programme | — |
 
 ## In flight

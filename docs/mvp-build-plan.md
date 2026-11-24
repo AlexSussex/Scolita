@@ -54,7 +54,7 @@ accepted: a bigger APK (about 40–60 MB against 15) and a slower first start
 | Anchor language (D1) | **Answered 2026-11-24:** Romanian first, English beside it, both on | English first would suit a child stronger in English; the order is data, so it can switch |
 | Letter case (D2) | **Answered 2026-11-24:** lower case first to trace, capitals later in the same planet, both shown to read | Romanian abecedars show both together; upper case to trace comes right after |
 | Handwriting (D3) | **Answered 2026-11-24:** print and handwritten letters both in the MVP, print first in each lesson; joined words by hand | The MVP grows by one brief (`handwriting`) and one activity kind (`TraceWord`) |
-| Voices (D4) | You record the Romanian sounds and words; the English ones too, or the tablet's voice until someone records them | All system voice is quicker but poor for pure sounds ("m" said as "em") |
+| Voices (D4) | **Answered for now, 2026-11-24:** the tablet's voice for everything; the family records later, in batch sessions | All system voice is quicker but poor for pure sounds ("m" said as "em") |
 | Tracing check | Own stroke-corridor check in Core (start, direction, coverage, and the entry, exit and joins of handwritten letters) | A handwriting-recognition library would need the internet or a large model |
 | Content editing | CSV + importer | A custom editor window is nicer but costs a brief |
 | Rewards | Stars, stickers, trails | Coins and a shop would tempt "earning" over learning |
@@ -164,18 +164,25 @@ decisions" (the details are in `local/todo/03-decisions.md`).
 - **D3. Handwriting** — *answered 2026-11-24:* handwritten letters and
   joined words by hand are in the MVP (step 7), in the Romanian school's
   "litere de mână" for both languages.
-- **D4. Whose voices** — who records Romanian and English. Needed by step 15.
-- **D5. The mascot** — a unicorn astronaut (recommended, named by her),
-  with her purple cat from SeliSnake as a co-pilot or not. Needed by step 16.
-- **D6. The language badges** — the colours and shapes (and whether to use
-  small flags). Needed by step 5.
-- **D7. Where the art comes from** — agents draw it, AI image tools, her
-  own drawings, or a mix (as SeliSnake). Needed by step 16.
-- **D8. The session limit default** — off (recommended), 10, 15 or 20
-  minutes. Needed by step 13.
-- **D9. Profiles** — the avatars to choose from (with her), and whether the
-  app greets each child by name with the tablet's voice ("Bună, …!").
-  Needed by step 14.
+- **D4. Whose voices** — *answered for now, 2026-11-24:* the tablet's voice
+  for every line to start with; the family (the human and her mother)
+  will record later, once the recording is made quick (batch sessions, not
+  one file per line). Who records which language, and British or American
+  English, are still open (British assumed). Needed by step 15.
+- **D5. The mascot** — *answered 2026-11-24:* the unicorn astronaut, named
+  by her, with her purple cat from SeliSnake as the co-pilot. The guide is
+  built as data, so more characters to choose from can come later as art
+  only (`feature/guides`, after the MVP). Needed by step 16.
+- **D6. The language badges** — *answered 2026-11-24:* Romanian a gold star
+  "RO", English a blue ringed planet "EN", no flags. Needed by step 5.
+- **D7. Where the art comes from** — *answered 2026-11-24:* agents draw it
+  in the shaded 2D style, AI image tools where they help, and some of her
+  own drawings turned into stickers. Needed by step 16.
+- **D8. The session limit default** — *answered 2026-11-24:* off, set by
+  the parent (10, 15 or 20 minutes). Needed by step 13.
+- **D9. Profiles** — *answered 2026-11-24:* the 14 avatars of design screen
+  11 (she picks hers and may swap any), and each child greeted by name
+  with the tablet's voice ("Bună, {name}!"). Needed by step 14.
 
 ## Built to switch later — the five seams
 
