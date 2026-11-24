@@ -15,7 +15,7 @@ MonoBehaviour:
   id: en-line-two-hint-show
   language: en
   kind: line
-  text: Here is the right planet. Take the picture there!
+  text: Look, this is the right planet. Take the picture there!
   clip: 
   status: 
   retired: 0

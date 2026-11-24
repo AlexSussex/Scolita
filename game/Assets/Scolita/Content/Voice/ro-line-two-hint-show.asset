@@ -15,7 +15,7 @@ MonoBehaviour:
   id: ro-line-two-hint-show
   language: ro
   kind: line
-  text: "Uite planeta potrivit\u0103. Du poza acolo!"
+  text: "Uite, aceasta este planeta potrivit\u0103. Du poza acolo!"
   clip: 
   status: 
   retired: 0

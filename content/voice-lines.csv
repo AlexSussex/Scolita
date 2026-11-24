@@ -270,8 +270,8 @@ ro-line-two-hint-badges,ro,line,"Planeta cu stea este pentru română, iar plane
 en-line-two-hint-badges,en,line,"The planet with the star is for Romanian, and the planet with the ring is for English.",,,,hint
 ro-line-two-hint-tap,ro,line,Atinge planetele ca să le auzi.,,,,hint
 en-line-two-hint-tap,en,line,Tap the planets to hear them.,,,,hint
-ro-line-two-hint-show,ro,line,Uite planeta potrivită. Du poza acolo!,,,,answer shown: the right planet glows; 'potrivită' agrees with planeta (feminine); check
-en-line-two-hint-show,en,line,Here is the right planet. Take the picture there!,,,,answer shown: the right planet glows
+ro-line-two-hint-show,ro,line,"Uite, aceasta este planeta potrivită. Du poza acolo!",,,,answer shown: the right planet glows; 'potrivită' agrees with planeta (feminine); check
+en-line-two-hint-show,en,line,"Look, this is the right planet. Take the picture there!",,,,answer shown: the right planet glows
 ro-line-twins,ro,line,"Unește cuvintele care seamănă: unul în română, unul în engleză.",,,,
 en-line-twins,en,line,"Join the words that are alike: one in Romanian, one in English.",,,,
 ro-line-twins-done,ro,line,Sunt gemeni!,,,,
