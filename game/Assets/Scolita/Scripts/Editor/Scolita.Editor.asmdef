@@ -1,0 +1,22 @@
+{
+    "name": "Scolita.Editor",
+    "rootNamespace": "Scolita.Editor",
+    "references": [
+        "Scolita.Core",
+        "Scolita.Content",
+        "Scolita.Game",
+        "Scolita.UI",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
