@@ -80,6 +80,55 @@ _Kept by `letters` while the brief is in flight._
 - **Design note** below (a medium change: three activity kinds). Nothing in it needs the
   human before code; the lines to check are listed under "For the human".
 
+### Core slice (pushed, see the hashes below)
+
+- `content:` `ro-a` and `en-a` lose `LetterHunt` and `FirstSound`; `ro-m` and `en-m` hunt and
+  pick m among a only; `two-hint-show` added (**the human's rule, 2026-11-24: wrong choices are
+  only taught letters**, as `lesson-engine` did for `ListenAndPick`). Two EditMode tests that read
+  planet 1's steps travel with it (`CurriculumAssetsTests`, `LessonVoiceLinesTests`), so the commit
+  passes on its own.
+- `core:` the three kinds' rules, the round's `Subject` / `StateOf` / `Current`,
+  `ActivityAnswer.Drop`, `HintCue.TwinkleAnswers`, `LetterHuntTuning` in `LearningRules`, the
+  `stretched` voice line kind, the validator's rules, with their EditMode tests.
+  `LearningRulesAsset.cs` (Game) travels with it: the constructor it calls changed, and each commit
+  must compile.
+- `build:` the recording kit plans stretched words.
+- `content:` the six stretched lines of planet 1's `FirstSound` words.
+- `core:` a `FirstSound` word needs its stretched line (after the lines exist, so every commit passes).
+- `content:` `content/README.md` describes the stretched lines and the steps' letters.
+- The fresh-eyes review's fixes (below): `core:`, `content:` (the planet hint reworded), `game:` (the
+  hunt numbers written into `LearningRules.asset`).
+
+### Fresh-eyes review of the Core slice (2026-11-24)
+
+A second agent that didn't write it read `a21ca62..abacfdf` against AGENTS.md, this note and
+`lesson-engine`'s conventions. No blockers; it found the rules true to the note, the ladder still
+owned by `LessonRun`, nothing allocated per answer (the `Dictionary<ContentId, …>` lookups don't
+box), Core free of Unity, the commit order sound and the new kind safely stored as its code. Its
+12 findings, and what was done:
+
+1. **`ListenAndPick` and `MeetLetter` ignored the gesture:** both now refuse a `Drop` (tests);
+   every kind refuses the gestures it doesn't take, so `tracing`'s stroke is never misread.
+2. **The hunt numbers weren't in `LearningRules.asset`:** written in a `game:` commit, checked by
+   `LearningRulesAssetTests`.
+3. **The tablet's voice would read "t-t-tata" as letter names:** a stretched line without a clip is
+   said as the word's first sound, a pause, then the word (`VoicePlanner`, as slow words are said
+   from their sounds; `TestSpeak_StretchedWordFromItsFirstSound`). The bubble still shows
+   "t-t-tata". The first letter is found by `WordStarts` (moved out of `FirstSoundRules`, shared).
+4. **`LearningRules`' constructor grows with `tracing`'s:** pushed early; `tracing` adds its tuning
+   object after `letterHunt`, and tests build rules with `TestLearningRules` (relayed to the lead).
+5. **A missing stretched line fell back silently:** the factory now throws (the validator makes it
+   impossible).
+6. **8 to 12 stars:** `LetterHuntTuning` refuses fewer than 8 (`FewestStars`), the asset's range too.
+7. **`Round.Answer` went stale in `LetterHunt`:** it now points at a star still to find.
+8. **Two commits each touch two areas:** kept, so every commit compiles and passes (recorded above).
+9. **The note's names:** updated to `LearningRules.LetterHunt.{Stars, RightStars, FastestSpeed}`.
+10. **`TwoSounds` validator gaps:** the same word twice is refused now; whether the letter is taught
+    in both tracks by then is a follow-up (`en-a` follows `ro-a`, so it holds today).
+11. **Test names:** `TestAnswer_HintThenShowThroughTheRun`.
+12. **Romanian:** reworded to "Uite, aceasta este planeta potrivită. Du poza acolo!", like
+    `pick-hint-show` (English: "Look, this is the right planet. Take the picture there!").
+
 ### Design note (medium change: three activity kinds)
 
 #### In plain words
@@ -123,7 +172,7 @@ _Kept by `letters` while the brief is in flight._
   picture let go on a planet. A tap on a planet is hearing it, never an answer.
 - **`HintCue.TwinkleAnswers`**: the remaining right choices twinkle (`LetterHunt`'s hint).
 - **`LetterHuntRules`** (`ro-m`: `m a`): the step's first letter is the one to find, its others the
-  wrong ones (all taught). `LearningRules.HuntStars` stars (10), `HuntRightStars` (4) with the
+  wrong ones (all taught). `LearningRules.LetterHunt.Stars` stars (10), `RightStars` (4) with the
   letter, half of them capitals; the others spread over the other letters, alternating the case;
   shuffled by `IRandom`. Each right star is a part (`Right`, the last `Done`), said with its sound;
   a popped star tapped again is `Neutral`. Instruction: `hunt` + `hunt-capitals`; prompt: `hunt`,
@@ -143,13 +192,15 @@ _Kept by `letters` while the brief is in flight._
   Instruction: `two-same-letter` + `two-tap`; prompt: `two-tap`, then the word in her hand. Hints:
   `two-hint-again` + both sounds, then `two-hint-start` + the word, then `two-hint-badges`; shown:
   the planet glows, `two-hint-show` (new).
+  - Every kind refuses the gestures it doesn't take (a `Drop` on `ListenAndPick`, say), so a new
+    gesture (`tracing`'s stroke) is never misread.
   - **The language it speaks:** a `TwoSounds` step is in both languages, but its instructions are
     in its lesson's language (`en-a`: English), or in Romanian (D1, the anchor) in a `both` lesson.
     `IActivityRules.Language` becomes "the language it speaks"; each choice keeps its own.
-- **`ActivityRulesFactory`**: three lines. **`LearningRules`** gains `HuntStars`,
-  `HuntRightStars` and `HuntStarSpeed` (the fastest a star drifts, in the lesson screen's
-  1280 × 800 reference pixels per second), checked on creation (at most 12 stars, at least one
-  right and one wrong).
+- **`ActivityRulesFactory`**: three lines. **`LearningRules`** gains `LetterHunt`, a
+  `LetterHuntTuning` with `Stars`, `RightStars` and `FastestSpeed` (the fastest a star drifts, in
+  the lesson screen's 1280 × 800 reference pixels per second), checked on creation (8 to 12 stars,
+  at least one right and one wrong).
 - **Content (`ActivityKinds`, `StepRules`):**
   - `LetterHunt` and `FirstSound` set `LettersAreChoices` (taught, each once); `LetterHunt` takes
     2–3 letters (it needs a wrong one).
@@ -159,7 +210,9 @@ _Kept by `letters` while the brief is in flight._
     kit beside the slow words (`RecordingSessionPlanner`, `RecordingScriptPage`,
     `VoiceClipStandard`). It is an additive code in an existing column, like `slow`: no change to
     the model's shape (the `{stretched}` slot and `VoiceSlot.Stretched` exist already). The
-    fresh-eyes review covers it.
+    fresh-eyes review covers it. Until a stretched line is recorded, the voice says the word's
+    first sound, a pause, then the word (as a slow word is said from its sounds): the tablet's
+    voice can't hold a sound and would read "t-t-tata" as letter names.
   - `TwoSounds` gets the item rule `SortsByTheLettersTwoSounds`: its letter's sounds differ, its
     words are in both languages and each starts with the letter. Broken-CSV tests for each.
   - Each kind's hint lines are listed in `ActivityKinds`, so the validator checks them in both
@@ -208,8 +261,8 @@ with other choices once the content gives steps those items. `FirstSound` is let
 
 #### For the human (lines to check)
 
-- **New:** "Uite planeta potrivită. Du poza acolo!" / "Here is the right planet. Take the
-  picture there!" (`two-hint-show`).
+- **New:** "Uite, aceasta este planeta potrivită. Du poza acolo!" / "Look, this is the right
+  planet. Take the picture there!" (`two-hint-show`, worded like `pick-hint-show`).
 - **The stretched words:** a sound that can be held is held ("mmmama", "mmmoon"); one that can't
   (t, p) is bounced, as phonics teachers do ("t-t-tata", "p-p-pat", "t-t-tiger"). Recorded clips
   will replace the tablet's voice here; it may say these oddly until then.
