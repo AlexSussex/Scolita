@@ -15,7 +15,7 @@ namespace Scolita.Core.Activities
     /// right when the beats equal the word's syllables (<see cref="ActivityRound.Places"/>, from the
     /// content: ma-ma 2, pe-pe-ne 3); another count is a miss, and the beats start again. A miss says the
     /// word in syllables; the answer shown says them again while the view draws one empty circle per
-    /// syllable for her to fill.
+    /// syllable for her to fill (<see cref="HintCue.ShowPlaces"/>).
     /// </summary>
     public sealed class SyllablesRules : IActivityRules
     {
@@ -25,7 +25,10 @@ namespace Scolita.Core.Activities
         /// <summary>The index of the tick (she has finished) in the round's choices.</summary>
         public const int Tick = 1;
 
-        /// <summary>The most beats counted (the drum's row of dots); taps beyond it are not counted.</summary>
+        /// <summary>
+        /// The most beats the drum's row of dots shows; one more is counted (so too many beats for the longest word
+        /// is still a miss), and taps beyond it are not.
+        /// </summary>
         public const int MostBeats = ActivityLimits.MostSyllables;
 
         private readonly VoiceSequence[] hints;
@@ -121,13 +124,13 @@ namespace Scolita.Core.Activities
         /// <inheritdoc/>
         public ActivityHint AnswerShown()
         {
-            return new ActivityHint(shown, HintCue.GlowAnswer, -1);
+            return new ActivityHint(shown, HintCue.ShowPlaces, -1);
         }
 
         private AnswerVerdict Beat()
         {
             Response = null;
-            if (Round.PlacesFilled < MostBeats)
+            if (Round.PlacesFilled <= MostBeats)
             {
                 Round.SetPlacesFilled(Round.PlacesFilled + 1);
             }

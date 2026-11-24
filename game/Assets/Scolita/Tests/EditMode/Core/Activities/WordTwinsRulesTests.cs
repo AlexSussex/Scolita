@@ -45,8 +45,9 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests that a tap says a word and puts it in play (its partner the answer), that a tap on a word of
-        /// the other column joins them, and that partners stay joined with the line about which they are.
+        /// Tests that a tap says a word and puts it in play (its partner the answer), that a tap on its partner
+        /// joins them while a tap on another word only says that one (she may be listening: never a miss), and that
+        /// partners stay joined with the line about which they are.
         /// </summary>
         [Test]
         public void TestJudge_TapThenTapJoins()
@@ -58,7 +59,12 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(SequenceLines.Of(rules.Response), Is.EqualTo(new[] { "ro-word-pat" }));
             Assert.That(rules.Round.Current, Is.EqualTo(0));
             Assert.That(rules.Round.Answer, Is.EqualTo(2));
-            Assert.That(rules.Judge(ActivityAnswer.Tap(1)), Is.EqualTo(AnswerVerdict.Neutral), "the same column: another word in play");
+            Assert.That(rules.Judge(ActivityAnswer.Tap(3)), Is.EqualTo(AnswerVerdict.Neutral), "not its partner: heard, not a miss");
+            Assert.That(SequenceLines.Of(rules.Response), Is.EqualTo(new[] { "en-word-planet" }));
+            Assert.That(rules.Round.Current, Is.EqualTo(3));
+            Assert.That(rules.Judge(ActivityAnswer.Tap(2)), Is.EqualTo(AnswerVerdict.Neutral), "the same column: another word in play");
+            Assert.That(rules.Round.Current, Is.EqualTo(2));
+            Assert.That(rules.Judge(ActivityAnswer.Tap(1)), Is.EqualTo(AnswerVerdict.Neutral), "not its partner either");
             Assert.That(rules.Round.Current, Is.EqualTo(1));
             Assert.That(rules.Round.Answer, Is.EqualTo(3));
             Assert.That(rules.Judge(ActivityAnswer.Tap(3)), Is.EqualTo(AnswerVerdict.Right));
@@ -134,7 +140,8 @@ namespace Scolita.Tests.EditMode.Core.Activities
             run.Start();
 
             Assert.That(run.Answer(ActivityAnswer.Tap(0)).Outcome, Is.EqualTo(FeedbackOutcome.Neutral));
-            Assert.That(run.Answer(ActivityAnswer.Tap(3)).Outcome, Is.EqualTo(FeedbackOutcome.TryAgain));
+            Assert.That(run.Answer(ActivityAnswer.Tap(3)).Outcome, Is.EqualTo(FeedbackOutcome.Neutral), "listening is never a miss");
+            Assert.That(run.Answer(ActivityAnswer.Join(0, 3)).Outcome, Is.EqualTo(FeedbackOutcome.TryAgain));
             StepFeedback shown = run.Answer(ActivityAnswer.Join(0, 3));
             Assert.That(shown.Outcome, Is.EqualTo(FeedbackOutcome.ShowAnswer));
             Assert.That(shown.Hint.Choice, Is.EqualTo(2));

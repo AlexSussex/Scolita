@@ -22,6 +22,12 @@ namespace Scolita.Core.Activities
         SpellOut,
 
         /// <summary>
+        /// One empty place is shown for each of the round's places still to fill (<see cref="ActivityRound.Places"/>):
+        /// <c>Syllables</c>' circles, one per syllable, for her to fill.
+        /// </summary>
+        ShowPlaces,
+
+        /// <summary>
         /// The pictures of the choice in play (<see cref="ActivityRound.Current"/>) and of its partner
         /// (<see cref="ActivityRound.Answer"/>) appear (<c>WordTwins</c>).
         /// </summary>

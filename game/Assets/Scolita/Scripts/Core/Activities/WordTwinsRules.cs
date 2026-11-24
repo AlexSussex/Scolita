@@ -12,12 +12,14 @@ namespace Scolita.Core.Activities
     /// words in one column (the round's first choices, <see cref="RomanianWords"/> of them) and their
     /// English partners in the other, each column shuffled on its own; a word she can read is written
     /// (<see cref="ActivityChoiceLook.Word"/>), a listen-only one is its picture. A tap on a word says it and
-    /// puts it in play (<see cref="ActivityRound.Current"/>, its partner <see cref="ActivityRound.Answer"/>);
-    /// a tap on a word of the other column, or a line from one word to another
-    /// (<see cref="AnswerGesture.Join"/>), joins them. Partners (twins, or false friends) stay joined
+    /// puts it in play (<see cref="ActivityRound.Current"/>, its partner <see cref="ActivityRound.Answer"/>); a tap
+    /// on its partner then joins them, while a tap on another word only says that one and puts it in play (she
+    /// may be listening, so it is never a miss). A line from one word to another of the other column
+    /// (<see cref="AnswerGesture.Join"/>) joins them. Partners (twins, or false friends) stay joined
     /// (<see cref="ActivityRound.PlacedOn"/>) with a line about which they are: each pair is one part of the
-    /// step. Any other join is a miss: the pictures of the word in play and of its partner appear; the answer
-    /// shown glows the partner. It speaks the language of its lesson (<see cref="Language"/>), while each word
+    /// step. A line to a word that isn't the partner is a miss: the pictures of the word in play and of its
+    /// partner appear; the answer shown glows the partner. A line within one column, or to a joined word, is no
+    /// answer. It speaks the language of its lesson (<see cref="Language"/>), while each word
     /// has its own.
     /// </summary>
     public sealed class WordTwinsRules : IActivityRules
@@ -129,7 +131,7 @@ namespace Scolita.Core.Activities
             }
 
             int word = answer.Choice;
-            if (Round.StateOf(word) != ChoiceState.Done && CanJoin(Round.Current, word))
+            if (Round.StateOf(word) != ChoiceState.Done && CanJoin(Round.Current, word) && PartnerOf(Round.Current) == word)
             {
                 return Joined(Round.Current, word);
             }

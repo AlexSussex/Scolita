@@ -40,7 +40,8 @@ namespace Scolita.Core.Content
         PicturesDiffer,
 
         /// <summary>
-        /// The words pair up: each one's twin or false friend is in the step, as many Romanian words as English
+        /// The words pair up, one to one: each one's twin or false friend (never both) is in the step, a false friend
+        /// is one she can read, each word is listed once, and there are as many Romanian words as English
         /// (<see cref="ActivityKind.WordTwins"/>; at most <see cref="ActivityLimits.MostPairs"/> pairs, by its count of words).
         /// </summary>
         PairsUp

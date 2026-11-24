@@ -29,7 +29,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             IActivityRules mama = Create(curriculum, steps[0]);
             IActivityRules apa = Create(curriculum, steps[1]);
             IActivityRules planet = Create(curriculum, Steps(curriculum, "en-words-1")[0]);
-            SyllablesRules pepene = new SyllablesRules(Pepene(), Language.Romanian);
+            SyllablesRules pepene = new SyllablesRules(Made("ro-pepene", "pe-pe-ne"), Language.Romanian);
 
             Assert.That(mama.Round.Places, Is.EqualTo(2));
             Assert.That(apa.Round.Places, Is.EqualTo(2));
@@ -66,7 +66,8 @@ namespace Scolita.Tests.EditMode.Core.Activities
 
         /// <summary>
         /// Tests that too few or too many beats are a miss that starts the beats again, that beats past
-        /// <see cref="SyllablesRules.MostBeats"/> aren't counted, and that only taps on the drum and the tick are
+        /// <see cref="SyllablesRules.MostBeats"/> and one more aren't counted (so 7 beats for 6 syllables is still a
+        /// miss), and that only taps on the drum and the tick are
         /// taken.
         /// </summary>
         [Test]
@@ -83,8 +84,16 @@ namespace Scolita.Tests.EditMode.Core.Activities
                 rules.Judge(ActivityAnswer.Tap(SyllablesRules.Drum));
             }
 
-            Assert.That(rules.Round.PlacesFilled, Is.EqualTo(SyllablesRules.MostBeats));
+            Assert.That(rules.Round.PlacesFilled, Is.EqualTo(SyllablesRules.MostBeats + 1));
             Assert.That(rules.Judge(ActivityAnswer.Tap(SyllablesRules.Tick)), Is.EqualTo(AnswerVerdict.Wrong));
+            SyllablesRules longest = new SyllablesRules(Made("ro-mamamamamama", "ma-ma-ma-ma-ma-ma"), Language.Romanian);
+            longest.Begin(new FixedRandom());
+            for (int beat = 0; beat < SyllablesRules.MostBeats + 1; beat++)
+            {
+                longest.Judge(ActivityAnswer.Tap(SyllablesRules.Drum));
+            }
+
+            Assert.That(longest.Judge(ActivityAnswer.Tap(SyllablesRules.Tick)), Is.EqualTo(AnswerVerdict.Wrong), "7 beats for 6 syllables");
             Assert.That(() => rules.Judge(ActivityAnswer.Tap(2)), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => rules.Judge(ActivityAnswer.Drop(SyllablesRules.Drum)), Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
@@ -106,7 +115,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(SequenceLines.Of(rules.HintFor(3, ActivityAnswer.Tap(SyllablesRules.Tick)).Line),
                 Is.EqualTo(new[] { "ro-line-syll-hint-count", "ro-syllables-mama" }));
             ActivityHint shown = rules.AnswerShown();
-            Assert.That(shown.Cue, Is.EqualTo(HintCue.GlowAnswer));
+            Assert.That(shown.Cue, Is.EqualTo(HintCue.ShowPlaces));
             Assert.That(SequenceLines.Of(shown.Line), Is.EqualTo(new[] { "ro-syllables-mama", "ro-line-syll-hint-once" }));
             Assert.That(rules.Lines, Has.Member(first.Line).And.Member(shown.Line).And.Member(rules.Instruction));
         }
@@ -159,10 +168,10 @@ namespace Scolita.Tests.EditMode.Core.Activities
                 .ToArray();
         }
 
-        private static Word Pepene()
+        private static Word Made(string id, string syllables)
         {
-            return new Word(ContentId.Create("ro-pepene"), Language.Romanian, "pepene", null, new[] { "pe", "pe", "ne" },
-                ContentId.Create("watermelon"), true, default, default, false, default);
+            return new Word(ContentId.Create(id), Language.Romanian, syllables.Replace("-", string.Empty), null, syllables.Split('-'),
+                ContentId.Create("picture"), true, default, default, false, default);
         }
     }
 }

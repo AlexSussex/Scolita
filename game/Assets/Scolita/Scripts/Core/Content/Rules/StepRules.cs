@@ -67,7 +67,7 @@ namespace Scolita.Core.Content.Rules
             }
 
             if (needs.LettersAreChoices || needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds
-                || needs.ItemRules == ActivityItemRules.PicturesDiffer)
+                || needs.ItemRules == ActivityItemRules.PicturesDiffer || needs.ItemRules == ActivityItemRules.PairsUp)
             {
                 CheckChoicesOnce(step, problems);
             }
@@ -226,6 +226,18 @@ namespace Scolita.Core.Content.Rules
             {
                 problems.Error(step.Source, "a " + kind + " step's words pair up, and the twin or false friend of " + word.Id
                     + " isn't in the step (words.csv: twin, false_friend).");
+            }
+
+            foreach (Word word in words.Where(word => words.Any(other => other.Id == word.Twin) && words.Any(other => other.Id == word.FalseFriend)))
+            {
+                problems.Error(step.Source, "a " + kind + " step's words pair up one to one, and both the twin and the false friend of "
+                    + word.Id + " are in the step.");
+            }
+
+            foreach (Word word in words.Where(word => word.ListenOnly && words.Any(other => other.Id == word.FalseFriend)))
+            {
+                problems.Error(step.Source, "a " + kind + " step shows a false friend written (they are spelled the same), and "
+                    + word.Id + " is listen-only.");
             }
 
             int romanian = words.Count(word => word.Language == Language.Romanian);

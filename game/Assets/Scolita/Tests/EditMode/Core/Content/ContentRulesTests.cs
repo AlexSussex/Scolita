@@ -553,5 +553,26 @@ namespace Scolita.Tests.EditMode.Core.Content
             Assert.That(errors.Where(error => error.Source.Row == uneven).Select(error => error.Reason),
                 Has.None.Contains("ro-planeta"));
         }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>WordTwins</c> step that lists a word twice, one that holds
+        /// both a word's twin and its false friend (the pairs wouldn't be one to one), and a listen-only false friend
+        /// (false friends are spelled the same, so they are shown written).
+        /// </summary>
+        [Test]
+        public void TestCheck_WordTwinsPairOneToOne()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.Words, "ro-planeta,", "ro-planeta,ro,planet\u0103,,pla-ne-t\u0103,planet,yes,en-planet,en-mat,,");
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.Words, "en-mat,", "en-mat,en,mat,m a t,mat,mat,,,ro-planeta,,");
+            int twice = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "party,WordTwins,,,ro-planeta en-planet ro-planeta en-planet,,");
+            int both = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "party,WordTwins,,,ro-planeta en-planet en-mat,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, twice, "ro-planeta", "is listed more than once");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, both, "one to one", "both the twin and the false friend of ro-planeta");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, both, "false friend written", "ro-planeta is listen-only");
+        }
     }
 }
