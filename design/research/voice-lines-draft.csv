@@ -1,0 +1,585 @@
+id,language,kind,text,clip,planet,used_by,notes
+ro-sound-a,ro,sound,/a/,ro-sound-a.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-m,ro,sound,/m/,ro-sound-m.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-t,ro,sound,/t/,ro-sound-t.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-p,ro,sound,/p/,ro-sound-p.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-s,ro,sound,/s/,ro-sound-s.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-i,ro,sound,/i/,ro-sound-i.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-n,ro,sound,/n/,ro-sound-n.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-o,ro,sound,/o/,ro-sound-o.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-d,ro,sound,/d/,ro-sound-d.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-sound-e,ro,sound,/e/,ro-sound-e.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+ro-name-a,ro,name,a,ro-name-a.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-m,ro,name,me,ro-name-m.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-t,ro,name,te,ro-name-t.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-p,ro,name,pe,ro-name-p.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-s,ro,name,se,ro-name-s.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-i,ro,name,i,ro-name-i.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-n,ro,name,ne,ro-name-n.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-o,ro,name,o,ro-name-o.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-d,ro,name,de,ro-name-d.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+ro-name-e,ro,name,e,ro-name-e.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+en-sound-a,en,sound,/æ/,en-sound-a.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-m,en,sound,/m/,en-sound-m.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-t,en,sound,/t/,en-sound-t.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-p,en,sound,/p/,en-sound-p.ogg,1,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-s,en,sound,/s/,en-sound-s.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-i,en,sound,/ɪ/,en-sound-i.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-n,en,sound,/n/,en-sound-n.ogg,2,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-o,en,sound,/ɒ/,en-sound-o.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-d,en,sound,/d/,en-sound-d.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-sound-e,en,sound,/e/,en-sound-e.ogg,3,"MeetLetter, ListenAndPick, FirstSound, BuildWord, spliced {x}","pure sound, no added vowel"
+en-name-a,en,name,ay,en-name-a.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-m,en,name,em,en-name-m.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-t,en,name,tee,en-name-t.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-p,en,name,pee,en-name-p.ogg,1,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-s,en,name,ess,en-name-s.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-i,en,name,eye,en-name-i.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-n,en,name,en,en-name-n.ogg,2,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-o,en,name,oh,en-name-o.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-d,en,name,dee,en-name-d.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+en-name-e,en,name,ee,en-name-e.ogg,3,MeetLetter (the name button),the alphabet name; see the note on names
+ro-word-mama,ro,word,mama,ro-word-mama.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-mama,ro,slow,m-a-m-a,ro-slow-mama.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-mama,ro,syllables,ma-ma,ro-syllables-mama.ogg,1,Syllables,
+ro-word-tata,ro,word,tata,ro-word-tata.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-tata,ro,slow,t-a-t-a,ro-slow-tata.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-tata,ro,syllables,ta-ta,ro-syllables-tata.ogg,1,Syllables,
+ro-word-pat,ro,word,pat,ro-word-pat.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en pat
+ro-slow-pat,ro,slow,p-a-t,ro-slow-pat.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pat,ro,syllables,pat,ro-syllables-pat.ogg,1,Syllables,
+ro-word-apa,ro,word,apa,ro-word-apa.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-apa,ro,slow,a-p-a,ro-slow-apa.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-apa,ro,syllables,a-pa,ro-syllables-apa.ogg,1,Syllables,
+ro-word-pata,ro,word,pata,ro-word-pata.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-pata,ro,slow,p-a-t-a,ro-slow-pata.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pata,ro,syllables,pa-ta,ro-syllables-pata.ogg,1,Syllables,
+ro-word-papa,ro,word,papa,ro-word-papa.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",child talk (DEX: în graiul copiilor)
+ro-slow-papa,ro,slow,p-a-p-a,ro-slow-papa.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-papa,ro,syllables,pa-pa,ro-syllables-papa.ogg,1,Syllables,
+ro-word-pa,ro,word,pa,ro-word-pa.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",interjection
+ro-slow-pa,ro,slow,p-a,ro-slow-pa.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pa,ro,syllables,pa,ro-syllables-pa.ogg,1,Syllables,
+ro-word-tam-tam,ro,word,tam-tam,ro-word-tam-tam.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-tam-tam,ro,slow,t-a-m-t-a-m,ro-slow-tam-tam.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-tam-tam,ro,syllables,tam-tam,ro-syllables-tam-tam.ogg,1,Syllables,
+ro-word-am,ro,word,am,ro-word-am.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+ro-slow-am,ro,slow,a-m,ro-slow-am.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-am,ro,syllables,am,ro-syllables-am.ogg,1,Syllables,
+ro-word-nas,ro,word,nas,ro-word-nas.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-nas,ro,slow,n-a-s,ro-slow-nas.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-nas,ro,syllables,nas,ro-syllables-nas.ogg,2,Syllables,
+ro-word-masa,ro,word,masa,ro-word-masa.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-masa,ro,slow,m-a-s-a,ro-slow-masa.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-masa,ro,syllables,ma-sa,ro-syllables-masa.ogg,2,Syllables,
+ro-word-pian,ro,word,pian,ro-word-pian.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en piano (listen only)
+ro-slow-pian,ro,slow,p-i-a-n,ro-slow-pian.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pian,ro,syllables,pi-an,ro-syllables-pian.ogg,2,Syllables,
+ro-word-nai,ro,word,nai,ro-word-nai.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",diphthong ai
+ro-slow-nai,ro,slow,n-a-i,ro-slow-nai.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-nai,ro,syllables,nai,ro-syllables-nai.ogg,2,Syllables,
+ro-word-pin,ro,word,pin,ro-word-pin.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en pin
+ro-slow-pin,ro,slow,p-i-n,ro-slow-pin.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pin,ro,syllables,pin,ro-syllables-pin.ogg,2,Syllables,
+ro-word-sat,ro,word,sat,ro-word-sat.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en sat
+ro-slow-sat,ro,slow,s-a-t,ro-slow-sat.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-sat,ro,syllables,sat,ro-syllables-sat.ogg,2,Syllables,
+ro-word-ananas,ro,word,ananas,ro-word-ananas.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-ananas,ro,slow,a-n-a-n-a-s,ro-slow-ananas.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-ananas,ro,syllables,a-na-nas,ro-syllables-ananas.ogg,2,Syllables,
+ro-word-mami,ro,word,mami,ro-word-mami.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables","familiar, not in DOOM 3"
+ro-slow-mami,ro,slow,m-a-m-i,ro-slow-mami.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-mami,ro,syllables,ma-mi,ro-syllables-mami.ogg,2,Syllables,
+ro-word-tati,ro,word,tati,ro-word-tati.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables","familiar, not in DOOM 3"
+ro-slow-tati,ro,slow,t-a-t-i,ro-slow-tati.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-tati,ro,syllables,ta-ti,ro-syllables-tati.ogg,2,Syllables,
+ro-word-nani,ro,word,nani,ro-word-nani.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",familiar (DOOM 3: fam.)
+ro-slow-nani,ro,slow,n-a-n-i,ro-slow-nani.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-nani,ro,syllables,na-ni,ro-syllables-nani.ogg,2,Syllables,
+ro-word-pas,ro,word,pas,ro-word-pas.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-pas,ro,slow,p-a-s,ro-slow-pas.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pas,ro,syllables,pas,ro-syllables-pas.ogg,2,Syllables,
+ro-word-spin,ro,word,spin,ro-word-spin.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-spin,ro,slow,s-p-i-n,ro-slow-spin.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-spin,ro,syllables,spin,ro-syllables-spin.ogg,2,Syllables,
+ro-word-sita,ro,word,sita,ro-word-sita.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-sita,ro,slow,s-i-t-a,ro-slow-sita.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-sita,ro,syllables,si-ta,ro-syllables-sita.ogg,2,Syllables,
+ro-word-ana,ro,word,Ana,ro-word-ana.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",name
+ro-slow-ana,ro,slow,a-n-a,ro-slow-ana.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-ana,ro,syllables,A-na,ro-syllables-ana.ogg,2,Syllables,
+ro-word-pom,ro,word,pom,ro-word-pom.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-pom,ro,slow,p-o-m,ro-slow-pom.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pom,ro,syllables,pom,ro-syllables-pom.ogg,3,Syllables,
+ro-word-pod,ro,word,pod,ro-word-pod.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en pod
+ro-slow-pod,ro,slow,p-o-d,ro-slow-pod.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pod,ro,syllables,pod,ro-syllables-pod.ogg,3,Syllables,
+ro-word-dinte,ro,word,dinte,ro-word-dinte.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-dinte,ro,slow,d-i-n-t-e,ro-slow-dinte.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-dinte,ro,syllables,din-te,ro-syllables-dinte.ogg,3,Syllables,
+ro-word-stea,ro,word,stea,ro-word-stea.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",diphthong ea
+ro-slow-stea,ro,slow,s-t-e-a,ro-slow-stea.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-stea,ro,syllables,stea,ro-syllables-stea.ogg,3,Syllables,
+ro-word-mop,ro,word,mop,ro-word-mop.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en mop
+ro-slow-mop,ro,slow,m-o-p,ro-slow-mop.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-mop,ro,syllables,mop,ro-syllables-mop.ogg,3,Syllables,
+ro-word-dop,ro,word,dop,ro-word-dop.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-dop,ro,slow,d-o-p,ro-slow-dop.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-dop,ro,syllables,dop,ro-syllables-dop.ogg,3,Syllables,
+ro-word-pepene,ro,word,pepene,ro-word-pepene.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-pepene,ro,slow,p-e-p-e-n-e,ro-slow-pepene.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pepene,ro,syllables,pe-pe-ne,ro-syllables-pepene.ogg,3,Syllables,
+ro-word-domino,ro,word,domino,ro-word-domino.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en domino (listen only)
+ro-slow-domino,ro,slow,d-o-m-i-n-o,ro-slow-domino.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-domino,ro,syllables,do-mi-no,ro-syllables-domino.ogg,3,Syllables,
+ro-word-desen,ro,word,desen,ro-word-desen.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-desen,ro,slow,d-e-s-e-n,ro-slow-desen.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-desen,ro,syllables,de-sen,ro-syllables-desen.ogg,3,Syllables,
+ro-word-dans,ro,word,dans,ro-word-dans.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-dans,ro,slow,d-a-n-s,ro-slow-dans.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-dans,ro,syllables,dans,ro-syllables-dans.ogg,3,Syllables,
+ro-word-nota,ro,word,nota,ro-word-nota.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-nota,ro,slow,n-o-t-a,ro-slow-nota.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-nota,ro,syllables,no-ta,ro-syllables-nota.ogg,3,Syllables,
+ro-word-ponei,ro,word,ponei,ro-word-ponei.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",diphthong ei; twin-ish: en pony (listen only)
+ro-slow-ponei,ro,slow,p-o-n-e-i,ro-slow-ponei.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-ponei,ro,syllables,po-nei,ro-syllables-ponei.ogg,3,Syllables,
+ro-word-pisoi,ro,word,pisoi,ro-word-pisoi.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",diphthong oi
+ro-slow-pisoi,ro,slow,p-i-s-o-i,ro-slow-pisoi.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-pisoi,ro,syllables,pi-soi,ro-syllables-pisoi.ogg,3,Syllables,
+ro-word-panda,ro,word,panda,ro-word-panda.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en panda (listen only)
+ro-slow-panda,ro,slow,p-a-n-d-a,ro-slow-panda.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-panda,ro,syllables,pan-da,ro-syllables-panda.ogg,3,Syllables,
+ro-word-piton,ro,word,piton,ro-word-piton.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-piton,ro,slow,p-i-t-o-n,ro-slow-piton.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-piton,ro,syllables,pi-ton,ro-syllables-piton.ogg,3,Syllables,
+ro-word-tenis,ro,word,tenis,ro-word-tenis.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en tennis (listen only)
+ro-slow-tenis,ro,slow,t-e-n-i-s,ro-slow-tenis.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-tenis,ro,syllables,te-nis,ro-syllables-tenis.ogg,3,Syllables,
+ro-word-sanie,ro,word,sanie,ro-word-sanie.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-sanie,ro,slow,s-a-n-i-e,ro-slow-sanie.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-sanie,ro,syllables,sa-ni-e,ro-syllables-sanie.ogg,3,Syllables,
+ro-word-patine,ro,word,patine,ro-word-patine.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+ro-slow-patine,ro,slow,p-a-t-i-n-e,ro-slow-patine.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-patine,ro,syllables,pa-ti-ne,ro-syllables-patine.ogg,3,Syllables,
+ro-word-mops,ro,word,mops,ro-word-mops.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en mops
+ro-slow-mops,ro,slow,m-o-p-s,ro-slow-mops.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-mops,ro,syllables,mops,ro-syllables-mops.ogg,3,Syllables,
+ro-word-nod,ro,word,nod,ro-word-nod.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: en nod
+ro-slow-nod,ro,slow,n-o-d,ro-slow-nod.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-nod,ro,syllables,nod,ro-syllables-nod.ogg,3,Syllables,
+ro-word-stop,ro,word,stop,ro-word-stop.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: en stop
+ro-slow-stop,ro,slow,s-t-o-p,ro-slow-stop.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-syllables-stop,ro,syllables,stop,ro-syllables-stop.ogg,3,Syllables,
+en-word-map,en,word,map,en-word-map.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-map,en,slow,m-a-p,en-slow-map.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-mat,en,word,mat,en-word-mat.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro mat
+en-slow-mat,en,slow,m-a-t,en-slow-mat.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-tap,en,word,tap,en-word-tap.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-tap,en,slow,t-a-p,en-slow-tap.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pat,en,word,pat,en-word-pat.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro pat
+en-slow-pat,en,slow,p-a-t,en-slow-pat.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-at,en,word,at,en-word-at.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-at,en,slow,a-t,en-slow-at.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-am,en,word,am,en-word-am.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-am,en,slow,a-m,en-slow-am.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pam,en,word,Pam,en-word-pam.ogg,1,"ReadAndMatch, BuildWord, TraceWord, Syllables",name
+en-slow-pam,en,slow,p-a-m,en-slow-pam.ogg,1,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pin,en,word,pin,en-word-pin.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro pin
+en-slow-pin,en,slow,p-i-n,en-slow-pin.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-sit,en,word,sit,en-word-sit.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-sit,en,slow,s-i-t,en-slow-sit.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-man,en,word,man,en-word-man.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-man,en,slow,m-a-n,en-slow-man.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-tin,en,word,tin,en-word-tin.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-tin,en,slow,t-i-n,en-slow-tin.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pan,en,word,pan,en-word-pan.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-pan,en,slow,p-a-n,en-slow-pan.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-ant,en,word,ant,en-word-ant.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-ant,en,slow,a-n-t,en-slow-ant.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-nap,en,word,nap,en-word-nap.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-nap,en,slow,n-a-p,en-slow-nap.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-sip,en,word,sip,en-word-sip.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-sip,en,slow,s-i-p,en-slow-sip.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-tip,en,word,tip,en-word-tip.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-tip,en,slow,t-i-p,en-slow-tip.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-sat,en,word,sat,en-word-sat.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro sat
+en-slow-sat,en,slow,s-a-t,en-slow-sat.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-in,en,word,in,en-word-in.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-in,en,slow,i-n,en-slow-in.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-it,en,word,it,en-word-it.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-it,en,slow,i-t,en-slow-it.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-is,en,word,is,en-word-is.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only; s says /z/
+en-slow-is,en,slow,i-s,en-slow-is.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-sam,en,word,Sam,en-word-sam.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",name
+en-slow-sam,en,slow,s-a-m,en-slow-sam.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-mint,en,word,mint,en-word-mint.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-mint,en,slow,m-i-n-t,en-slow-mint.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pants,en,word,pants,en-word-pants.ogg,2,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-pants,en,slow,p-a-n-t-s,en-slow-pants.ogg,2,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-dot,en,word,dot,en-word-dot.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-dot,en,slow,d-o-t,en-slow-dot.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pen,en,word,pen,en-word-pen.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-pen,en,slow,p-e-n,en-slow-pen.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-mop,en,word,mop,en-word-mop.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",twin: ro mop
+en-slow-mop,en,slow,m-o-p,en-slow-mop.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-ten,en,word,ten,en-word-ten.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-ten,en,slow,t-e-n,en-slow-ten.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pot,en,word,pot,en-word-pot.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-pot,en,slow,p-o-t,en-slow-pot.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-top,en,word,top,en-word-top.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-top,en,slow,t-o-p,en-slow-top.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-net,en,word,net,en-word-net.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-net,en,slow,n-e-t,en-slow-net.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-dad,en,word,dad,en-word-dad.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-dad,en,slow,d-a-d,en-slow-dad.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pet,en,word,pet,en-word-pet.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",
+en-slow-pet,en,slow,p-e-t,en-slow-pet.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pod,en,word,pod,en-word-pod.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro pod
+en-slow-pod,en,slow,p-o-d,en-slow-pod.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-nod,en,word,nod,en-word-nod.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",false friend: ro nod
+en-slow-nod,en,slow,n-o-d,en-slow-nod.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-on,en,word,on,en-word-on.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-on,en,slow,o-n,en-slow-on.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-not,en,word,not,en-word-not.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",reading only
+en-slow-not,en,slow,n-o-t,en-slow-not.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-tent,en,word,tent,en-word-tent.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-tent,en,slow,t-e-n-t,en-slow-tent.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-nest,en,word,nest,en-word-nest.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-nest,en,slow,n-e-s-t,en-slow-nest.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-pond,en,word,pond,en-word-pond.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-pond,en,slow,p-o-n-d,en-slow-pond.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-stop,en,word,stop,en-word-stop.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4); twin: ro stop
+en-slow-stop,en,slow,s-t-o-p,en-slow-stop.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-spot,en,word,spot,en-word-spot.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4)
+en-slow-spot,en,slow,s-p-o-t,en-slow-spot.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+en-word-mops,en,word,mops,en-word-mops.ogg,3,"ReadAndMatch, BuildWord, TraceWord, Syllables",adjacent consonants (Phase 4); false friend: ro mops
+en-slow-mops,en,slow,m-o-p-s,en-slow-mops.ogg,3,"BuildWord, ReadAndMatch hints",the word said sound by sound
+ro-word-avion,ro,word,avion,ro-word-avion.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter a; flying
+ro-syllables-avion,ro,syllables,a-vi-on,ro-syllables-avion.ogg,0,Syllables (listen only),
+ro-word-astronaut,ro,word,astronaut,ro-word-astronaut.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter a; space (word twin)
+ro-syllables-astronaut,ro,syllables,as-tro-na-ut,ro-syllables-astronaut.ogg,0,Syllables (listen only),
+ro-word-albină,ro,word,albină,ro-word-albină.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter a; animals
+ro-syllables-albină,ro,syllables,al-bi-nă,ro-syllables-albină.ogg,0,Syllables (listen only),
+ro-word-muzică,ro,word,muzică,ro-word-muzică.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter m; music
+ro-syllables-muzică,ro,syllables,mu-zi-că,ro-syllables-muzică.ogg,0,Syllables (listen only),
+ro-word-melc,ro,word,melc,ro-word-melc.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter m; animals
+ro-word-tobă,ro,word,tobă,ro-word-tobă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter t; music
+ro-syllables-tobă,ro,syllables,to-bă,ro-syllables-tobă.ogg,0,Syllables (listen only),
+ro-word-telescop,ro,word,telescop,ro-word-telescop.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter t; space (DOOM 3 also allows te-le-scop)
+ro-syllables-telescop,ro,syllables,te-les-cop,ro-syllables-telescop.ogg,0,Syllables (listen only),
+ro-word-planetă,ro,word,planetă,ro-word-planetă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; space
+ro-syllables-planetă,ro,syllables,pla-ne-tă,ro-syllables-planetă.ogg,0,Syllables (listen only),
+ro-word-pisică,ro,word,pisică,ro-word-pisică.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; animals (the standard word for kitty)
+ro-syllables-pisică,ro,syllables,pi-si-că,ro-syllables-pisică.ogg,0,Syllables (listen only),
+ro-word-soare,ro,word,soare,ro-word-soare.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter s; space
+ro-syllables-soare,ro,syllables,soa-re,ro-syllables-soare.ogg,0,Syllables (listen only),
+ro-word-saxofon,ro,word,saxofon,ro-word-saxofon.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter s; music
+ro-syllables-saxofon,ro,syllables,sa-xo-fon,ro-syllables-saxofon.ogg,0,Syllables (listen only),
+ro-word-inel,ro,word,inel,ro-word-inel.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter i; unicorns
+ro-syllables-inel,ro,syllables,i-nel,ro-syllables-inel.ogg,0,Syllables (listen only),
+ro-word-insulă,ro,word,insulă,ro-word-insulă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter i; Earth
+ro-syllables-insulă,ro,syllables,in-su-lă,ro-syllables-insulă.ogg,0,Syllables (listen only),
+ro-word-nor,ro,word,nor,ro-word-nor.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter n; sky
+ro-word-nucă,ro,word,nucă,ro-word-nucă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter n; food
+ro-syllables-nucă,ro,syllables,nu-că,ro-syllables-nucă.ogg,0,Syllables (listen only),
+ro-word-ochelari,ro,word,ochelari,ro-word-ochelari.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter o; home
+ro-syllables-ochelari,ro,syllables,o-che-lari,ro-syllables-ochelari.ogg,0,Syllables (listen only),
+ro-word-orologiu,ro,word,orologiu,ro-word-orologiu.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter o; home
+ro-syllables-orologiu,ro,syllables,o-ro-lo-giu,ro-syllables-orologiu.ogg,0,Syllables (listen only),
+ro-word-delfin,ro,word,delfin,ro-word-delfin.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter d; animals
+ro-syllables-delfin,ro,syllables,del-fin,ro-syllables-delfin.ogg,0,Syllables (listen only),
+ro-word-dinozaur,ro,word,dinozaur,ro-word-dinozaur.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter d; animals
+ro-syllables-dinozaur,ro,syllables,di-no-za-ur,ro-syllables-dinozaur.ogg,0,Syllables (listen only),
+ro-word-elefant,ro,word,elefant,ro-word-elefant.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter e; animals
+ro-syllables-elefant,ro,syllables,e-le-fant,ro-syllables-elefant.ogg,0,Syllables (listen only),
+ro-word-elicopter,ro,word,elicopter,ro-word-elicopter.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter e; flying
+ro-syllables-elicopter,ro,syllables,e-li-cop-ter,ro-syllables-elicopter.ogg,0,Syllables (listen only),
+ro-word-rachetă,ro,word,rachetă,ro-word-rachetă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter r; space (word twin)
+ro-syllables-rachetă,ro,syllables,ra-che-tă,ro-syllables-rachetă.ogg,0,Syllables (listen only),
+ro-word-unicorn,ro,word,unicorn,ro-word-unicorn.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter u; unicorns (word twin)
+ro-syllables-unicorn,ro,syllables,u-ni-corn,ro-syllables-unicorn.ogg,0,Syllables (listen only),
+ro-word-curcubeu,ro,word,curcubeu,ro-word-curcubeu.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter c; rainbows
+ro-syllables-curcubeu,ro,syllables,cur-cu-beu,ro-syllables-curcubeu.ogg,0,Syllables (listen only),
+ro-word-vioară,ro,word,vioară,ro-word-vioară.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter v; music (word twin)
+ro-syllables-vioară,ro,syllables,vi-oa-ră,ro-syllables-vioară.ogg,0,Syllables (listen only),
+ro-word-chitară,ro,word,chitară,ro-word-chitară.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter c; music (word twin)
+ro-syllables-chitară,ro,syllables,chi-ta-ră,ro-syllables-chitară.ogg,0,Syllables (listen only),
+ro-word-bicicletă,ro,word,bicicletă,ro-word-bicicletă.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter b; cycling (word twin)
+ro-syllables-bicicletă,ro,syllables,bi-ci-cle-tă,ro-syllables-bicicletă.ogg,0,Syllables (listen only),
+en-word-apple,en,word,apple,en-word-apple.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter a; food
+en-syllables-apple,en,syllables,ap-ple,en-syllables-apple.ogg,0,Syllables (listen only),
+en-word-astronaut,en,word,astronaut,en-word-astronaut.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter a; space
+en-syllables-astronaut,en,syllables,as-tro-naut,en-syllables-astronaut.ogg,0,Syllables (listen only),
+en-word-moon,en,word,moon,en-word-moon.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter m; space
+en-word-music,en,word,music,en-word-music.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter m; music
+en-syllables-music,en,syllables,mu-sic,en-syllables-music.ogg,0,Syllables (listen only),
+en-word-telescope,en,word,telescope,en-word-telescope.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter t; space
+en-syllables-telescope,en,syllables,tel-e-scope,en-syllables-telescope.ogg,0,Syllables (listen only),
+en-word-tiger,en,word,tiger,en-word-tiger.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter t; animals
+en-syllables-tiger,en,syllables,ti-ger,en-syllables-tiger.ogg,0,Syllables (listen only),
+en-word-planet,en,word,planet,en-word-planet.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; space
+en-syllables-planet,en,syllables,plan-et,en-syllables-planet.ogg,0,Syllables (listen only),
+en-word-piano,en,word,piano,en-word-piano.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; music (word twin)
+en-syllables-piano,en,syllables,pi-an-o,en-syllables-piano.ogg,0,Syllables (listen only),
+en-word-star,en,word,star,en-word-star.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter s; space
+en-word-sun,en,word,sun,en-word-sun.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter s; space
+en-word-insect,en,word,insect,en-word-insect.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter i; animals
+en-syllables-insect,en,syllables,in-sect,en-syllables-insect.ogg,0,Syllables (listen only),
+en-word-igloo,en,word,igloo,en-word-igloo.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter i; Earth
+en-syllables-igloo,en,syllables,ig-loo,en-syllables-igloo.ogg,0,Syllables (listen only),
+en-word-nose,en,word,nose,en-word-nose.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter n; body
+en-word-octopus,en,word,octopus,en-word-octopus.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter o; animals
+en-syllables-octopus,en,syllables,oc-to-pus,en-syllables-octopus.ogg,0,Syllables (listen only),
+en-word-orange,en,word,orange,en-word-orange.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter o; food
+en-syllables-orange,en,syllables,or-ange,en-syllables-orange.ogg,0,Syllables (listen only),
+en-word-dolphin,en,word,dolphin,en-word-dolphin.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter d; animals
+en-syllables-dolphin,en,syllables,dol-phin,en-syllables-dolphin.ogg,0,Syllables (listen only),
+en-word-drum,en,word,drum,en-word-drum.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter d; music
+en-word-egg,en,word,egg,en-word-egg.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter e; food
+en-word-elephant,en,word,elephant,en-word-elephant.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter e; animals
+en-syllables-elephant,en,syllables,el-e-phant,en-syllables-elephant.ogg,0,Syllables (listen only),
+en-word-rocket,en,word,rocket,en-word-rocket.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter r; space (word twin)
+en-syllables-rocket,en,syllables,rock-et,en-syllables-rocket.ogg,0,Syllables (listen only),
+en-word-unicorn,en,word,unicorn,en-word-unicorn.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter u; unicorns (word twin)
+en-syllables-unicorn,en,syllables,u-ni-corn,en-syllables-unicorn.ogg,0,Syllables (listen only),
+en-word-rainbow,en,word,rainbow,en-word-rainbow.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter r; rainbows
+en-syllables-rainbow,en,syllables,rain-bow,en-syllables-rainbow.ogg,0,Syllables (listen only),
+en-word-violin,en,word,violin,en-word-violin.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter v; music (word twin)
+en-syllables-violin,en,syllables,vi-o-lin,en-syllables-violin.ogg,0,Syllables (listen only),
+en-word-guitar,en,word,guitar,en-word-guitar.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter g; music (word twin)
+en-syllables-guitar,en,syllables,gui-tar,en-syllables-guitar.ogg,0,Syllables (listen only),
+en-word-bicycle,en,word,bicycle,en-word-bicycle.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter b; cycling (word twin)
+en-syllables-bicycle,en,syllables,bi-cy-cle,en-syllables-bicycle.ogg,0,Syllables (listen only),
+en-word-panda,en,word,panda,en-word-panda.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; animals (word twin)
+en-syllables-panda,en,syllables,pan-da,en-syllables-panda.ogg,0,Syllables (listen only),
+en-word-tennis,en,word,tennis,en-word-tennis.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter t; sport (word twin)
+en-syllables-tennis,en,syllables,ten-nis,en-syllables-tennis.ogg,0,Syllables (listen only),
+en-word-domino,en,word,domino,en-word-domino.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter d; games (word twin)
+en-syllables-domino,en,syllables,dom-i-no,en-syllables-domino.ogg,0,Syllables (listen only),
+en-word-pony,en,word,pony,en-word-pony.ogg,0,"MeetLetter, FirstSound, TwoSounds, Syllables, WordTwins (listen only)",listen only; first letter p; unicorns
+en-syllables-pony,en,syllables,po-ny,en-syllables-pony.ogg,0,Syllables (listen only),
+ro-line-hello,ro,line,Bună! Hai să zburăm!,ro-line-hello.ogg,,galaxy-map,greeting without a name
+en-line-hello,en,line,Hello! Let's fly!,en-line-hello.ogg,,galaxy-map,greeting without a name
+ro-line-hello-name,ro,line,"Bună, {name}! Hai să zburăm!",ro-line-hello-name.ogg,,profiles,"{name}: the profile's name, nominative only, system voice (D9)"
+en-line-hello-name,en,line,"Hi, {name}! Let's fly!",en-line-hello-name.ogg,,profiles,"{name}: the profile's name, nominative only, system voice (D9)"
+ro-line-today-letter,ro,line,Bună! Azi învățăm litera {x}.,ro-line-today-letter.ogg,,galaxy-map,design screen 1; {x}: the letter's sound clip (see notes on names)
+en-line-today-letter,en,line,Hello! Today we are learning the letter {x}.,en-line-today-letter.ogg,,galaxy-map,design screen 1; {x}: the letter's sound clip (see notes on names)
+ro-line-tap-go,ro,line,Atinge „Hai!” ca să pornim.,ro-line-tap-go.ogg,,galaxy-map,
+en-line-tap-go,en,line,Tap “Go!” to start.,en-line-tap-go.ogg,,galaxy-map,
+ro-line-planet-landed,ro,line,Am aterizat pe o planetă nouă!,ro-line-planet-landed.ogg,,galaxy-map,
+en-line-planet-landed,en,line,We have landed on a new planet!,en-line-planet-landed.ogg,,galaxy-map,
+ro-line-planet-asleep,ro,line,Planeta aceasta încă doarme. Ajungem și acolo curând.,ro-line-planet-asleep.ogg,,galaxy-map,'not yet'
+en-line-planet-asleep,en,line,This planet is still asleep. We will get there soon.,en-line-planet-asleep.ogg,,galaxy-map,'not yet'
+ro-line-who-plays,ro,line,Cine se joacă? Atinge poza ta.,ro-line-who-plays.ogg,,profiles,design screen 9
+en-line-who-plays,en,line,Who's playing? Tap your picture.,en-line-who-plays.ogg,,profiles,design screen 9
+ro-line-lets-remember,ro,line,Hai să ne amintim!,ro-line-lets-remember.ogg,,progress-review,
+en-line-lets-remember,en,line,Let's remember!,en-line-lets-remember.ogg,,progress-review,
+ro-line-rocket-rest,ro,line,Racheta se odihnește. Ne vedem mâine!,ro-line-rocket-rest.ogg,,parent-area,the session limit's gentle end
+en-line-rocket-rest,en,line,The rocket needs a rest. See you tomorrow!,en-line-rocket-rest.ogg,,parent-area,the session limit's gentle end
+ro-line-now-english,ro,line,Acum ascultăm litera în engleză.,ro-line-now-english.ogg,,lesson-engine,said in the language that comes next; the RO line opens the EN lesson only if the human wants a bridge line
+en-line-now-english,en,line,Now let's hear the letter in English.,en-line-now-english.ogg,,lesson-engine,said in the language that comes next; the RO line opens the EN lesson only if the human wants a bridge line
+ro-line-now-romanian,ro,line,Acum ascultăm litera în română.,ro-line-now-romanian.ogg,,lesson-engine,
+en-line-now-romanian,en,line,Now let's hear the letter in Romanian.,en-line-now-romanian.ogg,,lesson-engine,
+ro-line-stars-unicorn,ro,line,Bravo! Ai aprins 3 stele în constelația Unicornului.,ro-line-stars-unicorn.ogg,,rewards,design screen 6; '3 stele': no 'de' under 20
+en-line-stars-unicorn,en,line,Well done! You lit 3 stars in the Unicorn constellation.,en-line-stars-unicorn.ogg,,rewards,design screen 6; '3 stele': no 'de' under 20
+ro-line-stars-rocket,ro,line,Bravo! Ai aprins 3 stele în constelația Rachetei.,ro-line-stars-rocket.ogg,,rewards,
+en-line-stars-rocket,en,line,Well done! You lit 3 stars in the Rocket constellation.,en-line-stars-rocket.ogg,,rewards,
+ro-line-stars-whale,ro,line,Bravo! Ai aprins 3 stele în constelația Balenei.,ro-line-stars-whale.ogg,,rewards,
+en-line-stars-whale,en,line,Well done! You lit 3 stars in the Whale constellation.,en-line-stars-whale.ogg,,rewards,
+ro-line-sticker,ro,line,Ai câștigat un abțibild!,ro-line-sticker.ogg,,rewards,
+en-line-sticker,en,line,You got a sticker!,en-line-sticker.ogg,,rewards,
+ro-line-lesson-done,ro,line,Ai terminat lecția. Bravo!,ro-line-lesson-done.ogg,,lesson-engine,
+en-line-lesson-done,en,line,You finished the lesson. Well done!,en-line-lesson-done.ogg,,lesson-engine,
+ro-line-praise-1,ro,line,"Bravo, ai reușit!",ro-line-praise-1.ogg,,all activities,
+en-line-praise-1,en,line,"Well done, you did it!",en-line-praise-1.ogg,,all activities,
+ro-line-praise-2,ro,line,"Foarte bine, așa este!",ro-line-praise-2.ogg,,all activities,
+en-line-praise-2,en,line,"Very good, that's right!",en-line-praise-2.ogg,,all activities,
+ro-line-praise-3,ro,line,"Super, ai răspuns corect!",ro-line-praise-3.ogg,,all activities,
+en-line-praise-3,en,line,"Super, you got it right!",en-line-praise-3.ogg,,all activities,
+ro-line-praise-4,ro,line,"Excelent, ai lucrat foarte frumos!",ro-line-praise-4.ogg,,all activities,
+en-line-praise-4,en,line,"Excellent, that was lovely work!",en-line-praise-4.ogg,,all activities,
+ro-line-praise-5,ro,line,"Ura, ai reușit din nou!",ro-line-praise-5.ogg,,all activities,
+en-line-praise-5,en,line,"Hooray, you did it again!",en-line-praise-5.ogg,,all activities,
+ro-line-praise-6,ro,line,Ești o stea!,ro-line-praise-6.ogg,,all activities,"'o stea' is a noun, so it fits a girl or a boy"
+en-line-praise-6,en,line,You're a star!,en-line-praise-6.ogg,,all activities,"'o stea' is a noun, so it fits a girl or a boy"
+ro-line-praise-7,ro,line,"Uau, ce bine ai făcut!",ro-line-praise-7.ogg,,all activities,
+en-line-praise-7,en,line,"Wow, you did that really well!",en-line-praise-7.ogg,,all activities,
+ro-line-praise-8,ro,line,"Perfect, mergem mai departe!",ro-line-praise-8.ogg,,all activities,
+en-line-praise-8,en,line,"Perfect, let's keep going!",en-line-praise-8.ogg,,all activities,
+ro-line-praise-9,ro,line,"Minunat, asta e corect!",ro-line-praise-9.ogg,,all activities,
+en-line-praise-9,en,line,"Wonderful, that's correct!",en-line-praise-9.ogg,,all activities,
+ro-line-praise-10,ro,line,"Bravo, ai găsit răspunsul!",ro-line-praise-10.ogg,,all activities,
+en-line-praise-10,en,line,"Well done, you found the answer!",en-line-praise-10.ogg,,all activities,
+ro-line-listen-again,ro,line,Ascultă încă o dată.,ro-line-listen-again.ogg,,all activities,AGENTS.md's example hint
+en-line-listen-again,en,line,Listen again.,en-line-listen-again.ogg,,all activities,AGENTS.md's example hint
+ro-line-try-again,ro,line,Mai încearcă o dată!,ro-line-try-again.ogg,,all activities,
+en-line-try-again,en,line,Have another go!,en-line-try-again.ogg,,all activities,
+ro-line-nearly,ro,line,Aproape! Mai încearcă.,ro-line-nearly.ogg,,all activities,
+en-line-nearly,en,line,Nearly! Try again.,en-line-nearly.ogg,,all activities,
+ro-line-show-answer,ro,line,Uite răspunsul. Acum fă-o și tu.,ro-line-show-answer.ogg,,all activities,second miss: the answer glows; 'fă-o' refers to the task ('o' is neutral here); check
+en-line-show-answer,en,line,Here is the answer. Now you do it.,en-line-show-answer.ogg,,all activities,second miss: the answer glows; 'fă-o' refers to the task ('o' is neutral here); check
+ro-line-meet-new,ro,line,Hai să cunoaștem o literă nouă!,ro-line-meet-new.ogg,,MeetLetter,
+en-line-meet-new,en,line,Let's meet a new letter!,en-line-meet-new.ogg,,MeetLetter,
+ro-line-meet-listen,ro,line,Ascultă: {x}… {x}… {word}!,ro-line-meet-listen.ogg,,MeetLetter,"design screen 2 ('Ascultă: mmm… mmm… muzică!'); {x}: the sound clip, {word}: a listen-only word"
+en-line-meet-listen,en,line,Listen: {x}… {x}… {word}!,en-line-meet-listen.ogg,,MeetLetter,"design screen 2 ('Ascultă: mmm… mmm… muzică!'); {x}: the sound clip, {word}: a listen-only word"
+ro-line-meet-tap-letter,ro,line,Atinge litera ca s-o auzi din nou.,ro-line-meet-tap-letter.ogg,,MeetLetter,'s-o': litera is feminine
+en-line-meet-tap-letter,en,line,Tap the letter to hear it again.,en-line-meet-tap-letter.ogg,,MeetLetter,'s-o': litera is feminine
+ro-line-meet-tap-picture,ro,line,Acum atinge poza.,ro-line-meet-tap-picture.ogg,,MeetLetter,
+en-line-meet-tap-picture,en,line,Now tap the picture.,en-line-meet-tap-picture.ogg,,MeetLetter,
+ro-line-meet-by-hand,ro,line,Uite cum se scrie litera de mână.,ro-line-meet-by-hand.ogg,,MeetLetter,the 'de mână' button
+en-line-meet-by-hand,en,line,Watch how the letter is written by hand.,en-line-meet-by-hand.ogg,,MeetLetter,the 'de mână' button
+ro-line-pick-letter,ro,line,Ascultă și atinge litera potrivită.,ro-line-pick-letter.ogg,,ListenAndPick,
+en-line-pick-letter,en,line,Listen and tap the right letter.,en-line-pick-letter.ogg,,ListenAndPick,
+ro-line-pick-letter-x,ro,line,Atinge litera {x}.,ro-line-pick-letter-x.ogg,,ListenAndPick,{x}: sound clip
+en-line-pick-letter-x,en,line,Tap the letter {x}.,en-line-pick-letter-x.ogg,,ListenAndPick,{x}: sound clip
+ro-line-pick-picture,ro,line,Ascultă și atinge poza potrivită.,ro-line-pick-picture.ogg,,ListenAndPick,
+en-line-pick-picture,en,line,Listen and tap the right picture.,en-line-pick-picture.ogg,,ListenAndPick,
+ro-line-pick-hint-slow,ro,line,"Ascultă încă o dată, mai încet.",ro-line-pick-hint-slow.ogg,,ListenAndPick,hint
+en-line-pick-hint-slow,en,line,"Listen again, more slowly.",en-line-pick-hint-slow.ogg,,ListenAndPick,hint
+ro-line-pick-hint-shape,ro,line,Uită-te bine la forma literei.,ro-line-pick-hint-shape.ogg,,ListenAndPick,hint
+en-line-pick-hint-shape,en,line,Look closely at the letter's shape.,en-line-pick-hint-shape.ogg,,ListenAndPick,hint
+ro-line-pick-hint-other,ro,line,Aproape! Încearcă altă literă.,ro-line-pick-hint-other.ogg,,ListenAndPick,hint
+en-line-pick-hint-other,en,line,Nearly! Try another letter.,en-line-pick-hint-other.ogg,,ListenAndPick,hint
+ro-line-pick-hint-show,ro,line,"Uite, aceasta este litera {x}. Atinge-o!",ro-line-pick-hint-show.ogg,,ListenAndPick,second miss; 'Atinge-o': litera is feminine
+en-line-pick-hint-show,en,line,"Look, this is the letter {x}. Tap it!",en-line-pick-hint-show.ogg,,ListenAndPick,second miss; 'Atinge-o': litera is feminine
+ro-line-hunt,ro,line,Atinge toate stelele care au litera {x}.,ro-line-hunt.ogg,,LetterHunt,
+en-line-hunt,en,line,Tap all the stars that have the letter {x}.,en-line-hunt.ogg,,LetterHunt,
+ro-line-hunt-capitals,ro,line,Caută și litera mare!,ro-line-hunt-capitals.ogg,,LetterHunt,
+en-line-hunt-capitals,en,line,Look for the capital letter too!,en-line-hunt-capitals.ogg,,LetterHunt,
+ro-line-hunt-hint-twinkle,ro,line,Stelele cu litera {x} strălucesc. Prinde-le!,ro-line-hunt-hint-twinkle.ogg,,LetterHunt,hint
+en-line-hunt-hint-twinkle,en,line,The stars with the letter {x} are twinkling. Catch them!,en-line-hunt-hint-twinkle.ogg,,LetterHunt,hint
+ro-line-hunt-hint-more,ro,line,Mai sunt stele cu litera {x}. Caută-le!,ro-line-hunt-hint-more.ogg,,LetterHunt,hint
+en-line-hunt-hint-more,en,line,There are more stars with the letter {x}. Look for them!,en-line-hunt-hint-more.ogg,,LetterHunt,hint
+ro-line-hunt-hint-capital,ro,line,"Litera mare arată altfel, dar are același sunet.",ro-line-hunt-hint-capital.ogg,,LetterHunt,hint
+en-line-hunt-hint-capital,en,line,"The capital letter looks different, but it has the same sound.",en-line-hunt-hint-capital.ogg,,LetterHunt,hint
+ro-line-hunt-hint-not,ro,line,Aceasta este altă literă. Mai caută!,ro-line-hunt-hint-not.ogg,,LetterHunt,hint
+en-line-hunt-hint-not,en,line,That is a different letter. Keep looking!,en-line-hunt-hint-not.ogg,,LetterHunt,hint
+ro-line-first-sound,ro,line,Cu ce sunet începe cuvântul?,ro-line-first-sound.ogg,,FirstSound,
+en-line-first-sound,en,line,What sound does the word start with?,en-line-first-sound.ogg,,FirstSound,
+ro-line-first-sound-tap,ro,line,Atinge litera cu care începe cuvântul.,ro-line-first-sound-tap.ogg,,FirstSound,
+en-line-first-sound-tap,en,line,Tap the letter the word starts with.,en-line-first-sound-tap.ogg,,FirstSound,
+ro-line-first-hint-stretch,ro,line,Ascultă primul sunet: {stretched}.,ro-line-first-hint-stretch.ogg,,FirstSound,hint; {stretched}: the word with its first sound held (mmmama)
+en-line-first-hint-stretch,en,line,Listen to the first sound: {stretched}.,en-line-first-hint-stretch.ogg,,FirstSound,hint; {stretched}: the word with its first sound held (mmmama)
+ro-line-first-hint-say,ro,line,"Spune cuvântul încet, împreună cu mine.",ro-line-first-hint-say.ogg,,FirstSound,hint
+en-line-first-hint-say,en,line,Say the word slowly with me.,en-line-first-hint-say.ogg,,FirstSound,hint
+ro-line-first-hint-which,ro,line,Atinge litera care face acest sunet.,ro-line-first-hint-which.ogg,,FirstSound,hint
+en-line-first-hint-which,en,line,Tap the letter that makes this sound.,en-line-first-hint-which.ogg,,FirstSound,hint
+ro-line-first-hint-again,ro,line,Mai ascultă o dată începutul cuvântului.,ro-line-first-hint-again.ogg,,FirstSound,hint
+en-line-first-hint-again,en,line,Listen to the start of the word once more.,en-line-first-hint-again.ogg,,FirstSound,hint
+ro-line-trace-start,ro,line,Începe de la punct și urmează săgeata.,ro-line-trace-start.ogg,,TraceLetter,design screen 3
+en-line-trace-start,en,line,Start at the dot and follow the arrow.,en-line-trace-start.ogg,,TraceLetter,design screen 3
+ro-line-trace-print,ro,line,Scrie litera de tipar.,ro-line-trace-print.ogg,,TraceLetter,
+en-line-trace-print,en,line,Write the letter in print.,en-line-trace-print.ogg,,TraceLetter,
+ro-line-trace-hand,ro,line,Scrie litera de mână.,ro-line-trace-hand.ogg,,TraceLetter,handwriting brief
+en-line-trace-hand,en,line,Write the letter by hand.,en-line-trace-hand.ogg,,TraceLetter,handwriting brief
+ro-line-trace-baseline,ro,line,Linia de jos: de aici pornești.,ro-line-trace-baseline.ogg,,TraceLetter,"design screen 8; elliptical first half, check"
+en-line-trace-baseline,en,line,The bottom line: you start from here.,en-line-trace-baseline.ogg,,TraceLetter,"design screen 8; elliptical first half, check"
+ro-line-trace-round-2,ro,line,Acum scrie pe umbră.,ro-line-trace-round-2.ogg,,TraceLetter,round 2
+en-line-trace-round-2,en,line,Now write over the shadow.,en-line-trace-round-2.ogg,,TraceLetter,round 2
+ro-line-trace-round-3,ro,line,"Acum scrie fără ajutor, de la punct.",ro-line-trace-round-3.ogg,,TraceLetter,"round 3; 'fără ajutor', never 'singură'"
+en-line-trace-round-3,en,line,"Now write it without help, from the dot.",en-line-trace-round-3.ogg,,TraceLetter,"round 3; 'fără ajutor', never 'singură'"
+ro-line-trace-next-2,ro,line,Foarte bine! Acum mergi la punctul cu numărul doi.,ro-line-trace-next-2.ogg,,TraceLetter,stroke checkpoint
+en-line-trace-next-2,en,line,Very good! Now go to dot number two.,en-line-trace-next-2.ogg,,TraceLetter,stroke checkpoint
+ro-line-trace-next-3,ro,line,Foarte bine! Acum mergi la punctul cu numărul trei.,ro-line-trace-next-3.ogg,,TraceLetter,stroke checkpoint
+en-line-trace-next-3,en,line,Very good! Now go to dot number three.,en-line-trace-next-3.ogg,,TraceLetter,stroke checkpoint
+ro-line-trace-done,ro,line,"Bravo, ai scris litera {x}!",ro-line-trace-done.ogg,,TraceLetter,letter checkpoint
+en-line-trace-done,en,line,"Well done, you wrote the letter {x}!",en-line-trace-done.ogg,,TraceLetter,letter checkpoint
+ro-line-trace-done-hand,ro,line,"Bravo, ai scris litera {x} de mână!",ro-line-trace-done-hand.ogg,,TraceLetter,"letter checkpoint, handwritten"
+en-line-trace-done-hand,en,line,"Well done, you wrote the letter {x} by hand!",en-line-trace-done-hand.ogg,,TraceLetter,"letter checkpoint, handwritten"
+ro-line-trace-dot-i,ro,line,Acum pune punctul pe i.,ro-line-trace-dot-i.ogg,,"TraceLetter, TraceWord",the i is said as its sound
+en-line-trace-dot-i,en,line,Now put the dot on the i.,en-line-trace-dot-i.ogg,,"TraceLetter, TraceWord",the i is said as its sound
+ro-line-trace-bar-t,ro,line,Acum trage liniuța literei t.,ro-line-trace-bar-t.ogg,,"TraceLetter, TraceWord","'literei t': genitive of 'litera', correct for the letter; check"
+en-line-trace-bar-t,en,line,Now draw the line across the t.,en-line-trace-bar-t.ogg,,"TraceLetter, TraceWord","'literei t': genitive of 'litera', correct for the letter; check"
+ro-line-trace-hint-arrow,ro,line,Urmează săgeata.,ro-line-trace-hint-arrow.ogg,,TraceLetter,hint (tracing brief)
+en-line-trace-hint-arrow,en,line,Follow the arrow.,en-line-trace-hint-arrow.ogg,,TraceLetter,hint (tracing brief)
+ro-line-trace-hint-dot,ro,line,Începe de la punctul verde.,ro-line-trace-hint-dot.ogg,,TraceLetter,hint
+en-line-trace-hint-dot,en,line,Start at the green dot.,en-line-trace-hint-dot.ogg,,TraceLetter,hint
+ro-line-trace-hint-watch,ro,line,"Uită-te cum se scrie, apoi încearcă tu.",ro-line-trace-hint-watch.ogg,,TraceLetter,hint: the stroke animates once
+en-line-trace-hint-watch,en,line,"Watch how it is written, then you try.",en-line-trace-hint-watch.ogg,,TraceLetter,hint: the stroke animates once
+ro-line-trace-hint-stay,ro,line,Rămâi pe linia punctată.,ro-line-trace-hint-stay.ogg,,TraceLetter,hint
+en-line-trace-hint-stay,en,line,Stay on the dotted line.,en-line-trace-hint-stay.ogg,,TraceLetter,hint
+ro-line-trace-hint-slow,ro,line,Încet și cu grijă: o să reușești!,ro-line-trace-hint-slow.ogg,,TraceLetter,hint
+en-line-trace-hint-slow,en,line,Slowly and carefully: you can do it!,en-line-trace-hint-slow.ogg,,TraceLetter,hint
+ro-line-trace-hint-from-line,ro,line,Pornește de pe linie.,ro-line-trace-hint-from-line.ogg,,TraceLetter,handwriting brief: the entry stroke was skipped
+en-line-trace-hint-from-line,en,line,Start from the line.,en-line-trace-hint-from-line.ogg,,TraceLetter,handwriting brief: the entry stroke was skipped
+ro-line-word-write,ro,line,"Scrie cuvântul de mână, fără să ridici degetul.",ro-line-word-write.ogg,,TraceWord,
+en-line-word-write,en,line,Write the word by hand without lifting your finger.,en-line-word-write.ogg,,TraceWord,
+ro-line-word-join,ro,line,"Bravo, ai făcut litera {x}! Acum leag-o de litera {y}, fără să ridici degetul.",ro-line-word-join.ogg,,TraceWord,letter checkpoint; every {x}-{y} pair is listed below
+en-line-word-join,en,line,"Well done, you made the letter {x}! Now join it to the letter {y} without lifting your finger.",en-line-word-join.ogg,,TraceWord,letter checkpoint; every {x}-{y} pair is listed below
+ro-line-word-done,ro,line,"Bravo, ai scris cuvântul {word}!",ro-line-word-done.ogg,,TraceWord,word checkpoint
+en-line-word-done,en,line,"Well done, you wrote the word {word}!",en-line-word-done.ogg,,TraceWord,word checkpoint
+ro-line-word-hint-join,ro,line,Nu ridica degetul la legătură.,ro-line-word-hint-join.ogg,,TraceWord,hint
+en-line-word-hint-join,en,line,Don't lift your finger at the join.,en-line-word-hint-join.ogg,,TraceWord,hint
+ro-line-word-hint-watch,ro,line,Uite cum se leagă literele.,ro-line-word-hint-watch.ogg,,TraceWord,hint
+en-line-word-hint-watch,en,line,Watch how the letters join.,en-line-word-hint-watch.ogg,,TraceWord,hint
+ro-line-word-hint-back,ro,line,Nu-i nimic! Pune degetul înapoi pe punct și continuă.,ro-line-word-hint-back.ogg,,TraceWord,hint: a lifted finger
+en-line-word-hint-back,en,line,That's all right! Put your finger back on the dot and keep going.,en-line-word-hint-back.ogg,,TraceWord,hint: a lifted finger
+ro-line-word-hint-from-line,ro,line,Pornește de pe linie.,ro-line-word-hint-from-line.ogg,,TraceWord,hint (same text as trace-hint-from-line; one clip may serve both)
+en-line-word-hint-from-line,en,line,Start from the line.,en-line-word-hint-from-line.ogg,,TraceWord,hint (same text as trace-hint-from-line; one clip may serve both)
+ro-line-syll,ro,line,Ascultă cuvântul și bate toba pentru fiecare silabă.,ro-line-syll.ogg,,Syllables,RO: the drum; EN: clapping (PRD)
+en-line-syll,en,line,Listen to the word and clap once for each beat.,en-line-syll.ogg,,Syllables,RO: the drum; EN: clapping (PRD)
+ro-line-syll-how-many,ro,line,Câte silabe are cuvântul?,ro-line-syll-how-many.ogg,,Syllables,
+en-line-syll-how-many,en,line,How many beats does the word have?,en-line-syll-how-many.ogg,,Syllables,
+ro-line-syll-hint-listen,ro,line,Ascultă cum spun cuvântul pe silabe.,ro-line-syll-hint-listen.ogg,,Syllables,hint
+en-line-syll-hint-listen,en,line,Listen to me say the word in beats.,en-line-syll-hint-listen.ogg,,Syllables,hint
+ro-line-syll-hint-once,ro,line,Bate toba o dată pentru fiecare silabă.,ro-line-syll-hint-once.ogg,,Syllables,hint
+en-line-syll-hint-once,en,line,Clap once for each beat.,en-line-syll-hint-once.ogg,,Syllables,hint
+ro-line-syll-hint-chin,ro,line,Pune mâna sub bărbie și spune cuvântul.,ro-line-syll-hint-chin.ogg,,Syllables,hint: the school trick (the chin drops once per syllable)
+en-line-syll-hint-chin,en,line,Put your hand under your chin and say the word.,en-line-syll-hint-chin.ogg,,Syllables,hint: the school trick (the chin drops once per syllable)
+ro-line-syll-hint-count,ro,line,Mai ascultă o dată și numără silabele.,ro-line-syll-hint-count.ogg,,Syllables,hint
+en-line-syll-hint-count,en,line,Listen once more and count the beats.,en-line-syll-hint-count.ogg,,Syllables,hint
+ro-line-build,ro,line,Ascultă cuvântul și pune literele în ferestrele rachetei.,ro-line-build.ogg,,BuildWord,
+en-line-build,en,line,Listen to the word and put the letters in the rocket's windows.,en-line-build.ogg,,BuildWord,
+ro-line-build-next,ro,line,Ce sunet urmează?,ro-line-build-next.ogg,,BuildWord,design screen 5
+en-line-build-next,en,line,What sound comes next?,en-line-build-next.ogg,,BuildWord,design screen 5
+ro-line-build-done,ro,line,"Bravo, ai construit cuvântul {word}!",ro-line-build-done.ogg,,BuildWord,
+en-line-build-done,en,line,"Well done, you built the word {word}!",en-line-build-done.ogg,,BuildWord,
+ro-line-build-liftoff,ro,line,Racheta pornește!,ro-line-build-liftoff.ogg,,BuildWord,
+en-line-build-liftoff,en,line,The rocket is taking off!,en-line-build-liftoff.ogg,,BuildWord,
+ro-line-build-hint-slow,ro,line,Ascultă cuvântul încet: {slow}.,ro-line-build-hint-slow.ogg,,BuildWord,hint; {slow}: the word's slow clip
+en-line-build-hint-slow,en,line,Listen to the word slowly: {slow}.,en-line-build-hint-slow.ogg,,BuildWord,hint; {slow}: the word's slow clip
+ro-line-build-hint-glow,ro,line,Litera care urmează strălucește.,ro-line-build-hint-glow.ogg,,BuildWord,hint
+en-line-build-hint-glow,en,line,The next letter is glowing.,en-line-build-hint-glow.ogg,,BuildWord,hint
+ro-line-build-hint-after,ro,line,Ce sunet auzi după {x}?,ro-line-build-hint-after.ogg,,BuildWord,hint; {x}: sound clip
+en-line-build-hint-after,en,line,What sound do you hear after {x}?,en-line-build-hint-after.ogg,,BuildWord,hint; {x}: sound clip
+ro-line-build-hint-say,ro,line,"Spune cuvântul încet, sunet cu sunet.",ro-line-build-hint-say.ogg,,BuildWord,hint
+en-line-build-hint-say,en,line,"Say the word slowly, sound by sound.",en-line-build-hint-say.ogg,,BuildWord,hint
+ro-line-read,ro,line,Citește cuvântul și atinge poza potrivită.,ro-line-read.ogg,,ReadAndMatch,
+en-line-read,en,line,Read the word and tap the right picture.,en-line-read.ogg,,ReadAndMatch,
+ro-line-read-hint-sounds,ro,line,Citește cuvântul sunet cu sunet.,ro-line-read-hint-sounds.ogg,,ReadAndMatch,hint
+en-line-read-hint-sounds,en,line,Read the word sound by sound.,en-line-read-hint-sounds.ogg,,ReadAndMatch,hint
+ro-line-read-hint-tap,ro,line,Atinge cuvântul ca să-l auzi.,ro-line-read-hint-tap.ogg,,ReadAndMatch,hint; 'să-l': cuvântul is neuter
+en-line-read-hint-tap,en,line,Tap the word to hear it.,en-line-read-hint-tap.ogg,,ReadAndMatch,hint; 'să-l': cuvântul is neuter
+ro-line-read-hint-look,ro,line,Uită-te bine la toate pozele.,ro-line-read-hint-look.ogg,,ReadAndMatch,hint
+en-line-read-hint-look,en,line,Look carefully at all the pictures.,en-line-read-hint-look.ogg,,ReadAndMatch,hint
+ro-line-read-hint-blend,ro,line,Unește sunetele: {slow}… {word}!,ro-line-read-hint-blend.ogg,,ReadAndMatch,hint
+en-line-read-hint-blend,en,line,Blend the sounds: {slow}… {word}!,en-line-read-hint-blend.ogg,,ReadAndMatch,hint
+ro-line-two,ro,line,Ascultă cuvântul și du poza la planeta cu același sunet.,ro-line-two.ogg,,TwoSounds,design screen 4
+en-line-two,en,line,Listen to the word and take the picture to the planet with the same sound.,en-line-two.ogg,,TwoSounds,design screen 4
+ro-line-two-tap,ro,line,Atinge fiecare planetă ca să-i auzi sunetul.,ro-line-two-tap.ogg,,TwoSounds,
+en-line-two-tap,en,line,Tap each planet to hear its sound.,en-line-two-tap.ogg,,TwoSounds,
+ro-line-two-same-letter,ro,line,Aceeași literă are două sunete!,ro-line-two-same-letter.ogg,,TwoSounds,
+en-line-two-same-letter,en,line,The same letter has two sounds!,en-line-two-same-letter.ogg,,TwoSounds,
+ro-line-two-hint-again,ro,line,Ascultă din nou cele două sunete.,ro-line-two-hint-again.ogg,,TwoSounds,hint
+en-line-two-hint-again,en,line,Listen to the two sounds again.,en-line-two-hint-again.ogg,,TwoSounds,hint
+ro-line-two-hint-start,ro,line,Spune cuvântul încet. Ce sunet auzi la început?,ro-line-two-hint-start.ogg,,TwoSounds,hint
+en-line-two-hint-start,en,line,Say the word slowly. What sound do you hear at the start?,en-line-two-hint-start.ogg,,TwoSounds,hint
+ro-line-two-hint-badges,ro,line,"Planeta cu stea este pentru română, iar planeta cu inel este pentru engleză.",ro-line-two-hint-badges.ogg,,TwoSounds,hint
+en-line-two-hint-badges,en,line,"The planet with the star is for Romanian, and the planet with the ring is for English.",en-line-two-hint-badges.ogg,,TwoSounds,hint
+ro-line-two-hint-tap,ro,line,Atinge planetele ca să le auzi.,ro-line-two-hint-tap.ogg,,TwoSounds,hint
+en-line-two-hint-tap,en,line,Tap the planets to hear them.,en-line-two-hint-tap.ogg,,TwoSounds,hint
+ro-line-twins,ro,line,"Unește cuvintele care seamănă: unul în română, unul în engleză.",ro-line-twins.ogg,,WordTwins,
+en-line-twins,en,line,"Join the words that are alike: one in Romanian, one in English.",en-line-twins.ogg,,WordTwins,
+ro-line-twins-done,ro,line,Sunt gemeni!,ro-line-twins-done.ogg,,WordTwins,
+en-line-twins-done,en,line,They are twins!,en-line-twins-done.ogg,,WordTwins,
+ro-line-false-friends,ro,line,"Se scriu la fel, dar înseamnă altceva!",ro-line-false-friends.ogg,,WordTwins,"false friends (pat, pod, pin, sat, nod, mops)"
+en-line-false-friends,en,line,"They are spelled the same, but they mean different things!",en-line-false-friends.ogg,,WordTwins,"false friends (pat, pod, pin, sat, nod, mops)"
+ro-line-twins-hint-listen,ro,line,Ascultă cele două cuvinte. Seamănă?,ro-line-twins-hint-listen.ogg,,WordTwins,hint
+en-line-twins-hint-listen,en,line,Listen to the two words. Are they alike?,en-line-twins-hint-listen.ogg,,WordTwins,hint
+ro-line-twins-hint-pictures,ro,line,Uită-te la poze: arată același lucru!,ro-line-twins-hint-pictures.ogg,,WordTwins,hint
+en-line-twins-hint-pictures,en,line,Look at the pictures: they show the same thing!,en-line-twins-hint-pictures.ogg,,WordTwins,hint
+ro-line-twins-hint-sound,ro,line,Caută cuvântul care sună aproape la fel.,ro-line-twins-hint-sound.ogg,,WordTwins,hint
+en-line-twins-hint-sound,en,line,Look for the word that sounds almost the same.,en-line-twins-hint-sound.ogg,,WordTwins,hint
+ro-line-twins-hint-same-picture,ro,line,Gemenii au aceeași poză.,ro-line-twins-hint-same-picture.ogg,,WordTwins,hint
+en-line-twins-hint-same-picture,en,line,Twins have the same picture.,en-line-twins-hint-same-picture.ogg,,WordTwins,hint

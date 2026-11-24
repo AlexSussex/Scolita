@@ -93,3 +93,53 @@ The draft list for planets 1–3 (in the note and §8 of the curriculum).
 - Add "agree the curriculum v1" to `local/for-human-next-steps.md` as soon
   as the draft is pushed; move it to Done when agreed.
 - No release (docs only).
+
+## Progress
+
+_Agent `curriculum`, worktree `C:\Projects\scolita-curriculum` (branch
+`agent/curriculum`, local only). Docs only: no code, no Unity, no
+emulator._
+
+- **Assumed** (recorded in `docs/curriculum.md` v1 and the research
+  note): D1 Romanian as the anchor, both on; D3 the Romanian "litere de
+  mână" for both languages; D4 British English for the vowels.
+- **Pushed:**
+  - `746392f` docs: claim curriculum-research.
+  - This commit: `docs/curriculum.md` **draft v1** and
+    `design/research/`: the research note
+    (`curriculum-research.md`: sources, the Romanian and English orders,
+    the bilingual check, the one-page bilingual summary, the words of
+    planets 1–3 with syllables and the taught-letters check, print stroke
+    order, the handwriting model, the voice lines), the drawings
+    (`handwriting-model-draft.svg`, `joined-words-draft.svg`,
+    `print-stroke-order-draft.svg`), the draft points
+    (`strokes-draft.json`) and the voice-line draft
+    (`voice-lines-draft.csv`, 584 lines).
+- **How it was done:** five Romanian manuals or their plannings, the
+  Romanian programme and a clasa pregătitoare letter read as PDFs
+  (handwriting models looked at page by page); Letters and Sounds, Little
+  Wandle and the English national curriculum read as PDFs; the bilingual
+  papers read by a helper agent (abstracts, one full text); planet words
+  checked on dexonline by a helper agent. The taught-letters check and
+  the cedilla check were run by script on the same word list the CSV is
+  made from (scratch scripts, not in the repo).
+- **Acceptance criteria:** v1 has the planets 1–3 words, print and
+  handwritten strokes and voice lines, every teaching claim cited in the
+  research note (done); every word uses only taught letters (done,
+  research §6, table "The taught-letters check"); ≥8 readable words per
+  planet per language: **met except English planet 1 (7)**, for the human
+  to agree (research §4.1); the human agrees v1: **waiting**.
+- **Open questions for the human** (research §10): English planet 1's 7
+  words; names later (sounds only in planets 1–3); the familiar words
+  (mami, tati, tanti, nani, papa); ă earlier (for `content-letters-2`);
+  the handwriting drawings; the Romanian lines in research §9.2; British
+  English (D4).
+- **Follow-ups for other briefs** (once v1 is agreed): `look` and
+  `handwriting`: the writing board gets a fourth line (descender) and
+  maybe slant guides; design screen 8's text: m starts at the middle line
+  with a hook. `activities-letters`: `MeetLetter` without the name in
+  planets 1–3 (screen 2's name button). `progress-review`: more practice
+  for English items. `content-letters-2`: ă earlier.
+- **Next:** waiting for the human to agree v1 (or ask for changes), then
+  record the agreement here with its date, move the brief to `tasks/done/`
+  with its completion record (no release: docs only).
