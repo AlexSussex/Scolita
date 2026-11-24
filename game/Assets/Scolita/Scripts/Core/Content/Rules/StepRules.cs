@@ -9,7 +9,8 @@ namespace Scolita.Core.Content.Rules
     /// The rules on each step of a lesson in use: the items its kind needs
     /// (<see cref="ActivityKinds"/>), in its languages; pictures where its kind shows them; no
     /// listen-only word where words are read; only letters taught in the word's track by its lesson,
-    /// and only taught letters as choices; its options; its instruction and hint lines; and the
+    /// and only taught letters as choices; a <c>TwoSounds</c> letter whose sounds differ, with words of
+    /// both languages starting with it; its options; its instruction and hint lines; and the
     /// lines every lesson says (<see cref="LessonLines"/>) in each language a step is in. Part of
     /// <see cref="ContentRules"/>.
     /// </summary>

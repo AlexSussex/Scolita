@@ -89,6 +89,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(SequenceLines.Of(first.Line), Is.EqualTo(new[] { "ro-line-first-hint-stretch" }));
             Assert.That(first.Line.Items[0].TryGetFill(VoiceSlot.Stretched, out VoiceFill stretched), Is.True);
             Assert.That(stretched.Line.ToString(), Is.EqualTo("ro-stretched-mama"));
+            Assert.That(stretched.Text, Is.EqualTo("mmmama"));
             Assert.That(first.Cue, Is.EqualTo(HintCue.FadeChoice));
             Assert.That(first.Choice, Is.EqualTo(1));
             Assert.That(SequenceLines.Of(second.Line), Is.EqualTo(new[] { "ro-line-first-hint-which", "ro-sound-m" }));

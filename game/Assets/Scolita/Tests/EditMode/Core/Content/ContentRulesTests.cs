@@ -461,5 +461,20 @@ namespace Scolita.Tests.EditMode.Core.Content
             Assert.That(errors.Where(error => error.Source.Row == otherStart).Select(error => error.Reason),
                 Has.None.Contains("both languages"));
         }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>FirstSound</c> step whose word has no stretched
+        /// line, which its hint says.
+        /// </summary>
+        [Test]
+        public void TestCheck_FirstSoundWordsAreStretched()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "en-m,FirstSound,,m a,en-mat,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "en-stretched-mat is not in voice-lines.csv");
+        }
     }
 }

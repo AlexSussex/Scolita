@@ -27,7 +27,7 @@ namespace Scolita.Core.Content
                 ActivityWordUse.Heard, NoWordLines, false, true, NoOptions, Lines("hunt", "hunt-capitals"),
                 Lines("hunt-hint-twinkle", "hunt-hint-capital", "hunt-hint-more", "hunt-hint-not", "pick-hint-show")),
             Kind(ActivityKind.FirstSound, Range(2, 4), Range(1, 1), Range(3, 5), ActivityItemRules.WordStartsWithALetter,
-                ActivityWordUse.Pictured, NoWordLines, false, true, NoOptions,
+                ActivityWordUse.Pictured, new[] { VoiceLineKind.Stretched }, false, true, NoOptions,
                 Lines("first-sound", "first-sound-tap"), Lines("first-hint-stretch", "first-hint-which", "pick-hint-show")),
             Kind(ActivityKind.TraceLetter, Range(1, 1), Range(0, 0), Range(1, 1), ActivityItemRules.None,
                 ActivityWordUse.Heard, NoWordLines, false, false, new[]
