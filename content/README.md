@@ -187,6 +187,57 @@ instruction lines such as `ro-line-pick-letter`) is in
   languages, each starting with that letter and with that letter's sound in
   its language (the import can't hear that: check it).
 
+### `strokes/<strokes-id>-<case>-<form>.json`: how a letter is written
+
+One file per letter, case and form: `a-lower-print.json`, `a-upper-print.json`,
+later `a-lower-handwritten.json`. The first part is the letter's `strokes` cell
+in `letters.csv`; `case` is `lower` or `upper` and `form` is `print` or
+`handwritten`, as a `TraceLetter` step's options say. The file's name is the
+shape's id. A digit (numbers, later) has one case: `7-lower-print.json`.
+
+```json
+{
+  "status": "draft",
+  "source": "where the drawing comes from, for people",
+  "slant": 0,
+  "strokes": [
+    { "runs": [
+      { "kind": "body", "points": [[65, 112], [45, 100], [17.5, 108], [7.5, 150], [17.5, 192], [42.5, 200], [62.5, 190], [70, 160], [68, 125]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[70, 100], [70, 200]] }
+    ] }
+  ]
+}
+```
+
+- **The writing lines are the same for every letter:** the top line is
+  y 0, the middle line y 100, the baseline y 200 and the line below y 300;
+  x starts at 0 on the letter's left. A small letter fills 100 to 200, t
+  and the capitals reach 0, p goes down to 300.
+- **`strokes`** are in the order she draws them; each is one finger down
+  to finger up. A stroke's **`runs`** are drawn without lifting: each run
+  is a smooth curve through its `points` ([x, y], in drawing order), and
+  two runs meet at a corner (m's turn at the baseline), so a run starts
+  where the one before it ends. A stroke of one point is a dot (i's dot).
+  The start dot is a stroke's first point; its direction is the order of
+  its points.
+- **`kind`** is `body` (the letter), `entry` (a handwritten letter's stroke
+  from the line into the letter) or `exit` (its stroke to the next letter).
+- **`slant`** leans the letter: x += (200 - y) × slant; 0 for print, 0.2
+  for the handwritten letters. Write the points upright.
+- **`status`** is `draft` until the human has checked the letter against
+  her school's manual, then `checked`. Each draft is a warning at every
+  import. `source` is for people.
+- **At most 4 strokes** (the writing board's start dots), and each stroke
+  after the first needs its line (`trace-next-2`, `trace-next-3`, …).
+- **Every print `TraceLetter` step needs its letter's shape** (an import
+  error); a handwritten step without its shape is a warning, and the app
+  skips it until the shape is drawn.
+- Shapes are not in the ledger of released ids: her progress names letters,
+  never a shape, so a shape can be redrawn or replaced. A file removed while
+  its imported asset is still there is refused, like a deleted row.
+
 ## The ledger of released ids
 
 `released-ids.txt` lists every id ever released, one per line as
@@ -214,6 +265,8 @@ of a release is never deleted, even together with its imported asset:
 
 - `pictures/`: the pictures' art (PNG, in Git LFS), named in `pictures.csv`.
 - `released-ids.txt`: the ledger of released ids (above).
+- `strokes/`: the letters' shapes, one JSON file per letter, case and form
+  (above).
 - `voice/`: the recorded clips (mono OGG Vorbis, 44.1 kHz, AGENTS.md →
   "Audio"), named in `voice-lines.csv`. They come from the recording kit
   (Școlița → Make recording scripts, Import recording session, Accept

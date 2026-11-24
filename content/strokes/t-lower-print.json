@@ -1,0 +1,13 @@
+{
+  "status": "draft",
+  "source": "design/research/strokes-draft.json and print-stroke-order-draft.svg (curriculum-research), English top-start order (D2); not yet checked against her manual",
+  "slant": 0,
+  "strokes": [
+    { "runs": [
+      { "kind": "body", "points": [[25, 30], [25, 185], [35, 200], [52.5, 196]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[2.5, 100], [52.5, 100]] }
+    ] }
+  ]
+}

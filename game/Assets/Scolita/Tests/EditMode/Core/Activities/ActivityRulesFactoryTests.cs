@@ -12,7 +12,8 @@ namespace Scolita.Tests.EditMode.Core.Activities
     {
         /// <summary>
         /// Tests that <see cref="ActivityRulesFactory.Create"/> makes rules of the step's kind and language
-        /// for every step of a kind with rules, in every lesson.
+        /// for every step it can create (<see cref="ActivityRulesFactory.CanCreate"/>: a kind with rules, and for
+        /// tracing the letter's shape), in every lesson.
         /// </summary>
         [Test]
         public void TestCreate_EveryStepOfAKindWithRules()
@@ -20,14 +21,14 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Curriculum curriculum = RealContent.Read();
             Step[] steps = curriculum.AllLessons
                 .SelectMany(lesson => lesson.Steps)
-                .Where(step => ActivityRulesFactory.Has(step.Kind))
+                .Where(step => ActivityRulesFactory.CanCreate(step, curriculum))
                 .ToArray();
 
             Assert.That(steps.Select(step => step.Kind).Distinct(), Is.EquivalentTo(new[]
             {
                 ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
                 ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
-                ActivityKind.WordTwins
+                ActivityKind.WordTwins, ActivityKind.TraceLetter
             }));
             foreach (Step step in steps)
             {
@@ -42,15 +43,24 @@ namespace Scolita.Tests.EditMode.Core.Activities
             }
         }
 
-        /// <summary>Tests that <see cref="ActivityRulesFactory.Create"/> refuses a kind with no rules yet.</summary>
+        /// <summary>
+        /// Tests that <see cref="ActivityRulesFactory.Create"/> refuses a kind with no rules yet, and that
+        /// <see cref="ActivityRulesFactory.CanCreate"/> refuses a handwritten tracing step whose shape isn't drawn yet.
+        /// </summary>
         [Test]
         public void TestCreate_AKindWithoutRules()
         {
             Curriculum curriculum = RealContent.Read();
-            Step trace = RealContent.FirstStep(curriculum, "ro-a", ActivityKind.TraceLetter);
+            Step word = curriculum.AllLessons.SelectMany(lesson => lesson.Steps).First(step => step.Kind == ActivityKind.TraceWord);
+            Step byHand = RealContent.Lesson(curriculum, "ro-a").Steps
+                .First(step => step.Kind == ActivityKind.TraceLetter && step.Options.Any(option => option.Value == "handwritten"));
 
-            Assert.That(ActivityRulesFactory.Has(ActivityKind.TraceLetter), Is.False);
-            Assert.That(() => ActivityRulesFactory.Create(trace, curriculum, TestLearningRules.Default()), Throws.ArgumentException);
+            Assert.That(ActivityRulesFactory.Has(ActivityKind.TraceWord), Is.False);
+            Assert.That(ActivityRulesFactory.CanCreate(word, curriculum), Is.False);
+            Assert.That(() => ActivityRulesFactory.Create(word, curriculum, TestLearningRules.Default()), Throws.ArgumentException);
+            Assert.That(ActivityRulesFactory.CanCreate(byHand, curriculum), Is.False);
+            Assert.That(() => ActivityRulesFactory.Create(byHand, curriculum, TestLearningRules.Default()),
+                Throws.InstanceOf<System.Collections.Generic.KeyNotFoundException>());
         }
     }
 }
