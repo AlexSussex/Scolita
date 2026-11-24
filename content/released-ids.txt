@@ -337,3 +337,13 @@ lessons.csv ro-words-1
 lessons.csv en-words-1
 lessons.csv capitals-1
 lessons.csv party-1
+
+# 0.5.0
+voice-lines.csv ro-stretched-mama
+voice-lines.csv ro-stretched-tata
+voice-lines.csv ro-stretched-pat
+voice-lines.csv en-stretched-moon
+voice-lines.csv en-stretched-tiger
+voice-lines.csv en-stretched-pat
+voice-lines.csv ro-line-two-hint-show
+voice-lines.csv en-line-two-hint-show

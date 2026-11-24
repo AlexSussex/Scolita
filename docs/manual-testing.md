@@ -39,6 +39,24 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.5.0 (2026-11-24): the letter hunt, first sounds and two sounds
+
+On the tablet, with the 0.5.0 APK (README → "Build a release APK" from tag `v0.5.0`,
+then "Install on the tablet"). Play from the map with **Hai!**; each lesson opens where
+the last one stopped. If the tablet's voices aren't installed, the lines show in the
+bubble only.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.5.0-1 | The first lessons | Play `ro-a` and `en-a` (the first two lessons) | `ro-a`: meeting a only (the tracing comes later). `en-a`: after meeting a, the game below (row 0.5.0-5). No star hunt and no first-sound game in these two | |
+| 0.5.0-2 | The star hunt (`ro-m`, after "hear it, find it") | Watch the stars | Ten yellow stars with m, M, a, A and a gold "RO" star each, drifting slowly in two rows, never over the home button, the dots or the unicorn; "Atinge toate stelele care au litera m. Caută și litera mare!" | |
+| 0.5.0-3 | The star hunt | Tap a star with a, then another one with a | First: it bounces back, the m stars twinkle, "Stelele cu litera m strălucesc. Prinde-le!". Second: every m star glows yellow, "Uite, aceasta este litera m. Atinge-o!". No red, no buzzer | |
+| 0.5.0-4 | The star hunt | Tap each star with m or M | Each pops and says /m/ (the sound, not "me"); after the last, a praise and the next game | |
+| 0.5.0-5 | One letter, two sounds (`en-a`) | Tap the gold planet, then the blue ringed one | Each gets a green tick and says its sound: Romanian /a/, then English /æ/; "The same letter has two sounds! …", then "Listen to the word and take the picture to the planet with the same sound." and the first word; a picture appears in the middle (no badge on it) | |
+| 0.5.0-6 | One letter, two sounds | Drag the picture to the wrong planet twice, then to the right one; sort the rest | It floats back, "Listen to the two sounds again." and both sounds; then the right planet glows, "Look, this is the right planet. Take the picture there!"; dropped there, it sits in the planet's tray with its badge and the next word is said. avion and albină go to the gold planet, apple and astronaut to the blue one | |
+| 0.5.0-7 | The first sound (`ro-m`, its last game) | Tap the picture, then **a** twice, then **m** | The picture: "mama" again. First **a**: it fades, "Ascultă primul sunet: mmmama." (until recorded, the tablet says /m/, a pause, "mama"). Second: **m** glows. **m**: a praise and the end of the lesson | |
+| 0.5.0-8 | The new lines | Listen to the lines in rows 2–7 in both languages (`en-m` has the English hunt and first sound) | Each is a whole, correct sentence in the right language. The ones to check: "Uite, aceasta este planeta potrivită. Du poza acolo!" (the Romanian of row 6, said in a Romanian-led lesson later) and the stretched words "mmmama", "t-t-tata", "p-p-pat", "mmmoon", "t-t-tiger" | |
+
 ### 0.4.0 (2026-11-24): the first lessons
 
 On the tablet, with the 0.4.0 APK (README → "Build a release APK" from tag `v0.4.0`,

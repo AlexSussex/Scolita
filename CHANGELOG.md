@@ -18,6 +18,53 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.5.0 (2026-11-24)
+
+Three new letter games in the lessons. She hunts the stars that carry the letter, finds
+the letter a picture's word starts with, and, in the English lessons, hears that the same
+letter sounds different in Romanian and in English and sorts pictures to the planet of
+their sound. Every wrong choice is a letter she has already met.
+
+- **For the child:**
+  - **The letter hunt** (from `ro-m` and `en-m` on): ten yellow stars drift slowly across
+    the sky, some with the letter (small and capital), the rest with a letter she knows;
+    each star she finds pops and says its sound. A miss bounces back and the right stars
+    twinkle; a second miss makes them all glow. They never pass over the home button or
+    the unicorn.
+  - **The first sound** (from `ro-m` and `en-m` on): a picture (its word not written, so
+    it doesn't give the answer away) and its word said; she taps the letter it starts
+    with. A miss says the word with its first sound held ("mmmama"), a second miss makes
+    the answer glow. Tap the picture to hear the word again.
+  - **One letter, two sounds** (`en-a`): the letter a between a gold Romanian planet and
+    a blue English one; she taps each to hear its sound (a green tick each), then the
+    pictures come one by one and she drags each to the planet of its first sound. A
+    picture on the wrong planet floats back with both sounds said again; a second miss
+    makes the right planet glow.
+  - Every card and planet carries its language's badge (the picture in her hand gets its
+    badge once sorted, so she listens instead of matching badges).
+- **For the parent:** the first lessons are shorter: `ro-a` and `en-a` no longer hunt or
+  ask for first sounds (only a is known there), and `ro-m` and `en-m` use m and a only
+  (the human, 2026-11-24: wrong choices are only letters already taught).
+
+### Technical notes
+
+- No new package; no save-format change (`lesson-run.json` is unchanged; a lesson whose
+  steps changed, `ro-a`, `en-a`, `ro-m`, `en-m`, starts again from its first step, as
+  designed).
+- **Content:** `steps.csv` (the four lessons above); a new voice line kind,
+  **`stretched`** (`ro-stretched-mama` "mmmama", "t-t-tata", "p-p-pat"; `en-stretched-moon`,
+  "t-t-tiger", "p-p-pat"), needed by every `FirstSound` word; `two-hint-show` in both
+  languages. The validator: `LetterHunt` and `FirstSound` choose among taught letters only,
+  `TwoSounds` only on a letter whose sound differs, with words of both languages starting
+  with it. Until a stretched line is recorded, the tablet says the word's first sound, a
+  pause, then the word.
+- **Core:** `LetterHuntRules`, `FirstSoundRules`, `TwoSoundsRules`; the round's `Subject`,
+  `StateOf`, `Current`; `ActivityAnswer.Drop`; `LearningRules.LetterHunt` (10 stars, 4 with
+  the letter, at most 60 reference pixels a second, in `Settings/LearningRules.asset`).
+- **For the human:** hear the new lines (rows 0.5.0-1 to -8), and record the six stretched
+  words with the next recording session (`local/todo/04-record-voices.md`).
+- Brief: [`tasks/done/activities-letters.md`](tasks/done/activities-letters.md).
+
 ## 0.4.0 (2026-11-24)
 
 The first lessons she can play. **Hai!** opens a lesson: the unicorn introduces a

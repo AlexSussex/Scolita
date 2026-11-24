@@ -60,7 +60,7 @@ Each brief file therefore reads, top to bottom:
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
 | 6 | `feature/tracing` | In progress (tracing) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
-| 8 | `feature/activities-letters` | In progress (letters) | [pending/activities-letters.md](pending/activities-letters.md) |
+| 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Ready after 8 | [pending/activities-words.md](pending/activities-words.md) |
 | 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
 | 11 | `feature/progress-review` | Ready after 7, 9 and 10 | [pending/progress-review.md](pending/progress-review.md) |
@@ -100,12 +100,11 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| letters | [activities-letters](pending/activities-letters.md) | `Scripts/Core/Activities`, `Scripts/Core/Content` (`ActivityKinds`, `StepRules`, a `stretched` voice line kind), `Scripts/Core/Lessons/LearningRules.cs`, `Scripts/Game/Lessons`, `Scripts/UI/Lesson`, `Scripts/Editor/Voice` (the new kind), new `Prefabs/Lesson/{LetterHunt,FirstSound,TwoSounds}View.prefab`; changes: `Prefabs/Lesson/ActivityRegistry.asset` (three rows), `Settings/LearningRules.asset`, `content/steps.csv` (`ro-a`, `en-a`, `ro-m`, `en-m`), `content/voice-lines.csv` (new rows) and their imported assets | emulator-5602 | 2026-11-24 | Core and views pushed, both reviewed; close-out (0.5.0) next. **For `tracing`:** `ActivityAnswer` has a `Gesture` (each kind refuses the ones it doesn't take), `LearningRules` takes `LetterHuntTuning` (add yours after it), `ActivityViewContext` carries `Rules`, tests build rules with `TestLearningRules`, and PlayMode's `LessonScene.AnswerRight` needs a `TraceLetter` case; redo your `ActivityRegistry.asset` row on top of the three new ones |
 | tracing | [tracing](pending/tracing.md) | New: `Scripts/Core/Tracing`, `Scripts/Game/Tracing`, `Scripts/UI/Tracing`, `content/strokes/`, `Content/Strokes/` (imported), `Prefabs/Lesson/TraceLetterView.prefab`; changes: the importer (a stroke reader), `CurriculumAssets`, `LearningRules` (+ asset), `ActivityRegistry.asset` (one row), `Scenes/Lesson.unity` (the runner's stroke catalog field), `Core/Lessons` (which steps can be played), `steps.csv` / `voice-lines.csv` only if the note needs it | emulator-5600 | 2026-11-24 | Design note pushed (a large change); **waiting for the human to agree it** (brief → Progress) |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `lesson` (lesson-engine done, release 0.4.0)._
+_Last updated 2026-11-24 by agent `letters` (activities-letters done, release 0.5.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -141,13 +140,30 @@ _Update this section whenever a slice is pushed or a brief is finished._
   `ActivityRegistry`, `MeetLetter` and `ListenAndPick`, the mascot's
   bubble for every line, `lesson-run.json` per profile. Kinds not built
   yet are skipped (the registry's list).
-- **Next:** `tracing` (then `handwriting`), `activities-letters` and
+- **Done 2026-11-24:** `activities-letters`, release 0.5.0: `LetterHunt`
+  (stars drifting under the top bar), `FirstSound` (a picture, its word,
+  the stretched first sound as the hint) and `TwoSounds` (two planets,
+  drag the pictures by their first sound); the `stretched` voice line
+  kind; wrong choices only taught letters (`ro-a`, `en-a`, `ro-m`, `en-m`
+  changed). The round's `Subject`, `StateOf`, `Current`, `PlacedOn` and
+  `ActivityAnswer.Drop` serve later hunts and sorts.
+- **Next:** `tracing` (then `handwriting`), `activities-words` and
   `galaxy-map` in parallel, each touching its own folders (a new kind:
   `lesson-engine`'s completion record, "Conventions"); `content-letters-1`
   (content only); `look` in flight. The human: try 0.4.0 on the tablet
   (`local/for-human-next-steps.md`).
 
 ### Open follow-ups across briefs
+
+- **From `activities-letters`** (full list in its completion record):
+  - `tracing`: add `TraceLetter` to PlayMode's `LessonScene.AnswerRight`;
+    put its tuning after `LetterHunt` in `LearningRules`; its gesture is
+    refused by the other kinds.
+  - `look`: a blue planet for `TwoSounds`' English side (tinted purple
+    now); the larger, 4:3, phone and cut-out sizes of these screens.
+  - The lesson's voice: a bubble mixing the languages shows one badge.
+  - `content-letters-1`: every `FirstSound` word needs its stretched line;
+    `TwoSounds` for i and o with words of both languages.
 
 - **From `lesson-engine`** (full list in its completion record):
   - Each activity brief takes its kind off `ActivityRegistry.asset`'s

@@ -1,6 +1,8 @@
 # Task: feature/activities-letters
 
-> **Status: In progress (letters).**
+> **Status: Done 2026-11-24, released as 0.5.0** (agent `letters`). The human, 2026-11-24:
+> wrong choices are only letters already taught; `TwoSounds` only on letters whose sounds differ;
+> placeholder pictures are plain circles.
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "The five seams" → 3, "Usability",
 "Learning"), and the completion records in `tasks/done/`, above all
@@ -523,3 +525,96 @@ signature starts the lesson from its first step, by design.) `TraceLetter` steps
 ### Cleanup
 
 `"$ADB" -s $EMU shell pm clear com.softshack.scolita`; `wm size reset; wm density reset`.
+
+## Completion record
+
+_Finished 2026-11-24 by `letters`; released as 0.5.0 (tag `v0.5.0`)._
+
+### What was built
+
+- **Pushed:**
+  - `9c82bb7` the claim; `a21ca62` the Design note;
+  - `35fbb45` `content:` untaught letters out of the hunts and first sounds (`ro-a`, `en-a`, `ro-m`,
+    `en-m`), `two-hint-show`;
+  - `3f435ae` `core:` the three kinds' rules, the round's `Subject` / `StateOf` / `Current`,
+    `ActivityAnswer.Drop`, `HintCue.TwinkleAnswers`, `LetterHuntTuning`, the `stretched` kind, the
+    validator's rules;
+  - `8ae3b90` `build:` the recording kit plans stretched words;
+  - `75629f4` `content:` the six stretched lines; `28bae41` `core:` a `FirstSound` word needs one;
+  - `abacfdf` `content:` `content/README.md`;
+  - `e6f40f0` `core:`, `800e0b8` `content:`, `18cdadd` `game:` the first review's fixes (gestures
+    refused, stretched words said by sound, the planet hint reworded, the hunt numbers in
+    `LearningRules.asset`); `48c542d` `docs:`;
+  - `f91a661` `game:` the views get the learning rules; `2a0becd` `ui:` the three views;
+    `8c7b8f4` `game:` the prefabs, the registry rows, the PlayMode tests;
+  - `3e22bda` `core:` `ActivityRound.PlacedOn`; `db802f3` `ui:` and `bb174af` `game:` the second
+    review's fixes; `4d894f8` `docs:`;
+  - the close-out.
+- **Core** (`Scripts/Core`): `Activities/LetterHuntRules`, `FirstSoundRules`, `TwoSoundsRules`,
+  `AnswerGesture`, `ChoiceState`; `ActivityRound` (`Subject`, `StateOf`, `Current`, `PlacedOn`),
+  `ActivityAnswer.Drop`, `ActivityChoice.OfCapital` / `IsCapital`, `HintCue.TwinkleAnswers`;
+  `ActivityRulesFactory.Create(step, curriculum, rules)`; `Lessons/LetterHuntTuning` in
+  `LearningRules`; `Content/WordStarts`, `VoiceLineKind.Stretched`, `Word.StretchedLine`,
+  `ActivityItemRules.SortsByTheLettersTwoSounds`, the kinds' rows in `ActivityKinds`, the new checks in
+  `StepRules`; `Voice/VoicePlanner` says a stretched line without a clip from the word's first sound.
+- **Unity side:** `Scripts/UI/Lesson/LetterHuntView`, `HuntStar`, `StarGraphic`, `FirstSoundView`,
+  `TwoSoundsView`, `SoundPlanet`, `HeldPicture`, `ChoiceTileFeedback`, `ChoiceTile.ShowSubject`;
+  `ActivityViewContext.Rules`; `Prefabs/Lesson/LetterHuntView.prefab`, `FirstSoundView.prefab`,
+  `TwoSoundsView.prefab`; three rows in `ActivityRegistry.asset`; `Settings/LearningRules.asset`'s hunt
+  numbers; the recording kit knows `stretched`.
+- **Content:** `steps.csv` (four lessons), six `stretched` lines and `two-hint-show` in
+  `voice-lines.csv`, `content/README.md`.
+- **Tests:** EditMode 388 (was 360): `LetterHuntRulesTests`, `FirstSoundRulesTests`,
+  `TwoSoundsRulesTests`, new `ContentRulesTests`, `LearningRulesTests`, a router test; the `Fakes`
+  helper `TestLearningRules`. PlayMode 10 (was 7): `LetterActivitiesTests`, with the shared
+  `LessonScene` helper.
+
+### Conventions for later briefs
+
+- **Each kind refuses the gestures it doesn't take** (`ActivityAnswer.Gesture`): a new gesture (a
+  stroke) is never misread by an older kind.
+- **Views draw the round's state, never their own:** `StateOf` (heard, done), `Current` (the choice in
+  play), `PlacedOn` (where a choice went), `Subject` (shown, never an answer: a tap on it is
+  `RepeatPrompt`). A kind that needs more state adds it to the round, set by its rules.
+- **A step's numbers the child meets** go in `LearningRules` as a tuning object of their own
+  (`LetterHuntTuning`), added to the constructor's end; tests build rules with `TestLearningRules`.
+- **A bridge kind speaks its lesson's language** (Romanian in a `both` lesson, D1); its choices keep
+  their own.
+- **A voice line kind** is one enum value and its code; the kit (`RecordingSessionPlanner`,
+  `RecordingScriptPage`, `VoiceClipStandard`) and, if the tablet can't say it well, `VoicePlanner`'s
+  fallback learn it too.
+- **Moving things get a nested canvas** (the star field), so they don't redraw the lesson screen.
+- **PlayMode tests open a lesson at a step** with `LessonScene.OpenAtStep(lesson, kind)`, and finish
+  one with `LessonScene.FinishLesson`, which knows the built kinds (add a new kind there).
+
+### How it was tested
+
+Batch mode at the pushed commits (EditMode 388/388, PlayMode 10/10, `BuildAndroidDebug`, no compiler
+warning), the import refusing a `TwoSounds` on m, the emulator at 2000 × 1200 and 1280 × 800 in both
+languages (all three kinds, with hints, answers shown, real drags), the allocations in the Editor (the
+views add 0 B per frame), and two fresh-eyes reviews (Progress). Not run: the Device Simulator, the
+device Profiler and frame time on the Tab A7, listening by ear.
+
+### Decisions and deviations
+
+- **The human's rule "wrong choices are only taught letters"** (2026-11-24) applied to `LetterHunt`
+  and `FirstSound`: `ro-a` and `en-a` lose both steps, `ro-m` and `en-m` use m and a only (a content
+  change the human agreed, as `lesson-engine` did for `ListenAndPick`).
+- **A new voice line kind `stretched`** (the brief's "a voice line per word"), additive like `slow`.
+- **`LetterHunt`'s answer shown glows every star still to find**, and they keep moving.
+- **The picture in her hand has no badge** (for the human to confirm).
+- **`TwoSounds` speaks its lesson's language;** `two-hint-show` is new.
+- **The English planet** is `look`'s purple planet tinted blue.
+
+### Follow-ups
+
+- **For the human:** the lines and stretched words (0.5.0-8); record the six stretched words; the
+  badge on the picture in hand; the frame time of the hunt on the Tab A7.
+- **`look`:** a blue planet (and a star sprite, if the drawn mesh star should change) for these
+  screens; the large, 4:3, phone and cut-out sizes.
+- **The lesson's voice:** a bubble mixing the languages shows one badge (`LessonVoice`).
+- **The validator:** whether a `TwoSounds` letter must be taught in both tracks by its lesson.
+- **`tracing`:** add `TraceLetter` to `LessonScene.AnswerRight`; its tuning after `LetterHunt` in
+  `LearningRules`; its `ActivityRegistry.asset` row on top of these three.
+- **`content-letters-1`:** each new `FirstSound` word needs its stretched line; `TwoSounds` for i and
+  o (curriculum §4.1) with words of both languages.
