@@ -15,6 +15,8 @@ MonoBehaviour:
   id: en-line-syll-hint-once
   language: en
   kind: line
-  text: Clap once for each beat.
+  text: Tap the drum once for each beat.
   clip: 
+  status: 
   retired: 0
+  audioClips: []

@@ -218,18 +218,20 @@ ro-line-word-hint-back,ro,line,Nu-i nimic! Pune degetul înapoi pe punct și con
 en-line-word-hint-back,en,line,That's all right! Put your finger back on the dot and keep going.,,,,hint: a lifted finger
 ro-line-word-hint-from-line,ro,line,Pornește de pe linie.,,,,hint (same text as trace-hint-from-line; one clip may serve both)
 en-line-word-hint-from-line,en,line,Start from the line.,,,,hint (same text as trace-hint-from-line; one clip may serve both)
-ro-line-syll,ro,line,Ascultă cuvântul și bate toba pentru fiecare silabă.,,,,RO: the drum; EN: clapping (PRD)
-en-line-syll,en,line,Listen to the word and clap once for each beat.,,,,RO: the drum; EN: clapping (PRD)
+ro-line-syll,ro,line,Ascultă cuvântul și bate toba pentru fiecare silabă.,,,,the drum in both languages (activities-words)
+en-line-syll,en,line,Listen to the word and tap the drum once for each beat.,,,,the drum in both languages (activities-words): was "clap"; check
 ro-line-syll-how-many,ro,line,Câte silabe are cuvântul?,,,,
 en-line-syll-how-many,en,line,How many beats does the word have?,,,,
 ro-line-syll-hint-listen,ro,line,Ascultă cum spun cuvântul pe silabe.,,,,hint
 en-line-syll-hint-listen,en,line,Listen to me say the word in beats.,,,,hint
 ro-line-syll-hint-once,ro,line,Bate toba o dată pentru fiecare silabă.,,,,hint
-en-line-syll-hint-once,en,line,Clap once for each beat.,,,,hint
+en-line-syll-hint-once,en,line,Tap the drum once for each beat.,,,,hint; the drum in both languages (activities-words): was "clap"
 ro-line-syll-hint-chin,ro,line,Pune mâna sub bărbie și spune cuvântul.,,,,hint: the school trick (the chin drops once per syllable)
 en-line-syll-hint-chin,en,line,Put your hand under your chin and say the word.,,,,hint: the school trick (the chin drops once per syllable)
 ro-line-syll-hint-count,ro,line,Mai ascultă o dată și numără silabele.,,,,hint
 en-line-syll-hint-count,en,line,Listen once more and count the beats.,,,,hint
+ro-line-syll-tick,ro,line,"Când ai terminat, atinge bifa verde.",,,,Syllables: she taps the tick when she has finished; check
+en-line-syll-tick,en,line,"When you have finished, tap the green tick.",,,,Syllables: she taps the tick when she has finished
 ro-line-build,ro,line,Ascultă cuvântul și pune literele în ferestrele rachetei.,,,,
 en-line-build,en,line,Listen to the word and put the letters in the rocket's windows.,,,,
 ro-line-build-next,ro,line,Ce sunet urmează?,,,,design screen 5
@@ -286,3 +288,7 @@ ro-line-twins-hint-sound,ro,line,Caută cuvântul care sună aproape la fel.,,,,
 en-line-twins-hint-sound,en,line,Look for the word that sounds almost the same.,,,,hint
 ro-line-twins-hint-same-picture,ro,line,Gemenii au aceeași poză.,,,,hint
 en-line-twins-hint-same-picture,en,line,Twins have the same picture.,,,,hint
+ro-line-twins-hint-spelled,ro,line,Caută cuvântul care se scrie la fel.,,,,hint for a false friend (its pictures differ); check
+en-line-twins-hint-spelled,en,line,Look for the word that is spelled the same.,,,,hint for a false friend (its pictures differ)
+ro-line-twins-hint-show,ro,line,"Uite, acesta este cuvântul potrivit. Unește-le!",,,,answer shown: the partner glows; 'le': the two words (cuvintele); check
+en-line-twins-hint-show,en,line,"Look, this is the right word. Join them!",,,,answer shown: the partner glows
