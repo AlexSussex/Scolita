@@ -60,7 +60,7 @@ Each brief file therefore reads, top to bottom:
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
 | 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
-| 8 | `feature/activities-letters` | Ready after 5, beside 6 and 7 | [pending/activities-letters.md](pending/activities-letters.md) |
+| 8 | `feature/activities-letters` | In progress (letters) | [pending/activities-letters.md](pending/activities-letters.md) |
 | 9 | `feature/activities-words` | Ready after 8 | [pending/activities-words.md](pending/activities-words.md) |
 | 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
 | 11 | `feature/progress-review` | Ready after 7, 9 and 10 | [pending/progress-review.md](pending/progress-review.md) |
@@ -100,6 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
+| letters | [activities-letters](pending/activities-letters.md) | `Scripts/Core/Activities`, `Scripts/Core/Content` (`ActivityKinds`, `StepRules`, a `stretched` voice line kind), `Scripts/Core/Lessons/LearningRules.cs`, `Scripts/Game/Lessons`, `Scripts/UI/Lesson`, `Scripts/Editor/Voice` (the new kind), new `Prefabs/Lesson/{LetterHunt,FirstSound,TwoSounds}View.prefab`; changes: `Prefabs/Lesson/ActivityRegistry.asset` (three rows), `Settings/LearningRules.asset`, `content/steps.csv` (`ro-a`, `en-a`, `ro-m`, `en-m`), `content/voice-lines.csv` (new rows) and their imported assets | emulator-5602 | 2026-11-24 | Claimed; Design note next |
 
 ## Where we are
 

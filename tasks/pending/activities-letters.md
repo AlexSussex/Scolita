@@ -1,7 +1,6 @@
 # Task: feature/activities-letters
 
-> **Status: Ready after `lesson-engine`** (can run beside `tracing` and
-> `galaxy-map`).
+> **Status: In progress (letters).**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "The five seams" → 3, "Usability",
 "Learning"), and the completion records in `tasks/done/`, above all
