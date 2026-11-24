@@ -165,6 +165,53 @@ a planet. No flags (D6).
 All text on its background at WCAG AA (4.5:1) or better; the badges are
 told apart by shape first.
 
+## The art (`feature/look`, 2026-11-24)
+
+The app's art is **drawn in code** by agents (decision D7) in the soft-shaded 2D style above,
+and rendered to PNGs with the PC's Chrome. No art pack, no third-party licence. Drafts made
+with ChatGPT (the prompts are in `local/art-prompts/`) are cut out and cleaned by the same tools
+and can replace any drawing.
+
+- **Sources:** `design/art/draw/*.mjs`, one module per group: `world.mjs` (the sky, the
+  rainbow path, the planets and their faces, the rocket, its flame and trails, the moon, the
+  Earth, the stops), `guides.mjs` (the unicorn astronaut in three takes and the cat co-pilot,
+  each with the same nine frames), `badges.mjs`, `avatars.mjs` (screen 11's 14, shaded),
+  `stickers.mjs` (30 stickers, the three constellations), `ui.mjs` (the writing board,
+  buttons, cards, the bubble, the home button, icons, the launcher icon). Shared helpers (the
+  top-left light, gloss, soft shadows, eyes) are in `design/art/lib/svg.mjs`.
+- **Redraw:** `node design/art/build.mjs` (or with a folder prefix: `node design/art/build.mjs
+  Map/`) writes `game/Assets/Scolita/Art/<Folder>/<name>.png` and `sprite-borders.json`
+  (the 9-slice borders). Same code, same PNGs. Needs Node 18+ and Chrome (or Edge;
+  `SCOLITA_CHROME` names another).
+- **Cut a drawing made elsewhere:** `node design/art/cut-sheet.mjs <sheet.png> <folder>
+  --grid 4x2 --align bottom --names happy,talk,...` keys out the flat green (`--key magenta`
+  for magenta) with a soft edge and no green fringe, and draws every part at one scale onto a
+  square of `--size` pixels. Raw sheets stay in `local/art-inbox/`; only the cleaned parts are
+  committed.
+- **The choosing page:** `node design/art/choose.mjs <local folder> --inbox <list.json>`
+  shows every take side by side (the agent's and ChatGPT's) for the human and her.
+- **In Unity:** every PNG under `Assets/Scolita/Art/` is imported by
+  `Scolita.Editor.Art.ArtTextureImporter` (a full-rect sprite, no mipmaps, its 9-slice border)
+  and packed by its folder's sprite atlas (`Art/Atlases/<Folder>.spriteatlasv2`, built by
+  Școlița → Rebuild sprite atlases): Sky, Map, Effects, Guides, Badges, Board, UI, Stickers,
+  Constellations, Avatars. A new sprite in one of these folders is packed with no other
+  change. `Art/Icon/` holds the adaptive launcher icon's two layers (minimum API 26, so every
+  launcher uses the adaptive icon).
+- **Sizes:** sprites are drawn at about 1.6× the 1280 × 800 reference size, so they stay
+  sharp on the Tab A7's 2000 × 1200. A 9-sliced piece is shown with the Image's "Pixels Per
+  Unit Multiplier" at 1.6.
+- **The guide is data:** `Art/Guides/<guide-id>/<frame>.png`, with the same nine frames for
+  every guide: `happy-idle`, `happy-blink`, `happy-talk`, `cheering-0`, `cheering-1`,
+  `thinking-idle`, `thinking-talk`, `sleepy-0`, `sleepy-1`. `guide-unicorn` is the guide (its
+  name is hers to choose) and `guide-cat` the co-pilot. A new guide is a new folder of the same
+  frames (`feature/guides`).
+- **The planets** are put together from parts: the body (`planet-<colour>`), the face on top
+  (`planet-<colour>-face-<beaming|awake|sleepy>`, at 0.64 of the body's size, on its centre),
+  the ring's back half behind the body and its front half in front of it, the shadow under
+  it, and "z z z" by a sleepy one.
+- **Until she chooses** (the choosing page), the app uses take A of the guide (as on the
+  canvas) and take A of the badges.
+
 ## The screens
 
 Eleven screens are designed so far (details in [`screens.md`](screens.md)):
