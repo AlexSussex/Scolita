@@ -190,8 +190,12 @@ of a release is never deleted, even together with its imported asset:
   `-executeMethod Scolita.Editor.ContentImport.ReleasedIdsRecorder.RecordFromCommandLine`)
   adds every id not in the ledger yet under the new version, and nothing
   when there is none. Commit the ledger with the close-out.
-- **Never edit, reorder or delete a line** by hand. A conflict in it after
-  a rebase keeps both sides' lines.
+- **Record released ids refuses** to add ids under a version that isn't
+  after the ledger's latest `# <version>` line: raise `VERSION` first.
+- **Never edit, reorder or delete a line** by hand. If the ledger conflicts
+  after a rebase, someone released first: take `origin/main`'s ledger,
+  raise `VERSION` to the next free number, and run Record released ids
+  again.
 
 ## Folders
 
