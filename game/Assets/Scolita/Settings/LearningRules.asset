@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Lessons.LearningRulesAsset
   triesBeforeAnswerShown: 2
   praiseNotRepeatedWithin: 3
+  huntStars: 10
+  huntRightStars: 4
+  huntFastestSpeed: 60

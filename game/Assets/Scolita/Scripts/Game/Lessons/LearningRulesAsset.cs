@@ -13,7 +13,7 @@ namespace Scolita.Game.Lessons
     {
         [SerializeField, Min(1)] private int triesBeforeAnswerShown = 2;
         [SerializeField, Min(0)] private int praiseNotRepeatedWithin = 3;
-        [SerializeField, Range(2, LetterHuntTuning.MostStars)] private int huntStars = 10;
+        [SerializeField, Range(LetterHuntTuning.FewestStars, LetterHuntTuning.MostStars)] private int huntStars = 10;
         [SerializeField, Min(1)] private int huntRightStars = 4;
         [SerializeField, Min(1f)] private float huntFastestSpeed = 60f;
 
