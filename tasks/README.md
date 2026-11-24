@@ -96,7 +96,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Building |
+| skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Slices pushed and tested; closing out as 0.1.0 |
 
 ## Where we are
 
