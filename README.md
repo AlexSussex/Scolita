@@ -21,15 +21,17 @@ instruments, space and animals) come later on the same engine.
 | [`design/screens.md`](design/screens.md) | Each designed screen, described for building it; the canvas's source in `design/canvas/` |
 | [`tasks/`](tasks/README.md) | One brief per feature, with progress and completion records |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each release; the current version is in `VERSION` (from `project-skeleton`) |
-| `content/` | The lessons' source: letters, words, lessons and voice lines as CSV, with their art and audio (from `content-model`) |
+| [`content/`](content/README.md) | The lessons' source: letters, words, pictures, voice lines, units, lessons and steps as CSV, with their art and audio; the format is in `content/README.md` (from `content-model`) |
 | `game/` | The Unity project (Unity 6.3 LTS, C#, URP 2D). Open this folder in Unity Hub (from `project-skeleton`) |
 
 ## Status
 
 The foundation is built (release 0.1.0, `project-skeleton`): the Unity
 project, the build, saving, the fonts and three placeholder screens (Boot,
-Map, Lesson). No lessons yet. See [`tasks/README.md`](tasks/README.md) →
-"Where we are".
+Map, Lesson). The content model is built (release 0.2.0, `content-model`):
+the lessons as CSV in `content/`, the importer and the validator, with
+planet 1 (a m t p) as sample content. No lesson can be played yet. See
+[`tasks/README.md`](tasks/README.md) → "Where we are".
 
 ## Set up the PC
 
@@ -81,16 +83,27 @@ UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"
 
 ## Edit the content
 
-The lessons are data, not code (from `content-model`):
+The lessons are data, not code (from `content-model`); the full format,
+with an example row per file, is in [`content/README.md`](content/README.md).
 
-1. Edit the CSV files in `content/` (letters, words, lessons, voice lines)
-   in a text editor or a spreadsheet, saved as UTF-8 (Excel: "CSV UTF-8").
-   Romanian ș and ț must be the comma-below letters; the validator says
-   where a cedilla slipped in.
-2. In Unity: **Școlița → Import content**. It rebuilds the assets under
-   `Assets/Scolita/Content` and lists any problem (a word using a letter
-   not taught yet, a missing picture or clip).
-3. Run the EditMode tests; the content validator must pass.
+1. Edit the CSV files in `content/` (`letters.csv`, `words.csv`,
+   `pictures.csv`, `voice-lines.csv`, `units.csv`, `lessons.csv`,
+   `steps.csv`) in a text editor or a spreadsheet, saved as UTF-8 (Excel:
+   "CSV UTF-8"; `,` or `;` both work). The rows' order is the teaching
+   order. Ids are never renamed or deleted: retire a row with `yes` in its
+   `retired` cell. Romanian ș and ț must be the comma-below letters; the
+   import says where a cedilla slipped in.
+2. In Unity: **Școlița → Import content**. It writes the assets under
+   `game/Assets/Scolita/Content` (updating existing ones in place) and lists
+   every problem as `file, row N: reason` (a word using a letter not taught
+   yet, a missing voice line or picture). With any error nothing is
+   written; a picture without art yet (drawn as a placeholder) or a clip not
+   recorded yet is only a warning. In batch mode:
+   `Unity.exe -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile import.log`
+   exits 1 on any error.
+3. Run the EditMode tests: the content validator and the freshness test
+   (the assets match the CSVs) must pass. Commit the CSVs together with
+   what the importer wrote.
 
 ## Record voice lines
 

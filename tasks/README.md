@@ -53,7 +53,7 @@ Each brief file therefore reads, top to bottom:
 | --- | --- | --- | --- |
 | 1 | `feature/project-skeleton` | Done 2026-11-24, released as 0.1.0 | [done/project-skeleton.md](done/project-skeleton.md) |
 | 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
-| 3 | `feature/content-model` | In progress (content) | [pending/content-model.md](pending/content-model.md) |
+| 3 | `feature/content-model` | Done 2026-11-24, released as 0.2.0 | [done/content-model.md](done/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
 | 5 | `feature/lesson-engine` | Ready after 4 (decision D6) | [pending/lesson-engine.md](pending/lesson-engine.md) |
 | 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
@@ -96,12 +96,11 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| content | [content-model](pending/content-model.md) | `Scripts/Core/Content`, `Scripts/Content`, `Scripts/Editor/ContentImport`, `Tests/EditMode/Content`, `content/` (new: all CSVs, `README.md`, placeholder pictures), `Assets/Scolita/Content/` (new: Domains, Letters, Words, Pictures, Voice and the catalogs `DomainCatalog`, `LetterCatalog`, `WordCatalog`, `PictureCatalog`, `VoiceLineCatalog`) | emulator-5602 (not needed: no screen) | 2026-11-24 | Design note agreed by the human; four slices pushed and tested; closing out as 0.2.0 |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
 
 ## Where we are
 
-_Last updated 2026-11-24 by agent `skeleton` (project-skeleton done, release 0.1.0)._
+_Last updated 2026-11-24 by agent `content` (content-model done, release 0.2.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -117,14 +116,30 @@ _Update this section whenever a slice is pushed or a brief is finished._
   project in `game/`, Core's foundation, saving per tablet and per
   profile, the fonts, the build with release signing kept out of Gradle,
   and the Boot → Map → Lesson placeholders.
-- **Next:** `content-model`, and beside it `look` (art only). The human:
-  open the project in Unity Hub and try 0.1.0 on the tablet
+- **Done 2026-11-24:** `content-model`, release 0.2.0: the lessons as
+  seven CSVs in `content/` (`content/README.md`), Core's content model and
+  validator, the importer (Școlița → Import content) and planet 1 as
+  sample content (text only, placeholder pictures).
+- **Next:** `voice`, beside `look` (in flight). The human: open the
+  project in Unity Hub and try 0.1.0/0.2.0 on the tablet
   (`local/for-human-next-steps.md`).
-- **Parallel work possible** now: `look` beside `content-model`; once `content-model` is done: `content-letters-1`; once
+- **Parallel work possible** now: `content-letters-1` (content only); once
   `lesson-engine` is done: `tracing` (then `handwriting`),
   `activities-letters` and `galaxy-map`, each touching its own folders.
 
 ### Open follow-ups across briefs
+
+- **From `content-model`** (full list in its completion record):
+  - A ledger of released ids, so a row deleted with its asset is still
+    caught: a question for the human.
+  - `activities-letters`: `TwoSounds` only on letters whose sounds differ;
+    which letter of a step is the answer, and whether it must be taught.
+    `activities-words`: `WordTwins` words pair up.
+  - `lesson-engine`: steps have no ids, so a lesson in progress resumes by
+    step number; each kind's hint lines go in Core's `ActivityKinds`.
+  - `content-letters-1`: capitals for "English only" (`capitals-1` is
+    `ro`); the other TraceWord words; planets 2–3.
+  - `voice`: copy and link the clips named in `voice-lines.csv`.
 
 - **From `curriculum-research`** (full list in its completion record):
   - `MeetLetter` gives a letter's sound only in planets 1–3; the name

@@ -18,6 +18,64 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.2.0 (2026-11-24)
+
+The lessons are now data. Every letter, word, picture, voice line,
+planet, lesson and step is written in spreadsheets in `content/`. An
+importer checks them and turns them into what the app will read.
+Planet 1 (a m t p) is there as sample content. Nothing changes on the
+tablet yet: the first playable lesson comes with `lesson-engine`.
+
+- **For the child:** nothing new to see or hear yet; the app looks and
+  behaves as in 0.1.0.
+- **For the parent:**
+  - **The spreadsheets:** planet 1's words and the lines the app will
+    say can be read and edited in `content/` (any spreadsheet, saved as
+    "CSV UTF-8").
+  - **The import:** **Școlița → Import content** checks the content and
+    names every problem by file, row and reason. For example, a word that
+    uses a letter not taught yet, a cedilla ş instead of ș, or a missing
+    line or picture.
+  - The format is in `content/README.md`.
+
+### Technical notes
+
+- **The content model in Core** (`Scripts/Core/Content`, no Unity):
+  - letters, words, pictures and voice lines;
+  - domains, units (planets), lessons and steps;
+  - a language's track, computed from its lessons;
+  - which letters are taught before a lesson;
+  - what each activity kind needs (`ActivityKinds`);
+  - the CSV reader (BOM, CRLF, quotes, `,` or `;`);
+  - every validator rule.
+- **Seven CSVs** in `content/`: `letters`, `words`, `pictures`,
+  `voice-lines`, `units`, `lessons` (one row per lesson) and `steps` (one
+  row per step). Ids are stable: a row is retired, never deleted (the
+  importer refuses a deleted one).
+- **The importer** (`Scripts/Editor/ContentImport`; menu, or batch mode
+  with exit code 1 on any error) writes one asset per id, updated in
+  place, under `Assets/Scolita/Content` (`Letters/`, `Words/`,
+  `Pictures/`, `Voice/`, `Domains/`), and five catalogs. It draws a
+  placeholder for each picture without art (a coloured circle with the
+  word's first letter). A freshness test fails if a CSV changes without
+  importing.
+- **Content added (planet 1, text only, no clips):**
+  - 4 letters;
+  - 18 words: mama, tata, pat, apa; map, mat, tap, pat; and 10
+    listen-only words for the pictures;
+  - 17 placeholder pictures;
+  - 279 voice lines, including all 224 general lines of the agreed
+    draft;
+  - 12 lessons, 71 steps.
+- **No new package, no save-format change.** `ProfileId` now shares the
+  id check with the content.
+- **For the human:**
+  - the Design note's choices were agreed on 2026-11-24;
+  - three small questions are open in `local/for-human-next-steps.md`
+    (Q2 to Q4: a list of released ids, untaught letters as wrong choices,
+    the placeholders' letter).
+- Brief: [tasks/done/content-model.md](tasks/done/content-model.md).
+
 ## 0.1.0 (2026-11-24)
 
 The first build of Școlița: the foundation every later feature sits on. It

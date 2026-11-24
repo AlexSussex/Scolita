@@ -1,6 +1,7 @@
 # Task: feature/content-model
 
-> **Status: In progress (content).**
+> **Status: Done (content, 2026-11-24), released as 0.2.0.** The Design note was agreed by the human
+> on 2026-11-24.
 
 Read `AGENTS.md` first (especially "The five seams", "Learning" and
 "Versioning and releases" → "Progress survives updates"), and the
@@ -113,7 +114,7 @@ _Kept by `content` while the brief is in flight._
   - `content:` planet 1's sample and its imported assets.
 
   Their hashes are in the completion record.
-- **Next:** the close-out (release 0.2.0).
+- **Closed out** as release 0.2.0 (see "Completion record").
 
 ### Decisions while building (within the agreed note)
 
@@ -704,3 +705,124 @@ load the content until `lesson-engine`.
   made while testing.
 - `game/Builds/` is ignored; delete it to free space.
 - No save files are touched.
+
+## Completion record
+
+_Finished 2026-11-24 by `content`; released as 0.2.0 (tag `v0.2.0`)._
+
+### What was built
+
+- **Pushed:**
+  - `3e05bf5` core: the content model, the CSV reader and the rules;
+  - `db75cd0` content: the asset types and the catalogs;
+  - `08f626a` build: the importer and the placeholders;
+  - `f6bce65` content: planet 1's sample and its imported assets;
+  - the close-out.
+- **Core** (`Scripts/Core/Content`, no engine references):
+  - **The model:**
+    - `ContentId`, `VoiceLineId`, `VoiceLineIds` (the naming rule);
+    - `Letter`, `Word`, `Picture`, `VoiceLine`;
+    - `Domain`, `Unit`, `Lesson`, `Step`, `StepOption`, `Track`;
+    - `Curriculum` (catalogs, tracks, `LettersTaughtBefore`) and
+      `CurriculumBuilder` (with `UnitEntry`, `LessonEntry`, `StepEntry`).
+  - **The kinds:** `ActivityKind`, `ActivityKinds` (per kind:
+    `ActivityKindRequirements`, `ItemRange`, `ActivityItemRules`,
+    `ActivityWordUse`, `ActivityOption`).
+  - **Codes:** `LetterGroup`, `VoiceLineKind`, `ContentCodes`,
+    `ContentFileNames`.
+  - **Reading:** `Csv/` (`CsvReader`, `CsvTable`, `CsvRow`),
+    `ContentTables`, `RowReader`.
+  - **Checking:** `Rules/` (`ContentRules`, `WordRules`, `PictureRules`,
+    `VoiceLineRules`, `LessonRules`, `StepRules`, `References`),
+    `ContentProblem(s)`, `IContentFiles`.
+  - **Shared:** `Ids/StableIdText` (also used by `ProfileId`) and
+    `Languages/LanguageMixExtensions`.
+- **Content** (`Scripts/Content`):
+  - the assets `LetterAsset`, `WordAsset`, `PictureAsset` (its
+    `Sprite`), `VoiceLineAsset`, `LessonAsset` (with `StepData`),
+    `UnitAsset`, `DomainAsset`;
+  - `ContentCatalog<T>` and `LetterCatalog`, `WordCatalog`,
+    `PictureCatalog`, `VoiceLineCatalog`, `DomainCatalog`;
+  - `AssetFields`, and `CurriculumAssets.Build` (the run-time loader).
+- **Editor** (`Scripts/Editor/ContentImport`):
+  - `ContentImporter` (Școlița → Import content; `ImportFromCommandLine`);
+  - `ContentImportPlan`, `PlannedAsset`, `PlannedImage`;
+  - `ContentFolder`, `ContentAssetPaths`, `PlaceholderPicture`.
+- **Content:**
+  - `content/README.md` and the seven CSVs;
+  - the imported assets in `Assets/Scolita/Content/` (`Letters/`,
+    `Words/`, `Pictures/` with the PNGs, `Voice/`, `Domains/` with
+    `Units/` and `Lessons/`, and the five catalogs).
+- **Tests:** 72 new EditMode tests:
+  - `Tests/EditMode/Core/Content/*`;
+  - `Tests/EditMode/Content/ContentImporterTests`,
+    `PlaceholderPictureTests`, `ContentFreshnessTests`,
+    `CurriculumAssetsTests`, and the validator's CSV test;
+  - fakes in `Tests/EditMode/Fakes` (`ContentCsvs`, `FakeContentFiles`).
+
+### Conventions for later briefs
+
+- **Content is edited in `content/*.csv` only,** then imported. A commit
+  that changes a CSV carries the assets the importer wrote
+  (`ContentFreshnessTests`). The format and its rules are in
+  `content/README.md`.
+- **Ids are ASCII `[a-z0-9-]+`, stable, never deleted:** retire a row.
+  A word's id starts with its language (`ro-mama`). Voice line ids are
+  `<lang>-<kind>-<key>`. A letter's and a word's lines are found by that
+  rule (`Letter.SoundLine`, `Word.WordLine`, `SyllablesLine`, `SlowLine`),
+  never by a column.
+- **A new activity kind or a kind's new need** goes in Core's
+  `ActivityKinds`: counts, item rules, word use, word lines, options and
+  instruction lines. A kind's semantic checks go in `StepRules`, each
+  with a broken-CSV test in `ContentRulesTests`.
+- **The app loads the content with `CurriculumAssets.Build`** from the
+  five catalogs (serialized references on the composition root), and
+  works with Core's `Curriculum`, never with the assets.
+- **A step's languages:**
+  - `Step.Languages` is one language, or both for `TwoSounds` and
+    `WordTwins`;
+  - a profile's language mix plays the steps whose languages it holds
+    (`LanguageMixExtensions.Includes`);
+  - a lesson in both languages has steps of each.
+- **Test content:** `ContentCsvs.Valid()` is a small valid set for rule
+  tests; break one thing with `AddRow` or `ReplaceRow`, then assert with
+  `AssertError(file, row, reason parts)`.
+- **Romanian letters in C# are `\u` escapes,** strings and char literals
+  alike (the tool used to write files may decode them: check with
+  `grep -P '[^\x00-\x7F]'`).
+- **`-nographics` batch mode can't add glyphs to a TextMeshPro atlas;**
+  read the existing SDF atlas instead (`PlaceholderPicture`).
+
+### How it was tested
+
+- **Batch mode, at the pushed commits:** EditMode 236/236, PlayMode 3/3,
+  and `BuildAndroidDebug`, with no compiler warnings.
+- **The batch import:** exit 0 on the content, exit 1 on a broken row,
+  writing nothing.
+- **Placeholders** looked at.
+- **Reviewed** by a second agent before the push (Progress → "Fresh-eyes
+  review").
+- **Not used:** the emulator, the Device Simulator and the Profiler (no
+  screen, no runtime use yet), and listening (nothing is spoken yet).
+
+### Decisions and deviations
+
+- **The Design note** (agreed by the human on 2026-11-24): seven CSVs
+  instead of six, tracks computed from the lessons' language, voice lines
+  by naming rule, and the adjusted picture rule.
+- **Decisions while building:** in Progress.
+- **Clips** stay a file name; linking them is `voice`'s job.
+
+### Follow-ups
+
+All in Progress → "Follow-ups":
+
+- **For the human:** a ledger of released ids.
+- **`activities-letters`:** `TwoSounds` letters and words; a step's
+  answer letter.
+- **`activities-words`:** `WordTwins` pairs; `BuildWord` length.
+- **`lesson-engine`:** resuming by step number; each kind's hint lines.
+- **`content-letters-1`:** capitals for "English only", the other
+  TraceWord words, planets 2–3.
+- **`voice`:** linking the clips; the status column.
+- **The domain list.**
