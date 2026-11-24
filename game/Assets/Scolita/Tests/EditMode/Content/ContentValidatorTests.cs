@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Scolita.Content;
+using Scolita.Core.Content;
+using Scolita.Core.Content.Rules;
+using Scolita.Editor.ContentImport;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,6 +43,26 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(problems, Is.Empty);
         }
 
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> finds no error in the repository's
+        /// <c>content/*.csv</c>, and that its only warnings are pictures still on their placeholder
+        /// and clips not recorded yet (the tablet covers both).
+        /// </summary>
+        [Test]
+        public void TestCheck_TheContentCsvsHaveNoError()
+        {
+            ContentFolder folder = ContentImporter.RepositoryContent();
+            ContentProblems problems = new ContentProblems();
+
+            Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
+            ContentRules.Check(curriculum, folder, problems);
+
+            Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
+            Assert.That(problems.All
+                .Where(problem => problem.Source.File != ContentFileNames.Pictures && problem.Source.File != ContentFileNames.VoiceLines)
+                .Select(problem => problem.ToString()), Is.Empty);
+        }
+
         private static IEnumerable<string> ProblemsOf(IValidatableContent content)
         {
             string path = AssetDatabase.GetAssetPath((Object)content);
@@ -49,7 +72,7 @@ namespace Scolita.Tests.EditMode.Content
 
         private static ScriptableObject[] LoadContentAssets()
         {
-            const string contentFolder = "Assets/Scolita/Content";
+            const string contentFolder = ContentImporter.AssetFolder;
             Assert.That(AssetDatabase.IsValidFolder(contentFolder), Is.True, contentFolder + " must exist.");
             return AssetDatabase.FindAssets("t:ScriptableObject", new[] { contentFolder })
                 .Select(AssetDatabase.GUIDToAssetPath)

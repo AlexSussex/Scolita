@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7fa5e0d47fd9548a07dcf1016f4c67, type: 3}
+  m_Name: LetterCatalog
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LetterCatalog
+  items:
+  - {fileID: 11400000, guid: bd8aa2e14d2bd4240a88d4a480f82839, type: 2}
+  - {fileID: 11400000, guid: 9288fe6d526be4a44b166129118d851d, type: 2}
+  - {fileID: 11400000, guid: 5eb79b683a7cb224392624e7bc843837, type: 2}
+  - {fileID: 11400000, guid: 9ef2d3af1b0f7d84997e7df04a417e0a, type: 2}

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cccf5aaaa20034fad26d70df993748, type: 3}
+  m_Name: en-p
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LessonAsset
+  id: en-p
+  unit: planet-1
+  language: en
+  introduces: p
+  retired: 0
+  steps:
+  - kind: MeetLetter
+    language: en
+    letters:
+    - p
+    words:
+    - en-planet
+    options: []
+  - kind: LetterHunt
+    language: en
+    letters:
+    - p
+    - a
+    - m
+    words: []
+    options: []
+  - kind: TraceLetter
+    language: en
+    letters:
+    - p
+    words: []
+    options:
+    - form=handwritten
+    - case=lower
+  - kind: FirstSound
+    language: en
+    letters:
+    - p
+    - a
+    - m
+    - t
+    words:
+    - en-pat
+    options: []

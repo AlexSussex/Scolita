@@ -96,7 +96,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| content | [content-model](pending/content-model.md) | `Scripts/Core/Content`, `Scripts/Content`, `Scripts/Editor/ContentImport`, `Tests/EditMode/Content`, `content/` (new: all CSVs, `README.md`, placeholder pictures), `Assets/Scolita/Content/` (new: Domains, Letters, Words, Pictures, Voice and the catalogs `DomainCatalog`, `LetterCatalog`, `WordCatalog`, `PictureCatalog`, `VoiceLineCatalog`) | emulator-5602 | 2026-11-24 | Claimed; Design note next (large change: the human agrees it first) |
+| content | [content-model](pending/content-model.md) | `Scripts/Core/Content`, `Scripts/Content`, `Scripts/Editor/ContentImport`, `Tests/EditMode/Content`, `content/` (new: all CSVs, `README.md`, placeholder pictures), `Assets/Scolita/Content/` (new: Domains, Letters, Words, Pictures, Voice and the catalogs `DomainCatalog`, `LetterCatalog`, `WordCatalog`, `PictureCatalog`, `VoiceLineCatalog`) | emulator-5602 (not needed: no screen) | 2026-11-24 | Design note agreed by the human; four slices pushed and tested; closing out as 0.2.0 |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
 
 ## Where we are

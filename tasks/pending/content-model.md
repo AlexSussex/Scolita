@@ -105,9 +105,15 @@ _Kept by `content` while the brief is in flight._
   `ro`, `en` or `both`; seven CSVs (`lessons.csv` one row per lesson,
   `steps.csv` one row per step); the adjusted picture rule; the row order
   as the teaching order; a deleted row refused (retire it instead).
-- **Built, in four slices** (Core, the content types, the importer, planet
-  1's content). The commits and the test run are recorded below as they
-  are pushed.
+- **Built and pushed in four slices,** tested together at the last
+  commit, after the fresh-eyes review:
+  - `core:` the model, the CSV reader and the rules;
+  - `content:` the asset types and the catalogs;
+  - `build:` the importer and the placeholders;
+  - `content:` planet 1's sample and its imported assets.
+
+  Their hashes are in the completion record.
+- **Next:** the close-out (release 0.2.0).
 
 ### Decisions while building (within the agreed note)
 
@@ -152,6 +158,135 @@ _Kept by `content` while the brief is in flight._
     syllables lines, and all 224 general lines of the agreed draft.
   - `ListenAndPick` in `ro-a` uses a, m and t, as `lesson-engine`'s
     acceptance expects.
+
+### Fresh-eyes review (2026-11-24)
+
+A second agent, which didn't write the code, read the diff against
+AGENTS.md before the push. It found no blockers: the seams hold, Core has
+no engine reference, and there is no `var` and no `using static`. It also
+found the CSV reader's row numbers, the GUID handling, the importer's
+folders, the batch exit codes and the freshness comparison sound. Its 15
+findings, and what was done:
+
+1. **An id deleted together with its asset could be reused later.** The
+   message no longer invites deleting an asset by hand. A ledger of
+   released ids, checked at import, is a follow-up for the human to
+   agree.
+2. **A step whose kind can't be played with its items:**
+   - **Fixed:** a `MeetLetter` or `FirstSound` word must start with one of
+     the step's letters (`ActivityItemRules.WordStartsWithALetter`; test
+     `TestCheck_WordStartsWithTheStepsLetter`).
+   - **Left to the kinds' own briefs, which list them:** a `WordTwins`
+     step's words must pair up (`activities-words`); `TwoSounds` must be
+     on a letter whose two sounds differ (`activities-letters`). Both are
+     in Follow-ups.
+3. **`ListenAndPick` took letters and words together.** Now letters or
+   words, never both (`ActivityItemRules.LettersOrWords`; test
+   `TestCheck_ListenAndPickTakesLettersOrWords`).
+4. **The syllables line wasn't checked against the word.** Now it must
+   say the word's syllables (test `TestCheck_SyllablesLineSaysTheSyllables`).
+5. **`capitals-1` is a Romanian lesson,** so "English only" mode skips
+   the capitals. Sample data: a follow-up for `content-letters-1`, which
+   writes planets 1–3's lessons.
+6. **A missing sprite stopped the curriculum from loading.** At run time
+   it now logs a warning (the activities show a placeholder). The
+   validator still fails on it.
+7. **Romanian letters, a cedilla and the byte order mark were written
+   literally in C#.** Every non-ASCII character outside XML comments is
+   now a `\u` escape (the project-skeleton convention). The tool used to
+   write the files had decoded the escapes.
+8. **Steps use letters not yet taught** (in `ro-a`, `ListenAndPick` and
+   `LetterHunt` use m and t as wrong choices). This is kept, because
+   `lesson-engine`'s acceptance asks for `ListenAndPick` with a, m and t
+   in the first lesson. The rule covers words. Whether a step's *target*
+   letter must be taught is for the kinds' briefs (they say which item is
+   the target): a follow-up, and a question for the human in
+   `local/for-human-next-steps.md`.
+9. **`Apply` could stop halfway on an asset of the wrong type,** and leak
+   the in-memory assets. The types are now checked in `Make` (an error,
+   nothing written), and the planned assets are destroyed in a `finally`.
+10. **An art cell could name a file outside `content/pictures/`**
+    (`../x.png`). Now refused (test `TestCheck_ArtStaysInThePicturesFolder`).
+11. **A public method called another public one** (`Curriculum.Track`,
+    `RowReader.Required` and `Error`, `ContentFolder.ArtPath`,
+    `AssetFields.Id`). Private helpers now.
+12. **XML docs without "called from"** on `ContentAssetPaths`. Added.
+13. **The validator test filtered warnings by their wording.** It now
+    filters by file, and uses `ContentImporter.AssetFolder`.
+14. **The placeholder shows the word's first letter,** which gives away
+    `FirstSound`'s answer until real art comes (the brief asked for it).
+    Noted for the human.
+15. **Small leftovers:**
+    - The stray note on `en-word-mat` is gone.
+    - Steps have no ids (a lesson in progress resumes by step number): a
+      note for `lesson-engine`.
+    - A misspelt domain would make a new domain: a follow-up.
+
+### Follow-ups
+
+- **A ledger of released ids** (finding 1): for example, the importer
+  checks `content/released-ids.txt` (appended at each close-out). A row
+  deleted together with its asset is then still caught. The human to
+  agree; `content-letters-1` or a chore brief.
+- **`activities-letters`:**
+  - `TwoSounds` only on a letter whose sounds differ (`vowel-differs`,
+    `sound-differs`), with words of both languages;
+  - which of a step's letters is the answer, and whether it must be
+    taught. Add these to `ActivityKinds` and `StepRules`.
+- **`activities-words`:** `WordTwins` words pair up as twins or false
+  friends within the step; `BuildWord` words fit the rocket's windows.
+- **`lesson-engine`:** a lesson in progress resumes by step number, and
+  steps have no ids, so a step inserted later shifts it. Restart a
+  lesson whose steps changed. Also: each kind's hints and checkpoints
+  are lines to add to `ActivityKinds.InstructionLines` (only the first
+  instruction lines are required now).
+- **`content-letters-1`:**
+  - capitals for "English only" (`capitals-1` is `ro`);
+  - the other two TraceWord words per language (pat and apa; tap and pat);
+  - planets 2–3;
+  - the lines' `notes` (copied from the draft) can be trimmed.
+- **`voice`:**
+  - copy the clips named in `voice-lines.csv` into
+    `Assets/Scolita/Content/Voice/` and link them to the voice line assets
+    (now a file name);
+  - its status column is a new column in `ContentTables`;
+  - a line's planet for the recording sessions can be computed from the
+    lessons.
+- **Domains:** `units.csv`'s `domain` isn't checked against a list (a
+  typo makes a new domain). Fine while there is one domain; check it when
+  a second comes.
+
+### Test results (2026-11-24, rebased on `6c15c7c`, at the commits pushed)
+
+- **EditMode** 236/236 in batch mode, with `look`'s new tests. The 72 new
+  tests:
+  - Core: the CSV reader, ids, kinds, the curriculum and tracks, the
+    reading problems, and every validator rule;
+  - the importer, the placeholders, the freshness test, the validator on
+    `content/`, and the curriculum from the catalogs.
+- **PlayMode** 3/3.
+- **`BuildAndroidDebug`:** exit 0, `Scolita-0.1.0-debug.apk`. An earlier
+  run failed only because another process stopped the shared Gradle
+  daemon ("stop command received"); the rerun passed.
+- No `warning CS` or `error CS` in any log. `git status` was clean after
+  the runs.
+- **Batch-mode import:**
+  - exit 0, "imported, with 17 warnings" (the 17 placeholder pictures);
+  - with a broken row added to `words.csv`: exit 1, naming
+    `words.csv, row 20` and both reasons, and writing nothing.
+- **Placeholders** looked at (`bed.png`, `planet.png`): a coloured
+  circle with an Andika "p" in the ink.
+- **GUID stability:** a re-import that changed the pictures' sprite mode
+  kept every asset's GUID (`bed.png` `2c7733c7…`).
+- **Not run, and why:**
+  - **The emulator, the Device Simulator, screen sizes and the
+    Profiler:** this brief has no screen, says nothing yet and runs
+    nothing per frame. No scene loads the content until `lesson-engine`,
+    so the APK behaves exactly as 0.1.0.
+  - **Listening:** no line is spoken yet. The 279 lines' text is the
+    human's agreed draft, checked again by the validator (no cedilla,
+    each word's line says its word).
+  - **The Editor's menu item:** run by the human; agents use batch mode.
 
 ### Design note (large change: the content model and the importer)
 
@@ -454,3 +589,118 @@ instead:
    listen-only words must have one.
 4. The order of the rows is the teaching order.
 5. The importer refuses a deleted row (retire it instead).
+
+## How to test locally
+
+Run the commands in Git Bash from the worktree (or checkout) root, with
+`UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"`
+and `S=<your scratch folder>`. Close your Editor on this project before
+any batch-mode run. This brief has no screen and nothing the app says
+yet, so it needs no emulator and no Device Simulator. The app doesn't
+load the content until `lesson-engine`.
+
+### Core slice
+
+1. **The EditMode tests:**
+   `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`
+   Expected: exit 0, `result="Passed"`, with the new classes among the
+   results:
+   - `CsvReaderTests`, `ContentIdTests`, `ActivityKindsTests`;
+   - `CurriculumTests`, the taught-letters query;
+   - `ContentTablesTests`: every reading problem names its file, row and
+     reason;
+   - `ContentRulesTests`: one test per validator rule. These include the
+     brief's "mama before m fails, and passes once listen-only".
+
+   `CoreAssemblyTests` still passes (Core references no Unity
+   assembly). The log has no `warning CS` and no `error CS`.
+
+### Content slice (the asset types)
+
+1. **`CurriculumAssetsTests`** (in the EditMode run above) builds the
+   `Curriculum` from the imported catalogs. Expected:
+   - planet 1's 12 lessons, in order;
+   - `ro-words-1` comes after a m t p in the Romanian track;
+   - every letter and word has its voice lines.
+2. **`ContentValidatorTests`:**
+   - every asset under `Assets/Scolita/Content` is `IValidatableContent`
+     and valid;
+   - `TestCheck_TheContentCsvsHaveNoError`: the repository's CSVs have no
+     error, and their only warnings are pictures still on their
+     placeholder.
+
+### Build slice (the importer)
+
+1. **`ContentImporterTests`** (EditMode) imports the test content into a
+   temporary folder:
+   - a changed word keeps its asset's GUID and gets the new value;
+   - a deleted row is refused and its asset stays;
+   - an error writes nothing;
+   - a file saved as ANSI is reported, and a byte order mark is read.
+
+   `PlaceholderPictureTests` checks the placeholder is the same PNG every
+   time. Expected: all pass, and nothing is left under `game/Assets` but
+   `Plugins`, `Scolita`, `TextMesh Pro` and `ThirdParty`.
+2. **Batch-mode import:**
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile $S/import.log; echo $?`
+   Expected:
+   - exit 0;
+   - the log ends with `Scolita content import: imported, with 17
+     warnings`, the 17 pictures that have no art yet;
+   - `git status` shows no change: the assets are fresh.
+3. **A broken CSV stops the import:**
+   - add `ro-mami,ro,mami,m a m i,ma-mi,mother,,,,,` at the end of
+     `content/words.csv` and run step 2. Expected:
+     - exit 1;
+     - `Content: words.csv, row 20: the letter i is not in letters.csv.`;
+     - `Content: words.csv, row 20: the voice line ro-word-mami is not in
+       voice-lines.csv.`;
+     - `… 2 errors, 17 warnings: nothing was imported`;
+     - `git status` shows only `words.csv` changed.
+   - Then `git checkout content/words.csv`.
+4. **In the Editor** (the human; agents run batch mode): **Școlița →
+   Import content** shows "imported, with 17 warnings" in a dialog. The
+   Console lists the warnings.
+
+### Content slice (planet 1's sample)
+
+1. **Open `content/README.md`,** then the CSVs, in a spreadsheet (Excel:
+   *Data → From Text/CSV*, UTF-8). Expected:
+   - planet 1 (a m t p): 4 letters, 18 words, 17 pictures, 279 voice
+     lines, 12 lessons, 71 steps;
+   - ă, ș and ț are drawn properly in "albină", "muzică", "planetă" and
+     the lines.
+2. **An edit round-trips:**
+   - In `content/words.csv`, change `ro-mama`'s picture from `mother` to
+     `plane` and run the import (Build slice, step 2). Expected:
+     - `Words/ro-mama.asset` changes, with the same GUID in its `.meta`;
+     - two placeholders change (`mother.png` loses its letter,
+       `plane.png` shows m);
+     - `ContentFreshnessTests` passes.
+   - Then `git checkout content game/Assets/Scolita/Content`.
+3. **The freshness test bites:** change any cell of a CSV without
+   importing, then run the EditMode tests. Expected:
+   `ContentFreshnessTests.TestDifferences_TheAssetsMatchTheCsvs` fails,
+   naming the asset that differs. Then put the cell back.
+4. **The cedilla check:** in `content/voice-lines.csv`, write `ş`
+   (U+015F) for `ș` in any line and import. Expected: exit 1, with
+   `voice-lines.csv, row N: the cell text has U+015F ş with a cedilla;
+   Romanian writes U+0219 ș with the comma below.` Then put it back.
+
+### PlayMode and build
+
+1. `"$UNITY" -batchmode -projectPath game -runTests -testPlatform PlayMode -testResults $S/playmode.xml -logFile $S/playmode.log`.
+   Expected: exit 0, 3 passed (unchanged).
+2. `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`.
+   Expected:
+   - exit 0;
+   - no `warning CS`;
+   - the APK builds as before. The content isn't loaded by any scene yet,
+     so the app on the tablet is unchanged.
+
+### Cleanup
+
+- `git checkout content game/Assets/Scolita/Content` undoes any edit
+  made while testing.
+- `game/Builds/` is ignored; delete it to free space.
+- No save files are touched.

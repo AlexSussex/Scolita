@@ -1,0 +1,13 @@
+id,unit,language,introduces,retired,notes
+ro-a,planet-1,ro,a,,"a, in Romanian"
+en-a,planet-1,en,a,,"a, in English"
+ro-m,planet-1,ro,m,,"m, in Romanian"
+en-m,planet-1,en,m,,"m, in English"
+ro-t,planet-1,ro,t,,"t, in Romanian"
+en-t,planet-1,en,t,,"t, in English"
+ro-p,planet-1,ro,p,,"p, in Romanian"
+en-p,planet-1,en,p,,"p, in English"
+ro-words-1,planet-1,ro,,,"planet 1's words, in Romanian"
+en-words-1,planet-1,en,,,"planet 1's words, in English"
+capitals-1,planet-1,ro,,,A M T P to find and trace (decision D2: lower case first)
+party-1,planet-1,both,,,"planet 1's party: review, false friends pat / pat, twins planetă / planet"

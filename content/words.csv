@@ -1,0 +1,19 @@
+id,language,text,letters,syllables,picture,listen_only,twin,false_friend,retired,notes
+ro-mama,ro,mama,m a m a,ma-ma,mother,,,,,TraceWord
+ro-tata,ro,tata,t a t a,ta-ta,father,,,,,TraceWord
+ro-pat,ro,pat,p a t,pat,bed,,,en-pat,,a bed; TraceWord
+ro-apa,ro,apa,a p a,a-pa,water,,,,,'the water' (apă needs ă); TraceWord
+en-map,en,map,m a p,map,map,,,,,TraceWord
+en-mat,en,mat,m a t,mat,mat,,,,,TraceWord
+en-tap,en,tap,t a p,tap,tap,,,,,a water tap; TraceWord
+en-pat,en,pat,p a t,pat,patting,,,ro-pat,,patting a dog; TraceWord
+ro-avion,ro,avion,,a-vi-on,plane,yes,,,,a
+ro-albina,ro,albină,,al-bi-nă,bee,yes,,,,a
+ro-muzica,ro,muzică,,mu-zi-că,music,yes,,,,m
+ro-toba,ro,tobă,,to-bă,drum,yes,,,,t
+ro-planeta,ro,planetă,,pla-ne-tă,planet,yes,en-planet,,,p; word twin
+en-apple,en,apple,,ap-ple,apple,yes,,,,a
+en-astronaut,en,astronaut,,as-tro-naut,astronaut,yes,,,,a
+en-moon,en,moon,,moon,moon,yes,,,,m
+en-tiger,en,tiger,,ti-ger,tiger,yes,,,,t
+en-planet,en,planet,,plan-et,planet,yes,ro-planeta,,,p; word twin

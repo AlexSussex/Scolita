@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30e354aaa60a614099896c945e7a8d5, type: 3}
+  m_Name: PictureCatalog
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureCatalog
+  items:
+  - {fileID: 11400000, guid: 02bde9d4343e53742888224ff193cdc3, type: 2}
+  - {fileID: 11400000, guid: 9fcaa75c2556c6c4686fc52de0aa542f, type: 2}
+  - {fileID: 11400000, guid: 22f031dc9c6c33e46af32413ebfb9c6b, type: 2}
+  - {fileID: 11400000, guid: b3ac075b57c6c71459e2e9e68f13add2, type: 2}
+  - {fileID: 11400000, guid: afbf12238fa33564ba9bcf81094cd813, type: 2}
+  - {fileID: 11400000, guid: 4f2050ec270f33e4a9edbdf7fc642c4d, type: 2}
+  - {fileID: 11400000, guid: 14d5938c3b7eb9441b35a4a67bd5043a, type: 2}
+  - {fileID: 11400000, guid: 96e3b34f5ab4ae84687f48db3b5262f4, type: 2}
+  - {fileID: 11400000, guid: c99dfebfc8686fe42b17eaabbb2014cb, type: 2}
+  - {fileID: 11400000, guid: e8eb4c98a2f62dd4a831f10eaf67e984, type: 2}
+  - {fileID: 11400000, guid: f8bc807f3b7557147a440ec7ceae4861, type: 2}
+  - {fileID: 11400000, guid: 8b138ae9c1cea234a95d1a91bd287c7c, type: 2}
+  - {fileID: 11400000, guid: e89cdf2eadc82a6489934ed57bdd5652, type: 2}
+  - {fileID: 11400000, guid: 08f373cb39cc29241b2032424b938ae9, type: 2}
+  - {fileID: 11400000, guid: 3bbabe3d0fa08f943959040ba1b2837a, type: 2}
+  - {fileID: 11400000, guid: 5f05f70b5f9ba9c4f866c3d6a0636280, type: 2}
+  - {fileID: 11400000, guid: 43af098ce7a5760429f38cd8cd498e5a, type: 2}

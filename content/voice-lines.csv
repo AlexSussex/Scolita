@@ -1,0 +1,280 @@
+id,language,kind,text,clip,retired,notes
+ro-sound-a,ro,sound,/a/,,,"pure sound, no added vowel"
+ro-name-a,ro,name,a,,,the alphabet name; see the note on names
+ro-sound-m,ro,sound,/m/,,,"pure sound, no added vowel"
+ro-name-m,ro,name,me,,,the alphabet name; see the note on names
+ro-sound-t,ro,sound,/t/,,,"pure sound, no added vowel"
+ro-name-t,ro,name,te,,,the alphabet name; see the note on names
+ro-sound-p,ro,sound,/p/,,,"pure sound, no added vowel"
+ro-name-p,ro,name,pe,,,the alphabet name; see the note on names
+en-sound-a,en,sound,/æ/,,,"pure sound, no added vowel"
+en-name-a,en,name,ay,,,the alphabet name; see the note on names
+en-sound-m,en,sound,/m/,,,"pure sound, no added vowel"
+en-name-m,en,name,em,,,the alphabet name; see the note on names
+en-sound-t,en,sound,/t/,,,"pure sound, no added vowel"
+en-name-t,en,name,tee,,,the alphabet name; see the note on names
+en-sound-p,en,sound,/p/,,,"pure sound, no added vowel"
+en-name-p,en,name,pee,,,the alphabet name; see the note on names
+ro-word-mama,ro,word,mama,,,
+ro-slow-mama,ro,slow,m-a-m-a,,,the word said sound by sound
+ro-syllables-mama,ro,syllables,ma-ma,,,
+ro-word-tata,ro,word,tata,,,
+ro-slow-tata,ro,slow,t-a-t-a,,,the word said sound by sound
+ro-syllables-tata,ro,syllables,ta-ta,,,
+ro-word-pat,ro,word,pat,,,false friend: en pat
+ro-slow-pat,ro,slow,p-a-t,,,the word said sound by sound
+ro-syllables-pat,ro,syllables,pat,,,
+ro-word-apa,ro,word,apa,,,
+ro-slow-apa,ro,slow,a-p-a,,,the word said sound by sound
+ro-syllables-apa,ro,syllables,a-pa,,,
+en-word-map,en,word,map,,,
+en-slow-map,en,slow,m-a-p,,,the word said sound by sound
+en-word-mat,en,word,mat,,,
+en-slow-mat,en,slow,m-a-t,,,the word said sound by sound
+en-word-tap,en,word,tap,,,
+en-slow-tap,en,slow,t-a-p,,,the word said sound by sound
+en-word-pat,en,word,pat,,,false friend: ro pat
+en-slow-pat,en,slow,p-a-t,,,the word said sound by sound
+ro-word-avion,ro,word,avion,,,listen only; first letter a; flying
+ro-syllables-avion,ro,syllables,a-vi-on,,,
+ro-word-albina,ro,word,albină,,,listen only; first letter a; animals
+ro-syllables-albina,ro,syllables,al-bi-nă,,,
+ro-word-muzica,ro,word,muzică,,,listen only; first letter m; music
+ro-syllables-muzica,ro,syllables,mu-zi-că,,,
+ro-word-toba,ro,word,tobă,,,listen only; first letter t; music
+ro-syllables-toba,ro,syllables,to-bă,,,
+ro-word-planeta,ro,word,planetă,,,listen only; first letter p; space
+ro-syllables-planeta,ro,syllables,pla-ne-tă,,,
+en-word-apple,en,word,apple,,,listen only; first letter a; food
+en-syllables-apple,en,syllables,ap-ple,,,
+en-word-astronaut,en,word,astronaut,,,listen only; first letter a; space
+en-syllables-astronaut,en,syllables,as-tro-naut,,,
+en-word-moon,en,word,moon,,,listen only; first letter m; space
+en-word-tiger,en,word,tiger,,,listen only; first letter t; animals
+en-syllables-tiger,en,syllables,ti-ger,,,
+en-word-planet,en,word,planet,,,listen only; first letter p; space
+en-syllables-planet,en,syllables,plan-et,,,
+ro-line-hello,ro,line,Bună! Hai să zburăm!,,,greeting without a name
+en-line-hello,en,line,Hello! Let's fly!,,,greeting without a name
+ro-line-hello-name,ro,line,"Bună, {name}! Hai să zburăm!",,,"{name}: the profile's name, nominative only, system voice (D9)"
+en-line-hello-name,en,line,"Hi, {name}! Let's fly!",,,"{name}: the profile's name, nominative only, system voice (D9)"
+ro-line-today-letter,ro,line,Bună! Azi învățăm litera {x}.,,,design screen 1; {x}: the letter's sound clip (see notes on names)
+en-line-today-letter,en,line,Hello! Today we are learning the letter {x}.,,,design screen 1; {x}: the letter's sound clip (see notes on names)
+ro-line-tap-go,ro,line,Atinge „Hai!” ca să pornim.,,,
+en-line-tap-go,en,line,Tap “Go!” to start.,,,
+ro-line-planet-landed,ro,line,Am aterizat pe o planetă nouă!,,,
+en-line-planet-landed,en,line,We have landed on a new planet!,,,
+ro-line-planet-asleep,ro,line,Planeta aceasta încă doarme. Ajungem și acolo curând.,,,'not yet'
+en-line-planet-asleep,en,line,This planet is still asleep. We will get there soon.,,,'not yet'
+ro-line-who-plays,ro,line,Cine se joacă? Atinge poza ta.,,,design screen 9
+en-line-who-plays,en,line,Who's playing? Tap your picture.,,,design screen 9
+ro-line-lets-remember,ro,line,Hai să ne amintim!,,,
+en-line-lets-remember,en,line,Let's remember!,,,
+ro-line-rocket-rest,ro,line,Racheta se odihnește. Ne vedem mâine!,,,the session limit's gentle end
+en-line-rocket-rest,en,line,The rocket needs a rest. See you tomorrow!,,,the session limit's gentle end
+ro-line-now-english,ro,line,Acum ascultăm litera în engleză.,,,said in the language that comes next; the RO line opens the EN lesson only if the human wants a bridge line
+en-line-now-english,en,line,Now let's hear the letter in English.,,,said in the language that comes next; the RO line opens the EN lesson only if the human wants a bridge line
+ro-line-now-romanian,ro,line,Acum ascultăm litera în română.,,,
+en-line-now-romanian,en,line,Now let's hear the letter in Romanian.,,,
+ro-line-stars-unicorn,ro,line,Bravo! Ai aprins 3 stele în constelația Unicornului.,,,design screen 6; '3 stele': no 'de' under 20
+en-line-stars-unicorn,en,line,Well done! You lit 3 stars in the Unicorn constellation.,,,design screen 6; '3 stele': no 'de' under 20
+ro-line-stars-rocket,ro,line,Bravo! Ai aprins 3 stele în constelația Rachetei.,,,
+en-line-stars-rocket,en,line,Well done! You lit 3 stars in the Rocket constellation.,,,
+ro-line-stars-whale,ro,line,Bravo! Ai aprins 3 stele în constelația Balenei.,,,
+en-line-stars-whale,en,line,Well done! You lit 3 stars in the Whale constellation.,,,
+ro-line-sticker,ro,line,Ai câștigat un abțibild!,,,
+en-line-sticker,en,line,You got a sticker!,,,
+ro-line-lesson-done,ro,line,Ai terminat lecția. Bravo!,,,
+en-line-lesson-done,en,line,You finished the lesson. Well done!,,,
+ro-line-praise-1,ro,line,"Bravo, ai reușit!",,,
+en-line-praise-1,en,line,"Well done, you did it!",,,
+ro-line-praise-2,ro,line,"Foarte bine, așa este!",,,
+en-line-praise-2,en,line,"Very good, that's right!",,,
+ro-line-praise-3,ro,line,"Super, ai răspuns corect!",,,
+en-line-praise-3,en,line,"Super, you got it right!",,,
+ro-line-praise-4,ro,line,"Excelent, ai lucrat foarte frumos!",,,
+en-line-praise-4,en,line,"Excellent, that was lovely work!",,,
+ro-line-praise-5,ro,line,"Ura, ai reușit din nou!",,,
+en-line-praise-5,en,line,"Hooray, you did it again!",,,
+ro-line-praise-6,ro,line,Ești o stea!,,,"'o stea' is a noun, so it fits a girl or a boy"
+en-line-praise-6,en,line,You're a star!,,,"'o stea' is a noun, so it fits a girl or a boy"
+ro-line-praise-7,ro,line,"Uau, ce bine ai făcut!",,,
+en-line-praise-7,en,line,"Wow, you did that really well!",,,
+ro-line-praise-8,ro,line,"Perfect, mergem mai departe!",,,
+en-line-praise-8,en,line,"Perfect, let's keep going!",,,
+ro-line-praise-9,ro,line,"Minunat, asta e corect!",,,
+en-line-praise-9,en,line,"Wonderful, that's correct!",,,
+ro-line-praise-10,ro,line,"Bravo, ai găsit răspunsul!",,,
+en-line-praise-10,en,line,"Well done, you found the answer!",,,
+ro-line-listen-again,ro,line,Ascultă încă o dată.,,,AGENTS.md's example hint
+en-line-listen-again,en,line,Listen again.,,,AGENTS.md's example hint
+ro-line-try-again,ro,line,Mai încearcă o dată!,,,
+en-line-try-again,en,line,Have another go!,,,
+ro-line-nearly,ro,line,Aproape! Mai încearcă.,,,
+en-line-nearly,en,line,Nearly! Try again.,,,
+ro-line-show-answer,ro,line,Uite răspunsul. Acum fă-o și tu.,,,second miss: the answer glows; 'fă-o' refers to the task ('o' is neutral here); check
+en-line-show-answer,en,line,Here is the answer. Now you do it.,,,second miss: the answer glows; 'fă-o' refers to the task ('o' is neutral here); check
+ro-line-meet-new,ro,line,Hai să cunoaștem o literă nouă!,,,
+en-line-meet-new,en,line,Let's meet a new letter!,,,
+ro-line-meet-listen,ro,line,Ascultă: {x}… {x}… {word}!,,,"design screen 2 ('Ascultă: mmm… mmm… muzică!'); {x}: the sound clip, {word}: a listen-only word"
+en-line-meet-listen,en,line,Listen: {x}… {x}… {word}!,,,"design screen 2 ('Ascultă: mmm… mmm… muzică!'); {x}: the sound clip, {word}: a listen-only word"
+ro-line-meet-tap-letter,ro,line,Atinge litera ca s-o auzi din nou.,,,'s-o': litera is feminine
+en-line-meet-tap-letter,en,line,Tap the letter to hear it again.,,,'s-o': litera is feminine
+ro-line-meet-tap-picture,ro,line,Acum atinge poza.,,,
+en-line-meet-tap-picture,en,line,Now tap the picture.,,,
+ro-line-meet-by-hand,ro,line,Uite cum se scrie litera de mână.,,,the 'de mână' button
+en-line-meet-by-hand,en,line,Watch how the letter is written by hand.,,,the 'de mână' button
+ro-line-pick-letter,ro,line,Ascultă și atinge litera potrivită.,,,
+en-line-pick-letter,en,line,Listen and tap the right letter.,,,
+ro-line-pick-letter-x,ro,line,Atinge litera {x}.,,,{x}: sound clip
+en-line-pick-letter-x,en,line,Tap the letter {x}.,,,{x}: sound clip
+ro-line-pick-picture,ro,line,Ascultă și atinge poza potrivită.,,,
+en-line-pick-picture,en,line,Listen and tap the right picture.,,,
+ro-line-pick-hint-slow,ro,line,"Ascultă încă o dată, mai încet.",,,hint
+en-line-pick-hint-slow,en,line,"Listen again, more slowly.",,,hint
+ro-line-pick-hint-shape,ro,line,Uită-te bine la forma literei.,,,hint
+en-line-pick-hint-shape,en,line,Look closely at the letter's shape.,,,hint
+ro-line-pick-hint-other,ro,line,Aproape! Încearcă altă literă.,,,hint
+en-line-pick-hint-other,en,line,Nearly! Try another letter.,,,hint
+ro-line-pick-hint-show,ro,line,"Uite, aceasta este litera {x}. Atinge-o!",,,second miss; 'Atinge-o': litera is feminine
+en-line-pick-hint-show,en,line,"Look, this is the letter {x}. Tap it!",,,second miss; 'Atinge-o': litera is feminine
+ro-line-hunt,ro,line,Atinge toate stelele care au litera {x}.,,,
+en-line-hunt,en,line,Tap all the stars that have the letter {x}.,,,
+ro-line-hunt-capitals,ro,line,Caută și litera mare!,,,
+en-line-hunt-capitals,en,line,Look for the capital letter too!,,,
+ro-line-hunt-hint-twinkle,ro,line,Stelele cu litera {x} strălucesc. Prinde-le!,,,hint
+en-line-hunt-hint-twinkle,en,line,The stars with the letter {x} are twinkling. Catch them!,,,hint
+ro-line-hunt-hint-more,ro,line,Mai sunt stele cu litera {x}. Caută-le!,,,hint
+en-line-hunt-hint-more,en,line,There are more stars with the letter {x}. Look for them!,,,hint
+ro-line-hunt-hint-capital,ro,line,"Litera mare arată altfel, dar are același sunet.",,,hint
+en-line-hunt-hint-capital,en,line,"The capital letter looks different, but it has the same sound.",,,hint
+ro-line-hunt-hint-not,ro,line,Aceasta este altă literă. Mai caută!,,,hint
+en-line-hunt-hint-not,en,line,That is a different letter. Keep looking!,,,hint
+ro-line-first-sound,ro,line,Cu ce sunet începe cuvântul?,,,
+en-line-first-sound,en,line,What sound does the word start with?,,,
+ro-line-first-sound-tap,ro,line,Atinge litera cu care începe cuvântul.,,,
+en-line-first-sound-tap,en,line,Tap the letter the word starts with.,,,
+ro-line-first-hint-stretch,ro,line,Ascultă primul sunet: {stretched}.,,,hint; {stretched}: the word with its first sound held (mmmama)
+en-line-first-hint-stretch,en,line,Listen to the first sound: {stretched}.,,,hint; {stretched}: the word with its first sound held (mmmama)
+ro-line-first-hint-say,ro,line,"Spune cuvântul încet, împreună cu mine.",,,hint
+en-line-first-hint-say,en,line,Say the word slowly with me.,,,hint
+ro-line-first-hint-which,ro,line,Atinge litera care face acest sunet.,,,hint
+en-line-first-hint-which,en,line,Tap the letter that makes this sound.,,,hint
+ro-line-first-hint-again,ro,line,Mai ascultă o dată începutul cuvântului.,,,hint
+en-line-first-hint-again,en,line,Listen to the start of the word once more.,,,hint
+ro-line-trace-start,ro,line,Începe de la punct și urmează săgeata.,,,design screen 3
+en-line-trace-start,en,line,Start at the dot and follow the arrow.,,,design screen 3
+ro-line-trace-print,ro,line,Scrie litera de tipar.,,,
+en-line-trace-print,en,line,Write the letter in print.,,,
+ro-line-trace-hand,ro,line,Scrie litera de mână.,,,handwriting brief
+en-line-trace-hand,en,line,Write the letter by hand.,,,handwriting brief
+ro-line-trace-baseline,ro,line,Linia de jos: de aici pornești.,,,"design screen 8; elliptical first half, check"
+en-line-trace-baseline,en,line,The bottom line: you start from here.,,,"design screen 8; elliptical first half, check"
+ro-line-trace-round-2,ro,line,Acum scrie pe umbră.,,,round 2
+en-line-trace-round-2,en,line,Now write over the shadow.,,,round 2
+ro-line-trace-round-3,ro,line,"Acum scrie fără ajutor, de la punct.",,,"round 3; 'fără ajutor', never 'singură'"
+en-line-trace-round-3,en,line,"Now write it without help, from the dot.",,,"round 3; 'fără ajutor', never 'singură'"
+ro-line-trace-next-2,ro,line,Foarte bine! Acum mergi la punctul cu numărul doi.,,,stroke checkpoint
+en-line-trace-next-2,en,line,Very good! Now go to dot number two.,,,stroke checkpoint
+ro-line-trace-next-3,ro,line,Foarte bine! Acum mergi la punctul cu numărul trei.,,,stroke checkpoint
+en-line-trace-next-3,en,line,Very good! Now go to dot number three.,,,stroke checkpoint
+ro-line-trace-done,ro,line,"Bravo, ai scris litera {x}!",,,letter checkpoint
+en-line-trace-done,en,line,"Well done, you wrote the letter {x}!",,,letter checkpoint
+ro-line-trace-done-hand,ro,line,"Bravo, ai scris litera {x} de mână!",,,"letter checkpoint, handwritten"
+en-line-trace-done-hand,en,line,"Well done, you wrote the letter {x} by hand!",,,"letter checkpoint, handwritten"
+ro-line-trace-dot-i,ro,line,Acum pune punctul pe i.,,,the i is said as its sound
+en-line-trace-dot-i,en,line,Now put the dot on the i.,,,the i is said as its sound
+ro-line-trace-bar-t,ro,line,Acum trage liniuța literei t.,,,"'literei t': genitive of 'litera', correct for the letter; check"
+en-line-trace-bar-t,en,line,Now draw the line across the t.,,,"'literei t': genitive of 'litera', correct for the letter; check"
+ro-line-trace-hint-arrow,ro,line,Urmează săgeata.,,,hint (tracing brief)
+en-line-trace-hint-arrow,en,line,Follow the arrow.,,,hint (tracing brief)
+ro-line-trace-hint-dot,ro,line,Începe de la punctul verde.,,,hint
+en-line-trace-hint-dot,en,line,Start at the green dot.,,,hint
+ro-line-trace-hint-watch,ro,line,"Uită-te cum se scrie, apoi încearcă tu.",,,hint: the stroke animates once
+en-line-trace-hint-watch,en,line,"Watch how it is written, then you try.",,,hint: the stroke animates once
+ro-line-trace-hint-stay,ro,line,Rămâi pe linia punctată.,,,hint
+en-line-trace-hint-stay,en,line,Stay on the dotted line.,,,hint
+ro-line-trace-hint-slow,ro,line,Încet și cu grijă: o să reușești!,,,hint
+en-line-trace-hint-slow,en,line,Slowly and carefully: you can do it!,,,hint
+ro-line-trace-hint-from-line,ro,line,Pornește de pe linie.,,,handwriting brief: the entry stroke was skipped
+en-line-trace-hint-from-line,en,line,Start from the line.,,,handwriting brief: the entry stroke was skipped
+ro-line-word-write,ro,line,"Scrie cuvântul de mână, fără să ridici degetul.",,,
+en-line-word-write,en,line,Write the word by hand without lifting your finger.,,,
+ro-line-word-join,ro,line,"Bravo, ai făcut litera {x}! Acum leag-o de litera {y}, fără să ridici degetul.",,,letter checkpoint; every {x}-{y} pair is listed below
+en-line-word-join,en,line,"Well done, you made the letter {x}! Now join it to the letter {y} without lifting your finger.",,,letter checkpoint; every {x}-{y} pair is listed below
+ro-line-word-done,ro,line,"Bravo, ai scris cuvântul {word}!",,,word checkpoint
+en-line-word-done,en,line,"Well done, you wrote the word {word}!",,,word checkpoint
+ro-line-word-hint-join,ro,line,Nu ridica degetul la legătură.,,,hint
+en-line-word-hint-join,en,line,Don't lift your finger at the join.,,,hint
+ro-line-word-hint-watch,ro,line,Uite cum se leagă literele.,,,hint
+en-line-word-hint-watch,en,line,Watch how the letters join.,,,hint
+ro-line-word-hint-back,ro,line,Nu-i nimic! Pune degetul înapoi pe punct și continuă.,,,hint: a lifted finger
+en-line-word-hint-back,en,line,That's all right! Put your finger back on the dot and keep going.,,,hint: a lifted finger
+ro-line-word-hint-from-line,ro,line,Pornește de pe linie.,,,hint (same text as trace-hint-from-line; one clip may serve both)
+en-line-word-hint-from-line,en,line,Start from the line.,,,hint (same text as trace-hint-from-line; one clip may serve both)
+ro-line-syll,ro,line,Ascultă cuvântul și bate toba pentru fiecare silabă.,,,RO: the drum; EN: clapping (PRD)
+en-line-syll,en,line,Listen to the word and clap once for each beat.,,,RO: the drum; EN: clapping (PRD)
+ro-line-syll-how-many,ro,line,Câte silabe are cuvântul?,,,
+en-line-syll-how-many,en,line,How many beats does the word have?,,,
+ro-line-syll-hint-listen,ro,line,Ascultă cum spun cuvântul pe silabe.,,,hint
+en-line-syll-hint-listen,en,line,Listen to me say the word in beats.,,,hint
+ro-line-syll-hint-once,ro,line,Bate toba o dată pentru fiecare silabă.,,,hint
+en-line-syll-hint-once,en,line,Clap once for each beat.,,,hint
+ro-line-syll-hint-chin,ro,line,Pune mâna sub bărbie și spune cuvântul.,,,hint: the school trick (the chin drops once per syllable)
+en-line-syll-hint-chin,en,line,Put your hand under your chin and say the word.,,,hint: the school trick (the chin drops once per syllable)
+ro-line-syll-hint-count,ro,line,Mai ascultă o dată și numără silabele.,,,hint
+en-line-syll-hint-count,en,line,Listen once more and count the beats.,,,hint
+ro-line-build,ro,line,Ascultă cuvântul și pune literele în ferestrele rachetei.,,,
+en-line-build,en,line,Listen to the word and put the letters in the rocket's windows.,,,
+ro-line-build-next,ro,line,Ce sunet urmează?,,,design screen 5
+en-line-build-next,en,line,What sound comes next?,,,design screen 5
+ro-line-build-done,ro,line,"Bravo, ai construit cuvântul {word}!",,,
+en-line-build-done,en,line,"Well done, you built the word {word}!",,,
+ro-line-build-liftoff,ro,line,Racheta pornește!,,,
+en-line-build-liftoff,en,line,The rocket is taking off!,,,
+ro-line-build-hint-slow,ro,line,Ascultă cuvântul încet: {slow}.,,,hint; {slow}: the word's slow clip
+en-line-build-hint-slow,en,line,Listen to the word slowly: {slow}.,,,hint; {slow}: the word's slow clip
+ro-line-build-hint-glow,ro,line,Litera care urmează strălucește.,,,hint
+en-line-build-hint-glow,en,line,The next letter is glowing.,,,hint
+ro-line-build-hint-after,ro,line,Ce sunet auzi după {x}?,,,hint; {x}: sound clip
+en-line-build-hint-after,en,line,What sound do you hear after {x}?,,,hint; {x}: sound clip
+ro-line-build-hint-say,ro,line,"Spune cuvântul încet, sunet cu sunet.",,,hint
+en-line-build-hint-say,en,line,"Say the word slowly, sound by sound.",,,hint
+ro-line-read,ro,line,Citește cuvântul și atinge poza potrivită.,,,
+en-line-read,en,line,Read the word and tap the right picture.,,,
+ro-line-read-hint-sounds,ro,line,Citește cuvântul sunet cu sunet.,,,hint
+en-line-read-hint-sounds,en,line,Read the word sound by sound.,,,hint
+ro-line-read-hint-tap,ro,line,Atinge cuvântul ca să-l auzi.,,,hint; 'să-l': cuvântul is neuter
+en-line-read-hint-tap,en,line,Tap the word to hear it.,,,hint; 'să-l': cuvântul is neuter
+ro-line-read-hint-look,ro,line,Uită-te bine la toate pozele.,,,hint
+en-line-read-hint-look,en,line,Look carefully at all the pictures.,,,hint
+ro-line-read-hint-blend,ro,line,Unește sunetele: {slow}… {word}!,,,hint
+en-line-read-hint-blend,en,line,Blend the sounds: {slow}… {word}!,,,hint
+ro-line-two,ro,line,Ascultă cuvântul și du poza la planeta cu același sunet.,,,design screen 4
+en-line-two,en,line,Listen to the word and take the picture to the planet with the same sound.,,,design screen 4
+ro-line-two-tap,ro,line,Atinge fiecare planetă ca să-i auzi sunetul.,,,
+en-line-two-tap,en,line,Tap each planet to hear its sound.,,,
+ro-line-two-same-letter,ro,line,Aceeași literă are două sunete!,,,
+en-line-two-same-letter,en,line,The same letter has two sounds!,,,
+ro-line-two-hint-again,ro,line,Ascultă din nou cele două sunete.,,,hint
+en-line-two-hint-again,en,line,Listen to the two sounds again.,,,hint
+ro-line-two-hint-start,ro,line,Spune cuvântul încet. Ce sunet auzi la început?,,,hint
+en-line-two-hint-start,en,line,Say the word slowly. What sound do you hear at the start?,,,hint
+ro-line-two-hint-badges,ro,line,"Planeta cu stea este pentru română, iar planeta cu inel este pentru engleză.",,,hint
+en-line-two-hint-badges,en,line,"The planet with the star is for Romanian, and the planet with the ring is for English.",,,hint
+ro-line-two-hint-tap,ro,line,Atinge planetele ca să le auzi.,,,hint
+en-line-two-hint-tap,en,line,Tap the planets to hear them.,,,hint
+ro-line-twins,ro,line,"Unește cuvintele care seamănă: unul în română, unul în engleză.",,,
+en-line-twins,en,line,"Join the words that are alike: one in Romanian, one in English.",,,
+ro-line-twins-done,ro,line,Sunt gemeni!,,,
+en-line-twins-done,en,line,They are twins!,,,
+ro-line-false-friends,ro,line,"Se scriu la fel, dar înseamnă altceva!",,,"false friends (pat, pod, pin, sat, nod, mops)"
+en-line-false-friends,en,line,"They are spelled the same, but they mean different things!",,,"false friends (pat, pod, pin, sat, nod, mops)"
+ro-line-twins-hint-listen,ro,line,Ascultă cele două cuvinte. Seamănă?,,,hint
+en-line-twins-hint-listen,en,line,Listen to the two words. Are they alike?,,,hint
+ro-line-twins-hint-pictures,ro,line,Uită-te la poze: arată același lucru!,,,hint
+en-line-twins-hint-pictures,en,line,Look at the pictures: they show the same thing!,,,hint
+ro-line-twins-hint-sound,ro,line,Caută cuvântul care sună aproape la fel.,,,hint
+en-line-twins-hint-sound,en,line,Look for the word that sounds almost the same.,,,hint
+ro-line-twins-hint-same-picture,ro,line,Gemenii au aceeași poză.,,,hint
+en-line-twins-hint-same-picture,en,line,Twins have the same picture.,,,hint

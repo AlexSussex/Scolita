@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cccf5aaaa20034fad26d70df993748, type: 3}
+  m_Name: party-1
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LessonAsset
+  id: party-1
+  unit: planet-1
+  language: both
+  introduces: 
+  retired: 0
+  steps:
+  - kind: ListenAndPick
+    language: ro
+    letters:
+    - a
+    - m
+    - t
+    - p
+    words: []
+    options: []
+  - kind: ListenAndPick
+    language: en
+    letters:
+    - a
+    - m
+    - t
+    - p
+    words: []
+    options: []
+  - kind: ReadAndMatch
+    language: ro
+    letters: []
+    words:
+    - ro-mama
+    - ro-tata
+    - ro-apa
+    options: []
+  - kind: ReadAndMatch
+    language: en
+    letters: []
+    words:
+    - en-map
+    - en-tap
+    - en-mat
+    options: []
+  - kind: WordTwins
+    language: both
+    letters: []
+    words:
+    - ro-pat
+    - en-pat
+    - ro-planeta
+    - en-planet
+    options: []

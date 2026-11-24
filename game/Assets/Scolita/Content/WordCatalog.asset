@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f64603163a5d3a4885a979cee51df46, type: 3}
+  m_Name: WordCatalog
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.WordCatalog
+  items:
+  - {fileID: 11400000, guid: fa59879fa06447e4ebae27f43518b5be, type: 2}
+  - {fileID: 11400000, guid: a0c1ade4d37e77c4d83b4c1425ca8a9a, type: 2}
+  - {fileID: 11400000, guid: 35241a5cd6ca9b84c92a91df1cccd9b3, type: 2}
+  - {fileID: 11400000, guid: a11b3d7741aef524bb082badb7bccb46, type: 2}
+  - {fileID: 11400000, guid: 623827eda222f04488b7b6b37fabbe1a, type: 2}
+  - {fileID: 11400000, guid: 9d6c58de13afc4745a647f4791eabf91, type: 2}
+  - {fileID: 11400000, guid: dd6c66b82b29ab0449f7b2f9f95da09d, type: 2}
+  - {fileID: 11400000, guid: 9fee263537361174c9c9aae034b41bc9, type: 2}
+  - {fileID: 11400000, guid: 92f6c7422c3367c49a2aa997975a29c2, type: 2}
+  - {fileID: 11400000, guid: 8bc336f3c44042f44a72d1c1c770163f, type: 2}
+  - {fileID: 11400000, guid: 08f716ac3bb9b7d409712ccb4d817cde, type: 2}
+  - {fileID: 11400000, guid: 6a3d522bf9be9664086ae9f7c5ff188a, type: 2}
+  - {fileID: 11400000, guid: 0b7adc2137129874b9a5603d61978109, type: 2}
+  - {fileID: 11400000, guid: 0b64d300181699c45b88a617e2b61f84, type: 2}
+  - {fileID: 11400000, guid: a9988f1b76bb570489afaf3e3ff6912e, type: 2}
+  - {fileID: 11400000, guid: 71bea65f0884ed740bfbed55f6414ebf, type: 2}
+  - {fileID: 11400000, guid: 93c4aeca599f7ff478834c8f07ca2d44, type: 2}
+  - {fileID: 11400000, guid: a8722f93220af294998c670b25409110, type: 2}
