@@ -68,6 +68,7 @@ Each brief file therefore reads, top to bottom:
 | 15 | `feature/content-letters-1` | After 2 and 3, in parallel (decision D4) | [pending/content-letters-1.md](pending/content-letters-1.md) |
 | 16 | `feature/look` | In progress (look) | [pending/look.md](pending/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
+| 18 | `feature/content-ledger` | In progress (ledger): a chore from `content-model`'s follow-ups | [pending/content-ledger.md](pending/content-ledger.md) |
 
 ### After the MVP
 
@@ -97,6 +98,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
+| ledger | [content-ledger](pending/content-ledger.md) | `Scripts/Editor/ContentImport/` (the importer), `Tests/EditMode/Content/`, new `content/released-ids.txt`, `content/README.md`, the placeholder picture assets under `Assets/Scolita/Content/Pictures/`; one line each in `tasks/README.md` (Lifecycle 5) and `AGENTS.md` (Versioning) | emulator-5600 | 2026-11-24 | Claimed; building the ledger check and the plain placeholders |
 
 ## Where we are
 
