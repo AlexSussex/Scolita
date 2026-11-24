@@ -40,7 +40,7 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(string.Join(" ", beforeWords), Is.EqualTo("a m t p"));
             Assert.That(string.Join(" ", beforeM), Is.EqualTo("a"));
             Assert.That(planet.Lessons[0].Steps.Select(step => step.Kind).Take(2),
-                Is.EqualTo(new[] { ActivityKind.MeetLetter, ActivityKind.ListenAndPick }));
+                Is.EqualTo(new[] { ActivityKind.MeetLetter, ActivityKind.LetterHunt }));
             Assert.That(curriculum.Words.Get(ContentId.Create("ro-mama")).Syllables, Is.EqualTo(new[] { "ma", "ma" }));
         }
 

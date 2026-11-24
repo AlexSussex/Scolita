@@ -25,14 +25,6 @@ MonoBehaviour:
     words:
     - ro-avion
     options: []
-  - kind: ListenAndPick
-    language: ro
-    letters:
-    - a
-    - m
-    - t
-    words: []
-    options: []
   - kind: LetterHunt
     language: ro
     letters:

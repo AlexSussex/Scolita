@@ -30,7 +30,6 @@ MonoBehaviour:
     letters:
     - m
     - a
-    - t
     words: []
     options: []
   - kind: LetterHunt
