@@ -52,7 +52,7 @@ Each brief file therefore reads, top to bottom:
 | # | Feature | Status | Brief |
 | --- | --- | --- | --- |
 | 1 | `feature/project-skeleton` | In progress (skeleton) | [pending/project-skeleton.md](pending/project-skeleton.md) |
-| 2 | `feature/curriculum-research` | In progress (curriculum); docs only, the human agrees v1 | [pending/curriculum-research.md](pending/curriculum-research.md) |
+| 2 | `feature/curriculum-research` | In progress (curriculum): draft v1 pushed, waiting for the human to agree it | [pending/curriculum-research.md](pending/curriculum-research.md) |
 | 3 | `feature/content-model` | Ready after 1 | [pending/content-model.md](pending/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
 | 5 | `feature/lesson-engine` | Ready after 4 (decision D6) | [pending/lesson-engine.md](pending/lesson-engine.md) |
@@ -91,7 +91,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Building |
-| curriculum | [curriculum-research](pending/curriculum-research.md) | `docs/curriculum.md`, `design/research/` | none | 2026-11-24 | researching |
+| curriculum | [curriculum-research](pending/curriculum-research.md) | `docs/curriculum.md`, `design/research/` | none | 2026-11-24 | waiting for the human (agree v1: `local/for-human-next-steps.md`) |
 
 ## Where we are
 

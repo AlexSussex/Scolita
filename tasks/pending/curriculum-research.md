@@ -1,6 +1,6 @@
 # Task: feature/curriculum-research
 
-> **Status: In progress (curriculum)** (docs only; can run beside `project-skeleton`).
+> **Status: In progress (curriculum): draft v1 pushed; waiting for the human to agree v1** (docs only; can run beside `project-skeleton`).
 > Decision D1 assumed: Romanian as the anchor, both languages on.
 
 Read `AGENTS.md` first (especially "Learning (a child is the learner)")
@@ -105,7 +105,8 @@ emulator._
   mână" for both languages; D4 British English for the vowels.
 - **Pushed:**
   - `746392f` docs: claim curriculum-research.
-  - This commit: `docs/curriculum.md` **draft v1** and
+  - `dd86093` docs: add curriculum v1 draft and its research:
+    `docs/curriculum.md` **draft v1** and
     `design/research/`: the research note
     (`curriculum-research.md`: sources, the Romanian and English orders,
     the bilingual check, the one-page bilingual summary, the words of
@@ -140,6 +141,9 @@ emulator._
   with a hook. `activities-letters`: `MeetLetter` without the name in
   planets 1–3 (screen 2's name button). `progress-review`: more practice
   for English items. `content-letters-2`: ă earlier.
-- **Next:** waiting for the human to agree v1 (or ask for changes), then
-  record the agreement here with its date, move the brief to `tasks/done/`
+- **Waiting for the human to agree v1** (since 2026-11-24; the step is in
+  `local/for-human-next-steps.md` → "Now"). The worktree is removed;
+  the next agent starts a fresh one from `origin/main`.
+- **Next:** when the human answers, make the changes asked for (or
+  none), record the agreement here with its date, move the brief to `tasks/done/`
   with its completion record (no release: docs only).
