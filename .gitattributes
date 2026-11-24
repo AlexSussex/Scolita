@@ -1,0 +1,54 @@
+# Text: LF in the repository, so diffs don't flip line endings between agents.
+* text=auto
+*.cs text eol=lf diff=csharp
+*.md text eol=lf
+*.json text eol=lf
+*.asmdef text eol=lf
+*.shader text eol=lf
+*.hlsl text eol=lf
+*.uss text eol=lf
+*.uxml text eol=lf
+*.csv text eol=lf
+*.gradle text eol=lf
+*.xml text eol=lf
+*.txt text eol=lf
+
+# Unity YAML (Force Text serialization): never auto-merged line by line.
+# A conflict is resolved by taking one side and redoing the other in the Editor (AGENTS.md).
+*.unity text eol=lf merge=unityyamlmerge -diff
+*.prefab text eol=lf merge=unityyamlmerge -diff
+*.asset text eol=lf merge=unityyamlmerge -diff
+*.mat text eol=lf merge=unityyamlmerge -diff
+*.anim text eol=lf merge=unityyamlmerge -diff
+*.controller text eol=lf merge=unityyamlmerge -diff
+*.spriteatlas text eol=lf merge=unityyamlmerge -diff
+*.spriteatlasv2 text eol=lf merge=unityyamlmerge -diff
+*.meta text eol=lf merge=unityyamlmerge -diff
+*.physicsMaterial2D text eol=lf merge=unityyamlmerge -diff
+
+# Binary art, audio, fonts and models: Git LFS (everywhere, so content/**/*.ogg, *.wav, *.png,
+# *.psd and *.ttf too).
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.psb filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.aseprite filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.aif filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.a filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+
+# SVG stays text.
+*.svg text eol=lf

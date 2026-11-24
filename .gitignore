@@ -1,0 +1,63 @@
+# Unity (the project lives in /game)
+/game/[Ll]ibrary/
+/game/[Tt]emp/
+/game/[Oo]bj/
+/game/[Bb]uild/
+/game/[Bb]uilds/
+/game/[Ll]ogs/
+/game/[Uu]ser[Ss]ettings/
+/game/[Mm]emoryCaptures/
+/game/[Rr]ecordings/
+/game/.utmp/
+/game/Assets/Plugins/Editor/JetBrains*
+/game/Assets/StreamingAssets/aa*
+/game/Assets/AddressableAssetsData/*/*.bin*
+# Written by Unity 6.3 per machine and account (the same bytes in every project), not project data
+/game/ProjectSettings/PackageManager.policy
+# Package Manager window state with ids that change every Editor session; only the default registry
+# is used. Commit it (and remove this line) if a scoped registry is ever added.
+/game/ProjectSettings/PackageManagerSettings.asset
+
+# IDEs and generated project files
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Builds and crash reports
+*.apk
+*.aab
+*.unitypackage
+sysinfo.txt
+crashlytics-build.properties
+
+# Secrets: never committed (the release key lives outside the repo)
+*.keystore
+*.jks
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+/game/Assets/AddressableAssetsData/Android/
+/game/Assets/AddressableAssetsData/Android.meta
+/game/Assets/AddressableAssetsData/link.xml
+/game/Assets/AddressableAssetsData/link.xml.meta
