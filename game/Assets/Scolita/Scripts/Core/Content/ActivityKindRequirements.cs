@@ -63,7 +63,8 @@ namespace Scolita.Core.Content
         public bool IsBridge { get; }
 
         /// <summary>
-        /// Whether a step's letters are the choices she taps among (<see cref="ActivityKind.ListenAndPick"/>),
+        /// Whether a step's letters are the choices she taps among (<see cref="ActivityKind.ListenAndPick"/>,
+        /// <see cref="ActivityKind.LetterHunt"/>, <see cref="ActivityKind.FirstSound"/>),
         /// so every one of them must be taught by the step's lesson in its language: a wrong choice is
         /// never a letter still to come (the human, 2026-11-24).
         /// </summary>

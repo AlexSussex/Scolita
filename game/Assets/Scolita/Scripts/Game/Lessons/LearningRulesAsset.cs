@@ -13,6 +13,9 @@ namespace Scolita.Game.Lessons
     {
         [SerializeField, Min(1)] private int triesBeforeAnswerShown = 2;
         [SerializeField, Min(0)] private int praiseNotRepeatedWithin = 3;
+        [SerializeField, Range(2, LetterHuntTuning.MostStars)] private int huntStars = 10;
+        [SerializeField, Min(1)] private int huntRightStars = 4;
+        [SerializeField, Min(1f)] private float huntFastestSpeed = 60f;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -20,7 +23,8 @@ namespace Scolita.Game.Lessons
         /// </summary>
         public LearningRules ToRules()
         {
-            return new LearningRules(triesBeforeAnswerShown, praiseNotRepeatedWithin);
+            return new LearningRules(triesBeforeAnswerShown, praiseNotRepeatedWithin,
+                new LetterHuntTuning(huntStars, huntRightStars, huntFastestSpeed));
         }
     }
 }

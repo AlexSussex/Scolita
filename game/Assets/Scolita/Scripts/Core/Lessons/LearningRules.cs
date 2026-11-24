@@ -11,9 +11,10 @@ namespace Scolita.Core.Lessons
     {
         /// <summary>
         /// Creates the rules; throws an <see cref="ArgumentOutOfRangeException"/> for a number out of
-        /// its range. Called by the learning rules asset and the tests.
+        /// its range, and an <see cref="ArgumentNullException"/> for no <paramref name="letterHunt"/>.
+        /// Called by the learning rules asset and the tests.
         /// </summary>
-        public LearningRules(int triesBeforeAnswerShown, int praiseNotRepeatedWithin)
+        public LearningRules(int triesBeforeAnswerShown, int praiseNotRepeatedWithin, LetterHuntTuning letterHunt)
         {
             if (triesBeforeAnswerShown < 1)
             {
@@ -29,6 +30,7 @@ namespace Scolita.Core.Lessons
 
             TriesBeforeAnswerShown = triesBeforeAnswerShown;
             PraiseNotRepeatedWithin = praiseNotRepeatedWithin;
+            LetterHunt = letterHunt ?? throw new ArgumentNullException(nameof(letterHunt));
         }
 
         /// <summary>
@@ -39,5 +41,8 @@ namespace Scolita.Core.Lessons
 
         /// <summary>How many of the last praise lines said are never said again next (praise variety).</summary>
         public int PraiseNotRepeatedWithin { get; }
+
+        /// <summary>The numbers of <c>LetterHunt</c>: its stars and their speed.</summary>
+        public LetterHuntTuning LetterHunt { get; }
     }
 }

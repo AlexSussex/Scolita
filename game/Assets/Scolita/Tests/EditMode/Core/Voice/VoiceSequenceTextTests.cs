@@ -18,7 +18,7 @@ namespace Scolita.Tests.EditMode.Core.Voice
         public void TestOf_FillsTheSlots()
         {
             Curriculum curriculum = RealContent.Read();
-            IActivityRules rules = ActivityRulesFactory.Create(RealContent.FirstStep(curriculum, "ro-a", ActivityKind.MeetLetter), curriculum);
+            IActivityRules rules = ActivityRulesFactory.Create(RealContent.FirstStep(curriculum, "ro-a", ActivityKind.MeetLetter), curriculum, TestLearningRules.Default());
 
             string text = VoiceSequenceText.Of(curriculum, rules.Instruction);
 

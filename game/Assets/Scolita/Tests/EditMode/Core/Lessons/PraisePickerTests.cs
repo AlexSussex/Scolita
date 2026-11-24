@@ -19,7 +19,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         public void TestNext_NeverOneOfTheLastThree()
         {
             Curriculum curriculum = RealContent.Read();
-            PraisePicker picker = new PraisePicker(curriculum, new LearningRules(2, 3), new SeededRandom(42));
+            PraisePicker picker = new PraisePicker(curriculum, TestLearningRules.Default(), new SeededRandom(42));
             List<string> said = new List<string>();
 
             for (int turn = 0; turn < 300; turn++)
@@ -44,7 +44,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         public void TestNext_TwoLinesAlternate()
         {
             Curriculum curriculum = ContentCsvs.Read(ContentCsvs.Valid());
-            PraisePicker picker = new PraisePicker(curriculum, new LearningRules(2, 3), new SeededRandom(1));
+            PraisePicker picker = new PraisePicker(curriculum, TestLearningRules.Default(), new SeededRandom(1));
 
             string first = SequenceLines.Of(picker.Next(Language.Romanian))[0];
             string second = SequenceLines.Of(picker.Next(Language.Romanian))[0];
@@ -60,7 +60,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-praise-1,", "en-line-unused-1,en,line,Unused.,,,");
-            PraisePicker picker = new PraisePicker(ContentCsvs.Read(csvs), new LearningRules(2, 3), new SeededRandom(1));
+            PraisePicker picker = new PraisePicker(ContentCsvs.Read(csvs), TestLearningRules.Default(), new SeededRandom(1));
 
             Assert.That(() => picker.Next(Language.English), Throws.InvalidOperationException);
         }

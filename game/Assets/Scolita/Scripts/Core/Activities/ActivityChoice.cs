@@ -14,7 +14,14 @@ namespace Scolita.Core.Activities
         /// <summary>Creates a choice; called by <see cref="OfLetter"/>, <see cref="OfWord"/> and the tests.</summary>
         public ActivityChoice(ContentId item, ActivityChoiceLook look, Language language, string text, string upperText,
             ContentId picture, VoiceLineId heardBy)
+            : this(item, look, language, text, upperText, picture, heardBy, false)
         {
+        }
+
+        private ActivityChoice(ContentId item, ActivityChoiceLook look, Language language, string text, string upperText,
+            ContentId picture, VoiceLineId heardBy, bool isCapital)
+        {
+            IsCapital = isCapital;
             Item = item;
             Look = look;
             Language = language;
@@ -33,11 +40,14 @@ namespace Scolita.Core.Activities
         /// <summary>Its language, shown by its badge.</summary>
         public Language Language { get; }
 
-        /// <summary>The text it shows: the letter in lower case, or the word.</summary>
+        /// <summary>The text it shows: the letter in lower case (or its capital, <see cref="OfCapital"/>), or the word.</summary>
         public string Text { get; }
 
         /// <summary>A letter's capital (shown beside it by <c>MeetLetter</c>); empty for a word.</summary>
         public string UpperText { get; }
+
+        /// <summary>Whether it is a letter shown as its capital alone (<see cref="OfCapital"/>).</summary>
+        public bool IsCapital { get; }
 
         /// <summary>The picture it shows; not set for a letter.</summary>
         public ContentId Picture { get; }
@@ -53,6 +63,16 @@ namespace Scolita.Core.Activities
         {
             return new ActivityChoice(letter.Id, ActivityChoiceLook.Letter, language, letter.Lower, letter.Upper, default,
                 letter.SoundLine(language));
+        }
+
+        /// <summary>
+        /// A letter as a choice in <paramref name="language"/> that shows its capital alone
+        /// (<c>LetterHunt</c>'s stars), heard by its sound. Called by the activities' rules.
+        /// </summary>
+        public static ActivityChoice OfCapital(Letter letter, Language language)
+        {
+            return new ActivityChoice(letter.Id, ActivityChoiceLook.Letter, language, letter.Upper, string.Empty, default,
+                letter.SoundLine(language), true);
         }
 
         /// <summary>A word as a choice: its picture, its text and its word line. Called by the activities' rules.</summary>

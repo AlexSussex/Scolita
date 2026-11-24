@@ -13,6 +13,12 @@ namespace Scolita.Core.Content
         /// The word starts with one of the step's letters, so the step has a right answer
         /// (<see cref="ActivityKind.MeetLetter"/>'s picture word, <see cref="ActivityKind.FirstSound"/>).
         /// </summary>
-        WordStartsWithALetter
+        WordStartsWithALetter,
+
+        /// <summary>
+        /// One letter whose sound differs between the two languages, and words of both languages, each
+        /// starting with it (<see cref="ActivityKind.TwoSounds"/>: she sorts them by their first sound).
+        /// </summary>
+        SortsByTheLettersTwoSounds
     }
 }

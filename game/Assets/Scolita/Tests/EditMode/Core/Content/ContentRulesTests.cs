@@ -21,9 +21,7 @@ namespace Scolita.Tests.EditMode.Core.Content
         public void TestCheck_WordBeforeItsLettersAreTaught()
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
-            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,FirstSound,,a m,ro-mama,,");
-            ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-line-first-sound,ro,line,Cu ce sunet \u00EEncepe cuv\u00E2ntul?,,,");
-            ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-line-first-sound-tap,ro,line,Atinge litera cu care \u00EEncepe cuv\u00E2ntul.,,,");
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,Syllables,,,ro-mama,,");
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 
@@ -395,6 +393,73 @@ namespace Scolita.Tests.EditMode.Core.Content
 
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-lesson-done is not in voice-lines.csv");
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-praise-1 is not in voice-lines.csv");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>LetterHunt</c> or a <c>FirstSound</c> step with a
+        /// letter not taught yet: a wrong choice is never a letter still to come (the human, 2026-11-24).
+        /// </summary>
+        [Test]
+        public void TestCheck_HuntAndFirstSoundChoicesTaught()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int hunt = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,LetterHunt,,a m,,,");
+            int first = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,FirstSound,,a m,ro-avion,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, hunt, "letters are its choices",
+                "not taught yet in the ro track by the lesson ro-a: m (taught: a)");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, first, "letters are its choices",
+                "not taught yet in the ro track by the lesson ro-a: m (taught: a)");
+        }
+
+        /// <summary>Tests that <see cref="ContentRules.Check"/> fails a <c>LetterHunt</c> step with no letter to tell apart from its own.</summary>
+        [Test]
+        public void TestCheck_HuntNeedsAnotherLetter()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,LetterHunt,,m,,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "a LetterHunt step takes", "letters, not 1");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>TwoSounds</c> step on a letter whose sound is the
+        /// same in both languages (the human, 2026-11-24).
+        /// </summary>
+        [Test]
+        public void TestCheck_TwoSoundsOnALetterWhoseSoundsDiffer()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "en-m,TwoSounds,,m,ro-mama en-mat ro-mama en-mat,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "a letter whose sound differs between Romanian and English",
+                "m is shared-close");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>TwoSounds</c> step whose pictures are all of one
+        /// language, or whose word doesn't start with its letter.
+        /// </summary>
+        [Test]
+        public void TestCheck_TwoSoundsSortsBothLanguagesByTheLetter()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int oneLanguage = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "en-a,TwoSounds,,a,ro-avion ro-avion ro-avion ro-avion,,");
+            int otherStart = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "en-a,TwoSounds,,a,ro-avion en-apple en-mat ro-avion,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, oneLanguage, "sorts pictures of both languages",
+                "none of its words is en");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, otherStart, "the word en-mat doesn't start with a");
+            Assert.That(errors.Where(error => error.Source.Row == otherStart).Select(error => error.Reason),
+                Has.None.Contains("both languages"));
         }
     }
 }

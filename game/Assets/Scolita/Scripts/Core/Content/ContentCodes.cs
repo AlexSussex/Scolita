@@ -46,6 +46,7 @@ namespace Scolita.Core.Content
             Pair("word", VoiceLineKind.Word),
             Pair("slow", VoiceLineKind.Slow),
             Pair("syllables", VoiceLineKind.Syllables),
+            Pair("stretched", VoiceLineKind.Stretched),
             Pair("line", VoiceLineKind.Line)
         };
 

@@ -23,14 +23,21 @@ namespace Scolita.Tests.EditMode.Core.Activities
                 .Where(step => ActivityRulesFactory.Has(step.Kind))
                 .ToArray();
 
-            Assert.That(steps, Is.Not.Empty);
+            Assert.That(steps.Select(step => step.Kind).Distinct(), Is.EquivalentTo(new[]
+            {
+                ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
+                ActivityKind.TwoSounds
+            }));
             foreach (Step step in steps)
             {
-                IActivityRules rules = ActivityRulesFactory.Create(step, curriculum);
+                IActivityRules rules = ActivityRulesFactory.Create(step, curriculum, TestLearningRules.Default());
 
                 Assert.That(rules.Kind, Is.EqualTo(step.Kind));
                 Assert.That(step.Languages.Includes(rules.Language), Is.True);
-                Assert.That(rules.Round.Choices.All(choice => choice.Language == rules.Language), Is.True);
+                Assert.That(rules.Round.Choices.All(choice => step.Languages.Includes(choice.Language)), Is.True);
+                Assert.That(rules.Round.Choices.All(choice => choice.Language == rules.Language),
+                    Is.EqualTo(!ActivityKinds.Of(step.Kind).IsBridge));
+                Assert.That(rules.Lines, Has.Member(rules.Instruction));
             }
         }
 
@@ -42,7 +49,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Step trace = RealContent.FirstStep(curriculum, "ro-a", ActivityKind.TraceLetter);
 
             Assert.That(ActivityRulesFactory.Has(ActivityKind.TraceLetter), Is.False);
-            Assert.That(() => ActivityRulesFactory.Create(trace, curriculum), Throws.ArgumentException);
+            Assert.That(() => ActivityRulesFactory.Create(trace, curriculum, TestLearningRules.Default()), Throws.ArgumentException);
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
         private static IActivityRules RomanianT()
         {
             Curriculum curriculum = RealContent.Read();
-            return ActivityRulesFactory.Create(RealContent.FirstStep(curriculum, "ro-t", ActivityKind.ListenAndPick), curriculum);
+            return ActivityRulesFactory.Create(RealContent.FirstStep(curriculum, "ro-t", ActivityKind.ListenAndPick), curriculum, TestLearningRules.Default());
         }
     }
 }

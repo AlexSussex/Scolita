@@ -21,7 +21,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestStart_BeginsTheFirstStep()
         {
-            LessonRun run = RomanianT(new LearningRules(2, 3));
+            LessonRun run = RomanianT(TestLearningRules.Default());
 
             run.Start();
 
@@ -41,7 +41,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestAnswer_PlaysTheLessonToItsEnd()
         {
-            LessonRun run = RomanianT(new LearningRules(2, 3));
+            LessonRun run = RomanianT(TestLearningRules.Default());
             List<StepCompleted> completed = new List<StepCompleted>();
             List<AnswerChecked> checkedAnswers = new List<AnswerChecked>();
             List<LessonCompleted> finished = new List<LessonCompleted>();
@@ -85,7 +85,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestAnswer_HintThenShowThenPractice()
         {
-            LessonRun run = AtThePick(new LearningRules(2, 3));
+            LessonRun run = AtThePick(TestLearningRules.Default());
             List<HintGiven> hints = new List<HintGiven>();
             List<AnswerChecked> checkedAnswers = new List<AnswerChecked>();
             List<StepCompleted> completed = new List<StepCompleted>();
@@ -123,7 +123,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestAnswer_TriesComeFromTheRules()
         {
-            LessonRun run = AtThePick(new LearningRules(1, 3));
+            LessonRun run = AtThePick(TestLearningRules.WithTries(1));
 
             StepFeedback miss = run.Answer(ActivityAnswer.Tap(Wrong));
 
@@ -138,7 +138,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Curriculum curriculum = RealContent.Read();
             LessonPlan plan = LessonPlan.Of(RealContent.Lesson(curriculum, "party-1"), LanguageMix.Both, Built,
                 new Step[0], 1);
-            LessonRun run = new LessonRun(plan, curriculum, new LearningRules(2, 3), new FixedRandom());
+            LessonRun run = new LessonRun(plan, curriculum, TestLearningRules.Default(), new FixedRandom());
             run.Start();
             run.Answer(ActivityAnswer.Tap(Wrong));
             run.Answer(ActivityAnswer.Tap(Answer));
@@ -157,7 +157,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestAnswer_OnlyWhileAStepPlays()
         {
-            LessonRun run = RomanianT(new LearningRules(2, 3));
+            LessonRun run = RomanianT(TestLearningRules.Default());
 
             Assert.That(() => run.Answer(ActivityAnswer.Tap(0)), Throws.InstanceOf<InvalidOperationException>());
             run.Start();
@@ -174,7 +174,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         [Test]
         public void TestTryGetResumePoint_FollowsTheSteps()
         {
-            LessonRun run = RomanianT(new LearningRules(2, 3));
+            LessonRun run = RomanianT(TestLearningRules.Default());
             run.Start();
 
             bool atStart = run.TryGetResumePoint(out int startNumber);
@@ -201,9 +201,9 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Step review = RealContent.FirstStep(curriculum, "ro-m", ActivityKind.ListenAndPick);
 
             LessonRun resumed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, Built, new Step[0], 2), curriculum,
-                new LearningRules(2, 3), new FixedRandom());
+                TestLearningRules.Default(), new FixedRandom());
             LessonRun reviewed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, Built, new[] { review }, 1), curriculum,
-                new LearningRules(2, 3), new FixedRandom());
+                TestLearningRules.Default(), new FixedRandom());
             resumed.Start();
             reviewed.Start();
             reviewed.TryGetResumePoint(out int duringReview);
@@ -222,7 +222,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             LessonPlan empty = LessonPlan.Of(RealContent.Lesson(curriculum, "ro-words-1"), LanguageMix.Both, Built,
                 new Step[0], 1);
 
-            Assert.That(() => new LessonRun(empty, curriculum, new LearningRules(2, 3), new FixedRandom()),
+            Assert.That(() => new LessonRun(empty, curriculum, TestLearningRules.Default(), new FixedRandom()),
                 Throws.ArgumentException);
         }
 

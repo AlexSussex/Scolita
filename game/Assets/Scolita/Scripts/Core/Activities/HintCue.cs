@@ -10,6 +10,9 @@ namespace Scolita.Core.Activities
         FadeChoice,
 
         /// <summary>The right choice glows yellow: the answer is shown.</summary>
-        GlowAnswer
+        GlowAnswer,
+
+        /// <summary>Every right choice not done yet twinkles for a moment (<c>LetterHunt</c>'s stars).</summary>
+        TwinkleAnswers
     }
 }

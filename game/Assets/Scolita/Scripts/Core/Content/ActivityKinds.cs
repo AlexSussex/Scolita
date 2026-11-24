@@ -23,11 +23,12 @@ namespace Scolita.Core.Content
                 ActivityWordUse.Pictured, NoWordLines, false, true, NoOptions,
                 Lines("pick-letter", "pick-letter-x", "pick-picture"),
                 Lines("listen-again", "pick-hint-other", "pick-hint-shape", "pick-hint-show", "show-answer")),
-            Kind(ActivityKind.LetterHunt, Range(1, 3), Range(0, 0), Range(1, 3), ActivityItemRules.None,
-                ActivityWordUse.Heard, NoWordLines, false, false, NoOptions, Lines("hunt"), NoLines),
+            Kind(ActivityKind.LetterHunt, Range(2, 3), Range(0, 0), Range(2, 3), ActivityItemRules.None,
+                ActivityWordUse.Heard, NoWordLines, false, true, NoOptions, Lines("hunt", "hunt-capitals"),
+                Lines("hunt-hint-twinkle", "hunt-hint-capital", "hunt-hint-more", "hunt-hint-not", "pick-hint-show")),
             Kind(ActivityKind.FirstSound, Range(2, 4), Range(1, 1), Range(3, 5), ActivityItemRules.WordStartsWithALetter,
-                ActivityWordUse.Pictured, NoWordLines, false, false, NoOptions, Lines("first-sound", "first-sound-tap"),
-                NoLines),
+                ActivityWordUse.Pictured, NoWordLines, false, true, NoOptions,
+                Lines("first-sound", "first-sound-tap"), Lines("first-hint-stretch", "first-hint-which", "pick-hint-show")),
             Kind(ActivityKind.TraceLetter, Range(1, 1), Range(0, 0), Range(1, 1), ActivityItemRules.None,
                 ActivityWordUse.Heard, NoWordLines, false, false, new[]
                 {
@@ -43,8 +44,9 @@ namespace Scolita.Core.Content
                 ActivityWordUse.Read, NoWordLines, false, false, NoOptions, Lines("build"), NoLines),
             Kind(ActivityKind.ReadAndMatch, Range(0, 0), Range(2, 3), Range(2, 3), ActivityItemRules.None,
                 ActivityWordUse.ReadAndPictured, NoWordLines, false, false, NoOptions, Lines("read"), NoLines),
-            Kind(ActivityKind.TwoSounds, Range(1, 1), Range(4, 6), Range(5, 7), ActivityItemRules.None,
-                ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("two", "two-tap"), NoLines),
+            Kind(ActivityKind.TwoSounds, Range(1, 1), Range(4, 6), Range(5, 7), ActivityItemRules.SortsByTheLettersTwoSounds,
+                ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("two-same-letter", "two-tap", "two"),
+                Lines("two-hint-again", "two-hint-start", "two-hint-badges", "two-hint-show")),
             Kind(ActivityKind.WordTwins, Range(0, 0), Range(2, 8), Range(2, 8), ActivityItemRules.None,
                 ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("twins"), NoLines)
         };

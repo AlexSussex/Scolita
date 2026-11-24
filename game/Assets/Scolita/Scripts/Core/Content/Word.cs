@@ -93,5 +93,11 @@ namespace Scolita.Core.Content
         /// letters' sounds instead. Called by the activities.
         /// </summary>
         public VoiceLineId SlowLine => VoiceLineIds.For(Language, VoiceLineKind.Slow, Key);
+
+        /// <summary>
+        /// The word with its first sound held (<c>ro-stretched-mama</c>), for <c>FirstSound</c>'s hint.
+        /// Called by the activities, the content rules and the lesson's voice lines.
+        /// </summary>
+        public VoiceLineId StretchedLine => VoiceLineIds.For(Language, VoiceLineKind.Stretched, Key);
     }
 }

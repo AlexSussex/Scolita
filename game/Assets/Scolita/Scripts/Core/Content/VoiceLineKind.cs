@@ -21,6 +21,12 @@ namespace Scolita.Core.Content
         /// <summary>A word said in syllables or beats (for <see cref="ActivityKind.Syllables"/>).</summary>
         Syllables,
 
+        /// <summary>
+        /// A word with its first sound held, or bounced when it can't be held ("mmmama", "t-t-tata"), for
+        /// <see cref="ActivityKind.FirstSound"/>'s hint.
+        /// </summary>
+        Stretched,
+
         /// <summary>Anything else the mascot says: instructions, hints, praise, checkpoints.</summary>
         Line
     }

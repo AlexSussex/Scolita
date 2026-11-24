@@ -8,7 +8,7 @@ namespace Scolita.Core.Voice
     /// <summary>
     /// The voice lines a lesson can say, so its clips are loaded when it starts and unloaded after
     /// (AGENTS.md → "Performance", audio): in each step's languages, its letters' sounds and names, its
-    /// words' lines (word, slow, syllables) and the sounds of their letters, its kind's instruction and
+    /// words' lines (word, slow, syllables, stretched) and the sounds of their letters, its kind's instruction and
     /// hint lines, and the lines every lesson says (<see cref="LessonLines"/>: the praise and the end).
     /// Only lines that are in the content are listed.
     /// </summary>
@@ -67,7 +67,7 @@ namespace Scolita.Core.Voice
             IEnumerable<VoiceLineId> sounds = word.Letters
                 .Where(curriculum.Letters.Contains)
                 .Select(letter => curriculum.Letters.Get(letter).SoundLine(word.Language));
-            return new[] { word.WordLine, word.SlowLine, word.SyllablesLine }.Concat(sounds);
+            return new[] { word.WordLine, word.SlowLine, word.SyllablesLine, word.StretchedLine }.Concat(sounds);
         }
     }
 }

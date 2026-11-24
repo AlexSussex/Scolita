@@ -18,7 +18,10 @@ namespace Scolita.Core.Activities
         /// <summary>The kind.</summary>
         ActivityKind Kind { get; }
 
-        /// <summary>The step's language: every line it says and every choice it shows is in it.</summary>
+        /// <summary>
+        /// The language it speaks: every line it says is in it, and so is every choice, except in a kind
+        /// that bridges the two languages (<c>TwoSounds</c>), whose choices each have their own.
+        /// </summary>
         Language Language { get; }
 
         /// <summary>What the view draws.</summary>

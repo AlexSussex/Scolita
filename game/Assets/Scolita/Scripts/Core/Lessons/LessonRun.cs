@@ -46,7 +46,7 @@ namespace Scolita.Core.Lessons
             rules = new IActivityRules[plan.Steps.Count];
             for (int index = 0; index < rules.Length; index++)
             {
-                rules[index] = ActivityRulesFactory.Create(plan.Steps[index].Step, curriculum);
+                rules[index] = ActivityRulesFactory.Create(plan.Steps[index].Step, curriculum, learningRules);
             }
 
             Language endLanguage = rules[rules.Length - 1].Language;

@@ -64,6 +64,7 @@ namespace Scolita.Core.Content.Rules
                 CheckChoicesOnce(step, problems);
             }
 
+            List<Word> words = new List<Word>();
             foreach (ContentId wordId in step.Words)
             {
                 Word word = References.InUse(curriculum.Words, wordId, step.Source, "word", ContentFileNames.Words,
@@ -72,7 +73,13 @@ namespace Scolita.Core.Content.Rules
                 {
                     CheckWord(curriculum, lesson, step, needs, word, problems);
                     CheckWordStart(step, needs, word, letters, problems);
+                    words.Add(word);
                 }
+            }
+
+            if (needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds)
+            {
+                CheckTwoSounds(step, letters, words, problems);
             }
 
             foreach (Language language in step.Languages.Languages())
@@ -116,7 +123,9 @@ namespace Scolita.Core.Content.Rules
         private static void CheckWordStart(Step step, ActivityKindRequirements needs, Word word,
             IReadOnlyList<Letter> letters, ContentProblems problems)
         {
-            if (needs.ItemRules != ActivityItemRules.WordStartsWithALetter || letters.Count != step.Letters.Count)
+            bool needsItsStart = needs.ItemRules == ActivityItemRules.WordStartsWithALetter
+                || needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds;
+            if (!needsItsStart || letters.Count != step.Letters.Count)
             {
                 return;
             }
@@ -128,6 +137,31 @@ namespace Scolita.Core.Content.Rules
                     + string.Join(" or ", step.Letters) + ", so the " + ContentCodes.CodeOf(step.Kind)
                     + " step has no right answer.");
             }
+        }
+
+        private static void CheckTwoSounds(Step step, IReadOnlyList<Letter> letters, IReadOnlyList<Word> words,
+            ContentProblems problems)
+        {
+            string kind = ContentCodes.CodeOf(step.Kind);
+            foreach (Letter letter in letters.Where(letter => !SoundsDiffer(letter.Group)))
+            {
+                problems.Error(step.Source, "a " + kind + " step needs a letter whose sound differs between Romanian and "
+                    + "English (" + ContentCodes.CodeOf(LetterGroup.VowelDiffers) + " or "
+                    + ContentCodes.CodeOf(LetterGroup.SoundDiffers) + "); " + letter.Id + " is "
+                    + ContentCodes.CodeOf(letter.Group) + ".");
+            }
+
+            foreach (Language language in LanguageMix.Both.Languages().Where(language => words.Count > 0
+                && words.All(word => word.Language != language)))
+            {
+                problems.Error(step.Source, "a " + kind + " step sorts pictures of both languages, and none of its words is "
+                    + LanguageCodes.CodeOf(language) + ".");
+            }
+        }
+
+        private static bool SoundsDiffer(LetterGroup group)
+        {
+            return group == LetterGroup.VowelDiffers || group == LetterGroup.SoundDiffers;
         }
 
         private static void CheckOptions(Step step, ActivityKindRequirements needs, ContentProblems problems)
