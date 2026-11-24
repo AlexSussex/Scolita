@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Școlița — the parent area</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Baloo+2:wght@500;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#5B33B5}a:hover{color:#2B1B5A}
+</style>
+</helmet>
+<div style="width: 1280px; height: 800px; position: relative; overflow: hidden; box-sizing: border-box; background: #F6F2FF; font-family: 'Baloo 2', system-ui, sans-serif; color: #2A2140; padding: 28px 40px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 16px">
+<a href="Main.dc.html" aria-label="Înapoi la hartă" style="width: 64px; height: 64px; border-radius: 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 #DCD3F0">
+<svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2A2140" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 L8 12 L15 19"></path></svg>
+</a>
+<h1 style="margin: 0; font-size: 36px; font-weight: 800">Pentru părinți</h1>
+</div>
+<span style="font-size: 18px; color: #5E5478">Versiunea [VERSION]</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; flex: 1; min-height: 0">
+
+<section style="background: #FFFFFF; border-radius: 28px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 2px 0 #E4DCF5">
+<h2 style="margin: 0; font-size: 26px; font-weight: 800">Ce a învățat</h2>
+<div style="display: flex; gap: 18px; font-size: 18px; color: #5E5478">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 18px; border-radius: 6px; background: #2A2140"></span>învățată</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 18px; border-radius: 6px; background: linear-gradient(90deg, #2A2140 50%, #E4DCF5 50%)"></span>în lucru</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 18px; border-radius: 6px; border: 2px solid #C9BFE3; box-sizing: border-box"></span>nouă</span>
+</div>
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 6px">
+<span style="width: 100px; display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 700">
+<sc-if value="{{ row.ro }}" hint-placeholder-val="{{ true }}">
+<svg aria-hidden="true" width="30" height="30" viewBox="0 0 40 40"><path d="M20 2 L25 14 L38 15 L28 24 L31 37 L20 30 L9 37 L12 24 L2 15 L15 14 Z" fill="#F5B700" stroke="#7A4D00" stroke-width="2" stroke-linejoin="round"></path></svg>
+</sc-if>
+<sc-if value="{{ row.en }}" hint-placeholder-val="{{ false }}">
+<svg aria-hidden="true" width="30" height="30" viewBox="0 0 40 40"><ellipse cx="20" cy="21" rx="18" ry="6" fill="none" stroke="#114A78" stroke-width="2.4"></ellipse><circle cx="20" cy="20" r="13" fill="#3BA7F0" stroke="#114A78" stroke-width="2"></circle></svg>
+</sc-if>
+{{ row.label }}
+</span>
+<sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="10">
+<span aria-label="{{ cell.aria }}" style="{{ cell.style }}">{{ cell.letter }}</span>
+</sc-for>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px">
+<span style="font-size: 18px; font-weight: 700">Zile în care a jucat (ultimele 2 săptămâni)</span>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{ days }}" as="day" hint-placeholder-count="14">
+<span style="{{ day.style }}"></span>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding: 14px 16px; border-radius: 18px; background: #F6F2FF">
+<span style="font-size: 18px; font-weight: 700">Vocile înregistrate</span>
+<span style="font-size: 18px; color: #5E5478">Română: [N] din [TOTAL] · Engleză: [N] din [TOTAL]. Restul le spune vocea tabletei.</span>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border-radius: 28px; padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 2px 0 #E4DCF5">
+<h2 style="margin: 0; font-size: 26px; font-weight: 800">Setări</h2>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 18px; font-weight: 700">Limbile lecțiilor</span>
+<div role="radiogroup" aria-label="Limbile lecțiilor" style="display: flex; gap: 8px">
+<button role="radio" aria-checked="true" style="height: 52px; padding: 0 18px; border-radius: 26px; border: none; background: #2A2140; color: #FFFFFF; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">Amândouă</button>
+<button role="radio" aria-checked="false" style="height: 52px; padding: 0 18px; border-radius: 26px; border: 2px solid #C9BFE3; background: #FFFFFF; color: #2A2140; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">Doar română</button>
+<button role="radio" aria-checked="false" style="height: 52px; padding: 0 18px; border-radius: 26px; border: 2px solid #C9BFE3; background: #FFFFFF; color: #2A2140; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">Doar engleză</button>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 18px; font-weight: 700">Limită de timp pe zi</span>
+<div role="radiogroup" aria-label="Limită de timp pe zi" style="display: flex; gap: 8px">
+<button role="radio" aria-checked="true" style="height: 52px; padding: 0 18px; border-radius: 26px; border: none; background: #2A2140; color: #FFFFFF; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">Fără</button>
+<button role="radio" aria-checked="false" style="height: 52px; padding: 0 18px; border-radius: 26px; border: 2px solid #C9BFE3; background: #FFFFFF; color: #2A2140; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">10 min</button>
+<button role="radio" aria-checked="false" style="height: 52px; padding: 0 18px; border-radius: 26px; border: 2px solid #C9BFE3; background: #FFFFFF; color: #2A2140; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">15 min</button>
+<button role="radio" aria-checked="false" style="height: 52px; padding: 0 18px; border-radius: 26px; border: 2px solid #C9BFE3; background: #FFFFFF; color: #2A2140; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">20 min</button>
+</div>
+<span style="font-size: 16px; color: #5E5478">Lecția începută se termină mereu; apoi racheta se odihnește până mâine.</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 18px; font-weight: 700">Vocea<input type="range" min="0" max="100" value="90" style="accent-color: #5B33B5; height: 32px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 18px; font-weight: 700">Muzica<input type="range" min="0" max="100" value="40" style="accent-color: #5B33B5; height: 32px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 18px; font-weight: 700">Sunetele<input type="range" min="0" max="100" value="70" style="accent-color: #5B33B5; height: 32px"></label>
+<label style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 18px; font-weight: 700">Vibrații<input type="checkbox" checked style="width: 28px; height: 28px; accent-color: #5B33B5"></label>
+<label style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 18px; font-weight: 700">Literele mici întâi<input type="checkbox" checked style="width: 28px; height: 28px; accent-color: #5B33B5"></label>
+<label style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 18px; font-weight: 700">Meniurile în engleză<input type="checkbox" style="width: 28px; height: 28px; accent-color: #5B33B5"></label>
+</div>
+
+<button style="margin-top: auto; align-self: flex-start; height: 52px; padding: 0 20px; border-radius: 26px; border: 2px solid #B8235A; background: #FFFFFF; color: #8E1A45; font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 700">Șterge progresul…</button>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+const letters = ['a', 'm', 't', 'p', 's', 'i', 'n', 'o', 'd', 'e'];
+const base = 'width: 34px; height: 34px; border-radius: 10px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-family: Andika, sans-serif; font-size: 22px; font-weight: 700;';
+const styles = {
+learned: base + ' background: #2A2140; color: #FFFFFF;',
+learning: base + ' background: linear-gradient(90deg, #2A2140 50%, #E4DCF5 50%); color: #FFFFFF; text-shadow: 0 0 3px #2A2140;',
+fresh: base + ' border: 2px solid #C9BFE3; color: #8A80A6;'
+};
+const words = { learned: 'învățată', learning: 'în lucru', fresh: 'nouă' };
+const makeRow = (label, ro, states) => ({
+label, ro, en: !ro,
+cells: letters.map((letter, i) => ({ letter, style: styles[states[i]], aria: label + ', ' + letter + ': ' + words[states[i]] }))
+});
+const ro = ['learned', 'learned', 'learned', 'learning', 'learning', 'fresh', 'fresh', 'fresh', 'fresh', 'fresh'];
+const en = ['learned', 'learned', 'learning', 'fresh', 'fresh', 'fresh', 'fresh', 'fresh', 'fresh', 'fresh'];
+const played = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1];
+const dayBase = 'width: 26px; height: 26px; border-radius: 8px;';
+return {
+rows: [makeRow('Română', true, ro), makeRow('Engleză', false, en)],
+days: played.map((p) => ({ style: dayBase + (p ? ' background: #4CD97B;' : ' background: #EEE8FA;') }))
+};
+}
+}
+</script>
+</body>
+</html>
