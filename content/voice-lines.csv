@@ -54,6 +54,12 @@ en-word-tiger,en,word,tiger,,,,listen only; first letter t; animals
 en-syllables-tiger,en,syllables,ti-ger,,,,
 en-word-planet,en,word,planet,,,,listen only; first letter p; space
 en-syllables-planet,en,syllables,plan-et,,,,
+ro-stretched-mama,ro,stretched,mmmama,,,,FirstSound hint: the m held
+ro-stretched-tata,ro,stretched,t-t-tata,,,,FirstSound hint: t can't be held so it is bounced
+ro-stretched-pat,ro,stretched,p-p-pat,,,,FirstSound hint: p can't be held so it is bounced
+en-stretched-moon,en,stretched,mmmoon,,,,FirstSound hint: the m held
+en-stretched-tiger,en,stretched,t-t-tiger,,,,FirstSound hint: t can't be held so it is bounced
+en-stretched-pat,en,stretched,p-p-pat,,,,FirstSound hint: p can't be held so it is bounced
 ro-line-hello,ro,line,Bună! Hai să zburăm!,,,,greeting without a name
 en-line-hello,en,line,Hello! Let's fly!,,,,greeting without a name
 ro-line-hello-name,ro,line,"Bună, {name}! Hai să zburăm!",,,,"{name}: the profile's name, nominative only, system voice (D9)"
