@@ -137,6 +137,11 @@ namespace Scolita.Core.Activities
                 return Dropped(answer.Choice);
             }
 
+            if (answer.Gesture != AnswerGesture.Tap)
+            {
+                throw new ArgumentOutOfRangeException(nameof(answer), answer.Gesture, "TwoSounds takes taps and drops.");
+            }
+
             return answer.Choice < FirstPicture ? PlanetTapped(answer.Choice) : PictureTapped(answer.Choice);
         }
 

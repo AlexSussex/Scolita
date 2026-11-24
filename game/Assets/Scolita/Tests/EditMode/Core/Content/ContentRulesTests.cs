@@ -216,7 +216,7 @@ namespace Scolita.Tests.EditMode.Core.Content
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, stepRow, "shows its words' pictures", "ro-am has none");
             ContentCsvs.AssertError(errors, ContentFileNames.Words, wordRow, "listen-only word", "needs one");
             ContentCsvs.AssertError(errors, ContentFileNames.Pictures, artRow, "mother.png is not in content/pictures/");
-            Assert.That(problems.Count(problem => !problem.IsError && problem.Reason.Contains("placeholder")), Is.EqualTo(3));
+            Assert.That(problems.Count(problem => !problem.IsError && problem.Reason.Contains("placeholder")), Is.EqualTo(4));
             Assert.That(ContentCsvs.Errors(csvs, "mother.png").Any(error => error.Source.File == ContentFileNames.Pictures), Is.False);
         }
 
@@ -476,6 +476,82 @@ namespace Scolita.Tests.EditMode.Core.Content
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "en-stretched-mat is not in voice-lines.csv");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>Syllables</c> word with more syllables than the
+        /// drum's row of beats.
+        /// </summary>
+        [Test]
+        public void TestCheck_SyllablesFitTheDrum()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Words, "ro-amamamamamama,ro,amamamamamama,,a-ma-ma-ma-ma-ma-ma,mother,yes,,,,");
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,Syllables,,,ro-amamamamamama,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "has 1 to 6 syllables", "ro-amamamamamama has 7");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>BuildWord</c> word longer than the rocket's windows
+        /// (the brief's test), an extra tile that is in the word, an extra tile not taught yet, and a word without
+        /// its slow line.
+        /// </summary>
+        [Test]
+        public void TestCheck_BuildWordFitsTheRocket()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Words, "ro-mamamama,ro,mamamama,m a m a m a m a,ma-ma-ma-ma,mother,,,,,");
+            int tooLong = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,BuildWord,,t,ro-mamamama,,");
+            int inTheWord = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,BuildWord,,a,ro-mama,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, tooLong, "one rocket window per letter, at most 6",
+                "ro-mamamama has 8 letters");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, tooLong, "some are not taught yet", "t (taught: a m)");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, inTheWord, "the extra tiles", "a is in ro-mama");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, inTheWord, "ro-slow-mama is not in voice-lines.csv");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>ReadAndMatch</c> step with two words of one
+        /// picture, so two pictures would be right.
+        /// </summary>
+        [Test]
+        public void TestCheck_ReadAndMatchPicturesDiffer()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Words, "ro-mam,ro,mam,m a m,mam,mother,,,,,");
+            int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,ReadAndMatch,,,ro-mama ro-mam,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, row, "only one is right",
+                "ro-mama and ro-mam have the same picture, mother");
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentRules.Check"/> fails a <c>WordTwins</c> step whose words aren't twins or false
+        /// friends (the brief's test), and one with more words in one language than the other.
+        /// </summary>
+        [Test]
+        public void TestCheck_WordTwinsPairUp()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int strangers = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "party,WordTwins,,,ro-mama en-mat,,");
+            int uneven = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "party,WordTwins,,,ro-planeta en-planet en-mat,,");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, strangers, "pair up",
+                "the twin or false friend of ro-mama isn't in the step");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, strangers, "the twin or false friend of en-mat isn't in the step");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, uneven, "as many ro words as en ones, not 1 and 2");
+            Assert.That(errors.Where(error => error.Source.Row == uneven).Select(error => error.Reason),
+                Has.None.Contains("ro-planeta"));
         }
     }
 }

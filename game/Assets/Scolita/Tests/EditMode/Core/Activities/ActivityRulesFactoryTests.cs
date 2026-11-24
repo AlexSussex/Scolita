@@ -26,7 +26,8 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(steps.Select(step => step.Kind).Distinct(), Is.EquivalentTo(new[]
             {
                 ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
-                ActivityKind.TwoSounds
+                ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
+                ActivityKind.WordTwins
             }));
             foreach (Step step in steps)
             {

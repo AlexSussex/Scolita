@@ -17,7 +17,8 @@ namespace Scolita.Core.Activities
         private static readonly ActivityKind[] KindsWithRules =
         {
             ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
-            ActivityKind.TwoSounds
+            ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
+            ActivityKind.WordTwins
         };
 
         /// <summary>The kinds that have rules.</summary>
@@ -57,6 +58,15 @@ namespace Scolita.Core.Activities
                 case ActivityKind.TwoSounds:
                     return new TwoSoundsRules(curriculum.Letters.Get(step.Letters[0]),
                         step.Words.Select(curriculum.Words.Get).ToArray(), LessonLanguageOf(step, curriculum));
+                case ActivityKind.Syllables:
+                    return new SyllablesRules(curriculum.Words.Get(step.Words[0]), LanguageOf(step));
+                case ActivityKind.BuildWord:
+                    return BuildWord(step, curriculum);
+                case ActivityKind.ReadAndMatch:
+                    return ReadAndMatch(step, curriculum);
+                case ActivityKind.WordTwins:
+                    return new WordTwinsRules(step.Words.Select(curriculum.Words.Get).ToArray(),
+                        LessonLanguageOf(step, curriculum));
                 default:
                     throw new ArgumentException("The kind " + step.Kind + " has no rules yet.", nameof(step));
             }
@@ -67,6 +77,24 @@ namespace Scolita.Core.Activities
             Word word = curriculum.Words.Get(step.Words[0]);
             VoiceLine stretched = curriculum.VoiceLines.Get(word.StretchedLine.Id);
             return new FirstSoundRules(LettersOf(step, curriculum), word, LanguageOf(step), stretched.Text);
+        }
+
+        private static BuildWordRules BuildWord(Step step, Curriculum curriculum)
+        {
+            Word word = curriculum.Words.Get(step.Words[0]);
+            Letter[] spelling = word.Letters.Select(curriculum.Letters.Get).ToArray();
+            return new BuildWordRules(word, spelling, LettersOf(step, curriculum), LanguageOf(step), SlowTextOf(word, curriculum));
+        }
+
+        private static ReadAndMatchRules ReadAndMatch(Step step, Curriculum curriculum)
+        {
+            Word[] words = step.Words.Select(curriculum.Words.Get).ToArray();
+            return new ReadAndMatchRules(words, LanguageOf(step), SlowTextOf(words[0], curriculum));
+        }
+
+        private static string SlowTextOf(Word word, Curriculum curriculum)
+        {
+            return curriculum.VoiceLines.Get(word.SlowLine.Id).Text;
         }
 
         private static Letter[] LettersOf(Step step, Curriculum curriculum)

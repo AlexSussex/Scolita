@@ -7,6 +7,12 @@ namespace Scolita.Core.Activities
         Tap,
 
         /// <summary>She let go of what she was dragging on a choice.</summary>
-        Drop
+        Drop,
+
+        /// <summary>She dragged a choice to the place waiting for it (<c>BuildWord</c>'s tile to the rocket's next window).</summary>
+        Place,
+
+        /// <summary>She joined two choices with a line (<c>WordTwins</c>' words).</summary>
+        Join
     }
 }

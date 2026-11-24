@@ -64,8 +64,8 @@ namespace Scolita.Core.Content
 
         /// <summary>
         /// Whether a step's letters are the choices she taps among (<see cref="ActivityKind.ListenAndPick"/>,
-        /// <see cref="ActivityKind.LetterHunt"/>, <see cref="ActivityKind.FirstSound"/>),
-        /// so every one of them must be taught by the step's lesson in its language: a wrong choice is
+        /// <see cref="ActivityKind.LetterHunt"/>, <see cref="ActivityKind.FirstSound"/>) or the extra tiles
+        /// (<see cref="ActivityKind.BuildWord"/>), so every one of them must be taught by the step's lesson in its language: a wrong choice is
         /// never a letter still to come (the human, 2026-11-24).
         /// </summary>
         public bool LettersAreChoices { get; }

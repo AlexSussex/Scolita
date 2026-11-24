@@ -7,7 +7,7 @@ using Scolita.Core.Content.Rules;
 namespace Scolita.Tests.EditMode.Fakes
 {
     /// <summary>
-    /// A small, valid set of the seven content CSVs (three letters, five words, one planet in both
+    /// A small, valid set of the seven content CSVs (three letters, seven words, one planet in both
     /// languages) for the content tests, and helpers to break one thing in it and check it. Each
     /// test takes its own copy from <see cref="Valid"/>.
     /// </summary>
@@ -24,7 +24,8 @@ namespace Scolita.Tests.EditMode.Fakes
             + "mother,,,\n"
             + "plane,,,\n"
             + "apple,,,\n"
-            + "mat,,,\n";
+            + "mat,,,\n"
+            + "planet,,,\n";
 
         private const string Words =
             "id,language,text,letters,syllables,picture,listen_only,twin,false_friend,retired,notes\n"
@@ -32,7 +33,9 @@ namespace Scolita.Tests.EditMode.Fakes
             + "ro-avion,ro,avion,,a-vi-on,plane,yes,,,,\n"
             + "en-apple,en,apple,,ap-ple,apple,yes,,,,\n"
             + "en-mat,en,mat,m a t,mat,mat,,,,,\n"
-            + "ro-am,ro,am,a m,am,,,,,,reading only\n";
+            + "ro-am,ro,am,a m,am,,,,,,reading only\n"
+            + "ro-planeta,ro,planetă,,pla-ne-tă,planet,yes,en-planet,,,\n"
+            + "en-planet,en,planet,,plan-et,planet,yes,ro-planeta,,,\n";
 
         private const string VoiceLines =
             "id,language,kind,text,clip,status,retired,notes\n"
@@ -54,18 +57,36 @@ namespace Scolita.Tests.EditMode.Fakes
             + "en-word-apple,en,word,apple,,,\n"
             + "en-word-mat,en,word,mat,,,\n"
             + "ro-word-am,ro,word,am,,,\n"
+            + "ro-word-planeta,ro,word,planetă,,,\n"
+            + "en-word-planet,en,word,planet,,,\n"
             + "ro-line-meet-new,ro,line,Hai s\u0103 cunoa\u0219tem o liter\u0103 nou\u0103!,,,\n"
             + "en-line-meet-new,en,line,Let's meet a new letter!,,,\n"
             + "ro-line-meet-listen,ro,line,Ascult\u0103: {x}\u2026 {x}\u2026 {word}!,,,\n"
             + "en-line-meet-listen,en,line,Listen: {x}\u2026 {x}\u2026 {word}!,,,\n"
             + "ro-line-trace-start,ro,line,\u00CEncepe de la punct \u0219i urmeaz\u0103 s\u0103geata.,,,\n"
             + "ro-line-syll,ro,line,Ascult\u0103 cuv\u00E2ntul \u0219i bate toba pentru fiecare silab\u0103.,,,\n"
+            + "ro-line-syll-tick,ro,line,\"C\u00E2nd ai terminat, atinge bifa verde.\",,,\n"
+            + "ro-line-syll-hint-listen,ro,line,Ascult\u0103 cum spun cuv\u00E2ntul pe silabe.,,,\n"
+            + "ro-line-syll-hint-count,ro,line,Mai ascult\u0103 o dat\u0103 \u0219i num\u0103r\u0103 silabele.,,,\n"
+            + "ro-line-syll-hint-once,ro,line,Bate toba o dat\u0103 pentru fiecare silab\u0103.,,,\n"
             + "ro-line-pick-letter,ro,line,Ascult\u0103 \u0219i atinge litera potrivit\u0103.,,,\n"
             + "ro-line-pick-picture,ro,line,Ascult\u0103 \u0219i atinge poza potrivit\u0103.,,,\n"
             + "en-line-pick-letter,en,line,Listen and tap the right letter.,,,\n"
             + "en-line-pick-picture,en,line,Listen and tap the right picture.,,,\n"
             + "ro-line-twins,ro,line,\"Une\u0219te cuvintele care seam\u0103n\u0103: unul \u00EEn rom\u00E2n\u0103, unul \u00EEn englez\u0103.\",,,\n"
             + "en-line-twins,en,line,\"Join the words that are alike: one in Romanian, one in English.\",,,\n"
+            + "ro-line-twins-done,ro,line,Sunt gemeni!,,,\n"
+            + "en-line-twins-done,en,line,They are twins!,,,\n"
+            + "ro-line-false-friends,ro,line,\"Se scriu la fel, dar înseamnă altceva!\",,,\n"
+            + "en-line-false-friends,en,line,\"They are spelled the same, but they mean different things!\",,,\n"
+            + "ro-line-twins-hint-pictures,ro,line,Uită-te la poze: arată același lucru!,,,\n"
+            + "en-line-twins-hint-pictures,en,line,Look at the pictures: they show the same thing!,,,\n"
+            + "ro-line-twins-hint-spelled,ro,line,Caută cuvântul care se scrie la fel.,,,\n"
+            + "en-line-twins-hint-spelled,en,line,Look for the word that is spelled the same.,,,\n"
+            + "ro-line-twins-hint-sound,ro,line,Caută cuvântul care sună aproape la fel.,,,\n"
+            + "en-line-twins-hint-sound,en,line,Look for the word that sounds almost the same.,,,\n"
+            + "ro-line-twins-hint-show,ro,line,\"Uite, acesta este cuvântul potrivit. Unește-le!\",,,\n"
+            + "en-line-twins-hint-show,en,line,\"Look, this is the right word. Join them!\",,,\n"
             + "ro-line-meet-tap-letter,ro,line,Atinge litera ca s-o auzi din nou.,,,\n"
             + "en-line-meet-tap-letter,en,line,Tap the letter to hear it again.,,,\n"
             + "ro-line-meet-tap-picture,ro,line,Acum atinge poza.,,,\n"
@@ -112,7 +133,7 @@ namespace Scolita.Tests.EditMode.Fakes
             + "en-m,ListenAndPick,,m a,,,\n"
             + "en-t,ListenAndPick,,t m a,,,\n"
             + "party,ListenAndPick,ro,a m,,,\n"
-            + "party,WordTwins,,,ro-mama en-mat,,\n";
+            + "party,WordTwins,,,ro-planeta en-planet,,\n";
 
         /// <summary>A fresh copy of the valid set, by file name; called by the content tests.</summary>
         public static Dictionary<string, string> Valid()

@@ -9,8 +9,9 @@ namespace Scolita.Core.Activities
     /// <summary>
     /// What an activity's view draws for one step: its kind, the language it speaks, its choices in
     /// the order they are shown, which one is the answer, what the question is about
-    /// (<see cref="Subject"/>), where each choice stands (<see cref="StateOf"/>) and which one is in
-    /// play (<see cref="Current"/>). Owned and set up by the step's rules (<see cref="IActivityRules.Begin"/>,
+    /// (<see cref="Subject"/>), where each choice stands (<see cref="StateOf"/>, <see cref="PlacedOn"/>),
+    /// which one is in play (<see cref="Current"/>) and the places it fills (<see cref="Places"/>,
+    /// <see cref="PlacesFilled"/>). Owned and set up by the step's rules (<see cref="IActivityRules.Begin"/>,
     /// <see cref="IActivityRules.Judge"/>); the view only reads it.
     /// </summary>
     public sealed class ActivityRound
@@ -83,6 +84,18 @@ namespace Scolita.Core.Activities
         public int Current { get; private set; }
 
         /// <summary>
+        /// How many places the round has to fill (<c>BuildWord</c>'s windows, <c>Syllables</c>' syllables); 0 for
+        /// none.
+        /// </summary>
+        public int Places { get; private set; }
+
+        /// <summary>
+        /// How many of the places are filled (<c>BuildWord</c>'s windows filled, in order; <c>Syllables</c>' drum
+        /// beats tapped).
+        /// </summary>
+        public int PlacesFilled { get; private set; }
+
+        /// <summary>
         /// Where the choice <paramref name="choice"/> stands; throws an <see cref="ArgumentOutOfRangeException"/>
         /// for an index out of the choices. Called by the activity views after each answer, and the tests.
         /// </summary>
@@ -98,7 +111,8 @@ namespace Scolita.Core.Activities
 
         /// <summary>
         /// The choice the choice <paramref name="choice"/> was put on (<c>TwoSounds</c>: the planet a picture
-        /// was sorted to); -1 when it wasn't. Throws an <see cref="ArgumentOutOfRangeException"/> for an index
+        /// was sorted to; <c>WordTwins</c>: the word it was joined to), or the place it went to (<c>BuildWord</c>:
+        /// the window a tile filled); -1 when it wasn't. Throws an <see cref="ArgumentOutOfRangeException"/> for an index
         /// out of the choices. Called by the activity views after each answer, and the tests.
         /// </summary>
         public int PlacedOn(int choice)
@@ -127,7 +141,17 @@ namespace Scolita.Core.Activities
         /// </summary>
         internal void ShuffleFrom(int first, IRandom random)
         {
-            for (int last = choices.Length - 1; last > first; last--)
+            ShuffleRange(first, choices.Length - first, random);
+        }
+
+        /// <summary>
+        /// Puts the <paramref name="count"/> choices from <paramref name="first"/> on in a new order taken from
+        /// <paramref name="random"/>, the others staying in place (<c>WordTwins</c>' columns). Called by the
+        /// activities' rules when a step begins.
+        /// </summary>
+        internal void ShuffleRange(int first, int count, IRandom random)
+        {
+            for (int last = first + count - 1; last > first; last--)
             {
                 int other = random.NextInt(first, last + 1);
                 ActivityChoice kept = choices[last];
@@ -157,6 +181,19 @@ namespace Scolita.Core.Activities
             }
 
             Current = -1;
+            PlacesFilled = 0;
+        }
+
+        /// <summary>Sets how many places the round has to fill; called by the activities' rules when a lesson is built.</summary>
+        internal void SetPlaces(int places)
+        {
+            Places = places;
+        }
+
+        /// <summary>Sets how many of the places are filled; called by the activities' rules.</summary>
+        internal void SetPlacesFilled(int filled)
+        {
+            PlacesFilled = filled;
         }
 
         /// <summary>Sets where the choice <paramref name="choice"/> stands; called by the activities' rules.</summary>
@@ -165,7 +202,10 @@ namespace Scolita.Core.Activities
             states[choice] = state;
         }
 
-        /// <summary>Records that the choice <paramref name="choice"/> was put on <paramref name="target"/>; called by the activities' rules.</summary>
+        /// <summary>
+        /// Records that the choice <paramref name="choice"/> was put on <paramref name="target"/> (a choice, or a
+        /// place); called by the activities' rules.
+        /// </summary>
         internal void Place(int choice, int target)
         {
             placedOn[choice] = target;

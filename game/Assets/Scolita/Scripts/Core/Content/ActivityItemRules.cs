@@ -19,6 +19,30 @@ namespace Scolita.Core.Content
         /// One letter whose sound differs between the two languages, and words of both languages, each
         /// starting with it (<see cref="ActivityKind.TwoSounds"/>: she sorts them by their first sound).
         /// </summary>
-        SortsByTheLettersTwoSounds
+        SortsByTheLettersTwoSounds,
+
+        /// <summary>
+        /// The word has 1 to <see cref="ActivityLimits.MostSyllables"/> syllables (<see cref="ActivityKind.Syllables"/>:
+        /// she taps the drum once for each).
+        /// </summary>
+        CountsSyllables,
+
+        /// <summary>
+        /// The word has at most <see cref="ActivityLimits.MostWindows"/> letters, and the step's letters (the
+        /// extra tiles) are not in it (<see cref="ActivityKind.BuildWord"/>).
+        /// </summary>
+        SpellsTheWord,
+
+        /// <summary>
+        /// Each word once, and no two words with the same picture, so one picture is right
+        /// (<see cref="ActivityKind.ReadAndMatch"/>).
+        /// </summary>
+        PicturesDiffer,
+
+        /// <summary>
+        /// The words pair up: each one's twin or false friend is in the step, as many Romanian words as English
+        /// (<see cref="ActivityKind.WordTwins"/>; at most <see cref="ActivityLimits.MostPairs"/> pairs, by its count of words).
+        /// </summary>
+        PairsUp
     }
 }

@@ -13,6 +13,18 @@ namespace Scolita.Core.Activities
         GlowAnswer,
 
         /// <summary>Every right choice not done yet twinkles for a moment (<c>LetterHunt</c>'s stars).</summary>
-        TwinkleAnswers
+        TwinkleAnswers,
+
+        /// <summary>
+        /// The subject word's letters light one by one while their sounds are said, and the wrong choice she
+        /// tapped fades (<c>ReadAndMatch</c>).
+        /// </summary>
+        SpellOut,
+
+        /// <summary>
+        /// The pictures of the choice in play (<see cref="ActivityRound.Current"/>) and of its partner
+        /// (<see cref="ActivityRound.Answer"/>) appear (<c>WordTwins</c>).
+        /// </summary>
+        RevealPictures
     }
 }

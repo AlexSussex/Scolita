@@ -37,18 +37,22 @@ namespace Scolita.Core.Content
                 }, Lines("trace-start"), NoLines),
             Kind(ActivityKind.TraceWord, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.None,
                 ActivityWordUse.Read, NoWordLines, false, false, NoOptions, Lines("word-write"), NoLines),
-            Kind(ActivityKind.Syllables, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.None,
-                ActivityWordUse.Pictured, new[] { VoiceLineKind.Syllables }, false, false, NoOptions, Lines("syll"),
-                NoLines),
-            Kind(ActivityKind.BuildWord, Range(0, 2), Range(1, 1), Range(1, 3), ActivityItemRules.None,
-                ActivityWordUse.Read, NoWordLines, false, false, NoOptions, Lines("build"), NoLines),
-            Kind(ActivityKind.ReadAndMatch, Range(0, 0), Range(2, 3), Range(2, 3), ActivityItemRules.None,
-                ActivityWordUse.ReadAndPictured, NoWordLines, false, false, NoOptions, Lines("read"), NoLines),
+            Kind(ActivityKind.Syllables, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.CountsSyllables,
+                ActivityWordUse.Pictured, new[] { VoiceLineKind.Syllables }, false, false, NoOptions,
+                Lines("syll", "syll-tick"), Lines("syll-hint-listen", "syll-hint-count", "syll-hint-once")),
+            Kind(ActivityKind.BuildWord, Range(1, 2), Range(1, 1), Range(2, 3), ActivityItemRules.SpellsTheWord,
+                ActivityWordUse.ReadAndPictured, new[] { VoiceLineKind.Slow }, false, true, NoOptions,
+                Lines("build", "build-liftoff"), Lines("build-hint-slow", "build-hint-say", "build-hint-after", "build-hint-glow")),
+            Kind(ActivityKind.ReadAndMatch, Range(0, 0), Range(2, 3), Range(2, 3), ActivityItemRules.PicturesDiffer,
+                ActivityWordUse.ReadAndPictured, new[] { VoiceLineKind.Slow }, false, false, NoOptions, Lines("read"),
+                Lines("read-hint-sounds", "read-hint-tap", "read-hint-blend")),
             Kind(ActivityKind.TwoSounds, Range(1, 1), Range(4, 6), Range(5, 7), ActivityItemRules.SortsByTheLettersTwoSounds,
                 ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("two-same-letter", "two-tap", "two"),
                 Lines("two-hint-again", "two-hint-start", "two-hint-badges", "two-hint-show")),
-            Kind(ActivityKind.WordTwins, Range(0, 0), Range(2, 8), Range(2, 8), ActivityItemRules.None,
-                ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("twins"), NoLines)
+            Kind(ActivityKind.WordTwins, Range(0, 0), Range(2, 2 * ActivityLimits.MostPairs),
+                Range(2, 2 * ActivityLimits.MostPairs), ActivityItemRules.PairsUp,
+                ActivityWordUse.Pictured, NoWordLines, true, false, NoOptions, Lines("twins", "twins-done", "false-friends"),
+                Lines("twins-hint-pictures", "twins-hint-spelled", "twins-hint-sound", "twins-hint-show"))
         };
 
         /// <summary>

@@ -10,7 +10,9 @@ namespace Scolita.Core.Content.Rules
     /// (<see cref="ActivityKinds"/>), in its languages; pictures where its kind shows them; no
     /// listen-only word where words are read; only letters taught in the word's track by its lesson,
     /// and only taught letters as choices; a <c>TwoSounds</c> letter whose sounds differ, with words of
-    /// both languages starting with it; its options; its instruction and hint lines; and the
+    /// both languages starting with it; the word kinds' limits (a <c>Syllables</c> word's syllables, a
+    /// <c>BuildWord</c> word's letters and its extra tiles, a <c>ReadAndMatch</c> step's pictures, a
+    /// <c>WordTwins</c> step's pairs); its options; its instruction and hint lines; and the
     /// lines every lesson says (<see cref="LessonLines"/>) in each language a step is in. Part of
     /// <see cref="ContentRules"/>.
     /// </summary>
@@ -64,7 +66,8 @@ namespace Scolita.Core.Content.Rules
                 CheckChoicesTaught(curriculum, lesson, step, problems);
             }
 
-            if (needs.LettersAreChoices || needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds)
+            if (needs.LettersAreChoices || needs.ItemRules == ActivityItemRules.SortsByTheLettersTwoSounds
+                || needs.ItemRules == ActivityItemRules.PicturesDiffer)
             {
                 CheckChoicesOnce(step, problems);
             }
@@ -86,6 +89,8 @@ namespace Scolita.Core.Content.Rules
             {
                 CheckTwoSounds(step, letters, words, problems);
             }
+
+            CheckWordItems(step, needs, words, problems);
 
             foreach (Language language in step.Languages.Languages())
             {
@@ -161,6 +166,74 @@ namespace Scolita.Core.Content.Rules
             {
                 problems.Error(step.Source, "a " + kind + " step sorts pictures of both languages, and none of its words is "
                     + LanguageCodes.CodeOf(language) + ".");
+            }
+        }
+
+        private static void CheckWordItems(Step step, ActivityKindRequirements needs, IReadOnlyList<Word> words,
+            ContentProblems problems)
+        {
+            string kind = ContentCodes.CodeOf(step.Kind);
+            switch (needs.ItemRules)
+            {
+                case ActivityItemRules.CountsSyllables:
+                    foreach (Word word in words.Where(word => word.Syllables.Count < 1 || word.Syllables.Count > ActivityLimits.MostSyllables))
+                    {
+                        problems.Error(step.Source, "a " + kind + " step's word has 1 to " + ActivityLimits.MostSyllables
+                            + " syllables (the drum's beats); " + word.Id + " has " + word.Syllables.Count + ".");
+                    }
+
+                    break;
+                case ActivityItemRules.SpellsTheWord:
+                    CheckSpelling(step, kind, words, problems);
+                    break;
+                case ActivityItemRules.PicturesDiffer:
+                    foreach (IGrouping<ContentId, Word> same in words.Where(word => word.Picture.IsSet).GroupBy(word => word.Picture)
+                        .Where(group => group.Count() > 1))
+                    {
+                        problems.Error(step.Source, "a " + kind + " step shows one picture per word, so only one is right; "
+                            + string.Join(" and ", same.Select(word => word.Id)) + " have the same picture, " + same.Key + ".");
+                    }
+
+                    break;
+                case ActivityItemRules.PairsUp:
+                    CheckPairs(step, kind, words, problems);
+                    break;
+            }
+        }
+
+        private static void CheckSpelling(Step step, string kind, IReadOnlyList<Word> words, ContentProblems problems)
+        {
+            foreach (Word word in words)
+            {
+                if (word.Letters.Count > ActivityLimits.MostWindows)
+                {
+                    problems.Error(step.Source, "a " + kind + " step's word fills one rocket window per letter, at most "
+                        + ActivityLimits.MostWindows + "; " + word.Id + " has " + word.Letters.Count + " letters.");
+                }
+
+                ContentId[] inTheWord = step.Letters.Where(letter => word.Letters.Contains(letter)).Distinct().ToArray();
+                if (inTheWord.Length > 0)
+                {
+                    problems.Error(step.Source, "a " + kind + " step's letters are the extra tiles, other than the word's; "
+                        + string.Join(" ", inTheWord) + " is in " + word.Id + ".");
+                }
+            }
+        }
+
+        private static void CheckPairs(Step step, string kind, IReadOnlyList<Word> words, ContentProblems problems)
+        {
+            foreach (Word word in words.Where(word => !words.Any(other => other.Id == word.Twin || other.Id == word.FalseFriend)))
+            {
+                problems.Error(step.Source, "a " + kind + " step's words pair up, and the twin or false friend of " + word.Id
+                    + " isn't in the step (words.csv: twin, false_friend).");
+            }
+
+            int romanian = words.Count(word => word.Language == Language.Romanian);
+            int english = words.Count - romanian;
+            if (romanian != english)
+            {
+                problems.Error(step.Source, "a " + kind + " step has as many ro words as en ones, not " + romanian + " and "
+                    + english + ".");
             }
         }
 

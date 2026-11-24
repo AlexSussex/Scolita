@@ -7,6 +7,15 @@ namespace Scolita.Core.Activities
         Letter,
 
         /// <summary>A picture, with its word under it where the kind shows words.</summary>
-        Picture
+        Picture,
+
+        /// <summary>
+        /// A word written to read, in the reading typeface; its picture is shown only when the round reveals
+        /// it (<c>ReadAndMatch</c>'s card, a readable <c>WordTwins</c> word).
+        /// </summary>
+        Word,
+
+        /// <summary>A part of the activity the view draws by its index (<c>Syllables</c>' drum and tick).</summary>
+        Control
     }
 }
