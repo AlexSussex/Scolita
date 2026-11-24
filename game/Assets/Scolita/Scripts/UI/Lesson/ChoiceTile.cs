@@ -12,7 +12,9 @@ namespace Scolita.UI.Lesson
     /// One card she can tap in an activity (a letter, a picture): it shows its choice with its language
     /// badge, sends a tap to the activity's input, and plays its feedback: a sparkle when right, a
     /// small bounce when heard, a gentle wobble on a miss, faded after a miss, glowing yellow when it
-    /// is the answer shown. Its animations run on plain arithmetic in <c>Update</c>, allocating nothing.
+    /// is the answer shown. Shown as a round's subject (<see cref="ShowSubject"/>: <c>FirstSound</c>'s
+    /// picture, <c>TwoSounds</c>' letter) a tap asks to hear the question again instead of answering. Its
+    /// animations run on plain arithmetic in <c>Update</c>, allocating nothing.
     /// </summary>
     public sealed class ChoiceTile : MonoBehaviour, IPointerClickHandler
     {
@@ -40,9 +42,13 @@ namespace Scolita.UI.Lesson
         private float bounceLeft;
         private float sparkleLeft;
         private bool glowing;
+        private bool isSubject;
 
         /// <summary>The item it shows.</summary>
         public ContentId Item { get; private set; }
+
+        /// <summary>The text it shows (empty for a picture shown without its word).</summary>
+        public string ShownText => label.text;
 
         /// <summary>Its index among the round's choices.</summary>
         public int Index => index;
@@ -60,6 +66,24 @@ namespace Scolita.UI.Lesson
         /// views when a step begins.
         /// </summary>
         public void Show(int choiceIndex, ActivityChoice choice, string text, Sprite pictureSprite, IActivityInput activityInput)
+        {
+            isSubject = false;
+            Fill(choiceIndex, choice, text, pictureSprite, activityInput);
+        }
+
+        /// <summary>
+        /// Shows <paramref name="choice"/> as the round's subject, its text <paramref name="text"/> and its
+        /// picture <paramref name="pictureSprite"/> (null for none); a tap on it asks
+        /// <paramref name="activityInput"/> to say the question again. Called by the activity views when a
+        /// step begins.
+        /// </summary>
+        public void ShowSubject(ActivityChoice choice, string text, Sprite pictureSprite, IActivityInput activityInput)
+        {
+            isSubject = true;
+            Fill(-1, choice, text, pictureSprite, activityInput);
+        }
+
+        private void Fill(int choiceIndex, ActivityChoice choice, string text, Sprite pictureSprite, IActivityInput activityInput)
         {
             index = choiceIndex;
             input = activityInput;
@@ -120,7 +144,20 @@ namespace Scolita.UI.Lesson
         /// <summary>Sends the tap to the activity; called by the EventSystem.</summary>
         public void OnPointerClick(PointerEventData eventData)
         {
-            input?.Answer(ActivityAnswer.Tap(index));
+            if (input == null)
+            {
+                return;
+            }
+
+            if (isSubject)
+            {
+                Bounce();
+                input.RepeatPrompt();
+            }
+            else
+            {
+                input.Answer(ActivityAnswer.Tap(index));
+            }
         }
 
         private void Awake()
