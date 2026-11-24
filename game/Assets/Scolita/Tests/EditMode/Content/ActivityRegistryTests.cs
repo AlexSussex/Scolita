@@ -70,7 +70,7 @@ namespace Scolita.Tests.EditMode.Content
             {
                 ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
                 ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
-                ActivityKind.WordTwins
+                ActivityKind.WordTwins, ActivityKind.TraceLetter
             }));
         }
 

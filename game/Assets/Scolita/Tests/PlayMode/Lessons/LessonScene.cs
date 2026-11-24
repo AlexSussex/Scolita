@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Lessons;
+using Scolita.Core.Tracing;
 using Scolita.Game.Lessons;
 using Scolita.Game.Profiles;
 using Scolita.Game.Saving;
@@ -21,8 +22,8 @@ namespace Scolita.Tests.PlayMode.Lessons
     /// <summary>
     /// Helpers the lesson PlayMode tests share: keeping and restoring the Editor's own <c>child-1</c>
     /// files, opening the Lesson scene at a lesson (and at one of its steps), waiting for the run, and
-    /// tapping. Used by <see cref="LessonFlowTests"/>, <see cref="LetterActivitiesTests"/> and
-    /// <see cref="WordActivitiesTests"/>.
+    /// tapping. Used by <see cref="LessonFlowTests"/>, <see cref="LetterActivitiesTests"/>,
+    /// <see cref="WordActivitiesTests"/> and <see cref="TracingTests"/>.
     /// </summary>
     public static class LessonScene
     {
@@ -178,10 +179,35 @@ namespace Scolita.Tests.PlayMode.Lessons
                     }
 
                     break;
+                case ActivityKind.TraceLetter:
+                    while (runner.Run.State == LessonRunState.Playing && runner.Run.Current.Kind == ActivityKind.TraceLetter)
+                    {
+                        TraceState trace = round.Trace;
+                        runner.Answer(ActivityAnswer.Traced(Along(trace.Shape.Strokes[trace.Stroke].Path)));
+                    }
+
+                    break;
                 default:
                     Assert.Fail("FinishLesson can't answer a " + runner.Run.Current.Kind + " step yet: add it to LessonScene.AnswerRight.");
                     break;
             }
+        }
+
+        /// <summary>
+        /// Her line along all of <paramref name="path"/>, a point every 4 units, as a finger draws it; used by the
+        /// tracing tests and <see cref="FinishLesson"/>.
+        /// </summary>
+        public static TracePoints Along(StrokePath path)
+        {
+            TracePoints points = new TracePoints();
+            for (float along = 0f; along < path.Length; along += 4f)
+            {
+                ShapePoint point = path.PointAt(along);
+                points.Add(point.X, point.Y);
+            }
+
+            points.Add(path.End.X, path.End.Y);
+            return points;
         }
 
         private static IEnumerator OpenScene()

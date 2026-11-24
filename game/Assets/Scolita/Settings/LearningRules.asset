@@ -17,3 +17,12 @@ MonoBehaviour:
   huntStars: 10
   huntRightStars: 4
   huntFastestSpeed: 60
+  traceDottedCorridor: 32
+  traceDottedStartRadius: 34
+  traceDottedCoverage: 0.8
+  traceFaintCorridor: 28
+  traceFaintStartRadius: 30
+  traceFaintCoverage: 0.85
+  traceStartDotCorridor: 24
+  traceStartDotStartRadius: 28
+  traceStartDotCoverage: 0.9

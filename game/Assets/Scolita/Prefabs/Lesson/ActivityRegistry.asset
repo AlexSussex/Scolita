@@ -31,4 +31,6 @@ MonoBehaviour:
     view: {fileID: 5729866009930156452, guid: 20b9763819f32ef49a807dfa44eeae19, type: 3}
   - kind: 10
     view: {fileID: 4396779205584840217, guid: 547adf93adce12949bab2eaac047d373, type: 3}
-  notBuiltYet: 0400000005000000
+  - kind: 4
+    view: {fileID: 7319450027563940894, guid: a41643be3fcc09c4e8463ae18939375b, type: 3}
+  notBuiltYet: 05000000

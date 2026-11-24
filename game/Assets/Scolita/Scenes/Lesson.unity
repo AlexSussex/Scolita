@@ -210,6 +210,7 @@ MonoBehaviour:
   words: {fileID: 11400000, guid: 94c2ddc010c29844f9be70fba99f0134, type: 2}
   pictures: {fileID: 11400000, guid: 821bef89fd32ae4439533e1e00f50cd2, type: 2}
   voiceLines: {fileID: 11400000, guid: f4b52bb45ca58444d865dc2e61a22d0a, type: 2}
+  shapes: {fileID: 11400000, guid: 0bfb936c2aaba734dadfe2b5d161413d, type: 2}
   voice: {fileID: 1005633633}
   screen: {fileID: 890705752}
   registry: {fileID: 11400000, guid: 3c33836cc753a7e4e91534dc88f65993, type: 2}
