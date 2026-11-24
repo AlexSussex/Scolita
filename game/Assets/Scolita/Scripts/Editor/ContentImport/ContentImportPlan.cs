@@ -77,7 +77,7 @@ namespace Scolita.Editor.ContentImport
 
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             ContentRules.Check(curriculum, source, problems);
-            ReleasedIdLedger ledger = ReleasedIdLedger.Parse(source.ReleasedIdsText(), problems);
+            ReleasedIdLedger ledger = ReleasedIdLedger.Parse(source.ReleasedIdsText(problems), problems);
             if (problems.HasErrors)
             {
                 return new ContentImportPlan(source, paths, problems, curriculum, ledger, new PlannedImage[0],
@@ -85,7 +85,11 @@ namespace Scolita.Editor.ContentImport
             }
 
             ledger.CheckNoneDeleted(curriculum, problems);
-            CheckNothingDeleted(curriculum, paths, problems);
+            if (!problems.HasErrors)
+            {
+                CheckNothingDeleted(curriculum, paths, problems);
+            }
+
             CheckAssetTypes(curriculum, paths, problems);
             bool good = !problems.HasErrors;
             IReadOnlyList<PlannedImage> images = good ? PlanImages(source, paths, curriculum) : new PlannedImage[0];

@@ -155,7 +155,7 @@ namespace Scolita.Tests.EditMode.Content
             RunInTemporaryFolders(csvs, (source, paths) =>
             {
                 ReleasedIdsRecord first = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.1"));
-                string recorded = source.ReleasedIdsText();
+                string recorded = source.ReleasedIdsText(new ContentProblems());
                 ReleasedIdsRecord second = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.2"));
 
                 Assert.That(first.HasErrors, Is.False, string.Join("\n", first.Problems));
@@ -163,8 +163,46 @@ namespace Scolita.Tests.EditMode.Content
                 Assert.That(first.Added.Select(id => id.ToString()), Does.Contain("letters.csv m").And.Contain("lessons.csv party"));
                 Assert.That(recorded, Does.StartWith("# the ledger\n\n# 0.2.0\nletters.csv a\n\n# 0.3.1\nletters.csv m\n"));
                 Assert.That(second.Added, Is.Empty);
-                Assert.That(source.ReleasedIdsText(), Is.EqualTo(recorded));
+                Assert.That(source.ReleasedIdsText(new ContentProblems()), Is.EqualTo(recorded));
                 Assert.That(ContentImporter.Import(source, paths).HasErrors, Is.False);
+            });
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ReleasedIdsRecorder.Record"/> refuses to add new ids under a version that
+        /// is not after the ledger's latest release (<c>VERSION</c> not raised), leaving the ledger as it was.
+        /// </summary>
+        [Test]
+        public void TestRecord_RefusesAVersionNotRaised()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            csvs[ReleasedIdLedger.FileName] = "# 0.3.1\nletters.csv a\n";
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ReleasedIdsRecord record = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.1"));
+
+                ContentCsvs.AssertError(record.Problems, ReleasedIdLedger.FileName, 0, "0.3.1", "raise VERSION");
+                Assert.That(record.Added, Is.Empty);
+                Assert.That(source.ReleasedIdsText(new ContentProblems()), Is.EqualTo("# 0.3.1\nletters.csv a\n"));
+            });
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentImportPlan.Make"/> checks the ledger for deleted ids only once the
+        /// CSVs read without an error, so a row that failed to read is never also called deleted.
+        /// </summary>
+        [Test]
+        public void TestMake_ChecksReleasedIdsOnlyWithoutCsvErrors()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.Pictures, "mat,", "Mat,,,");
+            csvs[ReleasedIdLedger.FileName] = "# 0.2.0\npictures.csv mat\n";
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImportPlan plan = ContentImportPlan.Make(source, paths);
+
+                Assert.That(plan.HasErrors, Is.True);
+                Assert.That(plan.Problems.Where(problem => problem.Reason.Contains("was released")), Is.Empty);
             });
         }
 
@@ -181,7 +219,7 @@ namespace Scolita.Tests.EditMode.Content
 
                 Assert.That(record.HasErrors, Is.True);
                 Assert.That(record.Added, Is.Empty);
-                Assert.That(source.ReleasedIdsText(), Is.EqualTo("# 0.2.0\nletters.csv a\n"));
+                Assert.That(source.ReleasedIdsText(new ContentProblems()), Is.EqualTo("# 0.2.0\nletters.csv a\n"));
             });
         }
 

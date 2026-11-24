@@ -33,7 +33,6 @@ namespace Scolita.Editor.ContentImport
         public Dictionary<string, string> ReadCsvs(ContentProblems problems)
         {
             Dictionary<string, string> texts = new Dictionary<string, string>();
-            UTF8Encoding strictUtf8 = new UTF8Encoding(false, true);
             foreach (string fileName in ContentFileNames.All)
             {
                 string path = Path.Combine(Root, fileName);
@@ -42,14 +41,10 @@ namespace Scolita.Editor.ContentImport
                     continue;
                 }
 
-                try
+                string text = ReadStrictUtf8(fileName, problems);
+                if (text != null)
                 {
-                    texts.Add(fileName, strictUtf8.GetString(File.ReadAllBytes(path)));
-                }
-                catch (DecoderFallbackException)
-                {
-                    problems.Error(new ContentSource(fileName, 0),
-                        "the file is not UTF-8: save it as \"CSV UTF-8\" (Excel) or UTF-8 (a text editor).");
+                    texts.Add(fileName, text);
                 }
             }
 
@@ -93,19 +88,38 @@ namespace Scolita.Editor.ContentImport
         }
 
         /// <summary>
-        /// The text of the ledger of released ids (<see cref="ReleasedIdLedger.FileName"/>), or <c>null</c>
-        /// when it is missing. Called by <see cref="ContentImportPlan"/>.
+        /// The text of the ledger of released ids (<see cref="ReleasedIdLedger.FileName"/>) read as strict
+        /// UTF-8; <c>null</c> when it is missing, and empty (reported into <paramref name="problems"/>)
+        /// when it isn't UTF-8. Called by <see cref="ContentImportPlan"/> and tests.
         /// </summary>
-        public string ReleasedIdsText()
+        public string ReleasedIdsText(ContentProblems problems)
         {
-            string path = Path.Combine(Root, ReleasedIdLedger.FileName);
-            return File.Exists(path) ? File.ReadAllText(path, new UTF8Encoding(false)) : null;
+            if (!File.Exists(Path.Combine(Root, ReleasedIdLedger.FileName)))
+            {
+                return null;
+            }
+
+            return ReadStrictUtf8(ReleasedIdLedger.FileName, problems) ?? string.Empty;
         }
 
         /// <summary>Writes <paramref name="text"/> as the ledger of released ids, in UTF-8; called by <see cref="ReleasedIdsRecorder"/>.</summary>
         public void WriteReleasedIds(string text)
         {
             File.WriteAllText(Path.Combine(Root, ReleasedIdLedger.FileName), text, new UTF8Encoding(false));
+        }
+
+        private string ReadStrictUtf8(string fileName, ContentProblems problems)
+        {
+            try
+            {
+                return new UTF8Encoding(false, true).GetString(File.ReadAllBytes(Path.Combine(Root, fileName)));
+            }
+            catch (DecoderFallbackException)
+            {
+                problems.Error(new ContentSource(fileName, 0),
+                    "the file is not UTF-8: save it as \"CSV UTF-8\" (Excel) or UTF-8 (a text editor).");
+                return null;
+            }
         }
 
         private string FullArtPath(string fileName)

@@ -18,7 +18,7 @@ namespace Scolita.Tests.EditMode.Content
             ContentProblems problems = new ContentProblems();
 
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse(
-                "﻿# the ledger\r\n\r\n# 0.2.0\r\nletters.csv a\r\nwords.csv  ro-mama \n", problems);
+                "\uFEFF# the ledger\r\n\r\n# 0.2.0\r\nletters.csv a\r\nwords.csv  ro-mama \n", problems);
 
             Assert.That(problems.All, Is.Empty);
             Assert.That(ledger.Ids.Select(id => id.ToString()), Is.EqualTo(new[] { "letters.csv a", "words.csv ro-mama" }));
@@ -44,6 +44,38 @@ namespace Scolita.Tests.EditMode.Content
             ContentCsvs.AssertError(problems.All, ReleasedIdLedger.FileName, 6, "twice");
             Assert.That(problems.All.Count, Is.EqualTo(5));
             Assert.That(ledger.Ids.Select(id => id.ToString()), Is.EqualTo(new[] { "letters.csv a" }));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ReleasedIdLedger.Parse"/> reads the highest of its <c># &lt;version&gt;</c>
+        /// lines as the latest release (other comments aside), and none for a ledger without one.
+        /// </summary>
+        [Test]
+        public void TestParse_ReadsTheLatestRelease()
+        {
+            ContentProblems problems = new ContentProblems();
+
+            ReleasedIdLedger ledger = ReleasedIdLedger.Parse("# the ledger, 1.0.0 one day\n# 0.2.0\nletters.csv a\n"
+                + "# 0.10.0\nletters.csv m\n# 0.3.0\n", problems);
+            ReleasedIdLedger empty = ReleasedIdLedger.Parse("# the ledger\n", problems);
+
+            Assert.That(problems.All, Is.Empty);
+            Assert.That(ledger.LatestRelease.HasValue, Is.True);
+            Assert.That(ledger.LatestRelease.Value.ToString(), Is.EqualTo("0.10.0"));
+            Assert.That(empty.LatestRelease.HasValue, Is.False);
+        }
+
+        /// <summary>Tests that <see cref="ReleasedIdLedger.WithIds"/> ends a last line that has no line end before adding.</summary>
+        [Test]
+        public void TestWithIds_EndsAnUnfinishedLastLine()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ReleasedIdLedger ledger = ReleasedIdLedger.Parse("# 0.2.0\nletters.csv a", new ContentProblems());
+
+            string text = ledger.WithIds("0.3.1", new[] { new ReleasedId(ContentFileNames.Letters, "m", 0) });
+
+            Assert.That(ledger.NewIds(ContentCsvs.Read(csvs)).First().ToString(), Is.EqualTo("letters.csv m"));
+            Assert.That(text, Is.EqualTo("# 0.2.0\nletters.csv a\n\n# 0.3.1\nletters.csv m\n"));
         }
 
         /// <summary>Tests that <see cref="ReleasedIdLedger.Parse"/> refuses a missing ledger (no text).</summary>
@@ -148,7 +180,7 @@ namespace Scolita.Tests.EditMode.Content
             ContentProblems problems = new ContentProblems();
             Curriculum curriculum = ContentTables.Read(folder.ReadCsvs(problems), problems);
 
-            ReleasedIdLedger ledger = ReleasedIdLedger.Parse(folder.ReleasedIdsText(), problems);
+            ReleasedIdLedger ledger = ReleasedIdLedger.Parse(folder.ReleasedIdsText(problems), problems);
             ledger.CheckNoneDeleted(curriculum, problems);
 
             Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Scolita.Core.Content;
 using Scolita.Core.Ids;
 
@@ -21,7 +22,7 @@ namespace Scolita.Editor.ContentImport
         public const string FileName = "released-ids.txt";
 
         private const char Comment = '#';
-        private const string ByteOrderMark = "﻿";
+        private const string ByteOrderMark = "\uFEFF";
 
         private static readonly string[] IdFiles =
         {
@@ -31,22 +32,30 @@ namespace Scolita.Editor.ContentImport
 
         private static readonly char[] Spaces = { ' ', '\t' };
 
+        private static readonly Regex ReleaseLine = new Regex(
+            @"^#\s*((0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?))\z", RegexOptions.CultureInvariant);
+
         private readonly string text;
         private readonly IReadOnlyList<ReleasedId> ids;
+        private readonly AppVersion? latestRelease;
 
-        private ReleasedIdLedger(string text, IReadOnlyList<ReleasedId> ids)
+        private ReleasedIdLedger(string text, IReadOnlyList<ReleasedId> ids, AppVersion? latestRelease)
         {
             this.text = text;
             this.ids = ids;
+            this.latestRelease = latestRelease;
         }
 
         /// <summary>Every id in the ledger, in its order.</summary>
         public IReadOnlyList<ReleasedId> Ids => ids;
 
+        /// <summary>The highest version among its <c># &lt;version&gt;</c> lines; none for a ledger without one.</summary>
+        public AppVersion? LatestRelease => latestRelease;
+
         /// <summary>
         /// Reads the ledger's <paramref name="text"/> (<c>null</c> when the file is missing, which is an
-        /// error), reporting a missing file, a malformed line, an unknown file or a repeated id into
-        /// <paramref name="problems"/> at its row. Called by <see cref="ContentImportPlan"/>,
+        /// error) and the latest of its <c># &lt;version&gt;</c> lines, reporting a missing file, a
+        /// malformed line, an unknown file or a repeated id into <paramref name="problems"/> at its row. Called by <see cref="ContentImportPlan"/>,
         /// <see cref="ReleasedIdsRecorder"/> and <c>ReleasedIdLedgerTests</c>.
         /// </summary>
         public static ReleasedIdLedger Parse(string text, ContentProblems problems)
@@ -55,15 +64,24 @@ namespace Scolita.Editor.ContentImport
             {
                 problems.Error(new ContentSource(FileName, 0), "the ledger of released ids is missing: restore "
                     + "content/" + FileName + " from git (content/README.md, \"The ledger of released ids\").");
-                return new ReleasedIdLedger(string.Empty, new ReleasedId[0]);
+                return new ReleasedIdLedger(string.Empty, new ReleasedId[0], null);
             }
 
             List<ReleasedId> read = new List<ReleasedId>();
             HashSet<string> seen = new HashSet<string>();
+            AppVersion? latest = null;
             string[] lines = text.Split('\n');
             for (int index = 0; index < lines.Length; index++)
             {
                 string line = lines[index].Replace(ByteOrderMark, string.Empty).Trim();
+                Match release = ReleaseLine.Match(line);
+                if (release.Success)
+                {
+                    AppVersion version = AppVersion.Parse(release.Groups[1].Value);
+                    latest = latest == null || version.VersionCode > latest.Value.VersionCode ? version : latest;
+                    continue;
+                }
+
                 if (line.Length == 0 || line[0] == Comment)
                 {
                     continue;
@@ -88,13 +106,13 @@ namespace Scolita.Editor.ContentImport
                 read.Add(id);
             }
 
-            return new ReleasedIdLedger(text, read);
+            return new ReleasedIdLedger(text, read, latest);
         }
 
         /// <summary>
         /// Reports an error into <paramref name="problems"/>, at the CSV it belongs to, for every id in
         /// the ledger that <paramref name="curriculum"/> no longer has (its row was deleted, not retired).
-        /// Called by <see cref="ContentImportPlan"/>, <see cref="ReleasedIdsRecorder"/> and tests.
+        /// Called by <see cref="ContentImportPlan.Make"/> (for the importer and <see cref="ReleasedIdsRecorder"/>) and tests.
         /// </summary>
         public void CheckNoneDeleted(Curriculum curriculum, ContentProblems problems)
         {

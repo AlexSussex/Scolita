@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Scolita.Core.Content;
 using UnityEditor;
 using UnityEngine;
@@ -24,7 +25,8 @@ namespace Scolita.Editor.ContentImport
         /// Checks the content in <paramref name="source"/> as an import into <paramref name="paths"/>
         /// would (<see cref="ContentImportPlan.Make"/>) and, with no error, adds the ids not in the
         /// ledger yet under <paramref name="version"/>; with an error, or nothing new, the ledger is
-        /// unchanged. Called by the menu, the command line and <c>ReleasedIdLedgerTests</c>.
+        /// unchanged. New ids under a version no later than the ledger's latest release (<c>VERSION</c>
+        /// not raised yet) are an error. Called by the menu, the command line and <c>ContentImporterTests</c>.
         /// </summary>
         public static ReleasedIdsRecord Record(ContentFolder source, ContentAssetPaths paths, AppVersion version)
         {
@@ -36,27 +38,37 @@ namespace Scolita.Editor.ContentImport
 
             ReleasedIdLedger ledger = plan.Ledger;
             IReadOnlyList<ReleasedId> added = ledger.NewIds(plan.Curriculum);
-            if (added.Count > 0)
+            if (added.Count == 0)
             {
-                source.WriteReleasedIds(ledger.WithIds(version.ToString(), added));
+                return new ReleasedIdsRecord(plan.Problems, added);
             }
 
+            AppVersion? latest = ledger.LatestRelease;
+            if (latest != null && version.VersionCode <= latest.Value.VersionCode)
+            {
+                ContentProblem stale = new ContentProblem(new ContentSource(ReleasedIdLedger.FileName, 0), "the "
+                    + "version " + version + " is not after the ledger's latest release, " + latest.Value
+                    + ": raise VERSION first (to the next free number), then record.", ContentProblemSeverity.Error);
+                return new ReleasedIdsRecord(plan.Problems.Append(stale).ToArray(), new ReleasedId[0]);
+            }
+
+            source.WriteReleasedIds(ledger.WithIds(version.ToString(), added));
             return new ReleasedIdsRecord(plan.Problems, added);
         }
 
         /// <summary>Records the released ids from the Editor's menu, logging every problem and showing the outcome.</summary>
-        [MenuItem("Școlița/Record released ids")]
+        [MenuItem("\u0218coli\u021Ba/Record released ids")]
         public static void RecordFromMenu()
         {
             try
             {
                 ReleasedIdsRecord record = RecordAndLog();
-                EditorUtility.DisplayDialog("Școlița", Summary(record), "OK");
+                EditorUtility.DisplayDialog("\u0218coli\u021Ba", Summary(record), "OK");
             }
             catch (Exception exception) when (exception is FormatException || exception is IOException)
             {
                 Debug.LogError("Scolita released ids: " + exception.Message);
-                EditorUtility.DisplayDialog("Școlița", exception.Message, "OK");
+                EditorUtility.DisplayDialog("\u0218coli\u021Ba", exception.Message, "OK");
             }
         }
 
@@ -100,7 +112,7 @@ namespace Scolita.Editor.ContentImport
         {
             if (record.HasErrors)
             {
-                return "the content has errors: nothing was recorded (the Console lists them).";
+                return "nothing was recorded: the Console lists why.";
             }
 
             return record.Added.Count == 0
