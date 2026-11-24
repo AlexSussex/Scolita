@@ -290,5 +290,5 @@ ro-line-twins-hint-same-picture,ro,line,Gemenii au aceeași poză.,,,,hint
 en-line-twins-hint-same-picture,en,line,Twins have the same picture.,,,,hint
 ro-line-twins-hint-spelled,ro,line,Caută cuvântul care se scrie la fel.,,,,hint for a false friend (its pictures differ); check
 en-line-twins-hint-spelled,en,line,Look for the word that is spelled the same.,,,,hint for a false friend (its pictures differ)
-ro-line-twins-hint-show,ro,line,"Uite, acesta este cuvântul potrivit. Unește-le!",,,,answer shown: the partner glows; 'le': the two words (cuvintele); check
-en-line-twins-hint-show,en,line,"Look, this is the right word. Join them!",,,,answer shown: the partner glows
+ro-line-twins-hint-show,ro,line,"Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!",,,,answer shown: the partner glows; check
+en-line-twins-hint-show,en,line,"Look, this is the right word. Join the two words!",,,,answer shown: the partner glows

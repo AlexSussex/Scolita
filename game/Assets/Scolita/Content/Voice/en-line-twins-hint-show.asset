@@ -15,7 +15,7 @@ MonoBehaviour:
   id: en-line-twins-hint-show
   language: en
   kind: line
-  text: Look, this is the right word. Join them!
+  text: Look, this is the right word. Join the two words!
   clip: 
   status: 
   retired: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: ro-line-twins-hint-show
   language: ro
   kind: line
-  text: "Uite, acesta este cuv\xE2ntul potrivit. Une\u0219te-le!"
+  text: "Uite, acesta este cuv\xE2ntul potrivit. Une\u0219te cele dou\u0103 cuvinte!"
   clip: 
   status: 
   retired: 0
