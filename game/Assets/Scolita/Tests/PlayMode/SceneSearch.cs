@@ -8,11 +8,15 @@ namespace Scolita.Tests.PlayMode
     /// <summary>Helpers the PlayMode tests share: waiting for a scene and finding a component in it.</summary>
     public static class SceneSearch
     {
-        /// <summary>Waits, at most 300 frames, until <paramref name="scene"/> is the active scene; used by the PlayMode tests.</summary>
+        /// <summary>
+        /// Waits a frame (a scene asked for loads on the next one), then at most 300 frames until
+        /// <paramref name="scene"/> is the active scene; used by the PlayMode tests.
+        /// </summary>
         public static IEnumerator WaitForScene(AppScene scene)
         {
             const int maxFrames = 300;
             string sceneName = scene.ToString();
+            yield return null;
             for (int frame = 0; frame < maxFrames && SceneManager.GetActiveScene().name != sceneName; frame++)
             {
                 yield return null;

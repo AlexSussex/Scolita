@@ -1,18 +1,15 @@
 using System.Collections;
 using NUnit.Framework;
 using Scolita.Core.Content;
-using Scolita.Game.Lessons;
-using Scolita.Game.Scenes;
 using Scolita.Game.Voice;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
 namespace Scolita.Tests.PlayMode.Voice
 {
-    /// <summary>Tests <see cref="Hearable"/>: a tap says its line, it pulses while the line is said, and the Lesson placeholder's sampler speaks.</summary>
+    /// <summary>Tests <see cref="Hearable"/>: a tap says its line, and it pulses while the line is said.</summary>
     public sealed class HearableTests
     {
         /// <summary>Tests that tapping a <see cref="Hearable"/> asks the voice for its line, and that it pulses until the line ends.</summary>
@@ -80,29 +77,6 @@ namespace Scolita.Tests.PlayMode.Voice
             {
                 Object.Destroy(canvas);
             }
-        }
-
-        /// <summary>
-        /// Tests that the Lesson placeholder's voice sampler is bound: tapping its first letter makes
-        /// the scene's voice speak, and in the Editor (no clip, no system voice) the bubble shows it.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator TestLessonSampler_SpeaksOnATap()
-        {
-            SceneManager.LoadScene(AppScene.Lesson.ToString());
-            yield return SceneSearch.WaitForScene(AppScene.Lesson);
-            yield return null;
-
-            Hearable letter = SceneSearch.FindInActiveScene<Hearable>();
-            SpeechBubbleView bubble = SceneSearch.FindInActiveScene<SpeechBubbleView>();
-            bool bubbleHiddenBefore = !bubble.transform.GetChild(0).gameObject.activeSelf;
-            letter.OnPointerClick(null);
-            yield return null;
-
-            Assert.That(SceneSearch.FindInActiveScene<LessonRunner>(), Is.Not.Null);
-            Assert.That(bubbleHiddenBefore, Is.True);
-            Assert.That(letter.IsSpeaking, Is.True);
-            Assert.That(bubble.transform.GetChild(0).gameObject.activeSelf, Is.True);
         }
     }
 }

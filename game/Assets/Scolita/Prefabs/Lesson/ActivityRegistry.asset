@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07da93ab32ca784ea37aabb53f208ee, type: 3}
+  m_Name: ActivityRegistry
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Lessons.ActivityRegistry
+  views:
+  - kind: 0
+    view: {fileID: 8445142574094644667, guid: 0f9cd5079e931a542ba37907bd3aa279, type: 3}
+  - kind: 1
+    view: {fileID: 4332406659238183921, guid: abead900c5ac0af448a480de1371dde0, type: 3}
+  notBuiltYet: 02000000030000000400000005000000060000000700000008000000090000000a000000
