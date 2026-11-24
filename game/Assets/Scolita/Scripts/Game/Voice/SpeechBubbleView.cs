@@ -26,10 +26,16 @@ namespace Scolita.Game.Voice
             bubble.SetActive(true);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Hides the bubble; nothing when the bubble is already gone (the voice stops as its scene
+        /// closes, perhaps after the bubble's screen was destroyed).
+        /// </summary>
         public void Hide()
         {
-            bubble.SetActive(false);
+            if (bubble != null)
+            {
+                bubble.SetActive(false);
+            }
         }
 
         private void Awake()

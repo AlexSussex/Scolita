@@ -29,6 +29,12 @@ namespace Scolita.Game.Voice
         private ISystemVoice system;
         private AndroidTextToSpeechVoice android;
 
+        /// <summary>
+        /// Raised when the voice starts saying a part of a line (how it is said: a clip, the system
+        /// voice or the bubble); the lesson's bubble shows the line's words again then.
+        /// </summary>
+        public event Action<VoiceUtterance> PartStarted;
+
         /// <summary>The scene's voice, once <see cref="Begin"/> has been called.</summary>
         public IVoice Voice => router ?? throw new InvalidOperationException("The voice is used before VoiceHost.Begin.");
 
@@ -49,6 +55,7 @@ namespace Scolita.Game.Voice
             router = new VoiceRouter(curriculum, recorded, system, bubble,
                 new VoiceTiming(pauseSeconds, bubbleSecondsPerCharacter, bubbleMinimumSeconds));
             router.LineMissing += OnLineMissing;
+            router.PartStarted += OnPartStarted;
             if (Debug.isDebugBuild)
             {
                 router.PartStarted += OnPartStartedInADevelopmentBuild;
@@ -75,6 +82,7 @@ namespace Scolita.Game.Voice
 
             router.Stop();
             router.LineMissing -= OnLineMissing;
+            router.PartStarted -= OnPartStarted;
             router.PartStarted -= OnPartStartedInADevelopmentBuild;
             recorded.UnloadAll();
             android?.Dispose();
@@ -90,6 +98,11 @@ namespace Scolita.Game.Voice
             {
                 android?.CheckVoicesAgain();
             }
+        }
+
+        private void OnPartStarted(VoiceUtterance part)
+        {
+            PartStarted?.Invoke(part);
         }
 
         private static void OnLineMissing(VoiceLineId line)

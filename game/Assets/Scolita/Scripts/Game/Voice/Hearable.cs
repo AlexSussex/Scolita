@@ -32,8 +32,8 @@ namespace Scolita.Game.Voice
 
         /// <summary>
         /// Binds it to <paramref name="sceneVoice"/>, saying the line set on the prefab. Throws an
-        /// <see cref="ArgumentException"/> if that line isn't an id. Called by the composition root
-        /// (<c>LessonRunner</c>) and the PlayMode tests.
+        /// <see cref="ArgumentException"/> if that line isn't an id. Called by a scene's composition
+        /// root and the PlayMode tests.
         /// </summary>
         public void Bind(IVoice sceneVoice)
         {
