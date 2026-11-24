@@ -446,6 +446,11 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   <version>"` on exactly the close-out commit, then `git push origin
   v<version>` (never `--tags`). A pushed tag is never moved, deleted or
   reused.
+- **An APK for the human, after the tag** (the human, 2026-11-24): copy
+  the debug APK built from the close-out commit to
+  `C:ProjectsScolitaocalpksScolita-<version>-debug.apk`, and
+  name it in `local/for-human-next-steps.md`, so each release can be tried
+  on the tablet at once.
 - **Two agents, one number.** Take the next number from `origin/main` while
   writing the close-out; after `git rebase origin/main`, a conflict in
   `CHANGELOG.md` or a `VERSION` that no longer shows your bump means
