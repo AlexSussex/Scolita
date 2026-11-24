@@ -17,4 +17,6 @@ MonoBehaviour:
   kind: slow
   text: a-p-a
   clip: 
+  status: sounds
   retired: 0
+  audioClips: []

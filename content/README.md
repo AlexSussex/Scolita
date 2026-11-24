@@ -106,13 +106,19 @@ bed,,,ro pat
 | `language` | `ro` or `en` |
 | `kind` | `sound`, `name`, `word`, `slow`, `syllables` or `line` |
 | `text` | What is said (and shown in the bubble), a whole, correct sentence for a line (AGENTS.md → "Romanian, checked"); `{x}`, `{y}`, `{word}`, `{slow}`, `{stretched}`, `{name}` are spliced parts |
-| `clip` | Its recording's file name in `content/voice/` (`ro-sound-m.ogg`); empty while the tablet's voice says it. A named clip that isn't there yet is a warning |
+| `clip` | Its recordings' file names in `content/voice/`, one per spoken part of the text, separated by spaces; empty while the tablet's voice says it. A line without `{…}` has one clip, `<id>.ogg` (`ro-sound-m.ogg`); a line with spliced parts has one per part of its own text, `<id>.1.ogg <id>.2.ogg …` ("Atinge litera {x}." has one part, "Atinge litera"; a "." or "!" alone isn't a part). **Accept recording session** fills it. A named clip that isn't there yet is a warning |
+| `status` | **Filled by the importer, never typed:** `recorded` (every clip named is in `content/voice/`), `missing` (a named clip isn't there), `sounds` (a slow word with no clip: the app says its letters' sounds), or empty (still to record: the tablet's voice says it) |
 | `retired`, `notes` | See above |
 
 ```
-id,language,kind,text,clip,retired,notes
-ro-line-try-again,ro,line,Mai încearcă o dată!,,,
+id,language,kind,text,clip,status,retired,notes
+ro-line-try-again,ro,line,Mai încearcă o dată!,,,,
+ro-sound-m,ro,sound,/m/,ro-sound-m.ogg,recorded,,
 ```
+
+The spliced parts are `{x}` and `{y}` (a letter, usually its sound), `{word}`,
+`{slow}`, `{stretched}` (a word) and `{name}` (the profile's name, said by
+the tablet's voice); an `…` between them is a short pause.
 
 ### `units.csv`: one row per unit (a planet)
 
@@ -170,5 +176,8 @@ instruction lines such as `ro-line-pick-letter`) is in
 ## Folders
 
 - `pictures/`: the pictures' art (PNG, in Git LFS), named in `pictures.csv`.
-- `voice/`: the recorded clips (mono OGG, AGENTS.md → "Audio"), named in
-  `voice-lines.csv`.
+- `voice/`: the recorded clips (mono OGG Vorbis, 44.1 kHz, AGENTS.md →
+  "Audio"), named in `voice-lines.csv`. They come from the recording kit
+  (Școlița → Make recording scripts, Import recording session, Accept
+  recording session; `local/todo/04-record-voices.md`), or from any other
+  source named the same way. Check them with Școlița → Check voice clips.
