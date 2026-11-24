@@ -7,7 +7,8 @@ namespace Scolita.Editor.ContentImport
 {
     /// <summary>
     /// The content's source folder (<c>content/</c> at the repository's root, or a test's copy): reads
-    /// its CSVs as strict UTF-8, and says which pictures' art and voice clips are there.
+    /// its CSVs as strict UTF-8 and its ledger of released ids, and says which pictures' art and voice
+    /// clips are there.
     /// </summary>
     public sealed class ContentFolder : IContentFiles
     {
@@ -89,6 +90,22 @@ namespace Scolita.Editor.ContentImport
         public void WriteCsv(string fileName, string text)
         {
             File.WriteAllText(Path.Combine(Root, fileName), text, new UTF8Encoding(false));
+        }
+
+        /// <summary>
+        /// The text of the ledger of released ids (<see cref="ReleasedIdLedger.FileName"/>), or <c>null</c>
+        /// when it is missing. Called by <see cref="ContentImportPlan"/>.
+        /// </summary>
+        public string ReleasedIdsText()
+        {
+            string path = Path.Combine(Root, ReleasedIdLedger.FileName);
+            return File.Exists(path) ? File.ReadAllText(path, new UTF8Encoding(false)) : null;
+        }
+
+        /// <summary>Writes <paramref name="text"/> as the ledger of released ids, in UTF-8; called by <see cref="ReleasedIdsRecorder"/>.</summary>
+        public void WriteReleasedIds(string text)
+        {
+            File.WriteAllText(Path.Combine(Root, ReleasedIdLedger.FileName), text, new UTF8Encoding(false));
         }
 
         private string FullArtPath(string fileName)

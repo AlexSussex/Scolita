@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
+using Scolita.Editor;
 using Scolita.Editor.ContentImport;
 using Scolita.Tests.EditMode.Fakes;
 using UnityEditor;
@@ -13,9 +14,10 @@ using UnityEditor;
 namespace Scolita.Tests.EditMode.Content
 {
     /// <summary>
-    /// Tests <see cref="ContentImporter.Import"/> and <see cref="ContentImportPlan"/> on a copy of the
-    /// test content in a temporary folder, imported into a temporary asset folder (both deleted
-    /// after each test).
+    /// Tests <see cref="ContentImporter.Import"/>, <see cref="ContentImportPlan"/> and
+    /// <see cref="ReleasedIdsRecorder"/> on a copy of the test content (with an empty ledger of
+    /// released ids unless the test gives one) in a temporary folder, imported into a temporary asset
+    /// folder (both deleted after each test).
     /// </summary>
     public sealed class ContentImporterTests
     {
@@ -101,6 +103,88 @@ namespace Scolita.Tests.EditMode.Content
             });
         }
 
+        /// <summary>
+        /// Tests that <see cref="ContentImportPlan.Make"/> refuses a released id (in the ledger) whose row
+        /// was deleted together with its asset, and writes nothing.
+        /// </summary>
+        [Test]
+        public void TestMake_RefusesAReleasedIdDeletedWithItsAsset()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            csvs[ContentFileNames.Words] = string.Join("\n", csvs[ContentFileNames.Words].Split('\n')
+                .Where(row => !row.StartsWith("ro-am,", StringComparison.Ordinal)));
+            csvs[ContentFileNames.VoiceLines] = string.Join("\n", csvs[ContentFileNames.VoiceLines].Split('\n')
+                .Where(row => !row.StartsWith("ro-word-am,", StringComparison.Ordinal)));
+            csvs[ReleasedIdLedger.FileName] = "# 0.2.0\nwords.csv ro-mama\nwords.csv ro-am\n";
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImportPlan plan = ContentImporter.Import(source, paths);
+
+                ContentCsvs.AssertError(plan.Problems.Where(problem => problem.IsError).ToArray(), ContentFileNames.Words, 0,
+                    "ro-am", "released", "retired");
+                Assert.That(plan.Problems.Count(problem => problem.IsError), Is.EqualTo(1));
+                Assert.That(AssetDatabase.IsValidFolder(paths.Folder), Is.False);
+            });
+        }
+
+        /// <summary>Tests that <see cref="ContentImportPlan.Make"/> refuses content whose ledger of released ids is missing.</summary>
+        [Test]
+        public void TestMake_RefusesAMissingLedger()
+        {
+            RunInTemporaryFolders(ContentCsvs.Valid(), (source, paths) =>
+            {
+                File.Delete(Path.Combine(source.Root, ReleasedIdLedger.FileName));
+
+                ContentImportPlan plan = ContentImporter.Import(source, paths);
+
+                ContentCsvs.AssertError(plan.Problems.Where(problem => problem.IsError).ToArray(), ReleasedIdLedger.FileName, 0,
+                    "missing");
+                Assert.That(AssetDatabase.IsValidFolder(paths.Folder), Is.False);
+            });
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ReleasedIdsRecorder.Record"/> adds the ids not in the ledger under the
+        /// version, then nothing when run again, and that the content still imports with them released.
+        /// </summary>
+        [Test]
+        public void TestRecord_AddsNewIdsUnderTheVersionOnce()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            csvs[ReleasedIdLedger.FileName] = "# the ledger\n\n# 0.2.0\nletters.csv a\n";
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ReleasedIdsRecord first = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.1"));
+                string recorded = source.ReleasedIdsText();
+                ReleasedIdsRecord second = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.2"));
+
+                Assert.That(first.HasErrors, Is.False, string.Join("\n", first.Problems));
+                Assert.That(first.Added.Select(id => id.ToString()), Does.Not.Contain("letters.csv a"));
+                Assert.That(first.Added.Select(id => id.ToString()), Does.Contain("letters.csv m").And.Contain("lessons.csv party"));
+                Assert.That(recorded, Does.StartWith("# the ledger\n\n# 0.2.0\nletters.csv a\n\n# 0.3.1\nletters.csv m\n"));
+                Assert.That(second.Added, Is.Empty);
+                Assert.That(source.ReleasedIdsText(), Is.EqualTo(recorded));
+                Assert.That(ContentImporter.Import(source, paths).HasErrors, Is.False);
+            });
+        }
+
+        /// <summary>Tests that <see cref="ReleasedIdsRecorder.Record"/> records nothing when the content has an error.</summary>
+        [Test]
+        public void TestRecord_AnErrorRecordsNothing()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Pictures, "Moon,,,");
+            csvs[ReleasedIdLedger.FileName] = "# 0.2.0\nletters.csv a\n";
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ReleasedIdsRecord record = ReleasedIdsRecorder.Record(source, paths, AppVersion.Parse("0.3.1"));
+
+                Assert.That(record.HasErrors, Is.True);
+                Assert.That(record.Added, Is.Empty);
+                Assert.That(source.ReleasedIdsText(), Is.EqualTo("# 0.2.0\nletters.csv a\n"));
+            });
+        }
+
         /// <summary>Tests that <see cref="ContentImporter.Import"/> writes nothing at all when the content has an error.</summary>
         [Test]
         public void TestImport_AnErrorWritesNothing()
@@ -149,6 +233,7 @@ namespace Scolita.Tests.EditMode.Content
             Directory.CreateDirectory(sourceRoot);
             try
             {
+                File.WriteAllText(Path.Combine(sourceRoot, ReleasedIdLedger.FileName), "# nothing released yet\n");
                 WriteCsvs(sourceRoot, csvs);
                 test(new ContentFolder(sourceRoot), paths);
             }

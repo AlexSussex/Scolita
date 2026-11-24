@@ -27,18 +27,20 @@ namespace Scolita.Editor.ContentImport
         private readonly ContentAssetPaths paths;
         private readonly ContentProblems problems;
         private readonly Curriculum curriculum;
+        private readonly ReleasedIdLedger ledger;
         private readonly IReadOnlyList<PlannedImage> images;
         private readonly IReadOnlyList<PlannedClip> clips;
         private readonly string filledVoiceLines;
 
         private ContentImportPlan(ContentFolder source, ContentAssetPaths paths, ContentProblems problems,
-            Curriculum curriculum, IReadOnlyList<PlannedImage> images, IReadOnlyList<PlannedClip> clips,
-            string filledVoiceLines)
+            Curriculum curriculum, ReleasedIdLedger ledger, IReadOnlyList<PlannedImage> images,
+            IReadOnlyList<PlannedClip> clips, string filledVoiceLines)
         {
             this.source = source;
             this.paths = paths;
             this.problems = problems;
             this.curriculum = curriculum;
+            this.ledger = ledger;
             this.images = images;
             this.clips = clips;
             this.filledVoiceLines = filledVoiceLines;
@@ -50,10 +52,18 @@ namespace Scolita.Editor.ContentImport
         /// <summary>Whether any problem is an error (then nothing is written).</summary>
         public bool HasErrors => problems.HasErrors;
 
+        /// <summary>The content read from the CSVs; called by <see cref="ReleasedIdsRecorder"/>.</summary>
+        public Curriculum Curriculum => curriculum;
+
+        /// <summary>The ledger of released ids read from the content folder; called by <see cref="ReleasedIdsRecorder"/>.</summary>
+        public ReleasedIdLedger Ledger => ledger;
+
         /// <summary>
         /// Reads and checks the CSVs in <paramref name="source"/> and plans the assets under
-        /// <paramref name="paths"/>; an asset there whose id is no longer in its CSV is an error (ids
-        /// are retired, never deleted). Called by <see cref="ContentImporter"/> and the content tests.
+        /// <paramref name="paths"/>; an id of the ledger of released ids (<see cref="ReleasedIdLedger"/>)
+        /// or an asset there whose id is no longer in its CSV is an error (ids are retired, never
+        /// deleted). Called by <see cref="ContentImporter"/>, <see cref="ReleasedIdsRecorder"/> and the
+        /// content tests.
         /// </summary>
         public static ContentImportPlan Make(ContentFolder source, ContentAssetPaths paths)
         {
@@ -67,18 +77,20 @@ namespace Scolita.Editor.ContentImport
 
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             ContentRules.Check(curriculum, source, problems);
+            ReleasedIdLedger ledger = ReleasedIdLedger.Parse(source.ReleasedIdsText(), problems);
             if (problems.HasErrors)
             {
-                return new ContentImportPlan(source, paths, problems, curriculum, new PlannedImage[0], new PlannedClip[0],
-                    null);
+                return new ContentImportPlan(source, paths, problems, curriculum, ledger, new PlannedImage[0],
+                    new PlannedClip[0], null);
             }
 
+            ledger.CheckNoneDeleted(curriculum, problems);
             CheckNothingDeleted(curriculum, paths, problems);
             CheckAssetTypes(curriculum, paths, problems);
             bool good = !problems.HasErrors;
             IReadOnlyList<PlannedImage> images = good ? PlanImages(source, paths, curriculum) : new PlannedImage[0];
             IReadOnlyList<PlannedClip> clips = good ? PlanClips(source, paths, curriculum) : new PlannedClip[0];
-            return new ContentImportPlan(source, paths, problems, curriculum, images, clips, filledVoiceLines);
+            return new ContentImportPlan(source, paths, problems, curriculum, ledger, images, clips, filledVoiceLines);
         }
 
         /// <summary>
