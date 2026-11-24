@@ -10,8 +10,9 @@ namespace Scolita.UI.Lesson
     /// <summary>
     /// The view of <c>ListenAndPick</c>: 2 to 4 round cream cards in a row, each a letter (or a
     /// picture) with its language badge, and a "listen again" button. A miss wobbles the card and fades
-    /// it; the answer shown glows yellow; the right one sparkles (<see cref="ChoiceTileFeedback"/>). Its four cards are made with the
-    /// prefab (<c>Prefabs/Lesson/ListenAndPickView.prefab</c>) and reused step after step.
+    /// it; the answer shown glows yellow; the right one sparkles (<see cref="ChoiceTileFeedback"/>). Its
+    /// four cards are made with the prefab (<c>Prefabs/Lesson/ListenAndPickView.prefab</c>) and reused
+    /// step after step.
     /// </summary>
     public sealed class ListenAndPickView : ActivityView
     {

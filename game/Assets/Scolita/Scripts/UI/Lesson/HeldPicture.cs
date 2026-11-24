@@ -28,14 +28,11 @@ namespace Scolita.UI.Lesson
         private float wobbleLeft;
         private bool dragging;
 
-        /// <summary>Whether she is dragging it.</summary>
-        public bool IsDragged => dragging;
-
-        /// <summary>Whether it is at home (not dragged, not floating back).</summary>
-        public bool IsHome => !dragging && homeLeft <= 0f;
-
         /// <summary>The picture shown.</summary>
         public Sprite Shown => picture.sprite;
+
+        /// <summary>The index of the round's choice it holds; -1 when it holds none.</summary>
+        public int HeldIndex { get; private set; } = -1;
 
         /// <summary>
         /// Remembers where home is and which view it belongs to; called by <see cref="TwoSoundsView"/> once,
@@ -48,18 +45,20 @@ namespace Scolita.UI.Lesson
         }
 
         /// <summary>
-        /// Shows <paramref name="sprite"/> at home, or hides it when <paramref name="sprite"/> is null; called by
-        /// <see cref="TwoSoundsView"/> when the picture in play changes.
+        /// Holds the round's choice <paramref name="choice"/>, showing <paramref name="sprite"/> at home, or hides
+        /// itself when <paramref name="choice"/> is -1; called by <see cref="TwoSoundsView"/> when the picture in
+        /// play changes.
         /// </summary>
-        public void Hold(Sprite sprite)
+        public void Hold(int choice, Sprite sprite)
         {
+            HeldIndex = choice;
             dragging = false;
             homeLeft = 0f;
             wobbleLeft = 0f;
             rect.anchoredPosition = home;
             rect.localRotation = Quaternion.Euler(0f, 0f, restingDegrees);
             picture.sprite = sprite;
-            gameObject.SetActive(sprite != null);
+            gameObject.SetActive(choice >= 0);
         }
 
         /// <summary>Wobbles as it floats back (a miss); called by <see cref="TwoSoundsView"/>.</summary>

@@ -40,9 +40,6 @@ namespace Scolita.UI.Lesson
         /// <summary>Its index among the round's choices.</summary>
         public int Index => index;
 
-        /// <summary>The text it shows (the letter).</summary>
-        public string Text => label.text;
-
         /// <summary>Whether it is still in the sky (not popped).</summary>
         public bool IsInTheSky => gameObject.activeSelf && popLeft <= 0f && group.alpha > 0f;
 

@@ -40,6 +40,7 @@ namespace Scolita.UI.Lesson
             input = context.Input;
             pictures = context.Pictures;
             letterCard.ShowSubject(round.Subject, round.Subject.Text, null, input);
+            held.Hold(-1, null);
             planets[TwoSoundsRules.RomanianPlanet].Show(TwoSoundsRules.RomanianPlanet, round.Choices[TwoSoundsRules.RomanianPlanet], input);
             planets[TwoSoundsRules.EnglishPlanet].Show(TwoSoundsRules.EnglishPlanet, round.Choices[TwoSoundsRules.EnglishPlanet], input);
             gameObject.SetActive(true);
@@ -105,13 +106,10 @@ namespace Scolita.UI.Lesson
             }
         }
 
-        /// <summary>The picture in her hand was tapped: its word is said again. Called by <see cref="HeldPicture"/>.</summary>
+        /// <summary>The picture in her hand was tapped: its word (the prompt) is said again. Called by <see cref="HeldPicture"/>.</summary>
         public void PictureTapped()
         {
-            if (round != null && round.Current >= 0)
-            {
-                input?.Answer(ActivityAnswer.Tap(round.Current));
-            }
+            input?.RepeatPrompt();
         }
 
         private void Refresh()
@@ -124,27 +122,18 @@ namespace Scolita.UI.Lesson
 
             for (int index = TwoSoundsRules.FirstPicture; index < round.Choices.Count; index++)
             {
-                if (round.StateOf(index) == ChoiceState.Done)
+                int planet = round.PlacedOn(index);
+                if (planet >= 0 && planet < planets.Length)
                 {
                     ActivityChoice picture = round.Choices[index];
-                    planets[PlanetOf(picture)].AddToTray(picture, pictures.Of(picture.Picture));
+                    planets[planet].AddToTray(picture, pictures.Of(picture.Picture));
                 }
             }
 
-            held.Hold(round.Current >= 0 ? pictures.Of(round.Choices[round.Current].Picture) : null);
-        }
-
-        private int PlanetOf(ActivityChoice picture)
-        {
-            for (int planet = 0; planet < planets.Length; planet++)
+            if (round.Current != held.HeldIndex)
             {
-                if (round.Choices[planets[planet].Index].Language == picture.Language)
-                {
-                    return planet;
-                }
+                held.Hold(round.Current, round.Current >= 0 ? pictures.Of(round.Choices[round.Current].Picture) : null);
             }
-
-            return 0;
         }
 
         private void Awake()

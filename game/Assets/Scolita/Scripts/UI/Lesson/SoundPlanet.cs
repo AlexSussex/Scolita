@@ -66,7 +66,7 @@ namespace Scolita.UI.Lesson
             sparkle.enabled = false;
             body.localRotation = Quaternion.identity;
             SetGlowingTo(false);
-            EmptyTray();
+            ClearTray();
             gameObject.SetActive(true);
         }
 
@@ -97,11 +97,7 @@ namespace Scolita.UI.Lesson
         /// <summary>Empties its tray; called by <see cref="TwoSoundsView"/> before it fills the trays again.</summary>
         public void EmptyTray()
         {
-            filled = 0;
-            for (int slot = 0; slot < traySlots.Length; slot++)
-            {
-                traySlots[slot].gameObject.SetActive(false);
-            }
+            ClearTray();
         }
 
         /// <summary>
@@ -160,6 +156,15 @@ namespace Scolita.UI.Lesson
             if (glowing)
             {
                 glow.canvasRenderer.SetAlpha(0.65f + 0.35f * Mathf.Sin(Time.unscaledTime * glowPulsesPerSecond * 2f * Mathf.PI));
+            }
+        }
+
+        private void ClearTray()
+        {
+            filled = 0;
+            for (int slot = 0; slot < traySlots.Length; slot++)
+            {
+                traySlots[slot].gameObject.SetActive(false);
             }
         }
 

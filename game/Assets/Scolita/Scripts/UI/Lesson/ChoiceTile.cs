@@ -120,7 +120,7 @@ namespace Scolita.UI.Lesson
         /// <summary>Bounces a little (heard, not an answer); called by the activity views.</summary>
         public void Bounce()
         {
-            bounceLeft = bounceSeconds;
+            StartBounce();
         }
 
         /// <summary>Sparkles (right); called by the activity views.</summary>
@@ -151,7 +151,7 @@ namespace Scolita.UI.Lesson
 
             if (isSubject)
             {
-                Bounce();
+                StartBounce();
                 input.RepeatPrompt();
             }
             else
@@ -214,6 +214,11 @@ namespace Scolita.UI.Lesson
                 float grow = bounceScale * Mathf.Sin(done * Mathf.PI);
                 body.localScale = new Vector3(1f + grow, 1f + grow, 1f);
             }
+        }
+
+        private void StartBounce()
+        {
+            bounceLeft = bounceSeconds;
         }
 
         private void SetFadedTo(bool faded)

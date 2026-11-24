@@ -13,20 +13,21 @@ namespace Scolita.UI.Lesson
     /// the mascot or its bubble, and above the "Ascultă" button), wrapping round at its edges, never
     /// faster than <see cref="LetterHuntTuning.FastestSpeed"/> in the canvas's reference pixels. A star
     /// found pops, a miss bounces back, the hint twinkles the stars still to find, and the answer shown
-    /// makes them glow (all of them, so one is always in sight: each is the answer) until one is found. Its stars are made with the prefab
-    /// (<c>Prefabs/Lesson/LetterHuntView.prefab</c>, <see cref="LetterHuntTuning.MostStars"/> of them) and
-    /// moved on plain arithmetic in <c>Update</c>, allocating nothing.
+    /// makes them glow (all of them, so one is always in sight: each is the answer) until one is found.
+    /// Its stars are made with the prefab (<c>Prefabs/Lesson/LetterHuntView.prefab</c>,
+    /// <see cref="LetterHuntTuning.MostStars"/> of them) and moved on plain arithmetic in <c>Update</c>,
+    /// allocating nothing; its star field is a canvas of its own, so the moving stars never make the
+    /// rest of the lesson screen be drawn again.
     /// </summary>
     public sealed class LetterHuntView : ActivityView
     {
         [SerializeField] private RectTransform field;
         [SerializeField] private HuntStar[] stars = new HuntStar[0];
         [SerializeField] private Button listenAgain;
-        [SerializeField] private float starSize = 150f;
         [SerializeField] private float laneGap = 24f;
         [SerializeField] private float starGap = 40f;
         [SerializeField, Range(0f, 1f)] private float bobShare = 0.25f;
-        [SerializeField] private float bobHeight = 10f;
+        [SerializeField, Min(1f)] private float bobHeight = 10f;
         [SerializeField, Range(0f, 1f)] private float slowLaneShare = 0.8f;
 
         private readonly List<int> laneOf = new List<int>(LetterHuntTuning.MostStars);
@@ -39,6 +40,7 @@ namespace Scolita.UI.Lesson
         private int perLane;
         private float loopWidth;
         private float time;
+        private float starSize;
 
         /// <summary>The stars, the ones in use active.</summary>
         public IReadOnlyList<HuntStar> Stars => stars;
@@ -79,17 +81,22 @@ namespace Scolita.UI.Lesson
         /// <inheritdoc/>
         public override void ShowFeedback(in StepFeedback feedback)
         {
-            HuntStar tapped = feedback.Choice >= 0 && feedback.Choice < stars.Length ? stars[feedback.Choice] : null;
+            if (feedback.Choice < 0 || feedback.Choice >= stars.Length)
+            {
+                return;
+            }
+
+            HuntStar tapped = stars[feedback.Choice];
             switch (feedback.Outcome)
             {
                 case FeedbackOutcome.Right:
                 case FeedbackOutcome.Done:
                     MarkStarsLeft(false, false);
-                    tapped?.Pop();
+                    tapped.Pop();
                     break;
                 case FeedbackOutcome.TryAgain:
                 case FeedbackOutcome.ShowAnswer:
-                    tapped?.Bounce();
+                    tapped.Bounce();
                     ShowHint(feedback.Hint);
                     break;
             }
@@ -134,6 +141,7 @@ namespace Scolita.UI.Lesson
         private void PlaceInLanes()
         {
             Rect area = field.rect;
+            starSize = stars[0].Rect.rect.height;
             int count = Mathf.Min(round.Choices.Count, stars.Length);
             float laneHeight = starSize + laneGap;
             lanes = Mathf.Clamp(Mathf.FloorToInt(area.height / laneHeight), 1, 3);
