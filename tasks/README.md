@@ -53,7 +53,7 @@ Each brief file therefore reads, top to bottom:
 | --- | --- | --- | --- |
 | 1 | `feature/project-skeleton` | Done 2026-11-24, released as 0.1.0 | [done/project-skeleton.md](done/project-skeleton.md) |
 | 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
-| 3 | `feature/content-model` | Ready after 1 | [pending/content-model.md](pending/content-model.md) |
+| 3 | `feature/content-model` | In progress (content) | [pending/content-model.md](pending/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
 | 5 | `feature/lesson-engine` | Ready after 4 (decision D6) | [pending/lesson-engine.md](pending/lesson-engine.md) |
 | 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
@@ -96,6 +96,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
+| content | [content-model](pending/content-model.md) | `Scripts/Core/Content`, `Scripts/Content`, `Scripts/Editor/ContentImport`, `Tests/EditMode/Content`, `content/` (new: all CSVs, `README.md`, placeholder pictures), `Assets/Scolita/Content/` (new: Domains, Letters, Words, Pictures, Voice and the catalogs `DomainCatalog`, `LetterCatalog`, `WordCatalog`, `PictureCatalog`, `VoiceLineCatalog`) | emulator-5602 | 2026-11-24 | Claimed; Design note next (large change: the human agrees it first) |
 
 ## Where we are
 

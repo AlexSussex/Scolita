@@ -1,6 +1,6 @@
 # Task: feature/content-model
 
-> **Status: Ready after `project-skeleton`.**
+> **Status: In progress (content).**
 
 Read `AGENTS.md` first (especially "The five seams", "Learning" and
 "Versioning and releases" → "Progress survives updates"), and the
