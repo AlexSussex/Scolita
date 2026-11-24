@@ -1,6 +1,6 @@
 # Task: feature/voice
 
-> **Status: Ready after `content-model`.** Decision D4 (2026-11-24): the
+> **Status: In progress (voice).** Decision D4 (2026-11-24): the
 > tablet's voice for every line to start with; the family (the human and
 > her mother) records, in batch sessions, since none of the neural voices
 > sampled (`local/voice-samples/2026-11-24/`) was right for every word.

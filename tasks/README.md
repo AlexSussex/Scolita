@@ -54,7 +54,7 @@ Each brief file therefore reads, top to bottom:
 | 1 | `feature/project-skeleton` | Done 2026-11-24, released as 0.1.0 | [done/project-skeleton.md](done/project-skeleton.md) |
 | 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
 | 3 | `feature/content-model` | Done 2026-11-24, released as 0.2.0 | [done/content-model.md](done/content-model.md) |
-| 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
+| 4 | `feature/voice` | In progress (voice) | [pending/voice.md](pending/voice.md) |
 | 5 | `feature/lesson-engine` | Ready after 4 (decision D6) | [pending/lesson-engine.md](pending/lesson-engine.md) |
 | 6 | `feature/tracing` | Ready after 5 (decisions D2, D3) | [pending/tracing.md](pending/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
@@ -97,6 +97,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
+| voice | [voice](pending/voice.md) | New: `Scripts/Core/Voice`, `Scripts/Game/Voice`, `Scripts/Editor/Voice`, `Prefabs/Voice/` (Voice, Hearable, the voice sampler), `Tests/EditMode/Voice`, `Tests/PlayMode/Voice`; changes: `Scripts/Core/Content` (voice lines' clips and status, the CSV reader's cell spans), `Scripts/Content/VoiceLineAsset`, `Scripts/Editor/ContentImport`, `content/voice-lines.csv` (a `status` column), `content/README.md`, `Assets/Scolita/Content/Voice/` (re-imported), `Scolita.Game.asmdef`, `Scenes/Lesson.unity` and `LessonRunner` (the voice sampler on the placeholder), `local/todo/04-record-voices.md` | emulator-5606 | 2026-11-24 | Claimed; writing the Design note |
 
 ## Where we are
 
