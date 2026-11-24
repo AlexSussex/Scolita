@@ -92,7 +92,7 @@ namespace Scolita.Tests.EditMode.Core.Content
             int letterRow = ContentCsvs.AddRow(csvs, ContentFileNames.Letters, "n,n,N,shared,,,");
             int stepRow = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,Hunt,,a,,,");
             int wordRow = ContentCsvs.AddRow(csvs, ContentFileNames.Words, "fr-chat,fr,chat,,chat,mat,yes,,,,");
-            int lineRow = ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-word-x,ro,word,x,,no,");
+            int lineRow = ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-word-x,ro,word,x,,,no,");
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 

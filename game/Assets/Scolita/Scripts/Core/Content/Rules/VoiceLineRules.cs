@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using Scolita.Core.Languages;
+using Scolita.Core.Voice;
 
 namespace Scolita.Core.Content.Rules
 {
     /// <summary>
-    /// The rules on the voice lines: each id matches its language and kind; a named clip is in
-    /// <c>content/voice/</c> (a warning: the system voice covers it); every letter has its sound and
+    /// The rules on the voice lines: each id matches its language and kind; its text's slots are
+    /// known; its clips are one per spoken segment, named by <see cref="VoiceClipNames"/>; a named clip
+    /// is in <c>content/voice/</c> (a warning: the system voice covers it); every letter has its sound and
     /// name in each of its languages; every word has its word line, saying the word, and its syllables
     /// line, if it has one, says its syllables. Part of
     /// <see cref="ContentRules"/>; a step's lines are checked by <see cref="StepRules"/>.
@@ -80,10 +82,44 @@ namespace Scolita.Core.Content.Rules
                     + "-<key>, from its language and kind columns.");
             }
 
-            if (line.HasClip && !files.ClipExists(line.Clip))
+            VoiceTemplate template = VoiceTemplate.Parse(line.Text);
+            foreach (string unknown in template.UnknownSlots)
             {
-                problems.Warning(line.Source, "the clip " + line.Clip
-                    + " is not in content/voice/ yet: the system voice says the line.");
+                problems.Error(line.Source, "the text has {" + unknown + "}, which is not one of "
+                    + VoiceSlots.AllCodes() + ".");
+            }
+
+            CheckClips(line, template, files, problems);
+        }
+
+        private static void CheckClips(VoiceLine line, VoiceTemplate template, IContentFiles files,
+            ContentProblems problems)
+        {
+            if (!line.HasClip)
+            {
+                return;
+            }
+
+            if (line.Clips.Count != template.SpokenSegments)
+            {
+                problems.Error(line.Source, "the clip cell names " + line.Clips.Count + " clips, but the text has "
+                    + template.SpokenSegments + " spoken parts: name one clip per part, separated by spaces.");
+                return;
+            }
+
+            for (int segment = 0; segment < line.Clips.Count; segment++)
+            {
+                string clip = line.Clips[segment];
+                string expected = VoiceClipNames.For(line.LineId, segment, line.Clips.Count);
+                if (!string.Equals(clip, expected, StringComparison.Ordinal))
+                {
+                    problems.Error(line.Source, "the clip " + clip + " must be named " + expected + ".");
+                }
+                else if (!files.ClipExists(clip))
+                {
+                    problems.Warning(line.Source, "the clip " + clip
+                        + " is not in content/voice/ yet: the system voice says the line.");
+                }
             }
         }
     }

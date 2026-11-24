@@ -21,6 +21,15 @@ namespace Scolita.Core.Content
         private const string LettersColumn = "letters";
         private const string WordsColumn = "words";
 
+        /// <summary>The <c>status</c> column of <c>voice-lines.csv</c>, filled by the importer; called by the importer.</summary>
+        public const string StatusColumn = "status";
+
+        /// <summary>The <c>clip</c> column of <c>voice-lines.csv</c>; called by the importer.</summary>
+        public const string ClipColumn = "clip";
+
+        /// <summary>The <c>id</c> column of every file but <c>steps.csv</c>; called by the importer.</summary>
+        public const string IdColumn = Id;
+
         private static readonly IReadOnlyDictionary<string, string[]> ColumnsByFile = new Dictionary<string, string[]>
         {
             { ContentFileNames.Letters, new[] { Id, "lower", "upper", "group", "strokes", Retired, Notes } },
@@ -33,7 +42,7 @@ namespace Scolita.Core.Content
                 }
             },
             { ContentFileNames.Pictures, new[] { Id, "art", Retired, Notes } },
-            { ContentFileNames.VoiceLines, new[] { Id, LanguageColumn, "kind", "text", "clip", Retired, Notes } },
+            { ContentFileNames.VoiceLines, new[] { Id, LanguageColumn, "kind", "text", ClipColumn, StatusColumn, Retired, Notes } },
             { ContentFileNames.Units, new[] { Id, "domain", Retired, Notes } },
             { ContentFileNames.Lessons, new[] { Id, "unit", LanguageColumn, "introduces", Retired, Notes } },
             { ContentFileNames.Steps, new[] { "lesson", "kind", LanguageColumn, LettersColumn, WordsColumn, "options", Notes } }
@@ -86,7 +95,15 @@ namespace Scolita.Core.Content
             ContentSource header = new ContentSource(table.FileName, 1);
             foreach (string missing in expected.Where(column => !table.Columns.Contains(column)))
             {
-                problems.Error(header, "the header has no column " + missing + ".");
+                if (missing == StatusColumn)
+                {
+                    problems.Warning(header, "the header has no column " + missing
+                        + ": run \u0218coli\u021Ba \u2192 Import content, which adds and fills it.");
+                }
+                else
+                {
+                    problems.Error(header, "the header has no column " + missing + ".");
+                }
             }
 
             foreach (string unknown in table.Columns.Where(column => column.Length > 0 && !expected.Contains(column)))
@@ -170,7 +187,8 @@ namespace Scolita.Core.Content
             bool hasLanguage = cells.TryLanguage(LanguageColumn, out Language language);
             string kindCode = cells.Required("kind");
             string text = cells.Required("text");
-            string clip = cells.Optional("clip");
+            string clip = cells.Optional(ClipColumn);
+            string statusCode = cells.Optional(StatusColumn);
             bool retired = cells.YesNo(Retired);
             bool kindKnown = ContentCodes.TryParseVoiceLineKind(kindCode, out VoiceLineKind kind);
             if (!kindKnown && kindCode.Length > 0)
@@ -178,9 +196,15 @@ namespace Scolita.Core.Content
                 cells.Error("the kind '" + kindCode + "' is not one of " + ContentCodes.AllVoiceLineKindCodes() + ".");
             }
 
+            if (!ContentCodes.TryParseStatus(statusCode, out VoiceLineStatus status))
+            {
+                cells.Error("the status '" + statusCode + "' is not one of " + ContentCodes.AllStatusCodes()
+                    + " (the importer fills it: leave it to Import content).");
+            }
+
             if (cells.IsGood && hasLanguage && kindKnown)
             {
-                builder.Add(new VoiceLine(id, language, kind, text, clip, retired, cells.Source));
+                builder.Add(new VoiceLine(id, language, kind, text, clip, status, retired, cells.Source));
             }
         }
 

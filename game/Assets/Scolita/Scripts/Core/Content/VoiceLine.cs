@@ -1,22 +1,29 @@
+using System;
+using System.Collections.Generic;
 using Scolita.Core.Languages;
 
 namespace Scolita.Core.Content
 {
     /// <summary>
     /// Something the app says, in one language: its text (what the system voice reads, and what the
-    /// bubble shows) and its recorded clip, or none yet. One row of <c>voice-lines.csv</c>.
+    /// bubble shows), its recorded clips (one per spoken segment, <c>VoiceTemplate</c>), or none yet,
+    /// and whether they are recorded. One row of <c>voice-lines.csv</c>.
     /// </summary>
     public sealed class VoiceLine : IContentItem
     {
+        private static readonly char[] ClipSeparators = { ' ', '\t' };
+
         /// <summary>Creates a voice line; called by <see cref="ContentTables"/>, the voice line asset and tests.</summary>
-        public VoiceLine(ContentId id, Language language, VoiceLineKind kind, string text, string clip, bool retired,
-            ContentSource source)
+        public VoiceLine(ContentId id, Language language, VoiceLineKind kind, string text, string clip,
+            VoiceLineStatus status, bool retired, ContentSource source)
         {
             Id = id;
             Language = language;
             Kind = kind;
             Text = text ?? string.Empty;
             Clip = clip ?? string.Empty;
+            Clips = Clip.Split(ClipSeparators, StringSplitOptions.RemoveEmptyEntries);
+            Status = status;
             Retired = retired;
             Source = source;
         }
@@ -36,11 +43,20 @@ namespace Scolita.Core.Content
         /// <summary>What it says.</summary>
         public string Text { get; }
 
-        /// <summary>Its clip's file name in <c>content/voice/</c>; empty for none (the system voice says it).</summary>
+        /// <summary>
+        /// The <c>clip</c> cell as written: its clips' file names in <c>content/voice/</c>, separated by
+        /// spaces; empty for none (the system voice says it).
+        /// </summary>
         public string Clip { get; }
 
+        /// <summary>Its clips' file names, one per spoken segment of its text, in order.</summary>
+        public IReadOnlyList<string> Clips { get; }
+
         /// <summary>Whether a clip is named.</summary>
-        public bool HasClip => Clip.Length > 0;
+        public bool HasClip => Clips.Count > 0;
+
+        /// <summary>The status as written in the <c>status</c> cell.</summary>
+        public VoiceLineStatus Status { get; }
 
         /// <inheritdoc/>
         public bool Retired { get; }

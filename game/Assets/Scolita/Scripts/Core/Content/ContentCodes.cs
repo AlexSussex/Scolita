@@ -49,6 +49,14 @@ namespace Scolita.Core.Content
             Pair("line", VoiceLineKind.Line)
         };
 
+        private static readonly IReadOnlyList<KeyValuePair<string, VoiceLineStatus>> Statuses = new[]
+        {
+            Pair(string.Empty, VoiceLineStatus.ToRecord),
+            Pair("recorded", VoiceLineStatus.Recorded),
+            Pair("missing", VoiceLineStatus.Missing),
+            Pair("sounds", VoiceLineStatus.FromSounds)
+        };
+
         /// <summary>The code of <paramref name="kind"/>; called by the content assets and <see cref="ActivityKinds"/>.</summary>
         public static string CodeOf(ActivityKind kind)
         {
@@ -67,6 +75,12 @@ namespace Scolita.Core.Content
             return CodeIn(LineKinds, kind);
         }
 
+        /// <summary>The code of <paramref name="status"/> (empty for <see cref="VoiceLineStatus.ToRecord"/>); called by the importer and the content assets.</summary>
+        public static string CodeOf(VoiceLineStatus status)
+        {
+            return CodeIn(Statuses, status);
+        }
+
         /// <summary>Reads an activity kind from its exact code; called by <see cref="ContentTables"/> and the content assets.</summary>
         public static bool TryParseKind(string code, out ActivityKind kind)
         {
@@ -83,6 +97,18 @@ namespace Scolita.Core.Content
         public static bool TryParseVoiceLineKind(string code, out VoiceLineKind kind)
         {
             return TryParseIn(LineKinds, code, out kind);
+        }
+
+        /// <summary>Reads a voice line status from its exact code; called by <see cref="ContentTables"/> and the content assets.</summary>
+        public static bool TryParseStatus(string code, out VoiceLineStatus status)
+        {
+            return TryParseIn(Statuses, code, out status);
+        }
+
+        /// <summary>Every voice line status's code, for messages; called by <see cref="ContentTables"/>.</summary>
+        public static string AllStatusCodes()
+        {
+            return string.Join(", ", Statuses.Where(pair => pair.Key.Length > 0).Select(pair => pair.Key)) + " or empty";
         }
 
         /// <summary>Every activity kind's code, for messages; called by <see cref="ContentTables"/>.</summary>

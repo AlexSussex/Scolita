@@ -35,7 +35,7 @@ namespace Scolita.Tests.EditMode.Fakes
             + "ro-am,ro,am,a m,am,,,,,,reading only\n";
 
         private const string VoiceLines =
-            "id,language,kind,text,clip,retired,notes\n"
+            "id,language,kind,text,clip,status,retired,notes\n"
             + "ro-sound-a,ro,sound,/a/,,,\n"
             + "ro-name-a,ro,name,a,,,\n"
             + "ro-sound-m,ro,sound,/m/,,,\n"

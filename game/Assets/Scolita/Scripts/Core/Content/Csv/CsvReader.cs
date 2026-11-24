@@ -24,31 +24,39 @@ namespace Scolita.Core.Content.Csv
         public static CsvTable Read(string fileName, string text, ContentProblems problems)
         {
             string body = text ?? string.Empty;
+            int offset = 0;
             if (body.Length > 0 && body[0] == ByteOrderMark)
             {
                 body = body.Substring(1);
+                offset = 1;
             }
 
             char separator = SeparatorOf(body);
-            List<List<string>> records = Records(fileName, body, separator, problems);
-            if (records.Count == 0 || records[0].All(cell => cell.Length == 0))
+            List<CsvRecord> records = Records(fileName, body, offset, separator, problems);
+            if (records.Count == 0 || records[0].Cells.All(cell => cell.Length == 0))
             {
                 problems.Error(new ContentSource(fileName, 0), "the file has no header row.");
-                return new CsvTable(fileName, new string[0], new CsvRow[0]);
+                return new CsvTable(fileName, new string[0], new CsvRow[0], separator, null);
             }
 
-            string[] columns = records[0].ToArray();
+            string[] columns = records[0].Cells.ToArray();
             CheckColumns(fileName, columns, problems);
-            return new CsvTable(fileName, columns, Rows(fileName, columns.Length, records, problems));
+            return new CsvTable(fileName, columns, Rows(fileName, columns.Length, records, problems), separator,
+                RowOf(records[0], 1));
         }
 
-        private static IReadOnlyList<CsvRow> Rows(string fileName, int columnCount, List<List<string>> records,
+        private static CsvRow RowOf(CsvRecord record, int number)
+        {
+            return new CsvRow(number, record.Cells, record.Spans, record.End);
+        }
+
+        private static IReadOnlyList<CsvRow> Rows(string fileName, int columnCount, List<CsvRecord> records,
             ContentProblems problems)
         {
             List<CsvRow> rows = new List<CsvRow>();
             for (int index = 1; index < records.Count; index++)
             {
-                List<string> cells = records[index];
+                List<string> cells = records[index].Cells;
                 int number = index + 1;
                 if (cells.All(cell => cell.Length == 0))
                 {
@@ -63,7 +71,7 @@ namespace Scolita.Core.Content.Csv
                     continue;
                 }
 
-                rows.Add(new CsvRow(number, cells));
+                rows.Add(RowOf(records[index], number));
             }
 
             return rows;
@@ -114,14 +122,15 @@ namespace Scolita.Core.Content.Csv
             return semicolons > commas ? ';' : ',';
         }
 
-        private static List<List<string>> Records(string fileName, string body, char separator,
+        private static List<CsvRecord> Records(string fileName, string body, int offset, char separator,
             ContentProblems problems)
         {
-            List<List<string>> records = new List<List<string>>();
-            List<string> record = new List<string>();
+            List<CsvRecord> records = new List<CsvRecord>();
+            CsvRecord record = new CsvRecord();
             StringBuilder cell = new StringBuilder();
             bool quoted = false;
             int index = 0;
+            int cellStart = 0;
             while (index < body.Length)
             {
                 char character = body[index];
@@ -153,19 +162,23 @@ namespace Scolita.Core.Content.Csv
                 }
                 else if (character == separator)
                 {
-                    record.Add(cell.ToString().Trim());
+                    record.Add(cell.ToString().Trim(), new CsvSpan(offset + cellStart, index - cellStart));
                     cell.Clear();
+                    cellStart = index + 1;
                 }
                 else if (character == '\r' || character == '\n')
                 {
-                    record.Add(cell.ToString().Trim());
+                    record.Add(cell.ToString().Trim(), new CsvSpan(offset + cellStart, index - cellStart));
                     cell.Clear();
+                    record.End = offset + index;
                     records.Add(record);
-                    record = new List<string>();
+                    record = new CsvRecord();
                     if (character == '\r' && index + 1 < body.Length && body[index + 1] == '\n')
                     {
                         index++;
                     }
+
+                    cellStart = index + 1;
                 }
                 else
                 {
@@ -181,9 +194,10 @@ namespace Scolita.Core.Content.Csv
                     "a quote opened in this row is never closed.");
             }
 
-            if (cell.Length > 0 || record.Count > 0)
+            if (cell.Length > 0 || record.Cells.Count > 0)
             {
-                record.Add(cell.ToString().Trim());
+                record.Add(cell.ToString().Trim(), new CsvSpan(offset + cellStart, body.Length - cellStart));
+                record.End = offset + body.Length;
                 records.Add(record);
             }
 

@@ -138,6 +138,17 @@ namespace Scolita.Content
             return kind;
         }
 
+        /// <summary>The voice line status in <paramref name="code"/>; called by <see cref="VoiceLineAsset"/>.</summary>
+        public VoiceLineStatus LineStatus(string code)
+        {
+            if (!ContentCodes.TryParseStatus(code ?? string.Empty, out VoiceLineStatus status))
+            {
+                problems.Add("Its status '" + code + "' is not a voice line status.");
+            }
+
+            return status;
+        }
+
         /// <summary>The voice line kind in <paramref name="code"/>; called by <see cref="VoiceLineAsset"/>.</summary>
         public VoiceLineKind LineKind(string code)
         {
