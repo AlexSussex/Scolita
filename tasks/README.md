@@ -52,7 +52,7 @@ Each brief file therefore reads, top to bottom:
 | # | Feature | Status | Brief |
 | --- | --- | --- | --- |
 | 1 | `feature/project-skeleton` | In progress (skeleton) | [pending/project-skeleton.md](pending/project-skeleton.md) |
-| 2 | `feature/curriculum-research` | In progress (curriculum): draft v1 pushed, waiting for the human to agree it | [pending/curriculum-research.md](pending/curriculum-research.md) |
+| 2 | `feature/curriculum-research` | Done 2026-11-24 (curriculum v1 agreed by the human) | [done/curriculum-research.md](done/curriculum-research.md) |
 | 3 | `feature/content-model` | Ready after 1 | [pending/content-model.md](pending/content-model.md) |
 | 4 | `feature/voice` | Ready after 3 | [pending/voice.md](pending/voice.md) |
 | 5 | `feature/lesson-engine` | Ready after 4 (decision D6) | [pending/lesson-engine.md](pending/lesson-engine.md) |
@@ -96,11 +96,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | skeleton | [project-skeleton](pending/project-skeleton.md) | Everything: creates `game/` | emulator-5600 | 2026-11-24 | Building |
-| curriculum | [curriculum-research](pending/curriculum-research.md) | `docs/curriculum.md`, `design/research/` | none | 2026-11-24 | waiting for the human (agree v1: `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-23 by the planner (no code yet)._
+_Last updated 2026-11-24 by agent `curriculum` (curriculum-research done; no code yet)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -109,15 +108,25 @@ _Update this section whenever a slice is pushed or a brief is finished._
   build plan, these briefs, and the look: the purple space world agreed by
   the human, with eleven screens designed (`design/README.md`,
   `design/screens.md`, `design/canvas/`).
-- **Next:** `project-skeleton` and `curriculum-research`, side by side
-  (one is code, the other docs only; they touch nothing in common). The
-  human: create the repository and answer D1–D8 (`local/for-human-next-steps.md`).
+- **Done 2026-11-24:** `curriculum-research`. The curriculum v1 was
+  agreed by the human (`docs/curriculum.md`). The growth research briefs
+  are indexed under "After the MVP".
+- **Next:** `project-skeleton`. The human: answer D4–D9
+  (D1–D3 answered 2026-11-24; `local/for-human-next-steps.md`).
 - **Parallel work possible** once `project-skeleton` is done: `look`
   (art only); once `content-model` is done: `content-letters-1`; once
   `lesson-engine` is done: `tracing` (then `handwriting`),
   `activities-letters` and `galaxy-map`, each touching its own folders.
 
 ### Open follow-ups across briefs
+
+- **From `curriculum-research`** (full list in its completion record):
+  - `MeetLetter` gives a letter's sound only in planets 1–3; the name
+    button on design screen 2 waits.
+  - The writing board gets four lines.
+  - Handwritten m and n start at the middle line.
+  - The human checks the handwriting drawings against her manual
+    before `tracing` and `handwriting` finalise their strokes.
 
 - **From SeliSnake, built in from the start here:** the release signing
   that keeps the key's passwords out of `build.gradle` and Gradle's caches
