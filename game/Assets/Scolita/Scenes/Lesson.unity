@@ -205,6 +205,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea56e8d722ba0247952d18bfdf7eed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Lessons.LessonRunner
+  domains: {fileID: 11400000, guid: bf0991ba930833e47a828b992e5abd0d, type: 2}
+  letters: {fileID: 11400000, guid: d2107f33b2619284fbd6bc6f32d2e08a, type: 2}
+  words: {fileID: 11400000, guid: 94c2ddc010c29844f9be70fba99f0134, type: 2}
+  pictures: {fileID: 11400000, guid: 821bef89fd32ae4439533e1e00f50cd2, type: 2}
+  voiceLines: {fileID: 11400000, guid: f4b52bb45ca58444d865dc2e61a22d0a, type: 2}
+  voice: {fileID: 1005633633}
+  voiceSampler:
+  - {fileID: 1290124933}
+  - {fileID: 1290124932}
+  - {fileID: 1290124931}
+  - {fileID: 1290124930}
+  - {fileID: 1290124929}
+  - {fileID: 1290124928}
+  - {fileID: 1290124927}
+  - {fileID: 1290124926}
+  - {fileID: 1290124925}
+  - {fileID: 1290124924}
+  - {fileID: 1290124923}
+  - {fileID: 1290124922}
 --- !u!4 &664369973
 Transform:
   m_ObjectHideFlags: 0
@@ -220,6 +239,303 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1005633632
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 566277092219770595, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_Name
+      value: Voice
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+--- !u!114 &1005633633 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 323742814672408749, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+  m_PrefabInstance: {fileID: 1005633632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218b170cc2c05904b9c32c48e9970bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.VoiceHost
+--- !u!1001 &1290124921
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631955973472707655, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937363623661447775, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+      propertyPath: m_Name
+      value: VoiceSampler
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+--- !u!114 &1290124922 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7416928470192313999, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124923 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6563407321866541519, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2304500336660822021, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 180371311571310351, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4078236565685779299, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1066915253542370752, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124928 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2804434342802583280, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124929 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8719848799727931863, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3562264583914341024, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 584967659179566627, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3633601824148527951, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
+--- !u!114 &1290124933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5938767819695921302, guid: 5193b5d4adb6a79418901c140453328b, type: 3}
+  m_PrefabInstance: {fileID: 1290124921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760f66974d20c9646a53889b94aae8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.Hearable
 --- !u!1 &1385916429
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,3 +769,5 @@ SceneRoots:
   - {fileID: 664369973}
   - {fileID: 1821936925}
   - {fileID: 153228118}
+  - {fileID: 1005633632}
+  - {fileID: 1290124921}
