@@ -448,7 +448,7 @@ record, so `tasks/done/` keeps a runnable test script for every feature.
   reused.
 - **An APK for the human, after the tag** (the human, 2026-11-24): copy
   the debug APK built from the close-out commit to
-  `C:ProjectsScolitaocalpksScolita-<version>-debug.apk`, and
+  `C:/Projects/Scolita/local/apks/Scolita-<version>-debug.apk`, and
   name it in `local/for-human-next-steps.md`, so each release can be tried
   on the tablet at once.
 - **Two agents, one number.** Take the next number from `origin/main` while
