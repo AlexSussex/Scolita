@@ -25,7 +25,8 @@ namespace Scolita.Tests.EditMode.Core.Voice
             IReadOnlyList<VoiceLineId> lines = LessonVoiceLines.Of(curriculum, lesson);
             string[] ids = lines.Select(line => line.ToString()).ToArray();
 
-            Assert.That(ids, Does.Contain("ro-sound-m").And.Contain("ro-name-m").And.Contain("ro-sound-t"));
+            Assert.That(ids, Does.Contain("ro-sound-m").And.Contain("ro-name-m").And.Contain("ro-sound-a"));
+            Assert.That(ids, Does.Not.Contain("ro-sound-t"), "t is not taught yet in ro-m");
             Assert.That(ids, Does.Contain("ro-word-mama").And.Contain("ro-slow-mama").And.Contain("ro-word-muzica"));
             Assert.That(ids, Does.Contain("ro-line-meet-new").And.Contain("ro-line-pick-letter"));
             Assert.That(ids, Is.Unique);

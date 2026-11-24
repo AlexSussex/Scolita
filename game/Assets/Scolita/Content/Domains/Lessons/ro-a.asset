@@ -25,14 +25,6 @@ MonoBehaviour:
     words:
     - ro-avion
     options: []
-  - kind: LetterHunt
-    language: ro
-    letters:
-    - a
-    - m
-    - t
-    words: []
-    options: []
   - kind: TraceLetter
     language: ro
     letters:
@@ -49,12 +41,3 @@ MonoBehaviour:
     options:
     - form=handwritten
     - case=lower
-  - kind: FirstSound
-    language: ro
-    letters:
-    - a
-    - m
-    - t
-    words:
-    - ro-avion
-    options: []

@@ -35,14 +35,6 @@ MonoBehaviour:
     - en-apple
     - en-astronaut
     options: []
-  - kind: LetterHunt
-    language: en
-    letters:
-    - a
-    - m
-    - t
-    words: []
-    options: []
   - kind: TraceLetter
     language: en
     letters:
@@ -51,12 +43,3 @@ MonoBehaviour:
     options:
     - form=handwritten
     - case=lower
-  - kind: FirstSound
-    language: en
-    letters:
-    - a
-    - m
-    - t
-    words:
-    - en-apple
-    options: []

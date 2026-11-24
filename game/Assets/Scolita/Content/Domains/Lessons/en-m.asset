@@ -30,7 +30,6 @@ MonoBehaviour:
     letters:
     - m
     - a
-    - t
     words: []
     options: []
   - kind: TraceLetter
@@ -46,7 +45,6 @@ MonoBehaviour:
     letters:
     - m
     - a
-    - t
     words:
     - en-moon
     options: []
