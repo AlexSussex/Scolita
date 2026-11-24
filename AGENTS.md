@@ -55,6 +55,7 @@ C# namespaces.
 | Saving | One JSON file per concern in `Application.persistentDataPath`, through `SaveStore` only, per child profile |
 | Tests | Unity Test Framework (NUnit): EditMode for Core and the content, PlayMode for scenes |
 | Build | Unity batch-mode build script (`Scolita.Editor.BuildScript`) → APK, installed with `adb` |
+| Audio tool | ffmpeg (an LGPL Windows build, pinned, found through `SCOLITA_FFMPEG`), for the recording kit in the Editor only (reading M4A takes, writing OGG clips); never in the repo or the APK (agreed by the human 2026-11-24) |
 | VCS | Git + Git LFS, GitHub, trunk-based on `main` |
 
 - Android package id: `com.softshack.scolita`; product name `Școlița`
