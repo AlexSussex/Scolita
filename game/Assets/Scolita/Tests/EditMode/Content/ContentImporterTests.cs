@@ -65,7 +65,8 @@ namespace Scolita.Tests.EditMode.Content
                     AssetDatabase.LoadAssetAtPath<LetterCatalog>(paths.Catalog("LetterCatalog")),
                     AssetDatabase.LoadAssetAtPath<WordCatalog>(paths.Catalog("WordCatalog")),
                     AssetDatabase.LoadAssetAtPath<PictureCatalog>(paths.Catalog("PictureCatalog")),
-                    AssetDatabase.LoadAssetAtPath<VoiceLineCatalog>(paths.Catalog("VoiceLineCatalog")));
+                    AssetDatabase.LoadAssetAtPath<VoiceLineCatalog>(paths.Catalog("VoiceLineCatalog")),
+                    AssetDatabase.LoadAssetAtPath<LetterShapeCatalog>(paths.Catalog("LetterShapeCatalog")));
                 Curriculum fromCsvs = ContentCsvs.Read(ContentCsvs.Valid());
 
                 PictureAsset mother = AssetDatabase.LoadAssetAtPath<PictureAsset>(paths.Picture("mother"));

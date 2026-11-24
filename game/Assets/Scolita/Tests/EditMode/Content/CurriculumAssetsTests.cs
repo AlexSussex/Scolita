@@ -68,7 +68,8 @@ namespace Scolita.Tests.EditMode.Content
                 AssetDatabase.LoadAssetAtPath<LetterCatalog>(paths.Catalog(nameof(LetterCatalog))),
                 AssetDatabase.LoadAssetAtPath<WordCatalog>(paths.Catalog(nameof(WordCatalog))),
                 AssetDatabase.LoadAssetAtPath<PictureCatalog>(paths.Catalog(nameof(PictureCatalog))),
-                AssetDatabase.LoadAssetAtPath<VoiceLineCatalog>(paths.Catalog(nameof(VoiceLineCatalog))));
+                AssetDatabase.LoadAssetAtPath<VoiceLineCatalog>(paths.Catalog(nameof(VoiceLineCatalog))),
+                AssetDatabase.LoadAssetAtPath<LetterShapeCatalog>(paths.Catalog(nameof(LetterShapeCatalog))));
         }
     }
 }

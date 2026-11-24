@@ -5,7 +5,7 @@ using Scolita.Core.Content;
 namespace Scolita.Content
 {
     /// <summary>
-    /// Builds Core's <see cref="Curriculum"/> from the five catalogs at run time, through the same
+    /// Builds Core's <see cref="Curriculum"/> from the six catalogs at run time, through the same
     /// <see cref="CurriculumBuilder"/> the CSVs go through. The content was validated when it was
     /// imported, so a problem here is an impossible state: it throws.
     /// </summary>
@@ -17,7 +17,7 @@ namespace Scolita.Content
         /// <c>CurriculumAssetsTests</c>.
         /// </summary>
         public static Curriculum Build(DomainCatalog domains, LetterCatalog letters, WordCatalog words,
-            PictureCatalog pictures, VoiceLineCatalog voiceLines)
+            PictureCatalog pictures, VoiceLineCatalog voiceLines, LetterShapeCatalog shapes)
         {
             CurriculumBuilder builder = new CurriculumBuilder();
             foreach (LetterAsset letter in letters.Items)
@@ -38,6 +38,11 @@ namespace Scolita.Content
             foreach (VoiceLineAsset line in voiceLines.Items)
             {
                 builder.Add(line.ToVoiceLine());
+            }
+
+            foreach (LetterShapeAsset shape in shapes.Items)
+            {
+                builder.Add(shape.ToShape());
             }
 
             foreach (DomainAsset domain in domains.Items)

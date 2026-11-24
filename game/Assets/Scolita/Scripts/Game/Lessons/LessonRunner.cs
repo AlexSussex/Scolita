@@ -32,6 +32,7 @@ namespace Scolita.Game.Lessons
         [SerializeField] private WordCatalog words;
         [SerializeField] private PictureCatalog pictures;
         [SerializeField] private VoiceLineCatalog voiceLines;
+        [SerializeField] private LetterShapeCatalog shapes;
         [SerializeField] private VoiceHost voice;
         [SerializeField] private LessonScreenView screen;
         [SerializeField] private ActivityRegistry registry;
@@ -104,7 +105,7 @@ namespace Scolita.Game.Lessons
 
         private void Start()
         {
-            Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines);
+            Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
             profileFiles = SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
             LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
