@@ -1,6 +1,6 @@
 # Task: feature/curriculum-research
 
-> **Status: Ready** (docs only; can run beside `project-skeleton`).
+> **Status: In progress (curriculum)** (docs only; can run beside `project-skeleton`).
 > Decision D1 assumed: Romanian as the anchor, both languages on.
 
 Read `AGENTS.md` first (especially "Learning (a child is the learner)")
