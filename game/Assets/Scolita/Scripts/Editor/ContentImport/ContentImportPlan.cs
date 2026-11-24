@@ -381,24 +381,11 @@ namespace Scolita.Editor.ContentImport
             {
                 byte[] png = picture.HasArt
                     ? File.ReadAllBytes(source.ArtPath(picture.Art))
-                    : PlaceholderPicture.Render(picture.Id.Value, PlaceholderLetter(curriculum, picture));
+                    : PlaceholderPicture.Render(picture.Id.Value);
                 planned.Add(new PlannedImage(paths.PictureImage(picture.Id.Value), png));
             }
 
             return planned;
-        }
-
-        private static string PlaceholderLetter(Curriculum curriculum, Picture picture)
-        {
-            Word word = curriculum.Words.All.FirstOrDefault(candidate => candidate.Picture == picture.Id);
-            if (word == null || word.Text.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            return word.Letters.Count > 0 && curriculum.Letters.TryGet(word.Letters[0], out Letter letter)
-                ? letter.Lower.Substring(0, 1)
-                : word.Text.Substring(0, 1).ToLowerInvariant();
         }
 
         private static string ImageDifference(PlannedImage image)
