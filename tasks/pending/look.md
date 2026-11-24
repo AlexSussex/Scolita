@@ -1,6 +1,6 @@
 # Task: feature/look
 
-> **Status: After `project-skeleton`, in parallel.** Decisions answered
+> **Status: In progress (look).** Decisions answered
 > 2026-11-24: D5 the unicorn astronaut, named by her, with her purple cat
 > as the co-pilot; build the guide as data (its poses and moods as art in
 > a catalog), so more guides later are art only (`feature/guides`); D6 the
@@ -72,3 +72,9 @@ None.
 - `local/for-human-next-steps.md`: "choose the mascot with her" while the
   canvas is up; "name the mascot" (her choice).
 - Release (the next MINOR).
+
+## Progress
+
+_Kept by `look` while the brief is in flight._
+
+- **Claimed** 2026-11-24 (worktree `C:\Projects\scolita-look`, emulator `emulator-5604`).
