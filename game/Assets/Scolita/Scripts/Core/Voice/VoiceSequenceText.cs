@@ -8,7 +8,8 @@ namespace Scolita.Core.Voice
     /// <summary>
     /// The words the mascot's bubble shows while a sequence is said (AGENTS.md → "Usability": every
     /// bubble is spoken, in the same words): each line's text with its slots filled by their fills'
-    /// text, and a letter's sound shown as the letter itself, held ("a…"). Made when a lesson is built, never
+    /// text, a letter's sound shown as the letter itself, held ("a…"), and a full stop after a word said
+    /// before another line. Made when a lesson is built, never
     /// while it is played.
     /// </summary>
     public static class VoiceSequenceText
@@ -26,6 +27,14 @@ namespace Scolita.Core.Voice
                 if (curriculum.VoiceLines.TryGet(item.Line.Id, out VoiceLine line))
                 {
                     parts.Add(LineText(curriculum, line, item));
+                }
+            }
+
+            for (int index = 0; index < parts.Count - 1; index++)
+            {
+                if (!EndsASentence(parts[index]))
+                {
+                    parts[index] += ".";
                 }
             }
 
@@ -64,6 +73,11 @@ namespace Scolita.Core.Voice
             }
 
             return text.ToString();
+        }
+
+        private static bool EndsASentence(string text)
+        {
+            return (text.Length > 0 && ".!?".IndexOf(text[text.Length - 1]) >= 0) || text.EndsWith("\u2026", System.StringComparison.Ordinal);
         }
 
         private static bool TryGetLetter(Curriculum curriculum, VoiceLine line, out Letter letter)

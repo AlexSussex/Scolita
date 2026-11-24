@@ -40,5 +40,16 @@ namespace Scolita.Tests.EditMode.Core.Voice
             Assert.That(VoiceSequenceText.TryGetLanguage(curriculum, hint, out Language language), Is.True);
             Assert.That(language, Is.EqualTo(Language.English));
         }
+
+        /// <summary>Tests that <see cref="VoiceSequenceText.Of"/> ends a word said before another line with a full stop.</summary>
+        [Test]
+        public void TestOf_AWordBeforeALineEnds()
+        {
+            Curriculum curriculum = RealContent.Read();
+            VoiceSequence word = VoiceSequence.Of(new VoiceLineId(ContentId.Create("ro-word-avion")))
+                .Then(new VoiceLineId(ContentId.Create("ro-line-meet-tap-letter")));
+
+            Assert.That(VoiceSequenceText.Of(curriculum, word), Is.EqualTo("avion. Atinge litera ca s-o auzi din nou."));
+        }
     }
 }
