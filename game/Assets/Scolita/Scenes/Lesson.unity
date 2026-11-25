@@ -176,6 +176,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 444351b5a7624d141a79f777fa04a13f, type: 3}
+--- !u!1001 &457376409
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2784271967567845049, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_Name
+      value: SoundPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757476847022622031, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+--- !u!114 &457376410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6288651526679941937, guid: 19747fcf7627d6049bb20d02a81f659d, type: 3}
+  m_PrefabInstance: {fileID: 457376409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b76876f944708648b427920d1eaafb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Audio.SoundPlayer
 --- !u!1 &664369971
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +280,7 @@ MonoBehaviour:
   voiceLines: {fileID: 11400000, guid: f4b52bb45ca58444d865dc2e61a22d0a, type: 2}
   shapes: {fileID: 11400000, guid: 0bfb936c2aaba734dadfe2b5d161413d, type: 2}
   voice: {fileID: 1005633633}
+  sounds: {fileID: 457376410}
   screen: {fileID: 890705752}
   registry: {fileID: 11400000, guid: 3c33836cc753a7e4e91534dc88f65993, type: 2}
   learningRules: {fileID: 11400000, guid: 310c5ea080032ca40bfef6001167e970, type: 2}
@@ -781,3 +850,4 @@ SceneRoots:
   - {fileID: 1005633632}
   - {fileID: 890705751}
   - {fileID: 1101668980}
+  - {fileID: 457376409}
