@@ -164,7 +164,7 @@ language's track, or by the step's own lesson, unless it is listen-only.
 | `language` | Empty: the lesson's. In a `both` lesson, `ro` or `en`. `TwoSounds` and `WordTwins` are always in both (leave it empty) |
 | `letters` | Letter ids, separated by spaces, in the order the kind reads them |
 | `words` | Word ids, separated by spaces, in the order the kind reads them |
-| `options` | `key=value` pairs separated by `;` (`TraceLetter`: `form=print` or `handwritten`, and `case=lower` or `upper`, both required) |
+| `options` | `key=value` pairs separated by `;` (`TraceLetter`: `form=print` or `handwritten`, and `case=lower` or `upper`, both required; `TraceLetter` and `TraceWord`: `rounds=1`, `2` or `3`, the first rounds only, all three without it) |
 | `notes` | See above |
 
 ```
@@ -190,7 +190,7 @@ instruction lines such as `ro-line-pick-letter`) is in
 ### `strokes/<strokes-id>-<case>-<form>.json`: how a letter is written
 
 One file per letter, case and form: `a-lower-print.json`, `a-upper-print.json`,
-later `a-lower-handwritten.json`. The first part is the letter's `strokes` cell
+`a-lower-handwritten.json`. The first part is the letter's `strokes` cell
 in `letters.csv`; `case` is `lower` or `upper` and `form` is `print` or
 `handwritten`, as a `TraceLetter` step's options say. The file's name is the
 shape's id. A digit (numbers, later) has one case: `7-lower-print.json`.
@@ -231,9 +231,28 @@ shape's id. A digit (numbers, later) has one case: `7-lower-print.json`.
   import. `source` is for people.
 - **At most 4 strokes** (the writing board's start dots), and each stroke
   after the first needs its line (`trace-next-2`, `trace-next-3`, …).
-- **Every print `TraceLetter` step needs its letter's shape** (an import
-  error); a handwritten step without its shape is a warning, and the app
-  skips it until the shape is drawn.
+- **Every `TraceLetter` step needs its letter's shape** for its case and form,
+  and every letter of a `TraceWord` word its handwritten lower-case shape (an
+  import error). A `TraceWord` word has at most 5 letters.
+- **Handwritten lower-case letters join** (the Romanian school's "litere de
+  mână"), and the import checks what that needs:
+  - an `entry` run, when there is one, is the first run of the first stroke
+    and starts on the baseline (y 200); m and n have none (they start at the
+    middle line with their hook);
+  - one `exit` run at most, the last run of the letter's **line**, ending
+    between the middle line and the baseline (o leaves at the middle line);
+  - the strokes of the line, up to the exit, each begin where the one before
+    ends (half a unit at most): she may lift between them (each has its
+    numbered start dot) or write them in one line, as a word needs. The
+    handwritten a is three such strokes: the entry, the round, the stem with
+    its exit (the human, 2026-11-24);
+  - the strokes after the exit are the letter's **marks** (i's dot, t's bar):
+    in a word they are written after the whole word, and each needs its line
+    (`trace-dot-<strokes id>`, `trace-bar-<strokes id>`).
+- **Joining a word** needs no file: each letter after the first starts at the
+  previous exit's end (its entry's first point moved there, or a join run to
+  its body for m and n, and after o's high exit). Print shapes have only
+  `body` runs.
 - Shapes are not in the ledger of released ids: her progress names letters,
   never a shape, so a shape can be redrawn or replaced. A shape file removed
   (or renamed) has its imported asset removed at the next import.

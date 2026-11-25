@@ -40,6 +40,7 @@ MonoBehaviour:
     options:
     - form=handwritten
     - case=lower
+    - rounds=1
   - kind: FirstSound
     language: en
     letters:

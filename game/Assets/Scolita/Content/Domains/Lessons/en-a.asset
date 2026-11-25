@@ -43,3 +43,4 @@ MonoBehaviour:
     options:
     - form=handwritten
     - case=lower
+    - rounds=1

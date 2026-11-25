@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e6f2a3fdf68004a9b6e29d20a4eaeb, type: 3}
+  m_Name: t-lower-handwritten
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LetterShapeAsset
+  id: t-lower-handwritten
+  strokesId: t
+  letterCase: lower
+  form: handwritten
+  status: draft
+  slant: 0.2
+  strokes:
+  - runs:
+    - kind: entry
+      points:
+      - {x: 0, y: 200}
+      - {x: 14, y: 150}
+      - {x: 24, y: 60}
+      - {x: 27, y: 0}
+    - kind: body
+      points:
+      - {x: 27, y: 0}
+      - {x: 27, y: 100}
+      - {x: 28, y: 185}
+    - kind: exit
+      points:
+      - {x: 28, y: 185}
+      - {x: 36, y: 198}
+      - {x: 48, y: 196}
+      - {x: 60, y: 182}
+  - runs:
+    - kind: body
+      points:
+      - {x: 8, y: 40}
+      - {x: 48, y: 40}

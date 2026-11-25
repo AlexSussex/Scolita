@@ -1,0 +1,17 @@
+{
+  "status": "draft",
+  "source": "the human (2026-11-24): three strokes, 'like @ but with 2 small legs': the entry from the baseline up the round's left side and over its top (the left leg), the round drawn back over it, the stem with its exit (the right leg); points from design/research/strokes-draft.json; not yet checked against her manual",
+  "slant": 0.2,
+  "strokes": [
+    { "runs": [
+      { "kind": "entry", "points": [[0, 200], [6, 184], [8, 150], [16, 110], [34, 99], [52, 106]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[52, 106], [34, 99], [16, 110], [8, 150], [14, 186], [30, 199], [48, 190], [57, 160], [59, 128], [60, 100]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[60, 100], [59, 150], [60, 185]] },
+      { "kind": "exit", "points": [[60, 185], [68, 198], [80, 196], [92, 182]] }
+    ] }
+  ]
+}

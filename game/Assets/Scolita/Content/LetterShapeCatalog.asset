@@ -13,11 +13,19 @@ MonoBehaviour:
   m_Name: LetterShapeCatalog
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LetterShapeCatalog
   items:
+  - {fileID: 11400000, guid: 2829895d4488a6d439c5e83b5296036e, type: 2}
   - {fileID: 11400000, guid: b80a0536a41314145aa260fdcdb688fd, type: 2}
+  - {fileID: 11400000, guid: 60a2d05051d3eb44c844111ab4190229, type: 2}
   - {fileID: 11400000, guid: 5b59236e76006c845939c9af5ac4b5bb, type: 2}
+  - {fileID: 11400000, guid: 2a70820da5bb6eb46b0422c74727710c, type: 2}
   - {fileID: 11400000, guid: 1aff3774334e9e340a4cc354d4c3cca6, type: 2}
+  - {fileID: 11400000, guid: d04ec54acdc0ec74f890f376e86bef13, type: 2}
   - {fileID: 11400000, guid: 308cb6f153c7dcc4e9d57ad17cad181d, type: 2}
+  - {fileID: 11400000, guid: 25cac6c1979ec9449bceecc7a409aeae, type: 2}
   - {fileID: 11400000, guid: ed03b6f8b3914fd469bd24819567e2c0, type: 2}
+  - {fileID: 11400000, guid: f8fe32e18c2a48945bc7aaa036d1927f, type: 2}
   - {fileID: 11400000, guid: 05d7269ec6ca641489a63c3b5405da13, type: 2}
+  - {fileID: 11400000, guid: 393c09ca8377b7f4ab312d65fc110c05, type: 2}
   - {fileID: 11400000, guid: 09746198ebd4b694e8af9894c6d1dedc, type: 2}
+  - {fileID: 11400000, guid: e3504b7eeabd91f42bb50925ca156fb2, type: 2}
   - {fileID: 11400000, guid: c6876eb997ed7ea47802373a748e457a, type: 2}
