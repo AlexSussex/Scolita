@@ -87,12 +87,14 @@ no Unity, no emulator._
 
 - **Pushed:**
   - `3cd62cf` docs: claim curriculum-research-names.
-  - The write-up commit (this Progress section with it): the research
+  - `4ed1358` docs: propose when and how letter names come in: the research
     note `design/research/curriculum-research-names.md`, the voice-line
     draft `design/research/voice-lines-names-draft.csv` (84 rows), and
     `docs/curriculum.md` with a **proposed** §9 "Letter names" and
     proposed lines in §1, §3, §4.2 and §8, each marked "proposed, not yet
     agreed".
+  - The step for the human is step 8 in `local/for-human-next-steps.md`
+    (not committed).
 - **How it was done:**
   - **Romanian:** the manuals [R1] [R2] and the programme [R6] were read
     again as PDFs for the alphabet lesson, with two plannings ([R11]
