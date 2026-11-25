@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: planet
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: planet
-  art: 
+  art: planet.png
   retired: 0
   sprite: {fileID: 21300000, guid: e2f1bd265fa596b479943feb88d8c07d, type: 3}

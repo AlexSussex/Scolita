@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: pug
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: pug
-  art: 
+  art: pug.png
   retired: 0
   sprite: {fileID: 21300000, guid: 736cbc2183bcbb14881dec0a2af5bbeb, type: 3}

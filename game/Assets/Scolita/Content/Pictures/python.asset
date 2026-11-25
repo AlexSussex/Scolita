@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: python
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: python
-  art: 
+  art: python.png
   retired: 0
   sprite: {fileID: 21300000, guid: 378d8ac6a98e6f24288d5a546232e91c, type: 3}

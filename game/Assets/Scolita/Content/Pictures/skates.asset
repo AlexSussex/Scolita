@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: skates
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: skates
-  art: 
+  art: skates.png
   retired: 0
   sprite: {fileID: 21300000, guid: 08f5b0d191c1a8f43905fd135ad4e4ae, type: 3}

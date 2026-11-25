@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: moon
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: moon
-  art: 
+  art: moon.png
   retired: 0
   sprite: {fileID: 21300000, guid: bda0a598046dc0748ab5558310910695, type: 3}

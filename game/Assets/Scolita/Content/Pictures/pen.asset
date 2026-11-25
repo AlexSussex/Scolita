@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: pen
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: pen
-  art: 
+  art: pen.png
   retired: 0
   sprite: {fileID: 21300000, guid: 38cab800707a03e4982218f8e435b772, type: 3}

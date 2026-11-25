@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: stop-sign
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: stop-sign
-  art: 
+  art: stop-sign.png
   retired: 0
   sprite: {fileID: 21300000, guid: e787c17a41b1efb47b65bde2446d1b41, type: 3}

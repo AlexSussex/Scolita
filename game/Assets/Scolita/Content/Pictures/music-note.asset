@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: music-note
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: music-note
-  art: 
+  art: music-note.png
   retired: 0
   sprite: {fileID: 21300000, guid: 3a9b9b0137958674f9dfbd6c41a92dc0, type: 3}

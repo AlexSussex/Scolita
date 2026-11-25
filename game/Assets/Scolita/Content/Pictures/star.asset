@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: star
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: star
-  art: 
+  art: star.png
   retired: 0
   sprite: {fileID: 21300000, guid: f370b6b4d14df1b48bddae164b56c624, type: 3}

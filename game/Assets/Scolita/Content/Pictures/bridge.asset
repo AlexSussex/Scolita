@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: bridge
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: bridge
-  art: 
+  art: bridge.png
   retired: 0
   sprite: {fileID: 21300000, guid: 92dcc456171aadc4cb4d05191fd53796, type: 3}

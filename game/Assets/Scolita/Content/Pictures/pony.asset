@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: pony
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: pony
-  art: 
+  art: pony.png
   retired: 0
   sprite: {fileID: 21300000, guid: c9c42053de61f3d45ac56478e296eab1, type: 3}

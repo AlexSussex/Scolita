@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: tooth
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: tooth
-  art: 
+  art: tooth.png
   retired: 0
   sprite: {fileID: 21300000, guid: 2dba90c85c002de49852e691ba0e33b7, type: 3}

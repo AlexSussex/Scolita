@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: pine-tree
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: pine-tree
-  art: 
+  art: pine-tree.png
   retired: 0
   sprite: {fileID: 21300000, guid: 9fce717e9142a18488b0ff20059f8152, type: 3}

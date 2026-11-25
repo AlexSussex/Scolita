@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: fruit-tree
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: fruit-tree
-  art: 
+  art: fruit-tree.png
   retired: 0
   sprite: {fileID: 21300000, guid: 36c43906312af0c48a9cf9e041c37071, type: 3}

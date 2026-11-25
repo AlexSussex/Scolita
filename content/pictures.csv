@@ -1,53 +1,53 @@
 id,art,retired,notes
-mother,,,mama
-father,,,tata
-bed,,,ro pat
-water,,,apa
-map,,,map
-mat,,,mat
-tap,,,a water tap
+mother,mother.png,,mama
+father,father.png,,tata
+bed,bed.png,,ro pat
+water,water.png,,apa
+map,map.png,,map
+mat,mat.png,,mat
+tap,tap.png,,a water tap
 patting,,,en pat: patting a dog
 plane,,,avion
 bee,,,albină
 music,,,muzică: musical notes
 drum,,,tobă
-planet,,,"planetă / planet, the twins"
+planet,planet.png,,"planetă / planet, the twins"
 apple,,,apple
 astronaut,,,astronaut
-moon,,,moon
+moon,moon.png,,moon
 tiger,,,tiger
-nose,,,"ro nas, en nose"
-table,,,masa
-piano,,,"pian / piano, the twins"
+nose,nose.png,,"ro nas, en nose"
+table,table.png,,masa
+piano,piano.png,,"pian / piano, the twins"
 pan-flute,,,nai
-pine-tree,,,ro pin
-village,,,ro sat
+pine-tree,pine-tree.png,,ro pin
+village,village.png,,ro sat
 pineapple,,,ananas
-sleeping-moon,,,nani: a sleeping moon
+sleeping-moon,sleeping-moon.png,,nani: a sleeping moon
 footprint,,,pas
 thorn,,,spin
 sieve,,,sita
-fruit-tree,,,pom
-bridge,,,ro pod
-tooth,,,dinte
-star,,,"ro stea, en star"
-mop,,,"mop / mop, the twins"
+fruit-tree,fruit-tree.png,,pom
+bridge,bridge.png,,ro pod
+tooth,tooth.png,,dinte
+star,star.png,,"ro stea, en star"
+mop,mop.png,,"mop / mop, the twins"
 cork,,,dop
 watermelon,,,pepene
-domino,,,"domino / domino, the twins"
+domino,domino.png,,"domino / domino, the twins"
 drawing,,,desen
 dance,,,dans
-music-note,,,nota
-pony,,,"ponei / pony, the twins"
-kitten,,,pisoi
-panda,,,"panda / panda, the twins"
-python,,,piton
-tennis,,,"tenis / tennis, the twins"
+music-note,music-note.png,,nota
+pony,pony.png,,"ponei / pony, the twins"
+kitten,kitten.png,,pisoi
+panda,panda.png,,"panda / panda, the twins"
+python,python.png,,piton
+tennis,tennis.png,,"tenis / tennis, the twins"
 sled,,,sanie
-skates,,,patine
-pug,,,ro mops
-knot,,,ro nod
-stop-sign,,,"stop / stop, the twins"
+skates,skates.png,,patine
+pug,pug.png,,ro mops
+knot,knot.png,,ro nod
+stop-sign,stop-sign.png,,"stop / stop, the twins"
 sun,,,"ro soare, en sun"
 island,,,insulă
 ring,,,inel
@@ -57,25 +57,25 @@ eye,,,ochi
 dolphin,,,"delfin / dolphin, the twins"
 elephant,,,"elefant / elephant, the twins"
 helicopter,,,elicopter
-rocket,,,"rachetă / rocket, the twins"
-pin,,,en pin
-sitting,,,en sit: a child sitting down
-man,,,man
-tin-can,,,tin
+rocket,rocket.png,,"rachetă / rocket, the twins"
+pin,pin.png,,en pin
+sitting,sitting.png,,en sit: a child sitting down
+man,man.png,,man
+tin-can,tin-can.png,,tin
 pan,,,pan
 ant,,,ant
 nap,,,nap: a child napping
 sip,,,sip: sipping through a straw
 mint-leaf,,,mint
 pants,,,pants (underpants)
-dot,,,dot
-pen,,,pen
-ten,,,ten: the number 10 or ten dots
+dot,dot.png,,dot
+pen,pen.png,,pen
+ten,ten.png,,ten: the number 10 or ten dots
 pot,,,pot
 spinning-top,,,top
 net,,,net
 pet,,,pet: a puppy in its basket
-pea-pod,,,en pod
+pea-pod,pea-pod.png,,en pod
 nodding,,,en nod
 tent,,,tent
 nest,,,nest

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: tap
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: tap
-  art: 
+  art: tap.png
   retired: 0
   sprite: {fileID: 21300000, guid: a1bafcadcce9e354a8764e18a229066a, type: 3}

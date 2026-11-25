@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: panda
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: panda
-  art: 
+  art: panda.png
   retired: 0
   sprite: {fileID: 21300000, guid: 29b4837731b4acc488221a097b2149d0, type: 3}

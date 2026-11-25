@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: father
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: father
-  art: 
+  art: father.png
   retired: 0
   sprite: {fileID: 21300000, guid: eebadfe4da33fba4693d9535d387539f, type: 3}

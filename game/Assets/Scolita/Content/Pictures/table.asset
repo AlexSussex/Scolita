@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: table
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: table
-  art: 
+  art: table.png
   retired: 0
   sprite: {fileID: 21300000, guid: 346a8d2c7a1c5494093f449649c2a07a, type: 3}

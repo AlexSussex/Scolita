@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: knot
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: knot
-  art: 
+  art: knot.png
   retired: 0
   sprite: {fileID: 21300000, guid: 9a342640eed414841a040cd71d84c75b, type: 3}

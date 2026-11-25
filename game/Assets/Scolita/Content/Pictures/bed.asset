@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: bed
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: bed
-  art: 
+  art: bed.png
   retired: 0
   sprite: {fileID: 21300000, guid: 2c7733c7fefbcfd40b45592f7b7d25af, type: 3}

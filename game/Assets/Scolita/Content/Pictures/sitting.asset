@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: sitting
   m_EditorClassIdentifier: Scolita.Content::Scolita.Content.PictureAsset
   id: sitting
-  art: 
+  art: sitting.png
   retired: 0
   sprite: {fileID: 21300000, guid: 905799fd45c908448a71e53437ce25a4, type: 3}
