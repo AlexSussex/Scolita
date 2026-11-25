@@ -44,6 +44,28 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(curriculum.Words.Get(ContentId.Create("ro-mama")).Syllables, Is.EqualTo(new[] { "ma", "ma" }));
         }
 
+        /// <summary>
+        /// Tests that <see cref="CurriculumAssets.Build"/> makes planets 2 and 3 after planet 1, each word lesson after the
+        /// planet's letters (<see cref="Curriculum.LettersTaughtBefore"/> with real content).
+        /// </summary>
+        [Test]
+        public void TestBuild_PlanetsTwoAndThreeFromTheCatalogs()
+        {
+            Curriculum curriculum = LoadCurriculum();
+
+            curriculum.TryGetLesson(ContentId.Create("ro-words-2"), out Lesson romanianWords);
+            curriculum.TryGetLesson(ContentId.Create("en-words-3"), out Lesson englishWords);
+            IReadOnlyList<ContentId> beforeRomanian = curriculum.LettersTaughtBefore(romanianWords, Language.Romanian);
+            IReadOnlyList<ContentId> beforeEnglish = curriculum.LettersTaughtBefore(englishWords, Language.English);
+
+            Assert.That(curriculum.Domains.Single().Units.Select(unit => unit.Id.Value), Is.EqualTo(new[]
+            {
+                "planet-1", "planet-2", "planet-3"
+            }));
+            Assert.That(string.Join(" ", beforeRomanian), Is.EqualTo("a m t p s i n"));
+            Assert.That(string.Join(" ", beforeEnglish), Is.EqualTo("a m t p s i n o d e"));
+        }
+
         /// <summary>Tests that every letter and word of the catalogs has its voice lines, by the naming rule.</summary>
         [Test]
         public void TestBuild_EveryLetterAndWordHasItsLines()

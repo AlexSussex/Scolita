@@ -11,12 +11,13 @@ using UnityEngine;
 namespace Scolita.Tests.EditMode.Tracing
 {
     /// <summary>
-    /// Tests <see cref="LineCheck"/> on planet 1's real handwritten shapes (a m t p) and two joined words (mama, tata)
-    /// with the lines in <c>Tests/EditMode/Tracing/Strokes/handwritten/</c>: a good line through the letter or the
-    /// word, one sloppy but fine, one backwards, one without its entry, one off during its first stroke (and for the a,
-    /// one off after it: the entry kept), and for the words a line up
-    /// to a join and the next one begun near it after a lift, each with the verdict and the strokes done expected in
-    /// each round.
+    /// Tests <see cref="LineCheck"/> on the real handwritten shapes of planets 1–3 (a m t p, s i n o d e) and six joined
+    /// words (mama, tata, pom, dinte, dot, stea) with the lines in <c>Tests/EditMode/Tracing/Strokes/handwritten/</c>: a good line
+    /// through the letter or the word, one sloppy but fine, one backwards, one without its entry, one off during its
+    /// first stroke (and for the a, one off after it: the entry kept), and for the words a line up to a join and the next
+    /// one begun near it after a lift, each with the verdict and the strokes done expected in each round. An o drawn
+    /// backwards from its high exit, and an e joined in a word drawn backwards, end near their round's start, so they are
+    /// taken for a line without its entry (all rounds for the e, which starts at a join; the first round for the o).
     /// </summary>
     public sealed class HandwrittenStrokeTests
     {
@@ -70,7 +71,12 @@ namespace Scolita.Tests.EditMode.Tracing
 
         private static IEnumerable<string> Figures()
         {
-            return new[] { "a-lower-handwritten", "m-lower-handwritten", "t-lower-handwritten", "p-lower-handwritten", "ro-mama", "ro-tata" };
+            return new[]
+            {
+                "a-lower-handwritten", "m-lower-handwritten", "t-lower-handwritten", "p-lower-handwritten", "s-lower-handwritten",
+                "i-lower-handwritten", "n-lower-handwritten", "o-lower-handwritten", "d-lower-handwritten", "e-lower-handwritten",
+                "ro-mama", "ro-tata", "ro-pom", "ro-dinte", "en-dot", "ro-stea"
+            };
         }
 
         private static TraceFigure FigureOf(Curriculum curriculum, string figureName)

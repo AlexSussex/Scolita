@@ -39,7 +39,8 @@ namespace Scolita.Tests.EditMode.Core.Lessons
 
         /// <summary>
         /// Tests that <see cref="LessonOrder.After"/> gives the next playable lesson, skipping the ones
-        /// with nothing to play, the first after the last, and the first for an unknown id.
+        /// with nothing to play, planet 2's first after planet 1's party, the first after the last, and the first for an
+        /// unknown id.
         /// </summary>
         [Test]
         public void TestAfter_TheNextPlayableLesson()
@@ -49,6 +50,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Assert.That(order.After(ContentId.Create("ro-a")).Id.ToString(), Is.EqualTo("en-a"));
             Assert.That(order.After(ContentId.Create("en-p")).Id.ToString(), Is.EqualTo("party-1"));
             Assert.That(order.After(ContentId.Create("ro-words-1")).Id.ToString(), Is.EqualTo("party-1"));
+            Assert.That(order.After(ContentId.Create("party-1")).Id.ToString(), Is.EqualTo("ro-s"));
             Assert.That(order.After(order.Playable[order.Playable.Count - 1].Id).Id.ToString(), Is.EqualTo("ro-a"));
             Assert.That(order.After(ContentId.Create("no-such-lesson")).Id.ToString(), Is.EqualTo("ro-a"));
         }
