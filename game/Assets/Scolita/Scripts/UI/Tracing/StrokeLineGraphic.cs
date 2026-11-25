@@ -37,6 +37,15 @@ namespace Scolita.UI.Tracing
         /// <summary>How many points it holds.</summary>
         public int Count => count;
 
+        /// <summary>
+        /// Point <paramref name="index"/> it holds, in its local space; read by the PlayMode tests (a handwritten letter
+        /// drawn exactly from its stroke data).
+        /// </summary>
+        public Vector2 PointAt(int index)
+        {
+            return points[index];
+        }
+
         /// <summary>The line width, in the board's pixels.</summary>
         public float Width => width;
 

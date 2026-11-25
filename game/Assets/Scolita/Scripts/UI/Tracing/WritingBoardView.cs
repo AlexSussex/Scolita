@@ -4,26 +4,28 @@ using Scolita.Core.Tracing;
 using Scolita.Game.Lessons;
 using Scolita.Game.Tracing;
 using Scolita.UI.Lesson;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Scolita.UI.Tracing
 {
     /// <summary>
-    /// The view of <c>TraceLetter</c> (design screen 3, <c>Prefabs/Lesson/TraceLetterView.prefab</c>): the writing
-    /// board with its lines, the letter's guide for the round (dotted, a faint shadow, or the start dot only), the
-    /// start dots with their numbers, the yellow arrow, her rainbow trail with stardust under the finger drawing
-    /// (<see cref="TraceFinger"/>: one finger, palms ignored), the strokes she finished kept in ink, the stroke
-    /// drawing itself when the answer is shown, the letter's bounce when a round is done, and the round's stars.
-    /// It draws the round's <see cref="ActivityRound.Trace"/> and sends each stroke to Core when the finger
-    /// lifts; it never judges. Drawing allocates nothing: the points go into one reused buffer and the lines'
-    /// meshes into buffers made once.
+    /// The writing board, the view of <c>TraceLetter</c> and <c>TraceWord</c> (design screens 3 and 8,
+    /// <c>Prefabs/Lesson/TraceLetterView.prefab</c> and <c>TraceWordView.prefab</c>): the board with its lines (for a
+    /// handwritten figure the "tip I" lines and faint slant guides), the figure's guide for the round (dotted, a faint
+    /// shadow, or the start dot only), the start dots numbered within their letter, the yellow arrow, her rainbow trail
+    /// with stardust under the finger drawing (<see cref="TraceFinger"/>: one finger, palms ignored), what she wrote
+    /// kept in ink, the stroke (or, in a word, the rest of the letter) drawing itself when the answer is shown, the
+    /// figure's bounce when a round is done, the round's stars, and for a word the word in print. It draws the round's
+    /// <see cref="ActivityRound.Trace"/> and sends each line to Core when the finger lifts; it never judges. Drawing
+    /// allocates nothing: the points go into one reused buffer and the lines' meshes into buffers made once.
     /// </summary>
-    public sealed class TraceLetterView : ActivityView, ITraceInput
+    public sealed class WritingBoardView : ActivityView, ITraceInput
     {
-        private const float LinesSpan = WritingLines.Below - WritingLines.Top;
-        private const float LinesMiddle = (WritingLines.Top + WritingLines.Below) * 0.5f;
+        private const float LinesMiddle = FigureFit.LinesMiddle;
         private const float ArrowStep = 4f;
+        private const float SlantGuideSpacing = 40f;
 
         private static readonly string[] Numbers = { "1", "2", "3", "4" };
 
@@ -33,6 +35,14 @@ namespace Scolita.UI.Tracing
         [SerializeField] private RectTransform middleLine;
         [SerializeField] private RectTransform baseline;
         [SerializeField] private RectTransform belowLine;
+        [SerializeField] private GameObject printLines;
+        [SerializeField] private GameObject handwrittenLines;
+        [SerializeField] private RectTransform handTopLine;
+        [SerializeField] private RectTransform handMiddleLine;
+        [SerializeField] private RectTransform handBaseline;
+        [SerializeField] private RectTransform handBelowLine;
+        [SerializeField] private StrokeLineGraphic slantGuides;
+        [SerializeField] private TMP_Text printedWord;
         [SerializeField] private StrokeLineGraphic guideDots;
         [SerializeField] private StrokeLineGraphic guideShadow;
         [SerializeField] private StrokeLineGraphic ink;
@@ -61,14 +71,16 @@ namespace Scolita.UI.Tracing
         private readonly TracePoints points = new TracePoints();
         private IActivityInput input;
         private TraceState state;
-        private float scale = 1f;
-        private float centreX;
+        private FigureFit fit;
         private int roundsShown;
         private bool tracing;
         private float fadeLeft;
         private float bounceLeft;
         private float roundPauseLeft;
         private float drawLeft;
+
+        /// <summary>Whether the board shows the handwritten "tip I" lines; read by the PlayMode tests.</summary>
+        public bool ShowsHandwrittenLines => handwrittenLines != null && handwrittenLines.activeSelf;
 
         /// <summary>The finger reader of the board; used by the PlayMode tests to draw a stroke.</summary>
         public TraceFinger Finger => finger;
@@ -79,6 +91,11 @@ namespace Scolita.UI.Tracing
             input = context.Input;
             state = round.Trace;
             badge.Show(round.Language);
+            if (printedWord != null)
+            {
+                printedWord.text = round.Choices[0].Text;
+            }
+
             gameObject.SetActive(true);
             Layout();
             stardust.Clear();
@@ -100,11 +117,7 @@ namespace Scolita.UI.Tracing
                 case FeedbackOutcome.TryAgain:
                     FadeTrail();
                     ShowDotsAndArrow(true);
-                    if (state.Stroke < dots.Length)
-                    {
-                        dots[state.Stroke].Pulse();
-                    }
-
+                    dots[state.Stroke % dots.Length].Pulse();
                     break;
                 case FeedbackOutcome.ShowAnswer:
                     FadeTrail();
@@ -132,7 +145,7 @@ namespace Scolita.UI.Tracing
         /// <inheritdoc/>
         public void StrokeBegan(Vector2 local)
         {
-            if (state == null || state.RoundsDone >= TracingTuning.Rounds)
+            if (state == null || state.IsDone)
             {
                 return;
             }
@@ -242,18 +255,49 @@ namespace Scolita.UI.Tracing
         private void Layout()
         {
             Rect area = board.rect;
-            float width = Mathf.Max(state.Shape.MaxX - state.Shape.MinX, WritingLines.Middle);
-            scale = Mathf.Min(area.height * letterHeightShare / LinesSpan, area.width * letterWidthShare / width);
-            centreX = (state.Shape.MinX + state.Shape.MaxX) * 0.5f;
-            PlaceLine(topLine, WritingLines.Top, area.width);
-            PlaceLine(middleLine, WritingLines.Middle, area.width);
-            PlaceLine(baseline, WritingLines.Baseline, area.width);
-            PlaceLine(belowLine, WritingLines.Below, area.width);
+            TraceFigure figure = state.Figure;
+            fit = FigureFit.Of(figure, area, letterHeightShare, letterWidthShare);
+            bool byHand = figure.Form == LetterForm.Handwritten && handwrittenLines != null;
+            printLines.SetActive(!byHand);
+            if (handwrittenLines != null)
+            {
+                handwrittenLines.SetActive(byHand);
+            }
+
+            if (byHand)
+            {
+                PlaceLine(handTopLine, WritingLines.Top, area.width);
+                PlaceLine(handMiddleLine, WritingLines.Middle, area.width);
+                PlaceLine(handBaseline, WritingLines.Baseline, area.width);
+                PlaceLine(handBelowLine, WritingLines.Below, area.width);
+                DrawSlantGuides(area.width);
+            }
+            else
+            {
+                PlaceLine(topLine, WritingLines.Top, area.width);
+                PlaceLine(middleLine, WritingLines.Middle, area.width);
+                PlaceLine(baseline, WritingLines.Baseline, area.width);
+                PlaceLine(belowLine, WritingLines.Below, area.width);
+            }
         }
+
+        private void DrawSlantGuides(float boardWidth)
+        {
+            slantGuides.Clear();
+            float halfWidth = boardWidth * 0.45f / fit.Scale;
+            float rise = (WritingLines.Below - WritingLines.Top) * state.Figure.Slant;
+            for (float x = fit.CentreX - halfWidth; x + rise <= fit.CentreX + halfWidth; x += SlantGuideSpacing)
+            {
+                slantGuides.BeginLine();
+                slantGuides.Add(Local(new ShapePoint(x, WritingLines.Below)));
+                slantGuides.Add(Local(new ShapePoint(x + rise, WritingLines.Top)));
+            }
+        }
+
 
         private void PlaceLine(RectTransform line, float y, float boardWidth)
         {
-            line.anchoredPosition = new Vector2(0f, (LinesMiddle - y) * scale);
+            line.anchoredPosition = new Vector2(0f, (LinesMiddle - y) * fit.Scale);
             line.sizeDelta = new Vector2(boardWidth * 0.9f, line.sizeDelta.y);
         }
 
@@ -267,6 +311,7 @@ namespace Scolita.UI.Tracing
             ShowDotsAndArrow(false);
             for (int star = 0; star < roundStars.Length; star++)
             {
+                roundStars[star].gameObject.SetActive(star < state.Rounds);
                 roundStars[star].color = star <= state.Round ? starLit : starUnlit;
             }
         }
@@ -275,38 +320,37 @@ namespace Scolita.UI.Tracing
         {
             guideDots.Clear();
             guideShadow.Clear();
-            for (int stroke = 0; stroke < state.Shape.Strokes.Count; stroke++)
+            int answerEnd = AnswerEnd();
+            for (int stroke = 0; stroke < state.Figure.Strokes.Count; stroke++)
             {
-                bool shownForAnswer = state.AnswerShown && stroke == state.Stroke;
+                bool shownForAnswer = state.AnswerShown && stroke >= state.Stroke && stroke <= answerEnd;
                 if (state.Guide == TraceGuide.Dotted || shownForAnswer)
                 {
-                    AddPath(guideDots, state.Shape.Strokes[stroke].Path, scale, new Vector2(-centreX * scale, 0f));
+                    AddPath(guideDots, state.Figure.Strokes[stroke].Path, fit.Scale, new Vector2(-fit.CentreX * fit.Scale, 0f));
                 }
                 else if (state.Guide == TraceGuide.Faint)
                 {
-                    AddPath(guideShadow, state.Shape.Strokes[stroke].Path, scale, new Vector2(-centreX * scale, 0f));
+                    AddPath(guideShadow, state.Figure.Strokes[stroke].Path, fit.Scale, new Vector2(-fit.CentreX * fit.Scale, 0f));
                 }
             }
         }
 
         private void ShowDotsAndArrow(bool arrowAlways)
         {
-            for (int index = 0; index < dots.Length; index++)
+            TraceFigure figure = state.Figure;
+            foreach (StartDot dot in dots)
             {
-                bool current = index == state.Stroke;
-                bool next = index == state.Stroke + 1 && state.Guide == TraceGuide.Dotted;
-                if (index < state.Shape.Strokes.Count && (current || next))
-                {
-                    dots[index].Show(Local(state.Shape.Strokes[index].Path.Start), Numbers[index], current);
-                }
-                else
-                {
-                    dots[index].Hide();
-                }
+                dot.Hide();
+            }
+
+            ShowDot(state.Stroke, true);
+            if (state.Guide == TraceGuide.Dotted && state.Stroke + 1 < figure.Strokes.Count && !figure.Continues(state.Stroke + 1))
+            {
+                ShowDot(state.Stroke + 1, false);
             }
 
             arrow.Clear();
-            StrokePath path = state.Shape.Strokes[state.Stroke].Path;
+            StrokePath path = figure.Strokes[state.Stroke].Path;
             bool showArrow = (arrowAlways || state.Guide != TraceGuide.StartDotOnly) && !path.IsDot;
             arrowHead.gameObject.SetActive(showArrow);
             if (!showArrow)
@@ -329,10 +373,30 @@ namespace Scolita.UI.Tracing
             arrowHead.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(tip.y - behind.y, tip.x - behind.x) * Mathf.Rad2Deg);
         }
 
+        private void ShowDot(int stroke, bool current)
+        {
+            int number = state.Figure.NumberInLetter(stroke);
+            dots[stroke % dots.Length].Show(Local(state.Figure.Strokes[stroke].Path.Start), Numbers[number % Numbers.Length], current);
+        }
+
+        private int AnswerEnd()
+        {
+            int end = state.Stroke;
+            if (state.Figure.LetterCount > 1)
+            {
+                while (end + 1 < state.Figure.Strokes.Count && !state.Figure.EndsLine(end) && !state.Figure.IsMark(end))
+                {
+                    end++;
+                }
+            }
+
+            return end;
+        }
+
         private void StrokeKept()
         {
             ink.BeginLine();
-            for (int index = 0; index < points.Count; index++)
+            for (int index = 0; index < state.LastPointsKept && index < points.Count; index++)
             {
                 ink.Add(Local(new ShapePoint(points.X(index), points.Y(index))));
             }
@@ -350,7 +414,7 @@ namespace Scolita.UI.Tracing
                     dot.Hide();
                 }
 
-                if (state.RoundsDone < TracingTuning.Rounds)
+                if (!state.IsDone)
                 {
                     roundPauseLeft = roundPauseSeconds;
                 }
@@ -374,24 +438,38 @@ namespace Scolita.UI.Tracing
 
         private void DrawStrokeItself(float share)
         {
-            StrokePath path = state.Shape.Strokes[state.Stroke].Path;
-            float reached = path.Length * share;
-            drawing.Clear();
-            drawing.BeginLine();
-            for (int index = 0; index < path.Count && path.DistanceAt(index) <= reached; index++)
+            int end = AnswerEnd();
+            float total = 0f;
+            for (int stroke = state.Stroke; stroke <= end; stroke++)
             {
-                drawing.Add(Local(new ShapePoint(path.X(index), path.Y(index))));
+                total += state.Figure.Strokes[stroke].Path.Length;
             }
 
-            Vector2 tip = Local(path.PointAt(reached));
-            drawing.Add(tip);
+            float reached = total * share;
+            Vector2 tip = Vector2.zero;
+            drawing.Clear();
+            for (int stroke = state.Stroke; stroke <= end && reached >= 0f; stroke++)
+            {
+                StrokePath path = state.Figure.Strokes[stroke].Path;
+                drawing.BeginLine();
+                for (int index = 0; index < path.Count && path.DistanceAt(index) <= reached; index++)
+                {
+                    drawing.Add(Local(new ShapePoint(path.X(index), path.Y(index))));
+                }
+
+                tip = Local(path.PointAt(reached));
+                drawing.Add(tip);
+                reached -= path.Length;
+            }
+
             fingerGlow.rectTransform.anchoredPosition = tip;
             fingerGlow.canvasRenderer.SetAlpha(share < 1f ? 1f : 0f);
         }
 
         private void AddPoint(Vector2 local)
         {
-            if (points.Add(local.x / scale + centreX, LinesMiddle - local.y / scale))
+            ShapePoint at = fit.ShapeAt(local);
+            if (points.Add(at.X, at.Y))
             {
                 trail.Add(local);
                 stardust.Leave(local);
@@ -410,7 +488,7 @@ namespace Scolita.UI.Tracing
         {
             float top = WritingLines.Below;
             float bottom = WritingLines.Top;
-            foreach (Stroke stroke in state.Shape.Strokes)
+            foreach (Stroke stroke in state.Figure.Strokes)
             {
                 for (int index = 0; index < stroke.Path.Count; index++)
                 {
@@ -420,11 +498,11 @@ namespace Scolita.UI.Tracing
             }
 
             Rect area = picture.rectTransform.rect;
-            float width = Mathf.Max(state.Shape.MaxX - state.Shape.MinX, 1f);
+            float width = Mathf.Max(state.Figure.MaxX - state.Figure.MinX, 1f);
             float pictureScale = Mathf.Min(area.height / Mathf.Max(bottom - top, 1f), area.width / width);
-            Vector2 offset = new Vector2(-centreX * pictureScale, ((top + bottom) * 0.5f - LinesMiddle) * pictureScale);
+            Vector2 offset = new Vector2(-fit.CentreX * pictureScale, ((top + bottom) * 0.5f - LinesMiddle) * pictureScale);
             picture.Clear();
-            foreach (Stroke stroke in state.Shape.Strokes)
+            foreach (Stroke stroke in state.Figure.Strokes)
             {
                 AddPath(picture, stroke.Path, pictureScale, offset);
             }
@@ -441,7 +519,7 @@ namespace Scolita.UI.Tracing
 
         private Vector2 Local(ShapePoint point)
         {
-            return new Vector2((point.X - centreX) * scale, (LinesMiddle - point.Y) * scale);
+            return fit.Local(point);
         }
     }
 }
