@@ -26,7 +26,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         /// strokes each), and that the step is then done.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTraceLetterView_ThreeRoundsToTheEnd()
+        public IEnumerator TestShow_ThreeRoundsToTheEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
@@ -60,7 +60,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         /// palm put down first, change nothing, and a stroke drawn backwards gets its hint.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTraceFinger_OneFingerNoPalm()
+        public IEnumerator TestPress_OneFingerNoPalm()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
@@ -87,14 +87,12 @@ namespace Scolita.Tests.PlayMode.Lessons
                 Assert.That(hints, Is.EqualTo(0));
 
                 StrokePath stem = trace.Shape.Strokes[1].Path;
-                TracePoints backwards = LessonScene.Along(stem);
                 view.Finger.Press(1, view.ScreenPointOf(stem.End), 0f);
                 view.Finger.Move(1, view.ScreenPointOf(stem.PointAt(stem.Length * 0.5f)));
                 view.Finger.Move(1, view.ScreenPointOf(stem.Start));
                 view.Finger.Release(1, false);
                 yield return null;
 
-                Assert.That(backwards.Count, Is.GreaterThan(1));
                 Assert.That(trace.LastVerdict, Is.EqualTo(StrokeVerdict.WrongDirection));
                 Assert.That(hints, Is.EqualTo(1));
                 Assert.That(runner.Run.State, Is.EqualTo(LessonRunState.Playing));
@@ -111,7 +109,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         /// meshes rebuilt) allocates nothing.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTraceFinger_DrawingAllocatesNothing()
+        public IEnumerator TestMove_DrawingAllocatesNothing()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
