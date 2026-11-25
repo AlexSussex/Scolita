@@ -42,6 +42,7 @@ namespace Scolita.Game.Rewards
         private readonly VoiceSequence stickerBookLine;
         private readonly VoiceSequence trailPickerLine;
         private SkyChart openSky;
+        private bool bookOpen;
 
         /// <summary>
         /// Reads her rewards from <paramref name="profileFiles"/> (a profile from before rewards gets the stars of what
@@ -90,6 +91,9 @@ namespace Scolita.Game.Rewards
         /// <summary>The lines the rewards can say here, whose clips the scene loads.</summary>
         public IReadOnlyList<VoiceLineId> SpokenLines => spoken;
 
+        /// <summary>Whether the sky book, the sticker book or the trails are open (Android Back closes them).</summary>
+        public bool IsBookOpen => bookOpen;
+
         /// <summary>
         /// Shows the map's bottom bar and the rocket's trail. Called by <c>MapRunner</c> when the map opens.
         /// </summary>
@@ -124,6 +128,7 @@ namespace Scolita.Game.Rewards
         public void OpenSkyBook()
         {
             openSky = SkyChart.Of(sources.Content, order, book, sources.Rules);
+            bookOpen = true;
             view.ShowSkyBook(openSky);
             voice.Say(skyBookLine, null);
         }
@@ -131,6 +136,7 @@ namespace Scolita.Game.Rewards
         /// <inheritdoc/>
         public void OpenStickerBook()
         {
+            bookOpen = true;
             view.ShowStickerBook(StickerShelf.Of(book, sources.Sprites, sources.Rules));
             voice.Say(stickerBookLine, null);
         }
@@ -142,6 +148,7 @@ namespace Scolita.Game.Rewards
                 .Select(trail => new TrailChoice(trail, sources.Sprites.Trail(trail)))
                 .Where(choice => choice.Picture != null)
                 .ToArray();
+            bookOpen = true;
             view.ShowTrails(choices, book.ChosenTrail);
             voice.Say(trailPickerLine, null);
         }
@@ -150,6 +157,7 @@ namespace Scolita.Game.Rewards
         public void CloseBook()
         {
             openSky = null;
+            bookOpen = false;
             view.CloseBooks();
         }
 

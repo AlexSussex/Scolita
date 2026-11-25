@@ -1,6 +1,6 @@
 namespace Scolita.Game.Lessons
 {
-    /// <summary>The mascot's moods in a lesson (design/README.md → "The mascot").</summary>
+    /// <summary>The mascot's moods in a lesson and on the map (design/README.md → "The mascot").</summary>
     public enum GuideMood
     {
         /// <summary>Happy: an instruction, a right answer.</summary>
@@ -10,6 +10,8 @@ namespace Scolita.Game.Lessons
         Thinking,
 
         /// <summary>Cheering: the end of the lesson.</summary>
-        Cheering
+        Cheering,
+        /// <summary>Sleepy, yawning: the map at the daily limit ("Racheta se odihnește").</summary>
+        Sleepy
     }
 }

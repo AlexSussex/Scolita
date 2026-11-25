@@ -128,6 +128,19 @@ namespace Scolita.Game.Lessons
             }
         }
 
+        /// <summary>
+        /// Stops what is being said and forgets it (nothing follows, nothing is said again on a return), hiding the
+        /// bubble; the last line can still be said again. Called by <c>MapRunner</c> when the parent gate asks, so only
+        /// the gate's number is heard.
+        /// </summary>
+        public void Silence()
+        {
+            current = null;
+            next = null;
+            voice.Stop();
+            bubble.Hide();
+        }
+
         /// <summary>Stops the voice when the app goes to the background; called by <see cref="LessonRunner"/>.</summary>
         public void Pause()
         {

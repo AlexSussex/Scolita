@@ -62,6 +62,17 @@ namespace Scolita.Game.Voice
             }
         }
 
+        /// <summary>
+        /// Sets the voice's volume, from 0 (silent) to 1 (full; the tablet's settings, set in the parent area): the clips'
+        /// and the tablet's voice's. Called by the scenes' composition roots after <see cref="Begin"/>.
+        /// </summary>
+        public void SetVolume(float volume)
+        {
+            float clamped = Mathf.Clamp01(volume);
+            audioSource.volume = clamped;
+            android?.SetVolume(clamped);
+        }
+
         /// <summary>Loads the clips of <paramref name="lines"/> (a lesson's); called by the Lesson scene's composition root.</summary>
         public void LoadLines(IEnumerable<VoiceLineId> lines)
         {

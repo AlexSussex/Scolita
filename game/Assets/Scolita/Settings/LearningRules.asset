@@ -36,3 +36,9 @@ MonoBehaviour:
   warmUpsAtStart: 2
   warmUpChoices: 3
   damagedCopyFineDays: 3
+  gateHoldSeconds: 3
+  gateLowestNumber: 11
+  gateHighestNumber: 19
+  gateChoices: 3
+  gateRestSeconds: 30
+  sessionLimitMinutes: 0a0000000f00000014000000

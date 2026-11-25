@@ -8,6 +8,7 @@ namespace Scolita.Game.Scenes
     {
         Boot,
         Map,
-        Lesson
+        Lesson,
+        Parent
     }
 }

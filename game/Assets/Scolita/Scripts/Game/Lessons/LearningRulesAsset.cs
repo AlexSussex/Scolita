@@ -1,4 +1,5 @@
 using Scolita.Core.Lessons;
+using Scolita.Core.Parent;
 using Scolita.Core.Progress;
 using Scolita.Core.Tracing;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Scolita.Game.Lessons
     /// how she learns, in one place, read into Core's <see cref="LearningRules"/>. The tracing numbers are in a
     /// letter shape's units (a small letter is 100 high). <c>docs/curriculum.md</c> §5's numbers (learned,
     /// the reviews, the warm-ups) and how long a damaged save's copies are kept are read into Core's
-    /// <see cref="ProgressRules"/>.
+    /// <see cref="ProgressRules"/>; the parent gate's and the daily limit's numbers into Core's <see cref="ParentRules"/>.
     /// </summary>
     [CreateAssetMenu(fileName = "LearningRules", menuName = "Scolita/Learning rules")]
     public sealed class LearningRulesAsset : ScriptableObject
@@ -39,6 +40,12 @@ namespace Scolita.Game.Lessons
         [SerializeField, Min(0)] private int warmUpsAtStart = 2;
         [SerializeField, Range(2, 4)] private int warmUpChoices = 3;
         [SerializeField, Min(1)] private int damagedCopyFineDays = 3;
+        [SerializeField, Min(0.5f)] private float gateHoldSeconds = 3f;
+        [SerializeField, Min(0)] private int gateLowestNumber = 11;
+        [SerializeField, Min(0)] private int gateHighestNumber = 19;
+        [SerializeField, Range(ParentRules.FewestGateChoices, ParentRules.MostGateChoices)] private int gateChoices = 3;
+        [SerializeField, Min(0f)] private float gateRestSeconds = 30f;
+        [SerializeField] private int[] sessionLimitMinutes = { 10, 15, 20 };
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -63,6 +70,17 @@ namespace Scolita.Game.Lessons
         {
             return new ProgressRules(romanianRightsForLearned, englishRightsForLearned, kindsForLearned, daysForLearned,
                 reviewIntervalDays, reviewStepsBackAfterMiss, warmUpsAtStart, warmUpChoices, damagedCopyFineDays);
+        }
+
+        /// <summary>
+        /// The parent gate's numbers (the hold, the numbers said, how many are offered, the rest after a wrong one) and the
+        /// daily limit's choices, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number out of
+        /// range. Called by <c>MapRunner</c> and <c>ParentRunner</c> when they open, and the tests.
+        /// </summary>
+        public ParentRules ToParentRules()
+        {
+            return new ParentRules(gateHoldSeconds, gateLowestNumber, gateHighestNumber, gateChoices, gateRestSeconds,
+                sessionLimitMinutes);
         }
     }
 }

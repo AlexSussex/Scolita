@@ -25,9 +25,10 @@ namespace Scolita.Game.Voice
         private const float SecondsBeforeGivingUp = 4f;
         private const float SecondsPerCharacterBeforeGivingUp = 0.2f;
         private const string NotInstalledFeature = "notInstalled";
+        private const string VolumeParameter = "volume";
 
         private readonly AndroidJavaObject engine;
-        private readonly AndroidJavaObject noParameters;
+        private readonly AndroidJavaObject speakParameters;
         private AndroidJavaObject romanianVoice;
         private AndroidJavaObject englishVoice;
         private int initStatus = InitPending;
@@ -49,7 +50,7 @@ namespace Scolita.Game.Voice
                 engine = new AndroidJavaObject("android.speech.tts.TextToSpeech", activity, new TextToSpeechInitListener(OnInit));
             }
 
-            noParameters = new AndroidJavaObject("android.os.Bundle");
+            speakParameters = new AndroidJavaObject("android.os.Bundle");
         }
 
         /// <inheritdoc/>
@@ -88,7 +89,7 @@ namespace Scolita.Game.Voice
             }
 
             int utterance = currentUtterance + 1;
-            int result = engine.Call<int>("speak", text, QueueFlush, noParameters, utterance.ToString(CultureInfo.InvariantCulture));
+            int result = engine.Call<int>("speak", text, QueueFlush, speakParameters, utterance.ToString(CultureInfo.InvariantCulture));
             if (result != Success)
             {
                 Debug.LogWarning("Voice: the system voice refused to speak (" + result + ").");
@@ -98,6 +99,15 @@ namespace Scolita.Game.Voice
             currentUtterance = utterance;
             giveUpAt = Time.unscaledTime + SecondsBeforeGivingUp + text.Length * SecondsPerCharacterBeforeGivingUp;
             return true;
+        }
+
+        /// <summary>
+        /// Says every later line at <paramref name="volume"/> (0 to 1), through the engine's volume parameter. Called by
+        /// <see cref="VoiceHost.SetVolume"/>.
+        /// </summary>
+        public void SetVolume(float volume)
+        {
+            speakParameters.Call("putFloat", VolumeParameter, volume);
         }
 
         /// <inheritdoc/>
@@ -125,7 +135,7 @@ namespace Scolita.Game.Voice
         {
             engine.Call("shutdown");
             engine.Dispose();
-            noParameters.Dispose();
+            speakParameters.Dispose();
             romanianVoice?.Dispose();
             englishVoice?.Dispose();
         }

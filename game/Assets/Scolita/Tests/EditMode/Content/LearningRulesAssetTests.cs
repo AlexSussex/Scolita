@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Scolita.Core.Parent;
 using Scolita.Core.Progress;
 using Scolita.Game.Lessons;
 using UnityEditor;
@@ -46,6 +47,25 @@ namespace Scolita.Tests.EditMode.Content
             Assert.That(rules.WarmUpsAtStart, Is.EqualTo(2));
             Assert.That(rules.WarmUpChoices, Is.EqualTo(3));
             Assert.That(rules.DamagedCopyFineDays, Is.EqualTo(3));
+        }
+
+        /// <summary>
+        /// Tests that the learning rules asset holds the parent gate's numbers (PRD §3.7: a 3-second hold, a number from
+        /// 11 to 19 among 3) and the daily limit's choices (10, 15 and 20 minutes, beside off; decision D8).
+        /// </summary>
+        [Test]
+        public void TestToParentRules_TheLearningRulesAsset()
+        {
+            LearningRulesAsset asset = AssetDatabase.LoadAssetAtPath<LearningRulesAsset>("Assets/Scolita/Settings/LearningRules.asset");
+
+            ParentRules rules = asset.ToParentRules();
+
+            Assert.That(rules.GateHoldSeconds, Is.EqualTo(3f));
+            Assert.That(rules.GateLowestNumber, Is.EqualTo(11));
+            Assert.That(rules.GateHighestNumber, Is.EqualTo(19));
+            Assert.That(rules.GateChoices, Is.EqualTo(3));
+            Assert.That(rules.GateRestSeconds, Is.EqualTo(30f));
+            Assert.That(rules.SessionLimitMinutes, Is.EqualTo(new[] { 10, 15, 20 }));
         }
     }
 }

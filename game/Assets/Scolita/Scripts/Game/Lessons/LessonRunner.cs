@@ -10,6 +10,7 @@ using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Timing;
 using Scolita.Core.Voice;
+using Scolita.Game.Parent;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Rewards;
@@ -30,7 +31,8 @@ namespace Scolita.Game.Lessons
     /// to Core and says what Core decides, saves where she is after each step and when the app goes to
     /// the background, puts her warm-ups before the lesson (<see cref="WarmUps"/>), records what she does
     /// in her progress (<see cref="LessonProgress"/>) and saves it after each step, and keeps the screen
-    /// awake while the lesson is open.
+    /// awake while the lesson is open. It counts her play time for the daily limit (<see cref="Parent.PlayClock"/>)
+    /// but never ends a lesson for it; Android Back goes home to the map (or closes the sticker book).
     /// </summary>
     public sealed class LessonRunner : MonoBehaviour, IActivityInput, ILessonScreenInput
     {
@@ -56,6 +58,7 @@ namespace Scolita.Game.Lessons
         private LessonOrder order;
         private LearnerProgress progress;
         private LessonProgress recorder;
+        private PlayClock playClock;
         private LessonVoice lessonVoice;
         private ActivityViewContext context;
         private SaveStore profileFiles;
@@ -117,13 +120,15 @@ namespace Scolita.Game.Lessons
         /// <inheritdoc/>
         public void Continue()
         {
-            SceneNavigator.Load(AppScene.Map);
+            LeaveForTheMap();
         }
 
         private void Start()
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
+            voice.SetVolume(SaveStore.ForTablet(Application.persistentDataPath)
+                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.VoiceVolume);
             profileFiles = SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
             LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
             IReadOnlyCollection<ActivityKind> playable = PlayableKinds();
@@ -136,6 +141,7 @@ namespace Scolita.Game.Lessons
             order = new LessonOrder(curriculum.Domains[0], mix, new PlayableSteps(playable, curriculum));
             progress = ProgressFile.Load(profileFiles, curriculum, order);
             IClock clock = new SystemClock();
+            playClock = new PlayClock(profileFiles, clock);
             ProgressRules progressRules = learningRules.ToProgressRules();
             IRandom random = new SeededRandom((ulong)DateTime.UtcNow.Ticks);
             LessonPlan plan = ChoosePlan(new WarmUps(progress, curriculum, mix, order.PlayableSteps, progressRules, clock.Today, random));
@@ -159,6 +165,12 @@ namespace Scolita.Game.Lessons
             if (run == null)
             {
                 return;
+            }
+
+            playClock.Tick(Time.unscaledDeltaTime);
+            if (AndroidBack.WasPressed())
+            {
+                Back();
             }
 
             lessonVoice.Tick();
@@ -194,6 +206,7 @@ namespace Scolita.Game.Lessons
             if (paused)
             {
                 SaveWhereSheIs();
+                playClock.Save();
                 lessonVoice.Pause();
             }
             else
@@ -209,6 +222,7 @@ namespace Scolita.Game.Lessons
                 return;
             }
 
+            playClock.Save();
             run.StepCompleted -= OnStepCompleted;
             run.LessonCompleted -= OnLessonCompleted;
             voice.PartStarted -= OnPartStarted;
@@ -315,6 +329,23 @@ namespace Scolita.Game.Lessons
         private void OnStepCompleted(StepCompleted completed)
         {
             SaveWhereSheIs();
+            playClock.Save();
+        }
+
+        private void Back()
+        {
+            if (rewards != null && rewards.IsBookOpen)
+            {
+                rewards.CloseBook();
+                return;
+            }
+
+            LeaveForTheMap();
+        }
+
+        private void LeaveForTheMap()
+        {
+            SceneNavigator.Load(AppScene.Map);
         }
 
         private void OnLessonCompleted(LessonCompleted completed)

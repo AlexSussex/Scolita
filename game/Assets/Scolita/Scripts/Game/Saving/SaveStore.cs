@@ -181,6 +181,41 @@ namespace Scolita.Game.Saving
         }
 
         /// <summary>
+        /// Deletes <c>&lt;name&gt;.json</c>, whatever it holds (a file kept as it is too, since the parent asked), so the
+        /// next load gives the defaults; its damaged copies stay, for rescuing her progress by hand. Returns true when
+        /// the file is gone (or was never there), false, after logging the error, when it could not be deleted or the
+        /// folder can't be used. Called by <c>ProgressReset</c> and <c>SaveStoreTests</c>.
+        /// </summary>
+        public bool Delete(string name)
+        {
+            RequireValidName(name);
+            if (!directoryUsable)
+            {
+                Debug.LogError("Scolita: the save folder '" + directory + "' can't be used; "
+                    + name + FileExtension + " was not deleted.");
+                return false;
+            }
+
+            string path = PathOf(name, FileExtension);
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (Exception exception) when (IsFileSystemError(exception))
+            {
+                Debug.LogError("Scolita: could not delete " + name + FileExtension + ": " + exception.Message);
+                return false;
+            }
+
+            keptUnreadable.Remove(name);
+            readFine.Remove(name);
+            return true;
+        }
+
+        /// <summary>
         /// Removes the damaged copies of every file in this folder that a newer version of the app has read and saved fine
         /// on at least <paramref name="fineDays"/> different days, and forgets them in the ledger; copies found without a
         /// watch (made before the ledger, or after a damaged ledger) are watched from now on, as set aside by this

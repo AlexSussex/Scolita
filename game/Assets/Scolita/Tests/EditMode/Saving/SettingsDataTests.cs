@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using Scolita.Core.Languages;
+using Scolita.Core.Parent;
+using Scolita.Tests.EditMode.Fakes;
 using Scolita.Game.Settings;
 using UnityEngine;
 
@@ -87,7 +89,62 @@ namespace Scolita.Tests.EditMode.Saving
         {
             string json = JsonUtility.ToJson(new LearningSettingsData(LanguageMix.EnglishOnly));
 
-            Assert.That(json, Is.EqualTo("{\"version\":1,\"languageMix\":\"en\"}"));
+            Assert.That(json, Is.EqualTo("{\"version\":2,\"languageMix\":\"en\",\"sessionLimitMinutes\":0}"));
+        }
+
+        /// <summary>Tests that <see cref="LearningSettingsData.CreateDefaults"/> has no daily limit (decision D8).</summary>
+        [Test]
+        public void TestCreateDefaults_NoDailyLimit()
+        {
+            Assert.That(LearningSettingsData.CreateDefaults().SessionLimitBy(TestParentRules.Default()), Is.EqualTo(SessionLimit.Off));
+        }
+
+        /// <summary>Tests that <see cref="LearningSettingsData.Upgraded"/> brings a version 1 file to version 2, its mix kept and no daily limit.</summary>
+        [Test]
+        public void TestUpgraded_VersionOneHasNoLimit()
+        {
+            LearningSettingsData read = JsonUtility.FromJson<LearningSettingsData>(
+                "{\"version\":1,\"languageMix\":\"ro\",\"sessionLimitMinutes\":15}");
+
+            LearningSettingsData upgraded = read.Upgraded();
+
+            Assert.That(upgraded.Version, Is.EqualTo(2));
+            Assert.That(upgraded.LanguageMix, Is.EqualTo(LanguageMix.RomanianOnly));
+            Assert.That(upgraded.SessionLimitBy(TestParentRules.Default()), Is.EqualTo(SessionLimit.Off));
+        }
+
+        /// <summary>Tests that <see cref="LearningSettingsData.Upgraded"/> keeps a limit, and an unknown one (read as off) for a later version.</summary>
+        [Test]
+        public void TestUpgraded_KeepsTheLimitAndAnUnknownOne()
+        {
+            ParentRules rules = TestParentRules.Default();
+            LearningSettingsData known = JsonUtility.FromJson<LearningSettingsData>(
+                "{\"version\":2,\"languageMix\":\"both\",\"sessionLimitMinutes\":20}");
+            LearningSettingsData unknown = JsonUtility.FromJson<LearningSettingsData>(
+                "{\"version\":2,\"languageMix\":\"both\",\"sessionLimitMinutes\":45}");
+            LearningSettingsData negative = JsonUtility.FromJson<LearningSettingsData>(
+                "{\"version\":2,\"languageMix\":\"both\",\"sessionLimitMinutes\":-3}");
+
+            Assert.That(known.Upgraded().SessionLimitBy(rules).Minutes, Is.EqualTo(20));
+            Assert.That(unknown.Upgraded().SessionLimitBy(rules), Is.EqualTo(SessionLimit.Off));
+            Assert.That(JsonUtility.ToJson(unknown.Upgraded()), Does.Contain("\"sessionLimitMinutes\":45"));
+            Assert.That(JsonUtility.ToJson(negative.Upgraded()), Does.Contain("\"sessionLimitMinutes\":0"));
+        }
+
+        /// <summary>Tests that <see cref="LearningSettingsData.WithLanguageMix"/> and <see cref="LearningSettingsData.WithSessionLimit"/> change only their setting.</summary>
+        [Test]
+        public void TestWith_ChangesOnlyItsSetting()
+        {
+            ParentRules rules = TestParentRules.Default();
+            LearningSettingsData settings = new LearningSettingsData(LanguageMix.Both, SessionLimit.Of(10, rules));
+
+            LearningSettingsData english = settings.WithLanguageMix(LanguageMix.EnglishOnly);
+            LearningSettingsData longer = settings.WithSessionLimit(SessionLimit.Of(20, rules));
+
+            Assert.That(english.LanguageMix, Is.EqualTo(LanguageMix.EnglishOnly));
+            Assert.That(english.SessionLimitBy(rules).Minutes, Is.EqualTo(10));
+            Assert.That(longer.LanguageMix, Is.EqualTo(LanguageMix.Both));
+            Assert.That(longer.SessionLimitBy(rules).Minutes, Is.EqualTo(20));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Scolita.Game.Boot
 {
     /// <summary>
     /// The Boot scene's controller: sets the frame rate, reads the tablet's settings and the
-    /// profile's learning settings (a missing or set-aside file is replaced by the defaults, which
+    /// profile's learning settings, selects the app's language for the string tables (a missing or set-aside file is replaced by the defaults, which
     /// makes the <c>child-1</c> profile at the first start), removes the damaged copies whose file a
     /// newer version has read and saved fine on enough days (<see cref="SaveStore.RemoveSettledCopies"/>,
     /// the number in the learning rules asset), in the tablet's folder and each profile's, then opens
@@ -28,7 +28,9 @@ namespace Scolita.Game.Boot
             try
             {
                 string saveRoot = Application.persistentDataPath;
-                EnsureFile(SaveStore.ForTablet(saveRoot), TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
+                SaveStore tabletFiles = SaveStore.ForTablet(saveRoot);
+                EnsureFile(tabletFiles, TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
+                AppLocale.Select(tabletFiles.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.AppLanguage);
                 ProfileId profile = BuiltInProfiles.FirstChild;
                 EnsureFile(SaveStore.ForProfile(saveRoot, profile), LearningSettingsData.FileName,
                     LearningSettingsData.CreateDefaults());

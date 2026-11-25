@@ -6,6 +6,8 @@
         "Scolita.Content",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
+        "Unity.Localization",
+        "Unity.ResourceManager",
         "UnityEngine.UI"
     ],
     "includePlatforms": [],
