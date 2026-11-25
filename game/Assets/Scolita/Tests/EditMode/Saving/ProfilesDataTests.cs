@@ -34,7 +34,7 @@ namespace Scolita.Tests.EditMode.Saving
             ProfilesData data = JsonUtility.FromJson<ProfilesData>(json).Upgraded();
             CalendarDay today = CalendarDay.FromDate(2026, 11, 25);
 
-            ProfileList list = data.ToList(TestRules(), Avatars(), today);
+            ProfileList list = data.ToList(TestRules(), Avatars(), today, out int leftOut);
 
             Assert.That(list.All.Select(profile => profile.Id.Value), Is.EqualTo(new[] { "child-1", "child-4", "child-5", "tester" }));
             Assert.That(list.All[0].Name.Text, Is.EqualTo("Ana"));
@@ -46,6 +46,7 @@ namespace Scolita.Tests.EditMode.Saving
             Assert.That(list.LastChild.Value, Is.EqualTo("child-5"));
             Assert.That(list.Playing.IsSet, Is.False);
             Assert.That(list.NextChildNumber, Is.EqualTo(6));
+            Assert.That(leftOut, Is.EqualTo(5));
         }
 
         /// <summary>Tests that <see cref="ProfilesData.ToList"/> is null when no child can be read (the list is made from the folders then).</summary>
@@ -57,11 +58,27 @@ namespace Scolita.Tests.EditMode.Saving
                 + "],\"lastChild\":\"\",\"playing\":\"\",\"nextChild\":1}";
 
             ProfileList fromTesterOnly = JsonUtility.FromJson<ProfilesData>(json).Upgraded()
-                .ToList(TestRules(), Avatars(), CalendarDay.FromDate(2026, 11, 25));
-            ProfileList fromDefaults = ProfilesData.CreateDefaults().ToList(TestRules(), Avatars(), CalendarDay.FromDate(2026, 11, 25));
+                .ToList(TestRules(), Avatars(), CalendarDay.FromDate(2026, 11, 25), out int _);
+            ProfileList fromDefaults = ProfilesData.CreateDefaults().ToList(TestRules(), Avatars(), CalendarDay.FromDate(2026, 11, 25),
+                out int _);
 
             Assert.That(fromTesterOnly, Is.Null);
             Assert.That(fromDefaults, Is.Null);
+        }
+
+        /// <summary>Tests that <see cref="ProfilesData.ToList"/> keeps a saved name longer than today's limit.</summary>
+        [Test]
+        public void TestToList_KeepsALongSavedName()
+        {
+            string json = "{\"version\":1,\"profiles\":["
+                + "{\"id\":\"child-1\",\"name\":\"Alexandra-Ioana Elena Maria\",\"avatar\":\"kitty\",\"kind\":\"child\",\"created\":\"2026-11-20\"}"
+                + "],\"lastChild\":\"child-1\",\"playing\":\"\",\"nextChild\":2}";
+
+            ProfileList list = JsonUtility.FromJson<ProfilesData>(json).Upgraded()
+                .ToList(TestRules(), Avatars(), CalendarDay.FromDate(2026, 11, 25), out int leftOut);
+
+            Assert.That(list.All[0].Name.Text, Is.EqualTo("Alexandra-Ioana Elena Maria"));
+            Assert.That(leftOut, Is.EqualTo(0));
         }
 
         private static ProfileRules TestRules()

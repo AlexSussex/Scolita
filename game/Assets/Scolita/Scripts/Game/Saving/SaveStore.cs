@@ -146,6 +146,37 @@ namespace Scolita.Game.Saving
         }
 
         /// <summary>
+        /// Copies <c>&lt;name&gt;.json</c> to a dated copy, <c>&lt;name&gt;.broken-&lt;date-time&gt;.json</c>, as a damaged file
+        /// is set aside (watched by the copies' ledger, removed by itself later), leaving the file in place: for a file that
+        /// reads but has a part that can't be used, before it is saved over. True when the copy is made (or there is no
+        /// file); false, after logging the error, when it could not be. Called by the profile store and the tests.
+        /// </summary>
+        public bool KeepDatedCopy(string name)
+        {
+            RequireValidName(name);
+            string path = PathOf(name, FileExtension);
+            if (!directoryUsable || !File.Exists(path))
+            {
+                return directoryUsable;
+            }
+
+            try
+            {
+                string copy = FreeBrokenPath(name);
+                File.Copy(path, copy);
+                Debug.LogWarning("Scolita: " + name + FileExtension + " has a part that can't be read; it was copied to "
+                    + Path.GetFileName(copy) + " before it is saved over.");
+                NoteSetAside(name);
+                return true;
+            }
+            catch (Exception exception) when (IsFileSystemError(exception))
+            {
+                Debug.LogError("Scolita: " + name + FileExtension + " could not be copied: " + exception.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Deletes the folder of <paramref name="profile"/>, exactly <c>&lt;saveRoot&gt;/profiles/&lt;id&gt;</c>, and
         /// everything in it (a folder that is a link elsewhere is unlinked, never followed). True when it is gone (or was
         /// never there); false, after logging the error, when it could not be deleted or the root can't be used. Called

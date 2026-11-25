@@ -67,23 +67,36 @@ namespace Scolita.Game.Profiles
 
         /// <summary>
         /// The profile list: as saved, or (none saved, a damaged file, or no child in it) made from the profile folders and
-        /// saved. A list that can't be read now (kept as it is by the store) is made from the folders without saving over
-        /// it. Called by the scenes' composition roots and the tests.
+        /// saved. A file with an entry that can't be read is kept as a dated copy before it is saved over (the names and
+        /// avatars can be rescued by hand). A list that can't be read now (kept as it is by the store) is made from the
+        /// folders without saving over it. Either way the next child's number is above every folder on the tablet, so no
+        /// new child gets a folder left behind. Called by the scenes' composition roots and the tests.
         /// </summary>
         public ProfileList Load()
         {
+            IReadOnlyList<ProfileId> folders = SaveStore.ProfilesIn(saveRoot);
             SaveLoadResult<ProfilesData> read = tabletFiles.Load(ProfilesData.FileName, ProfilesData.CreateDefaults());
-            ProfileList list = read.Outcome == SaveLoadOutcome.Loaded ? read.Data.ToList(rules, avatars, clock.Today) : null;
-            if (list != null)
+            int leftOut = 0;
+            ProfileList list = read.Outcome == SaveLoadOutcome.Loaded
+                ? read.Data.ToList(rules, avatars, clock.Today, out leftOut)
+                : null;
+            bool keepCopy = read.Outcome == SaveLoadOutcome.Loaded && (list == null || leftOut > 0);
+            if (list == null)
             {
+                list = ProfileList.FromFolders(folders, avatars, clock.Today, rules);
+                Debug.Log("Scolita: the profile list was made from the profile folders (" + string.Join(", ",
+                    list.All.Select(profile => profile.Id.Value)) + ").");
+            }
+
+            list.KeepIdsAbove(folders);
+            if (keepCopy && !tabletFiles.KeepDatedCopy(ProfilesData.FileName))
+            {
+                Debug.LogError("Scolita: the profile list could not be kept as a dated copy, so it is not saved over.");
                 return list;
             }
 
-            list = ProfileList.FromFolders(SaveStore.ProfilesIn(saveRoot), avatars, clock.Today, rules);
-            if (read.Outcome != SaveLoadOutcome.Unreadable)
+            if ((keepCopy || read.Outcome != SaveLoadOutcome.Loaded) && read.Outcome != SaveLoadOutcome.Unreadable)
             {
-                Debug.Log("Scolita: the profile list was made from the profile folders (" + string.Join(", ",
-                    list.All.Select(profile => profile.Id.Value)) + ").");
                 tabletFiles.Save(ProfilesData.FileName, new ProfilesData(list));
             }
 

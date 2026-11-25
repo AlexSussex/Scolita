@@ -70,13 +70,16 @@ namespace Scolita.Game.Profiles
 
         /// <summary>
         /// Core's list from this data, or null when no child's entry can be read (the caller makes the list from the
-        /// profile folders then). An entry whose id isn't a profile id of its kind, an id already read or an unknown kind
-        /// is left out (with a warning); a name that can't be a <see cref="ProfileName"/> reads as none; an
+        /// profile folders then); <paramref name="leftOut"/> is how many entries were left out (the caller keeps a dated
+        /// copy of the file before saving over it). An entry whose id isn't a profile id of its kind, an id already read or
+        /// an unknown kind is left out (with a warning); a name that can't be a <see cref="ProfileName"/> (read without
+        /// today's length limit) reads as none; an
         /// avatar id that can't be an id reads as the first of <paramref name="avatars"/> (an id the catalog doesn't know
         /// is kept); a day that can't be read is <paramref name="today"/>. Called by <see cref="ProfileStore"/> and the tests.
         /// </summary>
-        public ProfileList ToList(ProfileRules rules, IReadOnlyList<ContentId> avatars, CalendarDay today)
+        public ProfileList ToList(ProfileRules rules, IReadOnlyList<ContentId> avatars, CalendarDay today, out int leftOut)
         {
+            leftOut = 0;
             if (avatars == null || avatars.Count == 0)
             {
                 throw new ArgumentException("There is at least one avatar.", nameof(avatars));
@@ -85,12 +88,13 @@ namespace Scolita.Game.Profiles
             List<Profile> read = new List<Profile>();
             foreach (ProfileData entry in Profiles.Where(entry => entry != null))
             {
-                Profile profile = Read(entry, rules, avatars[0], today);
+                Profile profile = Read(entry, avatars[0], today);
                 if (profile == null || read.Any(other => other.Id == profile.Id)
                     || (profile.Kind == ProfileKind.Tester && read.Any(other => other.Kind == ProfileKind.Tester)))
                 {
                     Debug.LogWarning("Scolita: a profile in " + FileName + ".json can't be used and is left out (id '"
                         + entry.Id + "', kind '" + entry.Kind + "').");
+                    leftOut++;
                     continue;
                 }
 
@@ -117,7 +121,7 @@ namespace Scolita.Game.Profiles
             return this;
         }
 
-        private static Profile Read(ProfileData entry, ProfileRules rules, ContentId firstAvatar, CalendarDay today)
+        private static Profile Read(ProfileData entry, ContentId firstAvatar, CalendarDay today)
         {
             if (!ProfileId.TryCreate(entry.Id, out ProfileId id) || !TryKind(entry.Kind, out ProfileKind kind)
                 || !ProfileList.IsIdOfKind(id, kind))
@@ -125,7 +129,7 @@ namespace Scolita.Game.Profiles
                 return null;
             }
 
-            if (ProfileName.Read(entry.Name, rules, out ProfileName name) != ProfileNameProblem.None)
+            if (ProfileName.ReadSaved(entry.Name, out ProfileName name) != ProfileNameProblem.None)
             {
                 Debug.LogWarning("Scolita: the name of the profile " + id + " can't be read; it has none now.");
             }

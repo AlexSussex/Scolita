@@ -49,7 +49,7 @@ namespace Scolita.Game.Lessons
         [SerializeField, Min(0f)] private float gateRestSeconds = 30f;
         [SerializeField] private int[] sessionLimitMinutes = { 10, 15, 20 };
         [SerializeField, Range(2, 6)] private int mostChildProfiles = 6;
-        [SerializeField, Min(2)] private int nameMostCharacters = 20;
+        [SerializeField, Range(20, 40)] private int nameMostCharacters = 20;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number

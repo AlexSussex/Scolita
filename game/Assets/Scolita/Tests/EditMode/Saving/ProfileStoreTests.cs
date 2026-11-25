@@ -116,6 +116,38 @@ namespace Scolita.Tests.EditMode.Saving
             }
         }
 
+        /// <summary>
+        /// Tests that a list with an entry that can't be read is kept as a dated copy before it is saved over, and that a
+        /// new child's id is above every folder on the tablet (never a folder left behind).
+        /// </summary>
+        [Test]
+        public void TestLoad_AnUnreadableEntryIsKeptAndNoFolderIsReused()
+        {
+            string root = CreateTemporaryFolder();
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(root, "profiles", "child-1"));
+                Directory.CreateDirectory(Path.Combine(root, "profiles", "child-7"));
+                File.WriteAllText(Path.Combine(root, "profiles.json"), "{\"version\":1,\"profiles\":["
+                    + "{\"id\":\"child-1\",\"name\":\"Ana\",\"avatar\":\"kitty\",\"kind\":\"child\",\"created\":\"2026-11-20\"},"
+                    + "{\"id\":\"Child 7\",\"name\":\"Matei\",\"avatar\":\"cat\",\"kind\":\"child\",\"created\":\"2026-11-20\"}"
+                    + "],\"lastChild\":\"child-1\",\"playing\":\"\",\"nextChild\":2}");
+
+                ProfileList list = Store(root).Load();
+                Profile next = list.AddChild(ProfileName.None, ContentId.Create("cat"), CalendarDay.FromDate(2026, 11, 26));
+
+                Assert.That(list.All[0].Name.Text, Is.EqualTo("Ana"));
+                Assert.That(next.Id.Value, Is.EqualTo("child-8"));
+                string[] copies = Directory.GetFiles(root, "profiles.broken-*.json");
+                Assert.That(copies.Length, Is.EqualTo(1));
+                Assert.That(File.ReadAllText(copies[0]), Does.Contain("Matei"));
+            }
+            finally
+            {
+                Directory.Delete(root, true);
+            }
+        }
+
         /// <summary>Tests that <see cref="ProfileStore.DeleteFolder"/> deletes only that profile's folder, and only once it is off the list.</summary>
         [Test]
         public void TestDeleteFolder_OnlyThatProfilesFolder()
