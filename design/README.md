@@ -242,7 +242,7 @@ The app's art comes from two sources, listed one by one in `game/Assets/Scolita/
 
 ## The screens
 
-Eleven screens are designed so far (details in [`screens.md`](screens.md)):
+Eleven screens are designed so far, and three more are described as built (details in [`screens.md`](screens.md)):
 
 1. The galaxy map (home).
 2. Meet a letter (`MeetLetter`).
@@ -255,8 +255,10 @@ Eleven screens are designed so far (details in [`screens.md`](screens.md)):
 9. Who's playing? (profiles).
 10. Profiles in the parent area (children and the tester).
 11. The 14 profile avatars (and the `Avatar` component that draws them).
+12. The sky book (`rewards`, as built).
+13. The sticker book and scene (`rewards`, as built).
+14. The trail picker (`rewards`, as built).
 
 Still to design (in their briefs, in this look): `ListenAndPick`,
 `LetterHunt`, `FirstSound`, `Syllables`, `ReadAndMatch`, `WordTwins`, the
-trip between planets, the sky book, the sticker book and scene, the parent
-gate, the session's end, the tester overlay.
+trip between planets, the parent gate, the session's end, the tester overlay.

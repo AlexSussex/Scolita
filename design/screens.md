@@ -289,3 +289,40 @@ order, with stable ids:
 - On the sheet: the purple sky, "Pozele de profil" (48 px) and "14 poze:
   fiecare copil își alege una", seven cream cards per row, two rows (200 px tall, the
   avatar at 130 px, its name under it).
+
+## 12. The sky book, as built by `rewards` (0.11.0) — `Prefabs/Rewards/RewardBooks.prefab`
+
+**What it is for:** seeing where her stars went: a constellation per planet, lit star by star.
+
+- **Opened by** "Cerul meu" on the map's bottom bar (its star count in the yellow pill).
+- **The page:** the purple sky over the map; the back button top left (88 px, cream, a back
+  arrow); the mascot and its bubble stay on top: "Acestea sunt constelațiile tale. Atinge una
+  și îți spun cum se numește."
+- **A card per planet** (380 × 480, translucent, in a row that scrolls sideways): the
+  constellation drawn from `constellations.csv` (faint lilac lines, dotted rings, lit gold
+  stars) over its planet's beaming picture, dimmed until its first star. Each lesson of the
+  planet lights 3 places: the figure's stars first, then places along its lines.
+- **Tapping a card** says its name: "Aceasta este constelația Unicornului."
+
+## 13. The sticker book and scene, as built by `rewards` (0.11.0)
+
+**What it is for:** playing with her stickers on a big space scene that keeps them.
+
+- **Opened by** "Abțibilduri" on the map (shown once she has a sticker), or "În cartea mea"
+  at a lesson's end.
+- **The scene:** the Earth on the purple sky, most of the screen. **The book:** a strip along
+  the bottom (150 px, translucent) with her stickers on cream tiles, scrolling sideways; a
+  pink number when she has more than one copy left; faded when every copy is on the scene.
+- **Drag a sticker up** out of the strip onto the scene: it stays where she lets go. **One
+  finger** moves it, **two fingers** make it bigger or smaller (half to two and a half times),
+  **dragging it back** onto the strip takes it off (it stays in the book). The last one moved
+  is on top. Each copy she was given can be placed once.
+- Said when it opens: "Trage abțibildurile pe Pământ. Cu două degete le faci mai mari sau mai
+  mici."
+
+## 14. The trail picker, as built by `rewards` (0.11.0)
+
+- **Opened by** "Dâre" on the map (shown once a planet has given her a trail).
+- **A cream card per trail she has** (300 × 200, the trail on a strip of sky), the one the
+  rocket wears ringed in yellow; tapping one gives it to the rocket (it streams under the
+  rocket on the map) and closes the picker. Said: "Alege dâra rachetei."

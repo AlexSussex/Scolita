@@ -190,3 +190,174 @@ their screens. Emulator: the end, the sky book and the sticker scene at 2000 × 
 their constellations in `constellations.csv`, its lessons give stars, stickers and trails the
 same way (`LessonFinished` takes any lesson and its order), and new stickers or trails are rows
 and pictures.
+
+### Slices
+
+- **Pushed:** `a02b97a` `core:` (Core/Rewards: `RewardGiver`, `RewardBook`, `SkyChart`,
+  `ConstellationPlaces`, `RewardTables`, `RewardContentRules`, `RewardLines`), `240d730`
+  `content:` (the three CSVs, 14 voice lines, the asset types and catalogs), `a256f28` `build:`
+  (the importer and the ledger read the rewards; `Content/Rewards/` imported).
+- **Then:** `game:` (the `rewards` save, `RewardsSession`, the runners' hook, the prefabs, the
+  scenes' fields, `RewardRules.asset`) and `ui:` (the end, the bar, the books, the trail), with the
+  art (`design/art/draw/`: the gift box and lid, three bar icons, the constellation's line).
+
+### Decisions
+
+- **The reward content sits beside the curriculum** (`RewardContent`), so `Curriculum`,
+  `CurriculumAssets` and their callers don't change while `progress-review` changes the runners.
+- **Constellations are drawn from data** (`constellations.csv`): `look`'s three constellation
+  PNGs are not used (kept for the design; a `look` chore can delete them). Planet 3 is the whale
+  (its stars line was already in the content); `look`'s cat and the human's guitar wait for later
+  planets.
+- **A replay gives 3 stars again** (the total only grows), and its places light once.
+- **One sticker at most per lesson end**, also when the second lesson and a planet's end fall
+  together.
+- **A sticker can be placed as many times as it was given** (copies), so the scene never fills up.
+- **The trail is chosen at once when it is the first**; later ones are chosen in the picker.
+- **The sticker book and the trails show on the bar once she has one** (no button to an empty
+  page).
+- **The end says the stars line instead of "Ai terminat lecția. Bravo!"** (it begins with
+  "Bravo!"), then the sticker's and the trail's lines.
+- **The rules asset is its own** (`Settings/RewardRules.asset`), beside `LearningRules.asset`,
+  which `progress-review` changes now; they can merge later.
+- **The bar's and the end's words are Romanian only** ("Cerul meu", "Abțibilduri", "Dâre",
+  "În cartea mea"), as "Mai departe" is: `parent-area` moves them into the string tables with
+  the app's language. The spoken lines follow the map's or the lesson's language.
+- **Version** on the map moved up above the bar (the third button needed its place).
+
+### Usability (the new screens)
+
+Every page has the back button top left (88 px, under the mascot), and its line is said as it
+opens, with the mascot and the bubble kept on top; buttons are 72–96 px, stickers on 124 px
+tiles; nothing can be lost (taking a sticker off puts it back in the book); no numbers but the
+star count; the stars land one by one with no timer to beat.
+
+### Measured
+
+- **GC while the end runs and while she drags or pinches a sticker** (a PlayMode probe with the
+  `GC Allocated In Frame` counter, in the Editor): 370 B a frame, the same as an idle lesson in the
+  Editor's test harness (its own baseline); a few frames 72 B more (the canvas rebuild when a
+  star lands). Nothing allocated by the rewards' own frame code.
+
+### Fresh-eyes review
+
+A second agent (`feature-dev:code-reviewer`, not the author) read the core, content, importer and
+Unity commits against AGENTS.md. No blocker. Findings and what was done:
+
+1. **A drag out of the strip cut short by closing the book stuck** (the loose copy came back, no
+   more drags): fixed, the book drops it when it opens again; PlayMode covers it.
+2. **A second finger on the strip drove the first finger's copy:** fixed, `BeginFromTray` says
+   whether it started and the strip item only follows its own drag.
+3. **A retired sticker or trail could lose its picture** (hers, invisible): fixed, the import
+   wants the picture of every row, retired too.
+4. **A saved size was not kept within the rules on load:** fixed, `RewardBook.FitSizes` once the
+   book is read (and the view clamps); EditMode covers it.
+5. **A constellation's lines in a language its planet doesn't have** (a later Romanian-only
+   planet on an English map): fixed, the session takes a language the planet's lessons have.
+6. **`RewardsData.Upgraded` called the public `ToBook`:** fixed (a private `BuildBook`).
+7. **"3 stele" in the stars lines and `StarsPerLesson`:** kept, written in the rules asset's doc and
+   in Decisions; change both together.
+8. **`RewardLines.CommonKeys` was a writable array:** now read-only.
+9. **A sticker dropped from the strip at a size the rules may exclude:** it is placed at the
+   rules' size.
+10. **Missing cases:** EditMode now covers no sticker and no trail left to give.
+
+The reviewer read the Romanian lines as correct. Its suggestion "Ai primit" for "Ai câștigat"
+(a gift rather than a prize) is a question for the human; "Ai câștigat un abțibild!" was already
+in the content.
+
+## How to test locally
+
+Prerequisites: the worktree's Unity project (`game/`), `UNITY` set to
+`C:\Program Files\Unity\Hub\Editor\6000.3.29f1\Editor\Unity.exe`, `ADB` to the SDK's
+`platform-tools/adb.exe` (with `ADB_LOCAL_TRANSPORT_MAX_PORT=5699` and `MSYS_NO_PATHCONV=1` in Git
+Bash), your emulator as `EMU` (a tablet AVD, landscape, started with `-feature -Vulkan`), a scratch
+folder as `S`, and `F=/storage/emulated/0/Android/data/com.softshack.scolita/files/profiles/child-1`.
+
+### Core slice
+
+1. `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
+   Expected: every test passes, among them `RewardGiverTests` (9), `RewardBookTests` (5),
+   `ConstellationPlacesTests` (3), `SkyChartTests` (3), `RewardTablesTests` (3) and
+   `RewardContentRulesTests` (5).
+2. What they prove: every finished lesson gives 3 stars (a replay too, its places lit once); a
+   sticker every second lesson and at a planet's end, none repeated until all are given (three
+   rounds of five), never a retired one; the trails in `trails.csv`'s order, once per planet, the
+   first worn at once; a profile from before rewards gets the stars of what it did and no
+   stickers; a sticker is placed only as often as it was given, kept inside the scene, its size
+   within the rules, taken off back into the book; the constellations' places (stars first,
+   then along the lines by length); the files' columns, stars and lines; the content rules.
+
+### Content slice
+
+1. The same EditMode run. Expected: `ContentValidatorTests.TestCheck_TheRewardCsvsHaveNoProblem`
+   (the repository's `stickers.csv`, `constellations.csv`, `trails.csv` and their lines),
+   `TestValidate_EveryContentAssetIsValid` and the freshness test pass.
+2. Break one: in `content/constellations.csv` change `planet-3` to `planet-9`, run
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile $S/import.log; echo $?`.
+   Expected: exit 1, the log names `constellations.csv, row 4: … planet-9 … units.csv` and
+   `the unit planet-3 has no constellation`. Undo it with `git checkout content/constellations.csv`.
+
+### Build slice (the importer)
+
+1. The same EditMode run. Expected: `ContentImporterTests.TestImport_WritesTheRewards` (the assets
+   and catalogs under `Content/Rewards/` make the same rewards as the CSVs, a sticker's sprite is
+   `sticker-<id>`), `TestMake_RefusesARewardWithNoPicture` and `ReleasedIdLedgerTests` (the reward
+   ids are in the ledger's files) pass.
+2. Add `no-such-sticker,,` to `content/stickers.csv` and import (above). Expected: exit 1,
+   `stickers.csv, row 20: the sticker no-such-sticker has no picture: Assets/Scolita/Art/Stickers/sticker-no-such-sticker.png is missing`.
+   Undo it.
+
+### Game and UI slices
+
+1. `"$UNITY" -batchmode -projectPath game -runTests -testPlatform PlayMode -testResults $S/playmode.xml -logFile $S/playmode.log`.
+   Expected: every test passes, among them `RewardsFlowTests` (3): a finished lesson lights its
+   three stars as they land and gives its sticker, "În cartea mea" opens the book; the map's bar
+   shows the stars and opens the sky book and the trail picker; a sticker dragged onto the scene,
+   pinched to twice its size and moved is saved and still there when the map opens again.
+   EditMode's `RewardsDataTests` (6) and `RewardRulesAssetTests` (1) pass.
+2. Build and install: `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`,
+   `"$ADB" -s $EMU install -r game/Builds/Android/Scolita-<version>-debug.apk`,
+   `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, then start it:
+   `"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`.
+3. **A new profile:** the map's bottom bar shows only **Cerul meu** with **0** in its yellow pill
+   (no sticker or trail yet, so their buttons wait).
+4. **The end of a lesson:** tap "Hai!", finish `ro-a`. Expected: "Bravo!" top left, the unicorn's
+   constellation on the right (its faint lines, dotted rings), three gold stars flying one after
+   another from "Bravo!" into the first three places, each lighting as it lands; the mascot
+   cheering; heard and shown: "Bravo! Ai aprins 3 stele în constelația Unicornului." No gift box
+   (the first lesson). "Mai departe": the map, the bar now **3**.
+5. **A sticker:** finish `en-a` (Go). Expected: the stars fly (English: "Well done! You lit 3
+   stars in the Unicorn constellation."), then the purple gift box opens, its lid lifts and a
+   sticker pops out on a cream card; then "You got a sticker!"; **În cartea mea** beside
+   **Mai departe**.
+6. **The sticker book:** tap **În cartea mea**. Expected: the Earth on the purple sky, the strip
+   at the bottom with the new sticker; "Drag your stickers onto the Earth. …" said. Drag the sticker
+   up onto the Earth: it stays there, the strip's sticker fades (no copy left). Drag it around;
+   pinch it with two fingers on the emulator (Ctrl + drag) or on a tablet: bigger, smaller (half to
+   two and a half times). Drag it back onto the strip: it leaves the scene, the strip's sticker
+   is bright again. Put it back on the Earth, tap the back button (top left), then "Mai departe".
+7. **It stays:** on the map tap **Abțibilduri** (now shown): the sticker is where she left it,
+   at the size she left it. Kill the app (`"$ADB" -s $EMU shell am force-stop com.softshack.scolita`)
+   and start it again: still there.
+8. **The sky book:** tap **Cerul meu**. Expected: three cards (the unicorn over the gold planet,
+   the rocket over the pink one dimmed, the whale over the green one dimmed), the unicorn with
+   six stars lit; "These are your constellations. …" (or in Romanian, the map's language). Tap
+   the unicorn: "This is the Unicorn constellation." Back closes it.
+9. **A planet's end and a trail:** push every lesson of planet 1 done but the last, in both
+   files: `echo '{"version":1,"doneLessons":["ro-a","en-a","ro-m","en-m","ro-t","en-t","ro-p","en-p","ro-words-1","en-words-1","capitals-1"],"rocketStop":"capitals-1"}' > $S/mp.json; "$ADB" -s $EMU push $S/mp.json $F/map-progress.json`,
+   `"$ADB" -s $EMU shell rm $F/rewards.json` (so they catch up from the map), restart, Go
+   (`party-1`), finish it. Expected: the stars fly, the gift box gives a sticker, the rainbow
+   trail's card appears, and "Ai câștigat un abțibild! Ai câștigat o dâră nouă pentru rachetă!";
+   the unicorn complete. On the map (after the trip) the rocket wears the rainbow trail and
+   **Dâre** is shown; it opens the picker with the rainbow ringed.
+10. **Unhappy paths:** `"$ADB" -s $EMU shell "echo '{ not json' > $F/rewards.json"`, restart.
+    Expected: the map shows the stars of the lessons done on the map (caught up again), and
+    `"$ADB" -s $EMU shell ls $F` shows `rewards.broken-<date-time>.json`. A sticker the content
+    no longer has (edit `rewards.json` to give `no-such-sticker`) is kept in the file and not
+    shown.
+11. **Sizes:** `"$ADB" -s $EMU shell wm size 2000x1200` (then `1280x800`, `2560x1600`,
+    `2048x1536`, `2400x1080`), restart each time and open the end, the sky book, the sticker book
+    and the trail picker: everything on screen, the back button and the strip clear of the edges.
+
+Cleanup: `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
