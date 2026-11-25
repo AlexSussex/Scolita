@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63901844648b1834da14ccf522e8973d, type: 3}
+  m_Name: SoundBank
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Audio.SoundBank
+  effects:
+  - cue: 0
+    clips:
+    - {fileID: 8300000, guid: 8fad1432e8235954584dc8ea8b7532ff, type: 3}
+  - cue: 1
+    clips:
+    - {fileID: 8300000, guid: 2f7a6e1abb99ddb49a2023fb52211d6e, type: 3}
+  - cue: 2
+    clips:
+    - {fileID: 8300000, guid: ecdbb846dc56845479b41e09ee4f58f7, type: 3}
+  - cue: 3
+    clips:
+    - {fileID: 8300000, guid: 282aa7753334e994bade6db8486674e7, type: 3}
+  - cue: 4
+    clips:
+    - {fileID: 8300000, guid: a6bd81a629b6b9c43bb3b821a1b8597f, type: 3}
+  - cue: 5
+    clips:
+    - {fileID: 8300000, guid: 982029f8c35c1bb4ba6694dd3007363e, type: 3}
+  - cue: 6
+    clips:
+    - {fileID: 8300000, guid: 337775d98db94bd4da25ce971f9d335b, type: 3}
+  - cue: 7
+    clips:
+    - {fileID: 8300000, guid: de1050b6462be5c47badd0f926a9aaf0, type: 3}
+  - cue: 8
+    clips:
+    - {fileID: 8300000, guid: 93593f5e683d2754bb08a8c3d445817d, type: 3}
+  - cue: 9
+    clips:
+    - {fileID: 8300000, guid: 79726cb59a9aea24cae3e05478689eeb, type: 3}
+  - cue: 10
+    clips:
+    - {fileID: 8300000, guid: 236b99c58c12e29428d414dbde71551c, type: 3}
+    - {fileID: 8300000, guid: d84ccece1b7326a4cb4928bf0f4824e8, type: 3}
+    - {fileID: 8300000, guid: 14e8e2a4e4a1be64a80ea90898fd52fd, type: 3}
+  - cue: 11
+    clips:
+    - {fileID: 8300000, guid: a416725e4c3d2ed4cbe65fac0485c100, type: 3}
+  - cue: 12
+    clips:
+    - {fileID: 8300000, guid: 17ec1a89d69b58441a6200f160033917, type: 3}
+  - cue: 13
+    clips:
+    - {fileID: 8300000, guid: 9a7645d2bb6b0ed4598f73686cef8f2b, type: 3}
+  - cue: 14
+    clips:
+    - {fileID: 8300000, guid: 62b57f9ca10a08a4b93ad91755ca1bdf, type: 3}
+  music:
+  - piece: 1
+    clip: {fileID: 8300000, guid: 40bd6a0fe19ddcb47897f89842848487, type: 3}
+  - piece: 2
+    clip: {fileID: 8300000, guid: 238909a578b8df44abb7c592bce580e1, type: 3}
