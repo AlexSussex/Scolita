@@ -39,6 +39,7 @@ namespace Scolita.UI.Rewards
 
         private readonly List<RectTransform> flyers = new List<RectTransform>();
         private bool[] landed = new bool[0];
+        private bool giftOpened;
         private Vector2 lidClosed;
         private Vector2 stickerInBox;
         private IRewardsInput input;
@@ -101,6 +102,7 @@ namespace Scolita.UI.Rewards
                 flyers[index].gameObject.SetActive(false);
             }
 
+            giftOpened = false;
             giftGroup.SetActive(end.Sticker != null);
             stickerPicture.sprite = end.Sticker;
             giftLid.anchoredPosition = lidClosed;
@@ -173,6 +175,7 @@ namespace Scolita.UI.Rewards
                 landed[index] = true;
                 flyer.gameObject.SetActive(false);
                 constellation.SetLit(shown.FirstPlace + index, true);
+                input?.StarLanded();
                 return;
             }
 
@@ -193,6 +196,12 @@ namespace Scolita.UI.Rewards
 
         private void OpenGift(float share)
         {
+            if (share > 0f && !giftOpened)
+            {
+                giftOpened = true;
+                input?.GiftOpened();
+            }
+
             float eased = 1f - (1f - share) * (1f - share);
             giftLid.anchoredPosition = lidClosed + new Vector2(0f, lidLift * eased);
             giftLid.localRotation = Quaternion.Euler(0f, 0f, 18f * eased);

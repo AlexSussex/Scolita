@@ -442,6 +442,18 @@ MonoBehaviour:
     m_Localized: '{0}: doar balonul'
     m_Metadata:
       m_Items: []
+  - m_Id: 75522890584064
+    m_Localized: Muzica
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75523058356224
+    m_Localized: Sunetele
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75523058356225
+    m_Localized: "Vibra\u021Bii"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

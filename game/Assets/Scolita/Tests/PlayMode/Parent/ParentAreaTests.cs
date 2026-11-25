@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Linq;
 using NUnit.Framework;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Map;
 using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Timing;
+using Scolita.Game.Audio;
 using Scolita.Game.Lessons;
 using Scolita.Game.Parent;
 using Scolita.Game.Progress;
@@ -37,7 +39,7 @@ namespace Scolita.Tests.PlayMode.Parent
             KeptFiles kept = ParentScene.Keep();
             try
             {
-                SaveStore store = SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+                SaveStore store = SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
                 MapScene.SaveProgress("ro-a", "ro-a");
                 LearnerProgress progress = new LearnerProgress(new MapProgress(new[] { ContentId.Create("ro-a") }, default),
                     null, null);
@@ -135,6 +137,53 @@ namespace Scolita.Tests.PlayMode.Parent
                 screen.VoiceSlider.GetComponent<SliderRelease>().OnPointerUp(new PointerEventData(EventSystem.current));
 
                 Assert.That(ParentScene.SavedTablet().VoiceVolume, Is.EqualTo(0.3f).Within(0.001f));
+
+                yield return ParentScene.LeaveTheOpenScene();
+            }
+            finally
+            {
+                ParentScene.Restore(kept);
+            }
+        }
+
+        /// <summary>
+        /// Tests that the music and sounds sliders are saved when the finger leaves them and used at once (the sounds slider
+        /// plays a tap), and that the "Vibrații" switch is saved and gives a tick when turned on.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMusicSoundsAndVibration_SavedAndUsedAtOnce()
+        {
+            KeptFiles kept = ParentScene.Keep();
+            try
+            {
+                MapScene.SaveProgress(null);
+                ParentScene.SaveAppLanguage(Language.Romanian);
+                yield return ParentScene.Open();
+                ParentAreaScreen screen = ParentScene.Screen();
+                SoundPlayer sounds = SceneSearch.FindInActiveScene<SoundPlayer>();
+                Assert.That(screen.MusicSlider.value, Is.EqualTo(1f));
+                Assert.That(screen.SoundsSlider.value, Is.EqualTo(1f));
+                Assert.That(screen.Vibration.isOn, Is.True);
+                Assert.That(sounds.MusicSource.clip, Is.Not.Null);
+
+                screen.MusicSlider.value = 0f;
+                screen.MusicSlider.GetComponent<SliderRelease>().OnPointerUp(new PointerEventData(EventSystem.current));
+                screen.SoundsSlider.value = 0.4f;
+                screen.SoundsSlider.GetComponent<SliderRelease>().OnPointerUp(new PointerEventData(EventSystem.current));
+                int ticksBefore = sounds.TicksGiven;
+                screen.Vibration.isOn = false;
+                screen.Vibration.isOn = true;
+
+                TabletSettingsData saved = ParentScene.SavedTablet();
+                Assert.That(saved.MusicVolume, Is.EqualTo(0f));
+                Assert.That(saved.SoundsVolume, Is.EqualTo(0.4f).Within(0.001f));
+                Assert.That(saved.VibrationOn, Is.True);
+                Assert.That(saved.VoiceVolume, Is.EqualTo(1f));
+                Assert.That(sounds.Levels.MusicVolume, Is.EqualTo(0f));
+                Assert.That(sounds.MusicSource.isPlaying, Is.False);
+                Assert.That(sounds.Levels.SoundsVolume, Is.EqualTo(0.4f).Within(0.001f));
+                Assert.That(sounds.LastPlayed, Is.EqualTo(SoundCue.Tap));
+                Assert.That(sounds.TicksGiven, Is.EqualTo(ticksBefore + 1));
 
                 yield return ParentScene.LeaveTheOpenScene();
             }
@@ -250,7 +299,7 @@ namespace Scolita.Tests.PlayMode.Parent
 
         private static SaveStore ProfileStore()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+            return SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
         }
     }
 }

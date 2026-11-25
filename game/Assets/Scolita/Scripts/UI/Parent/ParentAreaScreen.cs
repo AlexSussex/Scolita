@@ -39,6 +39,11 @@ namespace Scolita.UI.Parent
         [SerializeField] private Slider voiceSlider;
         [SerializeField] private SliderRelease voiceSliderRelease;
         [SerializeField] private Toggle menusInEnglish;
+        [SerializeField] private Slider musicSlider;
+        [SerializeField] private SliderRelease musicSliderRelease;
+        [SerializeField] private Slider soundsSlider;
+        [SerializeField] private SliderRelease soundsSliderRelease;
+        [SerializeField] private Toggle vibration;
         [SerializeField] private Button resetButton;
         [SerializeField] private TMP_Text resetDone;
         [SerializeField] private GameObject questionPanel;
@@ -94,6 +99,15 @@ namespace Scolita.UI.Parent
         /// <summary>The "Meniurile în engleză" switch.</summary>
         public Toggle MenusInEnglish => menusInEnglish;
 
+        /// <summary>The music slider.</summary>
+        public Slider MusicSlider => musicSlider;
+
+        /// <summary>The sounds slider.</summary>
+        public Slider SoundsSlider => soundsSlider;
+
+        /// <summary>The "Vibrații" switch.</summary>
+        public Toggle Vibration => vibration;
+
         /// <summary>"Șterge progresul…".</summary>
         public Button ResetButton => resetButton;
 
@@ -144,6 +158,9 @@ namespace Scolita.UI.Parent
             englishPill.SetChosen(settings.Mix == LanguageMix.EnglishOnly);
             DrawLimits(settings);
             voiceSlider.SetValueWithoutNotify(settings.VoiceVolume);
+            musicSlider.SetValueWithoutNotify(settings.MusicVolume);
+            soundsSlider.SetValueWithoutNotify(settings.SoundsVolume);
+            vibration.SetIsOnWithoutNotify(settings.VibrationOn);
             menusInEnglish.SetIsOnWithoutNotify(settings.AppLanguage == Language.English);
             drawing = false;
         }
@@ -191,7 +208,10 @@ namespace Scolita.UI.Parent
             romanianPill.Button.onClick.AddListener(() => input?.ChooseMix(LanguageMix.RomanianOnly));
             englishPill.Button.onClick.AddListener(() => input?.ChooseMix(LanguageMix.EnglishOnly));
             voiceSliderRelease.Released += OnVoiceReleased;
+            musicSliderRelease.Released += OnMusicReleased;
+            soundsSliderRelease.Released += OnSoundsReleased;
             menusInEnglish.onValueChanged.AddListener(OnMenusChanged);
+            vibration.onValueChanged.AddListener(OnVibrationChanged);
             resetButton.onClick.AddListener(() => input?.AskReset());
             noButton.onClick.AddListener(() => input?.AnswerReset(false));
             yesButton.onClick.AddListener(() => input?.AnswerReset(true));
@@ -201,6 +221,26 @@ namespace Scolita.UI.Parent
         private void OnDestroy()
         {
             voiceSliderRelease.Released -= OnVoiceReleased;
+            musicSliderRelease.Released -= OnMusicReleased;
+            soundsSliderRelease.Released -= OnSoundsReleased;
+        }
+
+        private void OnMusicReleased()
+        {
+            input?.SetMusicVolume(musicSlider.value);
+        }
+
+        private void OnSoundsReleased()
+        {
+            input?.SetSoundsVolume(soundsSlider.value);
+        }
+
+        private void OnVibrationChanged(bool on)
+        {
+            if (!drawing)
+            {
+                input?.SetVibration(on);
+            }
         }
 
         private void OnVoiceReleased()

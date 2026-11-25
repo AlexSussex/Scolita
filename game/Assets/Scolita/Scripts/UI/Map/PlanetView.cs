@@ -10,8 +10,9 @@ namespace Scolita.UI.Map
     /// A planet on the galaxy map (design/README.md → "Each planet is a character"): <c>look</c>'s whole picture
     /// for its colour and state (sleepy and dimmed, awake with its ring, beaming with its sparkle), larger when
     /// awake, and its letters on tiles below it. Its ball (about 60% of the picture, a little above its middle)
-    /// takes the taps, which go to the map screen (a sleepy one says "not yet" and wobbles). Made from a template
-    /// by <see cref="MapScreen"/>.
+    /// takes the taps, which go to the map screen (a sleepy one says "not yet" and wobbles). An awake or beaming planet
+    /// breathes softly (a slow swell of a few per cent, each planet in its own time); a sleepy one keeps still. Made from
+    /// a template by <see cref="MapScreen"/>.
     /// </summary>
     public sealed class PlanetView : MonoBehaviour, IPointerClickHandler
     {
@@ -30,10 +31,15 @@ namespace Scolita.UI.Map
         [SerializeField] private float wobbleSeconds = 0.5f;
         [SerializeField] private float wobbleDegrees = 6f;
         [SerializeField] private float wobblesPerSecond = 5f;
+        [SerializeField] private float breathShare = 0.025f;
+        [SerializeField] private float breathSeconds = 3.2f;
+        [SerializeField] private float breathOffsetSeconds = 1.1f;
 
         private readonly List<LetterTile> letterTiles = new List<LetterTile>();
         private MapScreen screen;
         private Wobble wobble;
+        private bool breathes;
+        private float breathOffset;
 
         /// <summary>The planet shown.</summary>
         public MapPlanet Planet { get; private set; }
@@ -57,6 +63,9 @@ namespace Scolita.UI.Map
             ball.anchoredPosition = new Vector2(0f, size * ballRise);
             tiles.anchoredPosition = new Vector2(0f, -size * 0.5f - tilesBelow);
             group.alpha = planet.IsAsleep ? sleepyAlpha : 1f;
+            breathes = !planet.IsAsleep && breathSeconds > 0f;
+            body.localScale = Vector3.one;
+            breathOffset = transform.GetSiblingIndex() * breathOffsetSeconds;
             foreach (PlanetLetter letter in planet.Letters)
             {
                 LetterTile tile = Instantiate(tileTemplate, tiles);
@@ -86,6 +95,12 @@ namespace Scolita.UI.Map
             if (wobble != null && wobble.TryGetAngle(Time.unscaledTime, out float angle))
             {
                 body.localRotation = Quaternion.Euler(0f, 0f, angle);
+            }
+
+            if (breathes)
+            {
+                float breath = 1f + breathShare * Mathf.Sin((Time.unscaledTime + breathOffset) * 2f * Mathf.PI / breathSeconds);
+                body.localScale = new Vector3(breath, breath, 1f);
             }
         }
     }

@@ -427,6 +427,18 @@ MonoBehaviour:
     m_Key: tester-voice-bubble
     m_Metadata:
       m_Items: []
+  - m_Id: 75522890584064
+    m_Key: music-volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75523058356224
+    m_Key: sounds-volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75523058356225
+    m_Key: vibration
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
