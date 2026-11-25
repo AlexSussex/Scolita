@@ -61,10 +61,12 @@ namespace Scolita.Game.Rewards
             this.language = language;
             giver = new RewardGiver(sources.Content, sources.Rules, random);
             book = RewardsFile.Load(profileFiles, giver, doneBefore, order);
+            book.FitSizes(sources.Rules);
             foreach (Constellation constellation in sources.Content.Constellations.All.Where(constellation => !constellation.Retired))
             {
-                AddLine(starsLines, constellation.Id, RewardLines.Stars(constellation, language));
-                AddLine(nameLines, constellation.Id, RewardLines.Name(constellation, language));
+                Language spoken = LanguageOf(constellation.UnitId, language);
+                AddLine(starsLines, constellation.Id, RewardLines.Stars(constellation, spoken));
+                AddLine(nameLines, constellation.Id, RewardLines.Name(constellation, spoken));
             }
 
             stickerLine = Line(RewardLines.Common(RewardLines.StickerKey, language));
@@ -239,6 +241,19 @@ namespace Scolita.Game.Rewards
             }
 
             return rewards.Trail != null ? trailLine : null;
+        }
+
+        private Language LanguageOf(ContentId unitId, Language wanted)
+        {
+            Lesson[] planetLessons = order.Playable
+                .Where(lesson => lesson.UnitId == unitId)
+                .ToArray();
+            if (planetLessons.Length == 0 || planetLessons.Any(lesson => lesson.Languages.Includes(wanted)))
+            {
+                return wanted;
+            }
+
+            return planetLessons[0].Languages.Languages()[0];
         }
 
         private void AddLine(Dictionary<ContentId, VoiceSequence> byConstellation, ContentId constellation, VoiceLineId id)

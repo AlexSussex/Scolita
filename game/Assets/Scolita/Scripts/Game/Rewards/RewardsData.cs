@@ -65,12 +65,7 @@ namespace Scolita.Game.Rewards
         /// </summary>
         public RewardBook ToBook()
         {
-            IEnumerable<PlacedSticker> stickersPlaced = (placed ?? new PlacedStickerData[0])
-                .Where(sticker => sticker != null)
-                .Select(sticker => sticker.ToPlaced())
-                .Where(sticker => sticker.StickerId.IsSet);
-            return new RewardBook(starsEarned, Ids(litLessons), lessonsFinished, Ids(stickers), Ids(rewardedUnits), Ids(trails),
-                ContentId.TryCreate(trail, out ContentId chosen) ? chosen : default, stickersPlaced);
+            return BuildBook();
         }
 
         /// <summary>
@@ -81,7 +76,17 @@ namespace Scolita.Game.Rewards
         /// </summary>
         public RewardsData Upgraded()
         {
-            return new RewardsData(ToBook());
+            return new RewardsData(BuildBook());
+        }
+
+        private RewardBook BuildBook()
+        {
+            IEnumerable<PlacedSticker> stickersPlaced = (placed ?? new PlacedStickerData[0])
+                .Where(sticker => sticker != null)
+                .Select(sticker => sticker.ToPlaced())
+                .Where(sticker => sticker.StickerId.IsSet);
+            return new RewardBook(starsEarned, Ids(litLessons), lessonsFinished, Ids(stickers), Ids(rewardedUnits), Ids(trails),
+                ContentId.TryCreate(trail, out ContentId chosen) ? chosen : default, stickersPlaced);
         }
 
         private static string[] Texts(IEnumerable<ContentId> ids)

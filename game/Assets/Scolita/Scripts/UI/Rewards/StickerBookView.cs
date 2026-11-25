@@ -50,6 +50,7 @@ namespace Scolita.UI.Rewards
         {
             Open();
             rules = shelf.Rules;
+            DropFromTray();
             for (int index = 0; index < shelf.Owned.Count; index++)
             {
                 if (index >= trayItems.Count)
@@ -78,26 +79,28 @@ namespace Scolita.UI.Rewards
                 PlacedSticker placement = shelf.Placements[index];
                 PlacedStickerView view = Take();
                 view.Show(shelf.Placed[index].Id, shelf.Placed[index].Picture, this);
-                view.SetPlace(PointIn(placement.X, placement.Y), placement.Size);
+                view.SetPlace(PointIn(placement.X, placement.Y), rules.ClampSize(placement.Size));
                 placed.Add(view);
             }
         }
 
         /// <summary>
-        /// She starts dragging <paramref name="item"/> out of the book: a copy follows her finger. Called by
+        /// She starts dragging <paramref name="item"/> out of the book: a copy follows her finger. False, with nothing
+        /// done, while another copy is being dragged out (a second finger on the strip). Called by
         /// <see cref="StickerTrayItem"/>.
         /// </summary>
-        public void BeginFromTray(StickerTrayItem item, PointerEventData eventData)
+        public bool BeginFromTray(StickerTrayItem item, PointerEventData eventData)
         {
             if (fromTray != null)
             {
-                return;
+                return false;
             }
 
             fromTrayItem = item;
             fromTray = Take();
             fromTray.Show(item.Sticker, item.Picture, this);
-            fromTray.SetPlace(LocalPoint(eventData), 1f);
+            fromTray.SetPlace(LocalPoint(eventData), PlacedSize());
+            return true;
         }
 
         /// <summary>The copy from the book follows her finger; called by <see cref="StickerTrayItem"/>.</summary>
@@ -105,7 +108,7 @@ namespace Scolita.UI.Rewards
         {
             if (fromTray != null)
             {
-                fromTray.SetPlace(LocalPoint(eventData), 1f);
+                fromTray.SetPlace(LocalPoint(eventData), PlacedSize());
             }
         }
 
@@ -125,7 +128,7 @@ namespace Scolita.UI.Rewards
             fromTray = null;
             fromTrayItem = null;
             Vector2 at = ShareOf(view.Place);
-            if (IsOverScene(eventData) && Input != null && Input.PlaceSticker(item.Sticker, at, 1f))
+            if (IsOverScene(eventData) && Input != null && Input.PlaceSticker(item.Sticker, at, PlacedSize()))
             {
                 placed.Add(view);
                 item.CopyUsed();
@@ -175,6 +178,22 @@ namespace Scolita.UI.Rewards
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(scene, eventData.position, eventData.pressEventCamera, out Vector2 point);
             return point;
+        }
+
+        private float PlacedSize()
+        {
+            return rules == null ? 1f : rules.ClampSize(1f);
+        }
+
+        private void DropFromTray()
+        {
+            if (fromTray != null)
+            {
+                Release(fromTray);
+            }
+
+            fromTray = null;
+            fromTrayItem = null;
         }
 
         private void CopyBack(ContentId sticker)

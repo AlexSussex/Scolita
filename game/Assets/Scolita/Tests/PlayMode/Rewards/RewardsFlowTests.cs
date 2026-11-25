@@ -122,7 +122,8 @@ namespace Scolita.Tests.PlayMode.Rewards
 
         /// <summary>
         /// Tests that a sticker dragged from the book onto the scene is placed and saved, that moving it and making it
-        /// bigger with two fingers is saved when she lets go, and that it is still there when the map opens again.
+        /// bigger with two fingers is saved when she lets go, that a drag cut short by closing the book leaves nothing
+        /// behind, and that the sticker is still there when the map opens again.
         /// </summary>
         [UnityTest]
         public IEnumerator TestStickerBook_APlacedStickerStays()
@@ -132,7 +133,7 @@ namespace Scolita.Tests.PlayMode.Rewards
             {
                 MapScene.SaveProgress(null, "ro-a");
                 ContentId guitar = ContentId.Create("guitar");
-                SaveRewards(new RewardBook(3, new[] { ContentId.Create("ro-a") }, 2, new[] { guitar }, null, null, default, null));
+                SaveRewards(new RewardBook(3, new[] { ContentId.Create("ro-a") }, 2, new[] { guitar, guitar }, null, null, default, null));
                 yield return MapScene.Open();
                 RewardScreens books = (RewardScreens)MapScene.Screen().Rewards;
                 books.Bar.StickerButton.onClick.Invoke();
@@ -148,7 +149,7 @@ namespace Scolita.Tests.PlayMode.Rewards
                 item.OnEndDrag(drag);
 
                 Assert.That(book.Placed.Count, Is.EqualTo(1));
-                Assert.That(item.CopiesLeft, Is.EqualTo(0));
+                Assert.That(item.CopiesLeft, Is.EqualTo(1), "two copies given, one placed");
                 PlacedSticker placed = SavedRewards().Placed.Single();
                 Assert.That(placed.StickerId, Is.EqualTo(guitar));
                 Assert.That(placed.X, Is.EqualTo(0.5f).Within(0.05f));
@@ -169,6 +170,15 @@ namespace Scolita.Tests.PlayMode.Rewards
                 PlacedSticker pinched = SavedRewards().Placed.Single();
                 Assert.That(pinched.Size, Is.EqualTo(2f).Within(0.05f));
                 Assert.That(pinched.X, Is.GreaterThan(0.5f));
+
+                PointerEventData loose = Pointer(3, middle);
+                loose.delta = new Vector2(0f, 30f);
+                item.OnBeginDrag(loose);
+                book.BackButton.onClick.Invoke();
+                books.Bar.StickerButton.onClick.Invoke();
+                Assert.That(book.Placed.Count, Is.EqualTo(1), "a sticker dragged out when the book closed goes back");
+                item.OnEndDrag(loose);
+                Assert.That(SavedRewards().Placed.Count, Is.EqualTo(1));
 
                 yield return MapScene.Open();
                 RewardScreens again = (RewardScreens)MapScene.Screen().Rewards;

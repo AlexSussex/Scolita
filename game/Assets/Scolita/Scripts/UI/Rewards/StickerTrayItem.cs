@@ -65,13 +65,10 @@ namespace Scolita.UI.Rewards
         /// <inheritdoc/>
         public void OnBeginDrag(PointerEventData eventData)
         {
-            takingOut = copiesLeft > 0 && Mathf.Abs(eventData.delta.y) >= Mathf.Abs(eventData.delta.x);
-            scrolling = !takingOut;
-            if (takingOut)
-            {
-                book.BeginFromTray(this, eventData);
-            }
-            else
+            bool upwards = copiesLeft > 0 && Mathf.Abs(eventData.delta.y) >= Mathf.Abs(eventData.delta.x);
+            takingOut = upwards && book.BeginFromTray(this, eventData);
+            scrolling = !upwards;
+            if (scrolling)
             {
                 strip.OnBeginDrag(eventData);
             }
