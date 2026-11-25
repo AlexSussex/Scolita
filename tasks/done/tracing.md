@@ -1,6 +1,6 @@
 # Task: feature/tracing
 
-> **Status: In progress (tracing).** Ready after `lesson-engine` (decisions D2: lower case first;
+> **Status: Done 2026-11-25, released as 0.7.0.** (Decisions D2: lower case first;
 > D3 answered 2026-11-24: handwritten letters are in the MVP, built by
 > `handwriting` right after this brief — the stroke format made here must
 > carry a letter's print and handwritten forms, with entry and exit
@@ -118,7 +118,7 @@ _Kept by `tracing` while the brief is in flight._
     (below).
 - **The test APK** for the human: `local/apks/Scolita-0.6.0-tracing-try-debug.apk`
   (step 2 of `local/for-human-next-steps.md`).
-- **Next:** the close-out (0.7.0).
+- **Closed out** as release 0.7.0 (see "Completion record").
 
 ### The human's answers (2026-11-24)
 
@@ -721,3 +721,82 @@ changes, sample the new paths the same way and check each verdict by hand.
 
 **Cleanup:** `"$ADB" -s <emulator> shell pm clear com.softshack.scolita` and
 `"$ADB" -s <emulator> shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `tracing`; released as 0.7.0 (tag `v0.7.0`)._
+
+### What was built
+
+- **Pushed:** `35833d0` the claim; `1787760` the Design note; `5f16f1d` the human's
+  answers; `70a74a3` `core:`, `5acd8e7` `content:`, `3477c73` `build:`, `769a3c9`
+  `content:`, `1dc3026` `game:`, `ac72ba3` `ui:`, `070da45` `game:`; the review's fixes
+  `60f8a82` `core:`, `596682d` `build:`, `caf7864` `game:`, `5765d2a` `ui:`, `ee04ea0`
+  `game:`; `f3a744c` `docs:`; the close-out.
+- **Letter shapes as content:** `content/strokes/<strokes id>-<case>-<form>.json`
+  (`content/README.md` → "strokes/"), read by Core's `JsonReader` and
+  `LetterShapeReader`, imported to `Content/Strokes/` and `LetterShapeCatalog`;
+  `Curriculum.Shapes` and `TryGetShape`; planet 1's eight print shapes (a m t p,
+  A M T P), all `draft`.
+- **Core** (`Scripts/Core/Tracing`): `LetterShape`, `Stroke`, `StrokeRun`, `StrokePath`
+  (Catmull-Rom, resampled every 2 units, slant), `StrokeCheck` (follows her line in
+  order; `Good`, `StartedElsewhere`, `WrongDirection`, `LeftThePath`, `TooShort`),
+  `TracePoints`, `StrokeTolerance`, `TracingTuning`, `TraceState`, `WritingLines`,
+  `LetterShapeCodes`; `Activities/TraceLetterRules` (three rounds, the run's one ladder);
+  `Lessons/PlayableSteps`; `Content/Rules/ShapeRules`; `ActivityLimits.MostStrokes`;
+  `ActivityAnswer.Traced`, `AnswerGesture.Trace`, `HintCue.PulseStart`,
+  `HintCue.AnimateStroke`, `ActivityRound.Trace`; the tracing lines in `ActivityKinds`.
+- **Unity side:** `Game/Tracing/TraceFinger` (Enhanced Touch, every sample once, one
+  finger, palms dropped) and `FingerPicker`; `UI/Tracing/TraceLetterView`,
+  `StrokeLineGraphic`, `Stardust`, `StartDot`; `Prefabs/Lesson/TraceLetterView.prefab`;
+  the `TraceLetter` row in `ActivityRegistry.asset` (off "not built yet"); the shape
+  catalog on the Lesson scene's runner; the tolerances in `Settings/LearningRules.asset`.
+- **Tests:** EditMode 486 (was 413): `JsonReaderTests`, `LetterShapeReaderTests`,
+  `StrokePathTests`, `TracePointsTests`, `StrokeCheckTests`, `RecordedStrokeTests` (with
+  `Tests/EditMode/Tracing/Strokes/`), `TraceLetterRulesTests`, `ShapeRulesTests`,
+  `PlayableStepsTests`, `FingerPickerTests`, importer tests. PlayMode 17 (was 14):
+  `TracingTests`.
+
+### Conventions for later briefs
+
+- **A letter's shape is a file, not code:** add `<id>-<case>-<form>.json` and import; the
+  board, the check and the rounds follow. A shape is replaced, never retired (not in the
+  ledger); its asset goes with its file.
+- **A step plays when its content is there** (`PlayableSteps`,
+  `ActivityRulesFactory.CanCreate`): a later kind that needs content which may be missing
+  adds its test there, not a list of "not built yet" forms.
+- **Strokes are judged in Core** (`StrokeCheck`): views send `ActivityAnswer.Traced` with a
+  reused `TracePoints` on finger-up, and draw `ActivityRound.Trace`.
+- **The tolerances** (corridor, start radius, coverage per round) are in the learning
+  rules asset, in a shape's units (a small letter is 100 high); a later round is never
+  more forgiving.
+- **Lines on a board** are `StrokeLineGraphic`s (one mesh, pre-sized buffers: size their
+  `capacity` for the most samples they can hold).
+
+### How it was tested
+
+Batch mode at the pushed commits (EditMode 486/486, PlayMode 17/17, `BuildAndroidDebug`, no
+compiler warning), the import, the emulator at 2000 × 1200 with drawn strokes (good,
+backwards, off, half, a tap, begun elsewhere, two fingers), five screen sizes, the 0 B
+allocation test, and a fresh-eyes review (Progress, 16 findings resolved or recorded).
+Școlița → Record released ids at this close-out (`VERSION` 0.7.0): nothing was added (no new
+id; shapes are not in the ledger). Not
+run: the Device Simulator, the device Profiler, listening by ear, a palm on a real
+screen (the emulator reports no contact size).
+
+### Decisions and deviations
+
+- **The human's answers** (2026-11-24): the note as recommended, and the print a is two
+  strokes.
+- **While building and from the review** (Progress): coverage is what she drew herself, with
+  an end allowance for short strokes; leaving the path is judged near where she is;
+  `WrongDirection` needs her to begin at the stroke's end; a shape's asset goes with its
+  file (the note said "refused"); the board ends below the mascot's bubble; round 3's
+  prompt is the green dot's line; the recorded strokes are generated from the shapes.
+
+### Follow-ups
+
+In Progress → "Follow-ups": `handwriting` (handwritten shapes, the four-line board, the
+entry hint, `TraceWord`, a `rounds` option for the English steps, a dot's length, the
+handwritten a); the human (tolerances on the Tab A7, the eight drafts, the answer-shown
+and tap questions, a palm on the tablet, the Profiler); real recorded strokes; `look`.

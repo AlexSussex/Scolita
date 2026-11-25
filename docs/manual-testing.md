@@ -39,6 +39,23 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.7.0 (2026-11-25): tracing letters
+
+On the tablet, with the 0.7.0 APK (the debug one is `local/apks/Scolita-0.7.0-debug.apk`; or
+README → "Build a release APK" from tag `v0.7.0`, then "Install on the tablet"). Play from the
+map with **Hai!**: the board comes right after meeting a letter in a Romanian lesson (`ro-a`
+first). Trace with one finger. If the tablet's voices aren't installed, the lines show in the
+bubble only.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.7.0-1 | The writing board (`ro-a`, after meeting a) | Look, then tap the unicorn | A dark board with four lines (a thin top line, a dashed middle line, a thicker baseline, a faint dashed line below), a dotted a, a green dot "1" at the round's top right with a smaller "2" beside it, a yellow arrow; three stars on the right (the first gold) beside a dotted a, a faint a and a green dot; the RO star on the board. „Scrie litera de tipar. Începe de la punct și urmează săgeata.” | |
+| 0.7.0-2 | The board, round 1 | Trace the round from dot 1, the way the arrow points, back to the top; then the stem from dot 2 down | A rainbow trail with sparkles under the finger; the round stays in rainbow colours, „Foarte bine! Acum mergi la punctul cu numărul doi.”; after the stem the a bounces, „Bravo, ai scris litera a! Acum scrie pe umbră.”, the second star lights | |
+| 0.7.0-3 | Round 2 (a faint a) | Trace the round **backwards** (from its end, clockwise); then wander far off the letter | Each time the trail fades and dot 1 pulses: „Urmează săgeata.”; the second time „Uită-te cum se scrie, apoi încearcă tu.” and the round draws itself in cream with its dots shown | |
+| 0.7.0-4 | Round 2, then round 3 (the dot only) | Trace the round and the stem; in round 3 tap dot 1 once; then start a stroke in the middle of where the round would be | Round 3: only the green dot, no guide, no arrow, all three stars gold. The tap: „Urmează săgeata.” and the arrow shows; the middle: „Uită-te cum se scrie …” (the second miss) | |
+| 0.7.0-5 | Round 3 | Put a second finger on the board while tracing the round with the first; rest the side of the hand on the board, then trace the stem | Only the first finger draws; the palm draws nothing. The last stroke: „Bravo, ai scris litera a!”, a praise, and the lesson moves on | |
+| 0.7.0-6 | `ro-m`, `ro-t`, `ro-p`, `capitals-1` | Trace m (one stroke: down, up and over twice), t (the stem, then the bar), p (down below the baseline, up and round), and the capitals A M T P | Each letter as above. **To tell the agent:** (1) is any stroke she drew well refused, or a messy one accepted (round 1 is the most forgiving, round 3 the strictest)? (2) do the print letters match how her school writes them (where each stroke starts, its order and direction)? (3) after the answer is shown, should any stroke from the dot count? (4) should a quick tap or brush be ignored instead of counting as a try? | |
+
 ### 0.6.0 (2026-11-24): the drum, build a word, read and match, word twins
 
 On the tablet, with the 0.6.0 APK (README → "Build a release APK" from tag `v0.6.0`,

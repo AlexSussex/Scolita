@@ -18,6 +18,51 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.7.0 (2026-11-25)
+
+Tracing letters with a finger. In each Romanian letter lesson and in the capitals lesson, she
+writes the print letter on a dark writing board: its strokes in order, from each green start
+dot, in the direction of the yellow arrow, in three rounds: on dots, on a faint shadow, then
+from the start dot only. Her finger leaves a rainbow trail with stardust.
+
+- **For the child:**
+  - **The writing board** (after meeting a letter, `ro-a` … `ro-p`; A M T P in
+    `capitals-1`): the four writing lines, the letter as a dotted guide, the start dot with
+    its number ("1", and the next stroke's "2" smaller beside it) and a yellow arrow;
+    „Scrie litera de tipar. Începe de la punct și urmează săgeata.”
+  - **Her trail** is a rainbow under her finger, with sparkles; a good stroke stays in
+    rainbow ink and the next dot appears („Foarte bine! Acum mergi la punctul cu numărul
+    doi.”). A round done: the letter bounces, „Bravo, ai scris litera a! Acum scrie pe
+    umbră.”, then „… fără ajutor, de la punct.”; the three stars on the right light up.
+  - **A stroke that misses** fades and the start dot pulses, with a kind hint for what went
+    wrong: „Începe de la punctul verde.”, „Urmează săgeata.”, „Rămâi pe linia punctată.”
+    or „Încet și cu grijă: o să reușești!”. A second miss: „Uită-te cum se scrie, apoi
+    încearcă tu.” and the stroke draws itself once, its dots shown, for her to trace.
+  - **One finger draws:** a second finger, or a palm resting on the board, is ignored.
+- **For the parent:** the print letters of planet 1 (a m t p, A M T P) are traced; the
+  handwritten tracing steps and the English lessons' tracing (by hand) wait for
+  `handwriting`. The letters' strokes are drafts until you check them against her manual.
+
+### Technical notes
+
+- No new package; no save-format change (a lesson in progress resumes at its step; the
+  steps are unchanged, only the tracing steps now play).
+- **Content:** a new content type, the letters' shapes: `content/strokes/<letter>-<case>-
+  <form>.json` (`content/README.md` → "strokes/"), imported to `Content/Strokes/` and
+  `LetterShapeCatalog`. Eight print shapes, all `draft` (the import lists them). The print
+  a is two strokes (the human's answer). Shapes are not in the ledger of released ids;
+  removing a shape's file removes its asset. No new voice line: `TraceLetter` now needs
+  `trace-print`, `trace-hand`, `trace-start`, `trace-hint-dot`, `-arrow`, `-stay`, `-slow`,
+  `-watch`, `trace-next-2`, `-3`, `trace-done`, `trace-round-2`, `-3`.
+- **Core:** `Tracing/` (`LetterShape`, `StrokePath`, `StrokeCheck`, `TracePoints`,
+  `TracingTuning`, …), a JSON reader, `TraceLetterRules`, `PlayableSteps` (a step plays when
+  its kind has a view and its content is there), `ShapeRules` in the validator; the tracing
+  tolerances in `Settings/LearningRules.asset`.
+- **For the human:** try the test APK `local/apks/Scolita-0.6.0-tracing-try-debug.apk` with
+  her (or this release's) and say whether the tolerances feel right; check the eight print
+  shapes against her manual; answer the review's questions (brief → Follow-ups).
+- Brief: [`tasks/done/tracing.md`](tasks/done/tracing.md).
+
 ## 0.6.0 (2026-11-24)
 
 Four word games in the lessons. Once a planet's letters are met, its word lessons let her

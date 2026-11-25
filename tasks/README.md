@@ -58,7 +58,7 @@ Each brief file therefore reads, top to bottom:
 | 3 | `feature/content-model` | Done 2026-11-24, released as 0.2.0 | [done/content-model.md](done/content-model.md) |
 | 4 | `feature/voice` | Done 2026-11-24, released as 0.3.0 | [done/voice.md](done/voice.md) |
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
-| 6 | `feature/tracing` | In progress (tracing) | [pending/tracing.md](pending/tracing.md) |
+| 6 | `feature/tracing` | Done 2026-11-25, released as 0.7.0 | [done/tracing.md](done/tracing.md) |
 | 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
@@ -100,11 +100,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| tracing | [tracing](pending/tracing.md) | New: `Scripts/Core/Tracing`, `Scripts/Game/Tracing`, `Scripts/UI/Tracing`, `content/strokes/`, `Content/Strokes/` (imported), `Prefabs/Lesson/TraceLetterView.prefab`; changes: the importer (a stroke reader), `CurriculumAssets`, `LearningRules` (+ asset), `ActivityRegistry.asset` (one row), `Scenes/Lesson.unity` (the runner's stroke catalog field), `Core/Lessons` (which steps can be played), `steps.csv` / `voice-lines.csv` only if the note needs it | emulator-5600 | 2026-11-24 | Built, reviewed and pushed; test APK `local/apks/Scolita-0.6.0-tracing-try-debug.apk` for the human; closing out as 0.7.0 |
 
 ## Where we are
 
-_Last updated 2026-11-24 by the lead (release 0.6.0; what waits on whom)._
+_Last updated 2026-11-25 by agent `tracing` (tracing done, release 0.7.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -152,8 +151,16 @@ _Update this section whenever a slice is pushed or a brief is finished._
   (the word never said before her first try) and `WordTwins` (lines between the twins and false
   friends); the round's `Places`, the `Place` and `Join` gestures; the validator's word rules
   (`WordTwins` words pair up one to one). Only `TraceLetter` and `TraceWord` are left "not built yet".
-- **Next** (lead, 2026-11-24): `tracing`'s Design note waits for the
-  human's answers (seven questions); `handwriting` follows it.
+- **Done 2026-11-25:** `tracing`, release 0.7.0: letter shapes as content
+  (`content/strokes/*.json`, a new catalog), Core's `StrokeCheck` and
+  `TraceLetterRules` (three rounds: dots, a faint shadow, the start dot), the
+  writing board with a rainbow trail and stardust (one finger, palms ignored),
+  planet 1's eight print shapes (drafts). A step plays when its content is
+  there (`PlayableSteps`): the handwritten tracing steps wait for
+  `handwriting`. Only `TraceWord` is left "not built yet".
+- **Next** (lead, 2026-11-24; `tracing` updated it): `handwriting` can start
+  (the handwritten shapes, once the human has checked the drawings against
+  her manual).
   `galaxy-map` waits for `look` (both change `MapScreen.prefab`), and
   `look` waits for the human's art choices. `content-letters-1` (planets
   2–3) can follow `tracing`'s stroke format. `curriculum-research-2` (docs
@@ -162,11 +169,15 @@ _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Open follow-ups across briefs
 
-- **From `tracing`** (in flight; its brief → Progress → Follow-ups):
-  - `handwriting`: the handwritten „a” is "like @ but with 2 small legs",
-    in three strokes (the human, 2026-11-24, to check against her manual).
-    The draft has one continuous stroke with a long rising entry, so it
-    matches only in part.
+- **From `tracing`** (full list in its completion record):
+  - `handwriting`: the handwritten shapes (`<id>-lower-handwritten.json`;
+    the 14 skipped steps then play), the four-line board, the entry hint,
+    `TraceWord`, a `rounds` option for the English steps; the handwritten
+    „a” is "like @ but with 2 small legs", in three strokes (the human, to
+    check against her manual; the draft is one stroke).
+  - The human: the tolerances on the Tab A7 (test APK), the eight print
+    drafts, whether a stroke from the dot counts after the answer is shown,
+    whether a quick tap is ignored, a palm on the tablet, the Profiler.
 
 - **From `activities-words`** (full list in its completion record):
   - `sound-feel`: the drum's sound on each beat, the soft sound of a miss, the rocket's take-off.
