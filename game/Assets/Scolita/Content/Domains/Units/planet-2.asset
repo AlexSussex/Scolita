@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1453ed6e55f115438fc22a15f74d369, type: 3}
+  m_Name: planet-2
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.UnitAsset
+  id: planet-2
+  domain: reading
+  retired: 0
+  lessons:
+  - {fileID: 11400000, guid: 286fc2b29ac856c429f0c6661cd3edf5, type: 2}
+  - {fileID: 11400000, guid: d858ed714b1d6f1429333662b2ac634e, type: 2}
+  - {fileID: 11400000, guid: 228ba78c0ff549348a595ce24e879027, type: 2}
+  - {fileID: 11400000, guid: 3950c0bedb8c51a4898b872d10007851, type: 2}
+  - {fileID: 11400000, guid: f1149bf4dcc6f024c8e6cbc7be924f82, type: 2}
+  - {fileID: 11400000, guid: 1474bfef5207998449c6c6a34e884991, type: 2}
+  - {fileID: 11400000, guid: c223afaa0b5282349baab27cbb6c3dba, type: 2}
+  - {fileID: 11400000, guid: 48b6e9940189cff41b42d7838240db77, type: 2}
+  - {fileID: 11400000, guid: 62a4366e194ce9645982a487da2b3bfa, type: 2}
+  - {fileID: 11400000, guid: 8dcb0476d6d71b74cb6115b188a0f0ad, type: 2}

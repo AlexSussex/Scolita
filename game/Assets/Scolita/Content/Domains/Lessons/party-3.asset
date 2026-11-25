@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cccf5aaaa20034fad26d70df993748, type: 3}
+  m_Name: party-3
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LessonAsset
+  id: party-3
+  unit: planet-3
+  language: both
+  introduces: 
+  retired: 0
+  steps:
+  - kind: ListenAndPick
+    language: ro
+    letters:
+    - o
+    - d
+    - e
+    words: []
+    options: []
+  - kind: ListenAndPick
+    language: en
+    letters:
+    - o
+    - d
+    - e
+    words: []
+    options: []
+  - kind: ReadAndMatch
+    language: ro
+    letters: []
+    words:
+    - ro-sanie
+    - ro-mops
+    - ro-pepene
+    options: []
+  - kind: ReadAndMatch
+    language: en
+    letters: []
+    words:
+    - en-spot
+    - en-stop
+    - en-mops
+    options: []
+  - kind: TraceWord
+    language: ro
+    letters: []
+    words:
+    - ro-stea
+    options: []
+  - kind: TraceWord
+    language: en
+    letters: []
+    words:
+    - en-ten
+    options: []
+  - kind: WordTwins
+    language: both
+    letters: []
+    words:
+    - ro-mop
+    - en-mop
+    - ro-pod
+    - en-pod
+    - ro-nod
+    - en-nod
+    - ro-stop
+    - en-stop
+    options: []
+  - kind: WordTwins
+    language: both
+    letters: []
+    words:
+    - ro-panda
+    - en-panda
+    - ro-ponei
+    - en-pony
+    - ro-tenis
+    - en-tennis
+    - ro-domino
+    - en-domino
+    options: []

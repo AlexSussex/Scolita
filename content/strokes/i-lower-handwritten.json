@@ -1,0 +1,15 @@
+{
+  "status": "draft",
+  "source": "design/research/strokes-draft.json and handwriting-model-draft.svg (curriculum-research), the Romanian school's litere de mână; not yet checked against her manual",
+  "slant": 0.2,
+  "strokes": [
+    { "runs": [
+      { "kind": "entry", "points": [[0, 200], [14, 168], [27, 112], [29, 100]] },
+      { "kind": "body", "points": [[29, 100], [28, 150], [29, 185]] },
+      { "kind": "exit", "points": [[29, 185], [37, 198], [49, 196], [61, 182]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[30, 62]] }
+    ] }
+  ]
+}

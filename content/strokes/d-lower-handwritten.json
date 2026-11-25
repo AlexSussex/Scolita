@@ -1,0 +1,17 @@
+{
+  "status": "draft",
+  "source": "design/research/strokes-draft.json and handwriting-model-draft.svg (curriculum-research), the Romanian school's litere de mână; three strokes as the handwritten a (the human, 2026-11-24): the entry up the round's left side and over its top, the round drawn back over it and up to the top line, the stem down with its exit; not yet checked against her manual",
+  "slant": 0.2,
+  "strokes": [
+    { "runs": [
+      { "kind": "entry", "points": [[0, 200], [6, 184], [8, 150], [16, 110], [34, 99], [52, 106]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[52, 106], [34, 99], [16, 110], [8, 150], [14, 186], [30, 199], [48, 190], [57, 160], [59, 128], [60, 100], [61, 50], [61, 0]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[61, 0], [61, 100], [61, 185]] },
+      { "kind": "exit", "points": [[61, 185], [69, 198], [81, 196], [93, 182]] }
+    ] }
+  ]
+}

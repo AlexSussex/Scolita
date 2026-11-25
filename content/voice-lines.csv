@@ -292,3 +292,193 @@ ro-line-twins-hint-spelled,ro,line,Caută cuvântul care se scrie la fel.,,,,hin
 en-line-twins-hint-spelled,en,line,Look for the word that is spelled the same.,,,,hint for a false friend (its pictures differ)
 ro-line-twins-hint-show,ro,line,"Uite, acesta este cuvântul potrivit. Unește cele două cuvinte!",,,,answer shown: the partner glows; check
 en-line-twins-hint-show,en,line,"Look, this is the right word. Join the two words!",,,,answer shown: the partner glows
+ro-sound-s,ro,sound,/s/,,,,"pure sound, no added vowel"
+ro-name-s,ro,name,se,,,,the alphabet name; see the note on names
+ro-sound-i,ro,sound,/i/,,,,"pure sound, no added vowel"
+ro-name-i,ro,name,i,,,,the alphabet name; see the note on names
+ro-sound-n,ro,sound,/n/,,,,"pure sound, no added vowel"
+ro-name-n,ro,name,ne,,,,the alphabet name; see the note on names
+ro-sound-o,ro,sound,/o/,,,,"pure sound, no added vowel"
+ro-name-o,ro,name,o,,,,the alphabet name; see the note on names
+ro-sound-d,ro,sound,/d/,,,,"pure sound, no added vowel"
+ro-name-d,ro,name,de,,,,the alphabet name; see the note on names
+ro-sound-e,ro,sound,/e/,,,,"pure sound, no added vowel"
+ro-name-e,ro,name,e,,,,the alphabet name; see the note on names
+en-sound-s,en,sound,/s/,,,,"pure sound, no added vowel"
+en-name-s,en,name,ess,,,,the alphabet name; see the note on names
+en-sound-i,en,sound,/ɪ/,,,,"pure sound, no added vowel"
+en-name-i,en,name,eye,,,,the alphabet name; see the note on names
+en-sound-n,en,sound,/n/,,,,"pure sound, no added vowel"
+en-name-n,en,name,en,,,,the alphabet name; see the note on names
+en-sound-o,en,sound,/ɒ/,,,,"pure sound, no added vowel"
+en-name-o,en,name,oh,,,,the alphabet name; see the note on names
+en-sound-d,en,sound,/d/,,,,"pure sound, no added vowel"
+en-name-d,en,name,dee,,,,the alphabet name; see the note on names
+en-sound-e,en,sound,/e/,,,,"pure sound, no added vowel"
+en-name-e,en,name,ee,,,,the alphabet name; see the note on names
+ro-word-nas,ro,word,nas,,,,TraceWord
+ro-slow-nas,ro,slow,n-a-s,,sounds,,the word said sound by sound
+ro-stretched-nas,ro,stretched,nnnas,,,,FirstSound hint: the n held
+ro-word-masa,ro,word,masa,,,,'the table' (masă needs ă); TraceWord
+ro-slow-masa,ro,slow,m-a-s-a,,sounds,,the word said sound by sound
+ro-word-pian,ro,word,pian,,,,hiatus: two syllables; word twin; TraceWord
+ro-slow-pian,ro,slow,p-i-a-n,,sounds,,the word said sound by sound
+ro-word-nai,ro,word,nai,,,,diphthong ai: one syllable
+ro-slow-nai,ro,slow,n-a-i,,sounds,,the word said sound by sound
+ro-word-pin,ro,word,pin,,,,a pine tree; false friend
+ro-slow-pin,ro,slow,p-i-n,,sounds,,the word said sound by sound
+ro-word-sat,ro,word,sat,,,,"a village (en sat has no picture, so no false friend here)"
+ro-slow-sat,ro,slow,s-a-t,,sounds,,the word said sound by sound
+ro-stretched-sat,ro,stretched,sssat,,,,FirstSound hint: the s held
+ro-word-ananas,ro,word,ananas,,,,
+ro-slow-ananas,ro,slow,a-n-a-n-a-s,,sounds,,the word said sound by sound
+ro-syllables-ananas,ro,syllables,a-na-nas,,,,
+ro-word-mami,ro,word,mami,,,,"familiar (kept by the human, 2026-11-24)"
+ro-slow-mami,ro,slow,m-a-m-i,,sounds,,the word said sound by sound
+ro-word-tati,ro,word,tati,,,,"familiar (kept by the human, 2026-11-24)"
+ro-slow-tati,ro,slow,t-a-t-i,,sounds,,the word said sound by sound
+ro-word-nani,ro,word,nani,,,,familiar: 'sleep' (hai la nani)
+ro-slow-nani,ro,slow,n-a-n-i,,sounds,,the word said sound by sound
+ro-word-pas,ro,word,pas,,,,a step
+ro-slow-pas,ro,slow,p-a-s,,sounds,,the word said sound by sound
+ro-word-spin,ro,word,spin,,,,a thorn
+ro-slow-spin,ro,slow,s-p-i-n,,sounds,,the word said sound by sound
+ro-word-sita,ro,word,sita,,,,'the sieve' (sită needs ă)
+ro-slow-sita,ro,slow,s-i-t-a,,sounds,,the word said sound by sound
+ro-syllables-sita,ro,syllables,si-ta,,,,
+ro-word-pom,ro,word,pom,,,,a fruit tree; TraceWord
+ro-slow-pom,ro,slow,p-o-m,,sounds,,the word said sound by sound
+ro-word-pod,ro,word,pod,,,,a bridge; false friend; TraceWord
+ro-slow-pod,ro,slow,p-o-d,,sounds,,the word said sound by sound
+ro-word-dinte,ro,word,dinte,,,,TraceWord
+ro-slow-dinte,ro,slow,d-i-n-t-e,,sounds,,the word said sound by sound
+ro-word-stea,ro,word,stea,,,,diphthong ea: one syllable; TraceWord
+ro-slow-stea,ro,slow,s-t-e-a,,sounds,,the word said sound by sound
+ro-word-mop,ro,word,mop,,,,word twin
+ro-slow-mop,ro,slow,m-o-p,,sounds,,the word said sound by sound
+ro-word-dop,ro,word,dop,,,,a cork
+ro-slow-dop,ro,slow,d-o-p,,sounds,,the word said sound by sound
+ro-word-pepene,ro,word,pepene,,,,
+ro-slow-pepene,ro,slow,p-e-p-e-n-e,,sounds,,the word said sound by sound
+ro-syllables-pepene,ro,syllables,pe-pe-ne,,,,
+ro-word-domino,ro,word,domino,,,,word twin
+ro-slow-domino,ro,slow,d-o-m-i-n-o,,sounds,,the word said sound by sound
+ro-word-desen,ro,word,desen,,,,a drawing
+ro-slow-desen,ro,slow,d-e-s-e-n,,sounds,,the word said sound by sound
+ro-word-dans,ro,word,dans,,,,a dance
+ro-slow-dans,ro,slow,d-a-n-s,,sounds,,the word said sound by sound
+ro-stretched-dans,ro,stretched,d-d-dans,,,,FirstSound hint: d can't be held so it is bounced
+ro-word-nota,ro,word,nota,,,,'the note' (notă needs ă)
+ro-slow-nota,ro,slow,n-o-t-a,,sounds,,the word said sound by sound
+ro-word-ponei,ro,word,ponei,,,,diphthong ei; word twin
+ro-slow-ponei,ro,slow,p-o-n-e-i,,sounds,,the word said sound by sound
+ro-word-pisoi,ro,word,pisoi,,,,diphthong oi
+ro-slow-pisoi,ro,slow,p-i-s-o-i,,sounds,,the word said sound by sound
+ro-word-panda,ro,word,panda,,,,word twin
+ro-slow-panda,ro,slow,p-a-n-d-a,,sounds,,the word said sound by sound
+ro-word-piton,ro,word,piton,,,,
+ro-slow-piton,ro,slow,p-i-t-o-n,,sounds,,the word said sound by sound
+ro-word-tenis,ro,word,tenis,,,,word twin
+ro-slow-tenis,ro,slow,t-e-n-i-s,,sounds,,the word said sound by sound
+ro-word-sanie,ro,word,sanie,,,,hiatus: three syllables
+ro-slow-sanie,ro,slow,s-a-n-i-e,,sounds,,the word said sound by sound
+ro-word-patine,ro,word,patine,,,,
+ro-slow-patine,ro,slow,p-a-t-i-n-e,,sounds,,the word said sound by sound
+ro-syllables-patine,ro,syllables,pa-ti-ne,,,,
+ro-word-mops,ro,word,mops,,,,a pug; false friend
+ro-slow-mops,ro,slow,m-o-p-s,,sounds,,the word said sound by sound
+ro-word-nod,ro,word,nod,,,,a knot; false friend
+ro-slow-nod,ro,slow,n-o-d,,sounds,,the word said sound by sound
+ro-word-stop,ro,word,stop,,,,word twin
+ro-slow-stop,ro,slow,s-t-o-p,,sounds,,the word said sound by sound
+ro-word-soare,ro,word,soare,,,,listen only; s
+ro-word-insula,ro,word,insulă,,,,listen only; i
+ro-word-inel,ro,word,inel,,,,listen only; i
+ro-stretched-inel,ro,stretched,iiinel,,,,FirstSound hint: the i held
+ro-word-nor,ro,word,nor,,,,listen only; n
+ro-word-ochelari,ro,word,ochelari,,,,listen only; o
+ro-word-ochi,ro,word,ochi,,,,listen only; o
+ro-stretched-ochi,ro,stretched,ooochi,,,,FirstSound hint: the o held
+ro-word-delfin,ro,word,delfin,,,,listen only; d; word twin
+ro-word-elefant,ro,word,elefant,,,,listen only; e; word twin
+ro-word-elicopter,ro,word,elicopter,,,,listen only; e
+ro-stretched-elicopter,ro,stretched,eeelicopter,,,,FirstSound hint: the e held
+ro-word-racheta,ro,word,rachetă,,,,listen only; word twin
+en-word-pin,en,word,pin,,,,a pin; false friend; TraceWord
+en-slow-pin,en,slow,p-i-n,,sounds,,the word said sound by sound
+en-word-sit,en,word,sit,,,,TraceWord
+en-slow-sit,en,slow,s-i-t,,sounds,,the word said sound by sound
+en-word-man,en,word,man,,,,TraceWord
+en-slow-man,en,slow,m-a-n,,sounds,,the word said sound by sound
+en-word-tin,en,word,tin,,,,a tin can; TraceWord
+en-slow-tin,en,slow,t-i-n,,sounds,,the word said sound by sound
+en-word-pan,en,word,pan,,,,a frying pan
+en-slow-pan,en,slow,p-a-n,,sounds,,the word said sound by sound
+en-word-ant,en,word,ant,,,,
+en-slow-ant,en,slow,a-n-t,,sounds,,the word said sound by sound
+en-word-nap,en,word,nap,,,,a child napping
+en-slow-nap,en,slow,n-a-p,,sounds,,the word said sound by sound
+en-stretched-nap,en,stretched,nnnap,,,,FirstSound hint: the n held
+en-word-sip,en,word,sip,,,,sipping a drink
+en-slow-sip,en,slow,s-i-p,,sounds,,the word said sound by sound
+en-word-mint,en,word,mint,,,,two consonants together: last
+en-slow-mint,en,slow,m-i-n-t,,sounds,,the word said sound by sound
+en-word-pants,en,word,pants,,,,two consonants together: last; underpants (British English)
+en-slow-pants,en,slow,p-a-n-t-s,,sounds,,the word said sound by sound
+en-word-dot,en,word,dot,,,,TraceWord
+en-slow-dot,en,slow,d-o-t,,sounds,,the word said sound by sound
+en-word-pen,en,word,pen,,,,TraceWord
+en-slow-pen,en,slow,p-e-n,,sounds,,the word said sound by sound
+en-word-mop,en,word,mop,,,,word twin; TraceWord
+en-slow-mop,en,slow,m-o-p,,sounds,,the word said sound by sound
+en-word-ten,en,word,ten,,,,the number ten; TraceWord
+en-slow-ten,en,slow,t-e-n,,sounds,,the word said sound by sound
+en-word-pot,en,word,pot,,,,a cooking pot
+en-slow-pot,en,slow,p-o-t,,sounds,,the word said sound by sound
+en-word-top,en,word,top,,,,a spinning top
+en-slow-top,en,slow,t-o-p,,sounds,,the word said sound by sound
+en-word-net,en,word,net,,,,
+en-slow-net,en,slow,n-e-t,,sounds,,the word said sound by sound
+en-word-dad,en,word,dad,,,,
+en-slow-dad,en,slow,d-a-d,,sounds,,the word said sound by sound
+en-stretched-dad,en,stretched,d-d-dad,,,,FirstSound hint: d can't be held so it is bounced
+en-word-pet,en,word,pet,,,,a pet (a puppy in its basket)
+en-slow-pet,en,slow,p-e-t,,sounds,,the word said sound by sound
+en-word-pod,en,word,pod,,,,a pea pod; false friend
+en-slow-pod,en,slow,p-o-d,,sounds,,the word said sound by sound
+en-word-nod,en,word,nod,,,,nodding; false friend
+en-slow-nod,en,slow,n-o-d,,sounds,,the word said sound by sound
+en-word-tent,en,word,tent,,,,two consonants together: last
+en-slow-tent,en,slow,t-e-n-t,,sounds,,the word said sound by sound
+en-word-nest,en,word,nest,,,,two consonants together: last
+en-slow-nest,en,slow,n-e-s-t,,sounds,,the word said sound by sound
+en-word-pond,en,word,pond,,,,two consonants together: last
+en-slow-pond,en,slow,p-o-n-d,,sounds,,the word said sound by sound
+en-word-stop,en,word,stop,,,,two consonants together: last; word twin
+en-slow-stop,en,slow,s-t-o-p,,sounds,,the word said sound by sound
+en-word-spot,en,word,spot,,,,two consonants together: last; a paint spot
+en-slow-spot,en,slow,s-p-o-t,,sounds,,the word said sound by sound
+en-word-mops,en,word,mops,,,,two consonants together: last; more than one mop; false friend
+en-slow-mops,en,slow,m-o-p-s,,sounds,,the word said sound by sound
+en-word-star,en,word,star,,,,listen only; s
+en-word-sun,en,word,sun,,,,listen only; s
+en-stretched-sun,en,stretched,sssun,,,,FirstSound hint: the s held
+en-word-insect,en,word,insect,,,,listen only; i
+en-word-igloo,en,word,igloo,,,,listen only; i
+en-stretched-igloo,en,stretched,iiigloo,,,,FirstSound hint: the i held
+en-word-nose,en,word,nose,,,,listen only; n
+en-word-octopus,en,word,octopus,,,,listen only; o
+en-syllables-octopus,en,syllables,oc-to-pus,,,,
+en-word-orange,en,word,orange,,,,listen only; o: British /ɒ/
+en-stretched-orange,en,stretched,ooorange,,,,FirstSound hint: the o held
+en-word-dolphin,en,word,dolphin,,,,listen only; d; word twin
+en-word-egg,en,word,egg,,,,listen only; e
+en-word-elephant,en,word,elephant,,,,listen only; e; word twin
+en-stretched-elephant,en,stretched,eeelephant,,,,FirstSound hint: the e held
+en-word-piano,en,word,piano,,,,listen only; word twin
+en-syllables-piano,en,syllables,pi-an-o,,,,
+en-word-rocket,en,word,rocket,,,,listen only; word twin
+en-word-panda,en,word,panda,,,,listen only; word twin
+en-word-pony,en,word,pony,,,,listen only; word twin
+en-word-tennis,en,word,tennis,,,,listen only; word twin
+en-word-domino,en,word,domino,,,,listen only; word twin

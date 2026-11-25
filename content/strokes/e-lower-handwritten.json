@@ -1,0 +1,12 @@
+{
+  "status": "draft",
+  "source": "design/research/strokes-draft.json and handwriting-model-draft.svg (curriculum-research), the Romanian school's litere de mână; the loop widened from the draft (it read as an l): the entry rises into the loop and is its bar; not yet checked against her manual",
+  "slant": 0.2,
+  "strokes": [
+    { "runs": [
+      { "kind": "entry", "points": [[0, 200], [20, 178], [44, 152]] },
+      { "kind": "body", "points": [[44, 152], [54, 132], [52, 110], [40, 100], [24, 106], [14, 130], [12, 162], [20, 188], [36, 200]] },
+      { "kind": "exit", "points": [[36, 200], [52, 198], [66, 186]] }
+    ] }
+  ]
+}

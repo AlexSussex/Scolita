@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cccf5aaaa20034fad26d70df993748, type: 3}
+  m_Name: en-i
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.LessonAsset
+  id: en-i
+  unit: planet-2
+  language: en
+  introduces: i
+  retired: 0
+  steps:
+  - kind: MeetLetter
+    language: en
+    letters:
+    - i
+    words:
+    - en-insect
+    options: []
+  - kind: TwoSounds
+    language: both
+    letters:
+    - i
+    words:
+    - ro-inel
+    - ro-insula
+    - en-insect
+    - en-igloo
+    options: []
+  - kind: LetterHunt
+    language: en
+    letters:
+    - i
+    - s
+    - t
+    words: []
+    options: []
+  - kind: TraceLetter
+    language: en
+    letters:
+    - i
+    words: []
+    options:
+    - form=handwritten
+    - case=lower
+    - rounds=1
+  - kind: FirstSound
+    language: en
+    letters:
+    - i
+    - a
+    - s
+    words:
+    - en-igloo
+    options: []

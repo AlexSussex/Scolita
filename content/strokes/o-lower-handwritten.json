@@ -1,0 +1,14 @@
+{
+  "status": "draft",
+  "source": "design/research/strokes-draft.json and handwriting-model-draft.svg (curriculum-research), the Romanian school's litere de mână; two strokes, its entry as the handwritten a's (the human, 2026-11-24): up the round's left side and over its top, then the round drawn back over it, closing at the top, and the exit leaving at the middle line; not yet checked against her manual",
+  "slant": 0.2,
+  "strokes": [
+    { "runs": [
+      { "kind": "entry", "points": [[0, 200], [6, 184], [8, 150], [16, 110], [32, 99], [48, 106]] }
+    ] },
+    { "runs": [
+      { "kind": "body", "points": [[48, 106], [32, 99], [16, 110], [8, 150], [14, 186], [30, 199], [46, 190], [54, 160], [54, 125], [46, 102]] },
+      { "kind": "exit", "points": [[46, 102], [42, 110], [50, 113], [62, 106], [76, 100]] }
+    ] }
+  ]
+}

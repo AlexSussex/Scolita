@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26baaab75f6dc1c49aae7e0678780dd5, type: 3}
+  m_Name: en-pond
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.WordAsset
+  id: en-pond
+  language: en
+  text: pond
+  letters:
+  - p
+  - o
+  - n
+  - d
+  syllables:
+  - pond
+  picture: pond
+  listenOnly: 0
+  twin: 
+  falseFriend: 
+  retired: 0

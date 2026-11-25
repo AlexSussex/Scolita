@@ -3,3 +3,9 @@ a,a,A,vowel-differs,a,,"ro /a/ as in mama, en /æ/ as in map: TwoSounds"
 m,m,M,shared-close,m,,
 t,t,T,shared-close,t,,English t breathes out a little more
 p,p,P,shared-close,p,,English p breathes out a little more
+s,s,S,shared-close,s,,
+i,i,I,vowel-differs,i,,"ro /i/ as in pin, en /ɪ/ as in pin: TwoSounds"
+n,n,N,shared-close,n,,
+o,o,O,vowel-differs,o,,"ro /o/ as in pom, en /ɒ/ as in dot: TwoSounds"
+d,d,D,shared-close,d,,
+e,e,E,vowel-differs,e,,ro /e/ and en /e/ are close: a light TwoSounds

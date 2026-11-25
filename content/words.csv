@@ -17,3 +17,90 @@ en-astronaut,en,astronaut,,as-tro-naut,astronaut,yes,,,,a
 en-moon,en,moon,,moon,moon,yes,,,,m
 en-tiger,en,tiger,,ti-ger,tiger,yes,,,,t
 en-planet,en,planet,,plan-et,planet,yes,ro-planeta,,,p; word twin
+ro-nas,ro,nas,n a s,nas,nose,,,,,TraceWord
+ro-masa,ro,masa,m a s a,ma-sa,table,,,,,'the table' (masă needs ă); TraceWord
+ro-pian,ro,pian,p i a n,pi-an,piano,,en-piano,,,hiatus: two syllables; word twin; TraceWord
+ro-nai,ro,nai,n a i,nai,pan-flute,,,,,diphthong ai: one syllable
+ro-pin,ro,pin,p i n,pin,pine-tree,,,en-pin,,a pine tree; false friend
+ro-sat,ro,sat,s a t,sat,village,,,,,"a village (en sat has no picture, so no false friend here)"
+ro-ananas,ro,ananas,a n a n a s,a-na-nas,pineapple,,,,,
+ro-mami,ro,mami,m a m i,ma-mi,mother,,,,,"familiar (kept by the human, 2026-11-24)"
+ro-tati,ro,tati,t a t i,ta-ti,father,,,,,"familiar (kept by the human, 2026-11-24)"
+ro-nani,ro,nani,n a n i,na-ni,sleeping-moon,,,,,familiar: 'sleep' (hai la nani)
+ro-pas,ro,pas,p a s,pas,footprint,,,,,a step
+ro-spin,ro,spin,s p i n,spin,thorn,,,,,a thorn
+ro-sita,ro,sita,s i t a,si-ta,sieve,,,,,'the sieve' (sită needs ă)
+ro-pom,ro,pom,p o m,pom,fruit-tree,,,,,a fruit tree; TraceWord
+ro-pod,ro,pod,p o d,pod,bridge,,,en-pod,,a bridge; false friend; TraceWord
+ro-dinte,ro,dinte,d i n t e,din-te,tooth,,,,,TraceWord
+ro-stea,ro,stea,s t e a,stea,star,,,,,diphthong ea: one syllable; TraceWord
+ro-mop,ro,mop,m o p,mop,mop,,en-mop,,,word twin
+ro-dop,ro,dop,d o p,dop,cork,,,,,a cork
+ro-pepene,ro,pepene,p e p e n e,pe-pe-ne,watermelon,,,,,
+ro-domino,ro,domino,d o m i n o,do-mi-no,domino,,en-domino,,,word twin
+ro-desen,ro,desen,d e s e n,de-sen,drawing,,,,,a drawing
+ro-dans,ro,dans,d a n s,dans,dance,,,,,a dance
+ro-nota,ro,nota,n o t a,no-ta,music-note,,,,,'the note' (notă needs ă)
+ro-ponei,ro,ponei,p o n e i,po-nei,pony,,en-pony,,,diphthong ei; word twin
+ro-pisoi,ro,pisoi,p i s o i,pi-soi,kitten,,,,,diphthong oi
+ro-panda,ro,panda,p a n d a,pan-da,panda,,en-panda,,,word twin
+ro-piton,ro,piton,p i t o n,pi-ton,python,,,,,
+ro-tenis,ro,tenis,t e n i s,te-nis,tennis,,en-tennis,,,word twin
+ro-sanie,ro,sanie,s a n i e,sa-ni-e,sled,,,,,hiatus: three syllables
+ro-patine,ro,patine,p a t i n e,pa-ti-ne,skates,,,,,
+ro-mops,ro,mops,m o p s,mops,pug,,,en-mops,,a pug; false friend
+ro-nod,ro,nod,n o d,nod,knot,,,en-nod,,a knot; false friend
+ro-stop,ro,stop,s t o p,stop,stop-sign,,en-stop,,,word twin
+ro-soare,ro,soare,,soa-re,sun,yes,,,,s
+ro-insula,ro,insulă,,in-su-lă,island,yes,,,,i
+ro-inel,ro,inel,,i-nel,ring,yes,,,,i
+ro-nor,ro,nor,,nor,cloud,yes,,,,n
+ro-ochelari,ro,ochelari,,o-che-lari,glasses,yes,,,,o
+ro-ochi,ro,ochi,,ochi,eye,yes,,,,o
+ro-delfin,ro,delfin,,del-fin,dolphin,yes,en-dolphin,,,d; word twin
+ro-elefant,ro,elefant,,e-le-fant,elephant,yes,en-elephant,,,e; word twin
+ro-elicopter,ro,elicopter,,e-li-cop-ter,helicopter,yes,,,,e
+ro-racheta,ro,rachetă,,ra-che-tă,rocket,yes,en-rocket,,,word twin
+en-pin,en,pin,p i n,pin,pin,,,ro-pin,,a pin; false friend; TraceWord
+en-sit,en,sit,s i t,sit,sitting,,,,,TraceWord
+en-man,en,man,m a n,man,man,,,,,TraceWord
+en-tin,en,tin,t i n,tin,tin-can,,,,,a tin can; TraceWord
+en-pan,en,pan,p a n,pan,pan,,,,,a frying pan
+en-ant,en,ant,a n t,ant,ant,,,,,
+en-nap,en,nap,n a p,nap,nap,,,,,a child napping
+en-sip,en,sip,s i p,sip,sip,,,,,sipping a drink
+en-mint,en,mint,m i n t,mint,mint-leaf,,,,,two consonants together: last
+en-pants,en,pants,p a n t s,pants,pants,,,,,two consonants together: last; underpants (British English)
+en-dot,en,dot,d o t,dot,dot,,,,,TraceWord
+en-pen,en,pen,p e n,pen,pen,,,,,TraceWord
+en-mop,en,mop,m o p,mop,mop,,ro-mop,,,word twin; TraceWord
+en-ten,en,ten,t e n,ten,ten,,,,,the number ten; TraceWord
+en-pot,en,pot,p o t,pot,pot,,,,,a cooking pot
+en-top,en,top,t o p,top,spinning-top,,,,,a spinning top
+en-net,en,net,n e t,net,net,,,,,
+en-dad,en,dad,d a d,dad,father,,,,,
+en-pet,en,pet,p e t,pet,pet,,,,,a pet (a puppy in its basket)
+en-pod,en,pod,p o d,pod,pea-pod,,,ro-pod,,a pea pod; false friend
+en-nod,en,nod,n o d,nod,nodding,,,ro-nod,,nodding; false friend
+en-tent,en,tent,t e n t,tent,tent,,,,,two consonants together: last
+en-nest,en,nest,n e s t,nest,nest,,,,,two consonants together: last
+en-pond,en,pond,p o n d,pond,pond,,,,,two consonants together: last
+en-stop,en,stop,s t o p,stop,stop-sign,,ro-stop,,,two consonants together: last; word twin
+en-spot,en,spot,s p o t,spot,spot,,,,,two consonants together: last; a paint spot
+en-mops,en,mops,m o p s,mops,mops,,,ro-mops,,two consonants together: last; more than one mop; false friend
+en-star,en,star,,star,star,yes,,,,s
+en-sun,en,sun,,sun,sun,yes,,,,s
+en-insect,en,insect,,in-sect,insect,yes,,,,i
+en-igloo,en,igloo,,ig-loo,igloo,yes,,,,i
+en-nose,en,nose,,nose,nose,yes,,,,n
+en-octopus,en,octopus,,oc-to-pus,octopus,yes,,,,o
+en-orange,en,orange,,or-ange,orange,yes,,,,o: British /ɒ/
+en-dolphin,en,dolphin,,dol-phin,dolphin,yes,ro-delfin,,,d; word twin
+en-egg,en,egg,,egg,egg,yes,,,,e
+en-elephant,en,elephant,,el-e-phant,elephant,yes,ro-elefant,,,e; word twin
+en-piano,en,piano,,pi-an-o,piano,yes,ro-pian,,,word twin
+en-rocket,en,rocket,,rock-et,rocket,yes,ro-racheta,,,word twin
+en-panda,en,panda,,pan-da,panda,yes,ro-panda,,,word twin
+en-pony,en,pony,,po-ny,pony,yes,ro-ponei,,,word twin
+en-tennis,en,tennis,,ten-nis,tennis,yes,ro-tenis,,,word twin
+en-domino,en,domino,,dom-i-no,domino,yes,ro-domino,,,word twin
