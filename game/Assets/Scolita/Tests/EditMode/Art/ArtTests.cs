@@ -14,7 +14,7 @@ namespace Scolita.Tests.EditMode.Art
 {
     /// <summary>
     /// Tests the app's art as imported by <see cref="ArtTextureImporter"/> and packed by
-    /// <see cref="ArtAtlases"/>: every sprite is in exactly one atlas, the
+    /// <see cref="ArtAtlases"/>: every sprite is in exactly one atlas, each atlas fits one page, the
     /// stretchable pieces have their 9-slice borders, every asset reference in the project
     /// resolves, and the launcher icon is set.
     /// </summary>
@@ -24,6 +24,7 @@ namespace Scolita.Tests.EditMode.Art
         {
             "Assets/Scolita/Prefabs", "Assets/Scolita/Scenes", "Assets/Scolita/Content", ArtPaths.Root
         };
+        private const double MostOfAPage = 0.85;
         private static readonly Regex GuidReference = new Regex("guid: ([0-9a-f]{32})", RegexOptions.Compiled);
 
         /// <summary>
@@ -81,6 +82,31 @@ namespace Scolita.Tests.EditMode.Art
                 Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                 int count = atlases.Count(atlas => atlas.CanBindTo(sprite));
                 Assert.That(count, Is.EqualTo(1), path + " must be in exactly one atlas.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that each folder's sprites, with <see cref="ArtAtlases.Padding"/> round each, fit most of
+        /// one <see cref="ArtAtlases.MaxAtlasSize"/> page, so an atlas never spills onto a second
+        /// texture (which would break its batch).
+        /// </summary>
+        [Test]
+        public void TestRebuildAll_EachFolderFitsOnePage()
+        {
+            const double page = (double)ArtAtlases.MaxAtlasSize * ArtAtlases.MaxAtlasSize;
+            foreach (string folder in SpriteFolders())
+            {
+                double area = 0;
+                foreach (string path in SpritePaths().Where(p => FolderOf(p) == folder))
+                {
+                    Rect rect = AssetDatabase.LoadAssetAtPath<Sprite>(path).rect;
+                    float width = rect.width + 2 * ArtAtlases.Padding;
+                    float height = rect.height + 2 * ArtAtlases.Padding;
+                    Assert.That(Mathf.Max(width, height), Is.LessThanOrEqualTo(ArtAtlases.MaxAtlasSize), path);
+                    area += width * height;
+                }
+
+                Assert.That(area / page, Is.LessThanOrEqualTo(MostOfAPage), folder + " needs more than one atlas page; split the folder.");
             }
         }
 
