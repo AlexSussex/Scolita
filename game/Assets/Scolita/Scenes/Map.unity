@@ -176,6 +176,78 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 444351b5a7624d141a79f777fa04a13f, type: 3}
+--- !u!1001 &515233216
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 323742814672408749, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: bubble
+      value: 
+      objectReference: {fileID: 1821936926}
+    - target: {fileID: 566277092219770595, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_Name
+      value: Voice
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724700231818705188, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+--- !u!114 &515233217 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 323742814672408749, guid: c7bcbc5342cf44748aefc2c5f520a7c0, type: 3}
+  m_PrefabInstance: {fileID: 515233216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218b170cc2c05904b9c32c48e9970bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.VoiceHost
 --- !u!1 &664369971
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +376,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1299258640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1299258642}
+  - component: {fileID: 1299258641}
+  m_Layer: 0
+  m_Name: MapRunner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1299258641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299258640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7512ec3b3c2bf5c468f31062b256e792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Map.MapRunner
+  domains: {fileID: 11400000, guid: bf0991ba930833e47a828b992e5abd0d, type: 2}
+  letters: {fileID: 11400000, guid: d2107f33b2619284fbd6bc6f32d2e08a, type: 2}
+  words: {fileID: 11400000, guid: 94c2ddc010c29844f9be70fba99f0134, type: 2}
+  pictures: {fileID: 11400000, guid: 821bef89fd32ae4439533e1e00f50cd2, type: 2}
+  voiceLines: {fileID: 11400000, guid: f4b52bb45ca58444d865dc2e61a22d0a, type: 2}
+  shapes: {fileID: 11400000, guid: 0bfb936c2aaba734dadfe2b5d161413d, type: 2}
+  registry: {fileID: 11400000, guid: 3c33836cc753a7e4e91534dc88f65993, type: 2}
+  voice: {fileID: 515233217}
+  screen: {fileID: 1821936927}
+--- !u!4 &1299258642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299258640}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1821936925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -401,10 +526,34 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98b641bc80787fd4795baec90d530a3d, type: 3}
+--- !u!114 &1821936926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3938157482629691856, guid: 98b641bc80787fd4795baec90d530a3d, type: 3}
+  m_PrefabInstance: {fileID: 1821936925}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83ebf083dcc73f34f9f8a1292541a739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Voice.SpeechBubbleView
+--- !u!114 &1821936927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2311161659987111855, guid: 98b641bc80787fd4795baec90d530a3d, type: 3}
+  m_PrefabInstance: {fileID: 1821936925}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ccc7ec90782ff4dbb2ce2fa6a7b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.UI::Scolita.UI.Map.MapScreen
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1299258642}
   - {fileID: 664369974}
   - {fileID: 1821936925}
   - {fileID: 153228118}
+  - {fileID: 515233216}

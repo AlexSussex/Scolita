@@ -25,7 +25,7 @@ namespace Scolita.UI.Lesson
         [SerializeField] private float floatPixels = 6f;
         [SerializeField] private float floatsPerSecond = 0.5f;
 
-        private ILessonScreenInput input;
+        private IGuideInput input;
         private GuideMood mood;
         private bool talking;
         private Vector2 restingPosition;
@@ -33,19 +33,19 @@ namespace Scolita.UI.Lesson
         /// <summary>Its mood.</summary>
         public GuideMood Mood => mood;
 
-        /// <summary>Sends its taps to <paramref name="screenInput"/>; called by the lesson screen.</summary>
-        public void Bind(ILessonScreenInput screenInput)
+        /// <summary>Sends its taps to <paramref name="screenInput"/>; called by the lesson screen and the map.</summary>
+        public void Bind(IGuideInput screenInput)
         {
             input = screenInput;
         }
 
-        /// <summary>Shows <paramref name="newMood"/>; called by the lesson screen.</summary>
+        /// <summary>Shows <paramref name="newMood"/>; called by the lesson screen and the map.</summary>
         public void ShowMood(GuideMood newMood)
         {
             mood = newMood;
         }
 
-        /// <summary>Moves its mouth, or stops; called every frame by the lesson screen.</summary>
+        /// <summary>Moves its mouth, or stops; called every frame by the lesson screen and the map.</summary>
         public void SetTalking(bool isTalking)
         {
             talking = isTalking;

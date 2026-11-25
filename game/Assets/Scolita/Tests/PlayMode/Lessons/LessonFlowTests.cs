@@ -5,6 +5,7 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Game.Lessons;
+using Scolita.Game.Map;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
 using Scolita.UI.Lesson;
@@ -34,6 +35,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestLessonRunner_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -71,6 +73,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -83,10 +86,12 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestLessonRunner_HomeThenGoResumes()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
                 LessonScene.SaveStartingFiles("ro-t");
+                LessonScene.RestoreFile(MapProgressData.FileName, null);
                 yield return LessonScene.Open();
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 LessonScene.Tap(Tile(runner, "t"));
@@ -95,7 +100,8 @@ namespace Scolita.Tests.PlayMode.Lessons
 
                 SceneSearch.FindInActiveScene<LessonHud>().GetComponentInChildren<Button>().onClick.Invoke();
                 yield return SceneSearch.WaitForScene(AppScene.Map);
-                SceneSearch.FindInActiveScene<MapScreen>().GetComponentInChildren<Button>().onClick.Invoke();
+                yield return LessonScene.WaitUntil(() => SceneSearch.FindInActiveScene<MapScreen>().Planets.Count > 0);
+                SceneSearch.FindInActiveScene<MapScreen>().GoButton.onClick.Invoke();
                 yield return SceneSearch.WaitForScene(AppScene.Lesson);
                 yield return LessonScene.WaitUntil(() => SceneSearch.FindInActiveScene<LessonRunner>().Run != null);
                 LessonRunner resumed = SceneSearch.FindInActiveScene<LessonRunner>();
@@ -109,6 +115,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }

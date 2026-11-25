@@ -1,16 +1,175 @@
-using Scolita.Game.Scenes;
+using System.Collections.Generic;
+using System.Linq;
+using Scolita.Core.Languages;
+using Scolita.Core.Map;
+using Scolita.Game.Map;
+using Scolita.Game.Voice;
+using Scolita.UI.Lesson;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Scolita.UI.Map
 {
     /// <summary>
-    /// The Map placeholder's controller: its big Go button ("Hai!") opens the Lesson scene. The
-    /// galaxy map replaces it (<c>galaxy-map</c>).
+    /// The galaxy map (design/screens.md, screen 1), drawn from Core's <see cref="MapRoute"/>: the rainbow path
+    /// across a map that scrolls sideways by drag, a planet per unit with its letters, the stops on the path,
+    /// the rocket on the next stop, the mascot and its bubble, and the big "Hai!" / "Go!"; the trip plays over
+    /// it. Its taps go to <see cref="IMapInput"/> (the Map scene's <c>MapRunner</c>). Everything is placed once
+    /// when the map opens; nothing allocates per frame.
     /// </summary>
-    public sealed class MapScreen : MonoBehaviour
+    public sealed class MapScreen : MapScreenView
     {
+        [SerializeField] private ScrollRect scroll;
+        [SerializeField] private RectTransform content;
+        [SerializeField] private RainbowPath path;
+        [SerializeField] private RectTransform planetLayer;
+        [SerializeField] private RectTransform stopLayer;
+        [SerializeField] private PlanetView planetTemplate;
+        [SerializeField] private StopView stopTemplate;
+        [SerializeField] private RocketView rocket;
+        [SerializeField] private PlanetLook[] planetLooks = new PlanetLook[0];
+        [SerializeField] private MapLayoutSettings layoutSettings = new MapLayoutSettings();
+        [SerializeField] private GuideFigure guide;
+        [SerializeField] private SpeechBubbleView bubble;
         [SerializeField] private Button goButton;
+        [SerializeField] private TMP_Text goLabel;
+        [SerializeField] private string romanianGo = "Hai!";
+        [SerializeField] private string englishGo = "Go!";
+        [SerializeField] private TripView trip;
+
+        private readonly List<PlanetView> planets = new List<PlanetView>();
+        private readonly List<StopView> stops = new List<StopView>();
+        private IMapInput input;
+        private MapLayout layout;
+
+        /// <inheritdoc/>
+        public override SpeechBubbleView Bubble => bubble;
+
+        /// <inheritdoc/>
+        public override bool IsTripPlaying => trip.IsPlaying;
+
+        /// <summary>The planets drawn, in map order.</summary>
+        public IReadOnlyList<PlanetView> Planets => planets;
+
+        /// <summary>The stops drawn, in the route's order.</summary>
+        public IReadOnlyList<StopView> Stops => stops;
+
+        /// <summary>The big "Hai!" / "Go!".</summary>
+        public Button GoButton => goButton;
+
+        /// <summary>Go's word, in the app's language.</summary>
+        public string GoWord => goLabel.text;
+
+        /// <summary>The rocket.</summary>
+        public RocketView Rocket => rocket;
+
+        /// <summary>The trip.</summary>
+        public TripView Trip => trip;
+
+        /// <summary>The map's scrolling.</summary>
+        public ScrollRect Scroll => scroll;
+
+        /// <inheritdoc/>
+        public override void Bind(IMapInput mapInput)
+        {
+            input = mapInput;
+            guide.Bind(mapInput);
+        }
+
+        /// <inheritdoc/>
+        public override void Show(MapRoute route, Language appLanguage)
+        {
+            layout = new MapLayout(route.Planets.Select(planet => planet.Stops.Count).ToArray(), layoutSettings);
+            content.sizeDelta = new Vector2(layout.Width, content.sizeDelta.y);
+            path.rectTransform.sizeDelta = new Vector2(layout.Width, path.rectTransform.sizeDelta.y);
+            path.SetLine(layout.PathPoints());
+            foreach (MapPlanet planet in route.Planets)
+            {
+                PlanetView view = Instantiate(planetTemplate, planetLayer);
+                view.gameObject.SetActive(true);
+                ((RectTransform)view.transform).anchoredPosition = layout.PlanetCentres[planet.Index];
+                view.Show(planet, LookOf(planet), this);
+                planets.Add(view);
+            }
+
+            foreach (MapStop stop in route.Stops)
+            {
+                StopView view = Instantiate(stopTemplate, stopLayer);
+                view.gameObject.SetActive(true);
+                ((RectTransform)view.transform).anchoredPosition = layout.StopPositions[stop.Index];
+                view.Show(stop, this);
+                stops.Add(view);
+            }
+
+            goLabel.SetText(appLanguage == Language.English ? englishGo : romanianGo);
+            goButton.gameObject.SetActive(route.GoStop != null);
+            ScrollTo(route.GoStop);
+        }
+
+        /// <inheritdoc/>
+        public override void MoveRocket(RocketMove move)
+        {
+            if (move.To == null)
+            {
+                rocket.Hide();
+                return;
+            }
+
+            Vector2 to = layout.StopPositions[move.To.Index];
+            if (move.Kind == RocketMoveKind.Hop)
+            {
+                rocket.HopBetween(layout.StopPositions[move.From.Index], to);
+                return;
+            }
+
+            rocket.PlaceAt(to);
+            if (move.Kind == RocketMoveKind.Trip)
+            {
+                trip.Play(LookOf(planets[move.To.PlanetIndex].Planet).PictureFor(PlanetState.Awake), this);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void Wobble(MapStop stop)
+        {
+            stops[stop.Index].StartWobble();
+        }
+
+        /// <inheritdoc/>
+        public override void Wobble(MapPlanet planet)
+        {
+            planets[planet.Index].StartWobble();
+        }
+
+        /// <inheritdoc/>
+        public override void SetTalking(bool talking)
+        {
+            guide.SetTalking(talking);
+        }
+
+        /// <summary>She tapped a stop; called by <see cref="StopView"/>.</summary>
+        public void StopTapped(StopView view)
+        {
+            input?.TapStop(view.Stop);
+        }
+
+        /// <summary>She tapped a planet; called by <see cref="PlanetView"/>.</summary>
+        public void PlanetTapped(PlanetView view)
+        {
+            input?.TapPlanet(view.Planet);
+        }
+
+        /// <summary>The trip ended or was skipped; called by <see cref="TripView"/>.</summary>
+        public void TripFinished()
+        {
+            input?.TripEnded();
+        }
+
+        private void Awake()
+        {
+            goButton.gameObject.SetActive(false);
+        }
 
         private void OnEnable()
         {
@@ -24,7 +183,27 @@ namespace Scolita.UI.Map
 
         private void OnGoClicked()
         {
-            SceneNavigator.Load(AppScene.Lesson);
+            input?.Go();
+        }
+
+        private PlanetLook LookOf(MapPlanet planet)
+        {
+            return planetLooks[planet.Index % planetLooks.Length];
+        }
+
+        private void ScrollTo(MapStop stop)
+        {
+            Canvas.ForceUpdateCanvases();
+            float visible = scroll.viewport.rect.width;
+            float hidden = layout.Width - visible;
+            if (stop == null || hidden <= 0f)
+            {
+                scroll.horizontalNormalizedPosition = 0f;
+                return;
+            }
+
+            float between = Mathf.Lerp(layout.StopPositions[stop.Index].x, layout.PlanetCentres[stop.PlanetIndex].x, 0.5f);
+            scroll.horizontalNormalizedPosition = Mathf.Clamp01((between - visible * 0.5f) / hidden);
         }
     }
 }
