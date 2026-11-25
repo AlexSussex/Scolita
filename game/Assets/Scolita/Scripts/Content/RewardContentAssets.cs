@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Scolita.Core.Content;
+using Scolita.Core.Profiles;
 using Scolita.Core.Rewards;
 
 namespace Scolita.Content
@@ -22,6 +23,7 @@ namespace Scolita.Content
                 stickers.Items.Select(sticker => sticker.ToSticker()).ToArray(),
                 constellations.Items.Select(constellation => constellation.ToConstellation()).ToArray(),
                 trails.Items.Select(trail => trail.ToTrail()).ToArray(),
+                Array.Empty<ProfileAvatar>(),
                 problems);
             if (problems.HasErrors)
             {

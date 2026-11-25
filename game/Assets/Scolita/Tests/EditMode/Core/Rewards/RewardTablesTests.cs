@@ -10,9 +10,9 @@ namespace Scolita.Tests.EditMode.Core.Rewards
     /// <summary>Tests <see cref="RewardTables"/> on the test set of <see cref="ContentCsvs"/>.</summary>
     public sealed class RewardTablesTests
     {
-        /// <summary>Tests that <see cref="RewardTables.Read"/> reads the stickers, the constellations and the trails.</summary>
+        /// <summary>Tests that <see cref="RewardTables.Read"/> reads the stickers, the constellations, the trails and the avatars.</summary>
         [Test]
-        public void TestRead_TheThreeFiles()
+        public void TestRead_TheFourFiles()
         {
             ContentProblems problems = new ContentProblems();
 
@@ -21,6 +21,7 @@ namespace Scolita.Tests.EditMode.Core.Rewards
             Assert.That(problems.All.Select(problem => problem.ToString()), Is.Empty);
             Assert.That(rewards.Stickers.All.Select(sticker => sticker.Id.ToString()), Is.EqualTo(new[] { "guitar", "whale-rainbow" }));
             Assert.That(rewards.Trails.All.Select(trail => trail.Id.ToString()), Is.EqualTo(new[] { "rainbow", "stars" }));
+            Assert.That(rewards.Avatars.All.Select(avatar => avatar.Id.ToString()), Is.EqualTo(new[] { "unicorn", "dog" }));
             Assert.That(rewards.TryGetConstellation(ContentId.Create("planet-1"), out Constellation unicorn), Is.True);
             Assert.That(unicorn.Stars.Count, Is.EqualTo(4));
             Assert.That(unicorn.Stars[0].X, Is.EqualTo(470f));
@@ -53,6 +54,7 @@ namespace Scolita.Tests.EditMode.Core.Rewards
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             csvs.Remove(ContentFileNames.Trails);
             int row = ContentCsvs.AddRow(csvs, ContentFileNames.Stickers, "guitar,,");
+            int avatarRow = ContentCsvs.AddRow(csvs, ContentFileNames.Avatars, "dog,,");
             ContentProblems problems = new ContentProblems();
 
             RewardTables.Read(csvs, problems);
@@ -60,6 +62,7 @@ namespace Scolita.Tests.EditMode.Core.Rewards
             ContentProblem[] errors = problems.All.Where(problem => problem.IsError).ToArray();
             ContentCsvs.AssertError(errors, ContentFileNames.Trails, 0, "missing");
             ContentCsvs.AssertError(errors, ContentFileNames.Stickers, row, "guitar", "already used");
+            ContentCsvs.AssertError(errors, ContentFileNames.Avatars, avatarRow, "dog", "already used");
         }
     }
 }

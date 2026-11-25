@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Scolita.Core.Content;
+using Scolita.Core.Profiles;
 using Scolita.Core.Content.Csv;
 
 namespace Scolita.Core.Rewards
 {
     /// <summary>
-    /// Reads the rewards' three CSVs (<c>stickers.csv</c>, <c>constellations.csv</c>, <c>trails.csv</c>;
-    /// <c>content/README.md</c>) into a <see cref="RewardContent"/>, through the same table reader as the
+    /// Reads the rewards' three CSVs (<c>stickers.csv</c>, <c>constellations.csv</c>, <c>trails.csv</c>) and the profile
+    /// pictures' (<c>avatars.csv</c>; <c>content/README.md</c>) into a <see cref="RewardContent"/>, through the same table reader as the
     /// curriculum (<see cref="ContentTables.ReadTable"/>): each file's columns, ids and spelling, and a
     /// constellation's stars (<c>x:y</c>, separated by spaces) and lines (<c>a-b</c>, star numbers from 1). A row
     /// with a broken cell is reported and left out; the rewards' own rules are <see cref="RewardContentRules"/>.
@@ -24,9 +25,10 @@ namespace Scolita.Core.Rewards
         private static readonly string[] StickerColumns = { Id, Retired, Notes };
         private static readonly string[] ConstellationColumns = { Id, "unit", StarsColumn, LinesColumn, Retired, Notes };
         private static readonly string[] TrailColumns = { Id, Retired, Notes };
+        private static readonly string[] AvatarColumns = { Id, Retired, Notes };
 
         /// <summary>
-        /// Reads the three files of <paramref name="textsByFileName"/> (each CSV's name and its text), reporting into
+        /// Reads the four files of <paramref name="textsByFileName"/> (each CSV's name and its text), reporting into
         /// <paramref name="problems"/> every missing file and column and every cell that can't be read. Called by the
         /// importer, the content validator test and <c>RewardTablesTests</c>.
         /// </summary>
@@ -35,13 +37,16 @@ namespace Scolita.Core.Rewards
             List<Sticker> stickers = new List<Sticker>();
             List<Constellation> constellations = new List<Constellation>();
             List<Trail> trails = new List<Trail>();
+            List<ProfileAvatar> avatars = new List<ProfileAvatar>();
             ContentTables.ReadTable(textsByFileName, ContentFileNames.Stickers, StickerColumns, problems,
                 (table, row) => ReadSticker(table, row, problems, stickers));
             ContentTables.ReadTable(textsByFileName, ContentFileNames.Constellations, ConstellationColumns, problems,
                 (table, row) => ReadConstellation(table, row, problems, constellations));
             ContentTables.ReadTable(textsByFileName, ContentFileNames.Trails, TrailColumns, problems,
                 (table, row) => ReadTrail(table, row, problems, trails));
-            return RewardContent.Build(stickers, constellations, trails, problems);
+            ContentTables.ReadTable(textsByFileName, ContentFileNames.Avatars, AvatarColumns, problems,
+                (table, row) => ReadAvatar(table, row, problems, avatars));
+            return RewardContent.Build(stickers, constellations, trails, avatars, problems);
         }
 
         private static void ReadSticker(CsvTable table, CsvRow row, ContentProblems problems, List<Sticker> stickers)
@@ -63,6 +68,17 @@ namespace Scolita.Core.Rewards
             if (cells.IsGood)
             {
                 trails.Add(new Trail(id, retired, cells.Source));
+            }
+        }
+
+        private static void ReadAvatar(CsvTable table, CsvRow row, ContentProblems problems, List<ProfileAvatar> avatars)
+        {
+            RowReader cells = new RowReader(table, row, problems);
+            ContentId id = cells.RequiredId(Id);
+            bool retired = cells.YesNo(Retired);
+            if (cells.IsGood)
+            {
+                avatars.Add(new ProfileAvatar(id, retired, cells.Source));
             }
         }
 

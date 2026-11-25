@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
+using Scolita.Core.Profiles;
 using Scolita.Core.Rewards;
 
 namespace Scolita.Tests.EditMode.Fakes
@@ -32,7 +34,7 @@ namespace Scolita.Tests.EditMode.Fakes
                 .Select(unit => new Constellation(ContentId.Create("sky-" + unit), ContentId.Create(unit), Triangle(),
                     new[] { new StarLine(0, 1), new StarLine(1, 2), new StarLine(2, 0) }, false, source));
             IEnumerable<Trail> trails = TrailIds.Select(id => new Trail(ContentId.Create(id), false, source));
-            return RewardContent.Build(stickers, constellations, trails, new ContentProblems());
+            return RewardContent.Build(stickers, constellations, trails, Array.Empty<ProfileAvatar>(), new ContentProblems());
         }
 
         /// <summary>The rules: 3 stars a lesson, a sticker every second lesson, sizes from 0.5 to 3; used by the reward tests.</summary>

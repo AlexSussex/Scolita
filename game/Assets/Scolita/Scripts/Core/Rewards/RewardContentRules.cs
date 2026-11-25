@@ -7,7 +7,7 @@ namespace Scolita.Core.Rewards
 {
     /// <summary>
     /// The content validator's rules on the rewards (<see cref="RewardContent"/>) against the
-    /// <see cref="Curriculum"/>: at least one sticker to give; one constellation per planet that has lessons, on a
+    /// <see cref="Curriculum"/>: at least one sticker to give and one profile picture to offer; one constellation per planet that has lessons, on a
     /// planet that exists, with at least <see cref="FewestStars"/> stars inside its frame and lines between its own
     /// stars; and every line the rewards say, in each language of the lessons (<see cref="RewardLines"/>). The
     /// pictures of the stickers and trails are checked by the importer, which sees the art.
@@ -24,6 +24,7 @@ namespace Scolita.Core.Rewards
         public static void Check(RewardContent rewards, Curriculum curriculum, ContentProblems problems)
         {
             CheckStickers(rewards, problems);
+            CheckAvatars(rewards, problems);
             foreach (Constellation constellation in rewards.Constellations.All)
             {
                 CheckFigure(constellation, problems);
@@ -40,6 +41,15 @@ namespace Scolita.Core.Rewards
             {
                 problems.Error(new ContentSource(ContentFileNames.Stickers, 0),
                     "there is no sticker to give: add one that isn't retired.");
+            }
+        }
+
+        private static void CheckAvatars(RewardContent rewards, ContentProblems problems)
+        {
+            if (rewards.Avatars.All.All(avatar => avatar.Retired))
+            {
+                problems.Error(new ContentSource(ContentFileNames.Avatars, 0),
+                    "there is no profile picture to offer: add an avatar that isn't retired.");
             }
         }
 

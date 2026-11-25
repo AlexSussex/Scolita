@@ -9,7 +9,7 @@ namespace Scolita.Tests.EditMode.Fakes
 {
     /// <summary>
     /// A small, valid set of the content CSVs (three letters, seven words, one planet in both
-    /// languages, its constellation, two stickers and two trails) for the content tests, and helpers to break one thing in it and check it. Each
+    /// languages, its constellation, two stickers, two trails and two avatars) for the content tests, and helpers to break one thing in it and check it. Each
     /// test takes its own copy from <see cref="Valid"/>.
     /// </summary>
     public static class ContentCsvs
@@ -158,6 +158,11 @@ namespace Scolita.Tests.EditMode.Fakes
             + "rainbow,,\n"
             + "stars,,\n";
 
+        private const string Avatars =
+            "id,retired,notes\n"
+            + "unicorn,,\n"
+            + "dog,,\n";
+
         private const string Units =
             "id,domain,retired,notes\n"
             + "planet-1,reading,,\n";
@@ -261,6 +266,7 @@ namespace Scolita.Tests.EditMode.Fakes
                 { ContentFileNames.Stickers, Stickers },
                 { ContentFileNames.Constellations, Constellations },
                 { ContentFileNames.Trails, Trails },
+                { ContentFileNames.Avatars, Avatars },
                 { ShapeFileName, Shape }
             };
         }

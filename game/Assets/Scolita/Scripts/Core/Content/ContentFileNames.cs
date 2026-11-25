@@ -35,10 +35,13 @@ namespace Scolita.Core.Content
         /// <summary>The rocket's trails, in the order they are earned (<c>Scolita.Core.Rewards</c>).</summary>
         public const string Trails = "trails.csv";
 
+        /// <summary>The profile pictures a child chooses from, in the order offered (<c>Scolita.Core.Profiles</c>).</summary>
+        public const string Avatars = "avatars.csv";
+
         /// <summary>Every file, in the order they are read; called by the importer, <c>ContentTables</c> and <c>RewardTables</c>.</summary>
         public static IReadOnlyList<string> All { get; } = new[]
         {
-            Letters, Words, Pictures, VoiceLines, Units, Lessons, Steps, Stickers, Constellations, Trails
+            Letters, Words, Pictures, VoiceLines, Units, Lessons, Steps, Stickers, Constellations, Trails, Avatars
         };
     }
 }

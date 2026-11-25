@@ -23,6 +23,9 @@ namespace Scolita.Core.Profiles
         /// </summary>
         public string Value => value ?? throw new InvalidOperationException("This ProfileId was never set.");
 
+        /// <summary>Whether this is a real id (false for the default value, which stands for "nobody").</summary>
+        public bool IsSet => value != null;
+
         /// <summary>
         /// The id <paramref name="text"/>; throws an <see cref="ArgumentException"/> when it isn't
         /// <c>[a-z0-9-]+</c>. Called by the Unity side for its built-in profile and by

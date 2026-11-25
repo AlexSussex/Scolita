@@ -171,6 +171,24 @@ namespace Scolita.Core.Lessons
         }
 
         /// <summary>
+        /// Ends the current step as done with its answer shown (the tester's "skip step"): raises
+        /// <see cref="StepCompleted"/>, so the step counts as practised, never as right, and <see cref="Next"/> moves on
+        /// as after any step. Throws an <see cref="InvalidOperationException"/> when no step waits for an answer. Called
+        /// by the Lesson scene's composition root (only for a profile that <c>CanSkipSteps</c>) and the tests.
+        /// </summary>
+        public void Skip()
+        {
+            if (State != LessonRunState.Playing && State != LessonRunState.AnswerShown)
+            {
+                throw new InvalidOperationException("No step waits to be skipped (the run is " + State + ").");
+            }
+
+            answerShownInStep = true;
+            State = LessonRunState.StepDone;
+            StepCompleted?.Invoke(new StepCompleted(StepIndex, CurrentStep, answerShownInStep));
+        }
+
+        /// <summary>
         /// Moves on once a step is done (its praise heard): begins the next step, or finishes the
         /// lesson and raises <see cref="LessonCompleted"/>. Throws an <see cref="InvalidOperationException"/>
         /// when the step isn't done. Called by the Lesson scene's composition root and the tests.

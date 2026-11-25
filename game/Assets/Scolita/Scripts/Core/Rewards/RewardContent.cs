@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Core.Content;
+using Scolita.Core.Profiles;
 
 namespace Scolita.Core.Rewards
 {
     /// <summary>
     /// The rewards' content, beside the <see cref="Curriculum"/>: the stickers, the planets' constellations and
     /// the rocket's trails, read from <c>stickers.csv</c>, <c>constellations.csv</c> and <c>trails.csv</c>
-    /// (<see cref="RewardTables"/>) or from their assets in the app.
+    /// (<see cref="RewardTables"/>) or from their assets in the app; and, read with them, the profile pictures
+    /// (<c>avatars.csv</c>), which the app reads from their own catalog.
     /// </summary>
     public sealed class RewardContent
     {
         private readonly Dictionary<ContentId, Constellation> constellationsByUnit = new Dictionary<ContentId, Constellation>();
 
-        private RewardContent(ItemCatalog<Sticker> stickers, ItemCatalog<Constellation> constellations, ItemCatalog<Trail> trails)
+        private RewardContent(ItemCatalog<Sticker> stickers, ItemCatalog<Constellation> constellations, ItemCatalog<Trail> trails,
+            ItemCatalog<ProfileAvatar> avatars)
         {
+            Avatars = avatars;
             Stickers = stickers;
             Constellations = constellations;
             Trails = trails;
@@ -36,18 +40,22 @@ namespace Scolita.Core.Rewards
         /// <summary>Every trail, in the order they are earned.</summary>
         public ItemCatalog<Trail> Trails { get; }
 
+        /// <summary>Every profile picture, in the order offered (none in the app's rewards, which don't use them).</summary>
+        public ItemCatalog<ProfileAvatar> Avatars { get; }
+
         /// <summary>
-        /// The content of <paramref name="stickers"/>, <paramref name="constellations"/> and <paramref name="trails"/>,
-        /// reporting into <paramref name="problems"/> every id used twice in one of them (the second one is left out).
-        /// Called by <see cref="RewardTables"/>, the reward assets' loader and the tests.
+        /// The content of <paramref name="stickers"/>, <paramref name="constellations"/>, <paramref name="trails"/> and
+        /// <paramref name="avatars"/>, reporting into <paramref name="problems"/> every id used twice in one of them (the
+        /// second one is left out). Called by <see cref="RewardTables"/>, the reward assets' loader and the tests.
         /// </summary>
         public static RewardContent Build(IEnumerable<Sticker> stickers, IEnumerable<Constellation> constellations,
-            IEnumerable<Trail> trails, ContentProblems problems)
+            IEnumerable<Trail> trails, IEnumerable<ProfileAvatar> avatars, ContentProblems problems)
         {
             return new RewardContent(
                 new ItemCatalog<Sticker>(Distinct(stickers, "sticker", problems)),
                 new ItemCatalog<Constellation>(Distinct(constellations, "constellation", problems)),
-                new ItemCatalog<Trail>(Distinct(trails, "trail", problems)));
+                new ItemCatalog<Trail>(Distinct(trails, "trail", problems)),
+                new ItemCatalog<ProfileAvatar>(Distinct(avatars, "avatar", problems)));
         }
 
         /// <summary>

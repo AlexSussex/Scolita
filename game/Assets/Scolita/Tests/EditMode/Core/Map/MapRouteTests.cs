@@ -63,6 +63,28 @@ namespace Scolita.Tests.EditMode.Core.Map
             Assert.That(route.NextLetter.Id.ToString(), Is.EqualTo("a"));
         }
 
+        /// <summary>
+        /// Tests that the tester's map (every stop open) opens the stops ahead too, while the rocket, the states and the
+        /// planets' faces still follow what is done; a child's map opens none ahead.
+        /// </summary>
+        [Test]
+        public void TestEveryStopOpen_OpensTheStopsAheadOnly()
+        {
+            Curriculum curriculum = RealContent.Read();
+            Domain domain = curriculum.Domains[0];
+            LessonOrder order = new LessonOrder(domain, LanguageMix.Both, new PlayableSteps(ActivityRulesFactory.Kinds, curriculum));
+
+            MapRoute tester = new MapRoute(curriculum, domain, order, Progresses.Empty(), true);
+            MapRoute child = MapRoutes.Of(curriculum, LanguageMix.Both);
+
+            Assert.That(tester.Stops.Select(stop => stop.CanOpen), Is.All.True);
+            Assert.That(tester.Next.Lesson.Id.ToString(), Is.EqualTo("ro-a"));
+            Assert.That(tester.Stops.Skip(1).Select(stop => stop.State), Is.All.EqualTo(StopState.Ahead));
+            Assert.That(tester.Planets.Skip(1).Select(planet => planet.State), Is.All.EqualTo(PlanetState.Sleepy));
+            Assert.That(child.Stops.Skip(1).Select(stop => stop.CanOpen), Is.All.False);
+            Assert.That(child.Stops.Select(stop => stop.OpensAhead), Is.All.False);
+        }
+
         /// <summary>Tests that <see cref="MapRoute.Next"/> is the first lesson not done, the ones before it done, and the letters met, current or ahead.</summary>
         [Test]
         public void TestNext_TheFirstNotDone()

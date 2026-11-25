@@ -258,6 +258,36 @@ namespace Scolita.Tests.EditMode.Core.Lessons
                 Throws.ArgumentException);
         }
 
+        /// <summary>
+        /// Tests that <see cref="LessonRun.Skip"/> ends the step as done with its answer shown (practised, never right),
+        /// moves on with <see cref="LessonRun.Next"/>, and refuses when no step waits.
+        /// </summary>
+        [Test]
+        public void TestSkip_EndsTheStepWithTheAnswerShown()
+        {
+            LessonRun run = RomanianT(TestLearningRules.Default());
+            List<StepCompleted> completed = new List<StepCompleted>();
+            List<AnswerChecked> checkedAnswers = new List<AnswerChecked>();
+            run.StepCompleted += completed.Add;
+            run.AnswerChecked += checkedAnswers.Add;
+            run.Start();
+
+            run.Skip();
+            LessonRunState afterSkip = run.State;
+            run.Next();
+
+            Assert.That(afterSkip, Is.EqualTo(LessonRunState.StepDone));
+            Assert.That(completed.Single().StepIndex, Is.EqualTo(0));
+            Assert.That(completed.Single().AnswerWasShown, Is.True);
+            Assert.That(checkedAnswers, Is.Empty);
+            Assert.That(run.StepIndex, Is.EqualTo(1));
+            Assert.That(run.State, Is.EqualTo(LessonRunState.Playing));
+            run.Skip();
+            run.Next();
+            Assert.That(run.State, Is.EqualTo(LessonRunState.Finished));
+            Assert.That(() => run.Skip(), Throws.InstanceOf<InvalidOperationException>());
+        }
+
         private static int Answer => 0;
 
         private static int Wrong => 1;

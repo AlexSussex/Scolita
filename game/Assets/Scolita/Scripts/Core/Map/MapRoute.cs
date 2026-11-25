@@ -19,9 +19,19 @@ namespace Scolita.Core.Map
         /// <summary>
         /// Lays out <paramref name="domain"/>'s units and the lessons of <paramref name="order"/> on them,
         /// with <paramref name="done"/> saying which are finished; letters are read from
-        /// <paramref name="curriculum"/>. Called by <c>MapRunner</c> and the tests.
+        /// <paramref name="curriculum"/>. Called by <c>ParentRunner</c> and the tests.
         /// </summary>
         public MapRoute(Curriculum curriculum, Domain domain, LessonOrder order, IDoneLessons done)
+            : this(curriculum, domain, order, done, false)
+        {
+        }
+
+        /// <summary>
+        /// Lays out the map as <see cref="MapRoute(Curriculum, Domain, LessonOrder, IDoneLessons)"/>, with every stop
+        /// opening when <paramref name="everyStopOpen"/> (the tester's map: the rocket, the planets' faces and the letters
+        /// still follow what is done). Called by <c>MapRunner</c> and the tests.
+        /// </summary>
+        public MapRoute(Curriculum curriculum, Domain domain, LessonOrder order, IDoneLessons done, bool everyStopOpen)
         {
             Lesson[] lessons = order.Playable.ToArray();
             int nextIndex = FirstNotDone(lessons, done);
@@ -46,7 +56,7 @@ namespace Scolita.Core.Map
                     StopState state = done.IsDone(lesson.Id) ? StopState.Done
                         : lesson.Id == nextId ? StopState.Next
                         : StopState.Ahead;
-                    MapStop stop = new MapStop(lesson, planets.Count, planetStops.Count, index, state);
+                    MapStop stop = new MapStop(lesson, planets.Count, planetStops.Count, index, state, everyStopOpen);
                     planetStops.Add(stop);
                     stops.Add(stop);
                     stopsByLesson[lesson.Id] = stop;
