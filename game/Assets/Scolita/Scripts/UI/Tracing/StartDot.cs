@@ -6,13 +6,14 @@ namespace Scolita.UI.Tracing
 {
     /// <summary>
     /// A stroke's start dot on the writing board (design/README.md: green with a white rim and its stroke
-    /// number; the next stroke's dot outlined), which pulses after a stroke that missed. Its number's text is
-    /// made once, so moving it allocates nothing.
+    /// number; the next stroke's dot outlined, smaller and under the current one), which pulses after a stroke
+    /// that missed. Its number's text is made once, so moving it allocates nothing.
     /// </summary>
     public sealed class StartDot : MonoBehaviour
     {
         private const float PulseSeconds = 1.6f;
         private const float PulsesPerSecond = 2.5f;
+        private const float NextScale = 0.7f;
 
         [SerializeField] private RectTransform rect;
         [SerializeField] private Image image;
@@ -34,7 +35,12 @@ namespace Scolita.UI.Tracing
             image.sprite = current ? currentSprite : nextSprite;
             number.text = label;
             number.color = current ? currentNumber : nextNumber;
-            rect.localScale = Vector3.one;
+            rect.localScale = Vector3.one * (current ? 1f : NextScale);
+            if (current)
+            {
+                rect.SetAsLastSibling();
+            }
+
             pulseLeft = 0f;
             gameObject.SetActive(true);
         }

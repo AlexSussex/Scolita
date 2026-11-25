@@ -280,11 +280,11 @@ namespace Scolita.UI.Tracing
                 bool shownForAnswer = state.AnswerShown && stroke == state.Stroke;
                 if (state.Guide == TraceGuide.Dotted || shownForAnswer)
                 {
-                    AddPath(guideDots, state.Shape.Strokes[stroke].Path, scale, Vector2.zero);
+                    AddPath(guideDots, state.Shape.Strokes[stroke].Path, scale, new Vector2(-centreX * scale, 0f));
                 }
                 else if (state.Guide == TraceGuide.Faint)
                 {
-                    AddPath(guideShadow, state.Shape.Strokes[stroke].Path, scale, Vector2.zero);
+                    AddPath(guideShadow, state.Shape.Strokes[stroke].Path, scale, new Vector2(-centreX * scale, 0f));
                 }
             }
         }
@@ -408,11 +408,25 @@ namespace Scolita.UI.Tracing
 
         private void DrawPicture(StrokeLineGraphic picture)
         {
-            float pictureScale = picture.rectTransform.rect.height * 0.9f / LinesSpan;
+            float top = WritingLines.Below;
+            float bottom = WritingLines.Top;
+            foreach (Stroke stroke in state.Shape.Strokes)
+            {
+                for (int index = 0; index < stroke.Path.Count; index++)
+                {
+                    top = Mathf.Min(top, stroke.Path.Y(index));
+                    bottom = Mathf.Max(bottom, stroke.Path.Y(index));
+                }
+            }
+
+            Rect area = picture.rectTransform.rect;
+            float width = Mathf.Max(state.Shape.MaxX - state.Shape.MinX, 1f);
+            float pictureScale = Mathf.Min(area.height / Mathf.Max(bottom - top, 1f), area.width / width);
+            Vector2 offset = new Vector2(-centreX * pictureScale, ((top + bottom) * 0.5f - LinesMiddle) * pictureScale);
             picture.Clear();
             foreach (Stroke stroke in state.Shape.Strokes)
             {
-                AddPath(picture, stroke.Path, pictureScale, new Vector2(-centreX * pictureScale, 0f));
+                AddPath(picture, stroke.Path, pictureScale, offset);
             }
         }
 
