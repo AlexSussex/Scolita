@@ -18,6 +18,38 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.8.1 (2026-11-25)
+
+Planets 2 and 3. After planet 1 (a m t p) come s i n and o d e, each letter in Romanian and in English, with the same
+games as planet 1: meet the letter, pick it, hunt it, trace it in print and by hand, find a word's first sound, the
+two sounds of i, o and e, the drum, build a word, read and match, words written by hand and joined, the capitals, and
+a party with word twins and false friends. Content only: no screen changed.
+
+- **For the child:**
+  - **Six new letters:** s i n (planet 2) and o d e (planet 3), each met with a word and a picture (soare, insulă,
+    nor, ochelari, delfin, elefant; star, insect, nose, octopus, dolphin, egg), traced in print and by hand (the i's
+    dot last; the o leaves high and joins high).
+  - **New words to read:** Romanian nas, masa, pian, nai, pin, sat, ananas, mami, tati, nani, pas, spin, sita; pom,
+    pod, dinte, stea, mop, dop, pepene, domino, desen, dans, nota, ponei, pisoi, panda, piton, tenis, sanie, patine,
+    mops, nod, stop. English pin, sit, man, tin, pan, ant, nap, sip, mint, pants; dot, pen, mop, ten, pot, top, net,
+    dad, pet, pod, nod, tent, nest, pond, stop, spot, mops.
+  - **Words by hand:** nas, masa, pian; pom, dinte, stea; sit, pin, man; dot, pen, ten.
+  - **Bridges:** the two sounds of i, o (and a light one for e); twins pian / piano, rachetă / rocket, mop, stop,
+    panda, ponei / pony, tenis / tennis, domino; false friends pin, pod, nod.
+  - Planets 2–3 follow planet 1's party with **Hai!** (no map yet). Pictures are still plain circles.
+- **For the parent:** nothing new to set. The lessons speak with the tablet's voice until the lines are recorded.
+
+### Technical notes
+
+- **Content added:** 2 units, 6 letters, 20 lessons, 128 steps, 87 words (61 to read, 26 listen-only), 71
+  placeholder pictures, 190 voice lines, 24 letter shapes (`content/strokes/`, all `draft`); 376 ids recorded in
+  `content/released-ids.txt`. No code, package or save-format change.
+- **Tests:** `RealLessonsTests` plays every lesson of planets 1–3 to its end (one case per lesson); recorded
+  handwritten lines for s i n o d e, pom, dinte, dot and stea.
+- **The human:** tick the review table (shapes, words, pictures, the questions), and record planets 2–3's lines when
+  planet 1's are done (`local/for-human-next-steps.md`).
+- Brief: [`tasks/done/content-letters-1.md`](tasks/done/content-letters-1.md).
+
 ## 0.8.0 (2026-11-25)
 
 Writing by hand. After the print letter, each Romanian letter lesson has the letter by hand

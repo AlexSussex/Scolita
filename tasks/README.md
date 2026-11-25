@@ -67,7 +67,7 @@ Each brief file therefore reads, top to bottom:
 | 12 | `feature/rewards` | Ready after 10 | [pending/rewards.md](pending/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
-| 15 | `feature/content-letters-1` | In progress (content-letters-1) | [pending/content-letters-1.md](pending/content-letters-1.md) |
+| 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
 | 16 | `feature/look` | In progress (look) | [pending/look.md](pending/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
 | 18 | `feature/content-ledger` | Done 2026-11-24, released as 0.3.1 (a chore from `content-model`'s follow-ups) | [done/content-ledger.md](done/content-ledger.md) |
@@ -100,11 +100,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| content-letters-1 | [content-letters-1](pending/content-letters-1.md) | `content/` (all CSVs, `strokes/`, `voice-lines.csv`, `pictures/`), `Assets/Scolita/Content/` (imported assets and catalogs), `content/released-ids.txt` at close-out | emulator-5602 | 2026-11-25 | Started: planets 2–3 (s i n, o d e) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `handwriting` (handwriting done, release 0.8.0)._
+_Last updated 2026-11-25 by agent `content-letters-1` (planets 2–3, release 0.8.1)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -164,6 +163,10 @@ _Update this section whenever a slice is pushed or a brief is finished._
   hand in every Romanian letter lesson (one round in English), `TraceWord` (mama, tata, map,
   mat joined, a checkpoint line at each letter), the "de mână" tile on `MeetLetter`. Every
   activity kind is built now.
+- **Done 2026-11-25:** `content-letters-1`, release 0.8.1: planets 2 and 3 (s i n, o d e) in both languages as
+  content only: 20 lessons, 87 words, 190 voice lines, 24 letter shapes (drafts), placeholder pictures; a test plays
+  every lesson of planets 1–3 to its end. Planets 2–3 follow planet 1's party with **Hai!**. The human ticks the
+  review table and records planet by planet.
 - **Next** (`handwriting` updated it): `content-letters-1` (planets 2–3, print and handwritten
   shapes as data). `galaxy-map` waits for `look` (both change `MapScreen.prefab`), and
   `look` waits for the human's art choices. `content-letters-1` (planets
@@ -172,6 +175,13 @@ _Update this section whenever a slice is pushed or a brief is finished._
   tablet (`local/for-human-next-steps.md`).
 
 ### Open follow-ups across briefs
+
+- **From `content-letters-1`** (full list in its completion record):
+  - The human: tick the review table (the 24 shapes, every word, picture and line, and its questions); record
+    planets 2–3 after planet 1.
+  - `rewards`: stickers and constellations for planets 1–3. `progress-review`: reviews that trace the untraced
+    TraceWord words. `look`: the 71 new pictures.
+  - A question for the human: capitals in "English only" (the capitals lessons are Romanian).
 
 - **From `handwriting`** (full list in its completion record):
   - `content-letters-1`: s i n o d e by hand as data (the import checks entries, exits, lines,

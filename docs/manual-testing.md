@@ -39,6 +39,28 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.8.1 (2026-11-25): planets 2 and 3
+
+On the tablet, with the 0.8.1 APK (the debug one is `local/apks/Scolita-0.8.1-debug.apk`). Planets 2–3 come after
+planet 1's party: tap **Hai!** after each lesson (there is no map yet). The pictures are still plain circles; the
+lines are the tablet's voice (or the bubble only) until they are recorded. Every word and line is listed for ticking in
+`tasks/done/content-letters-1.md` → Progress → "For the human to check".
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.8.1-1 | Meeting s (`ro-s`, first lesson after `party-1`) | Listen; tap the letter, then the picture | „Hai să cunoaștem o literă nouă! Ascultă: s… s… soare!”, the s, S, the s by hand, the picture with „soare”; the sound is a pure /sss/, never „se” | |
+| 0.8.1-2 | The s in print and by hand (`ro-s`) | Trace the print s from its top right dot; then the s by hand from the baseline | Print: round first to the left, down and round to the bottom left. By hand: the entry up from the baseline to the s's top, down the right side, round the bottom and out to the right. Does it match her manual? | |
+| 0.8.1-3 | `ro-i`, `ro-n` by hand | Write the i (its dot last), the n (from its hook at the middle line, like m) | i: „Foarte bine! Acum mergi la punctul cu numărul doi.” after the line, then the dot. n: no "bottom line" sentence | |
+| 0.8.1-4 | `en-i` and `en-o`: two sounds | Tap the RO and the EN planet; sort the pictures | i: /i/ (inel, insulă) and /ɪ/ (insect, igloo); o: /o/ (ochi, ochelari) and /ɒ/ (octopus, orange) | |
+| 0.8.1-5 | `ro-words-2` | Drum ananas and sita, build nas and pas, read masa / pin / sat and nani / nai / pian, write nas and masa by hand | ananas three beats, sita two; nas joined n–a–s, masa m–a–s–a: „Bravo, ai făcut litera n! Acum leag-o de litera a, fără să ridici degetul.” | |
+| 0.8.1-6 | `party-2` | Play to the end | Pick s, i, n in both languages; read; write pian and man; twins: pin / pin (false friends, both pictures), pian / piano, rachetă / rocket | |
+| 0.8.1-7 | The o and d by hand (`ro-o`, `ro-d`) | Write the o, then the d | o: the entry up its left side, round, out high at the middle line. d: like the a, then on up to the top line, the stem down. Do they match her manual? | |
+| 0.8.1-8 | `ro-words-3` | Write pom, then dinte | pom: the o's high exit joins the m; dinte: after the word „Acum pune punctul pe i.”, then „Acum trage liniuța literei t.” | |
+| 0.8.1-9 | `en-words-3` | Write dot and pen | "Well done, you made the letter o! Now join it to the letter t without lifting your finger." | |
+| 0.8.1-10 | `capitals-2`, `capitals-3` | Hunt S I N, O D E; trace each capital in print and by hand | The capitals by hand: S (a leaning S with a curl), I (like a J?), N, O, D, E: do they match her manual? | |
+| 0.8.1-11 | `party-3` | Play to the end | Twins mop, stop, panda, ponei / pony, tenis / tennis, domino; false friends pod (bridge / pea pod), nod (knot / nodding) | |
+| 0.8.1-12 | Any planet 2–3 lesson | Listen to every new word and sound | Each word said as written, in the right language; ș ț with the comma below on screen | |
+
 ### 0.8.0 (2026-11-25): writing by hand
 
 On the tablet, with the 0.8.0 APK (the debug one is `local/apks/Scolita-0.8.0-debug.apk`; or
