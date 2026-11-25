@@ -14,6 +14,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="preferExternal">
     <uses-permission android:name="android.permission.INTERNET" tools:node="remove"/>
+    <!-- The light tick on a right answer and on a sticker placed (sound-feel; the vibration switch in the
+         parent area turns it off). A normal permission, granted at install without asking. -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- The tablet's text-to-speech engines, visible to the app (Android 11+ package visibility);
          not a permission. Used by the voice (AndroidTextToSpeechVoice). -->
     <queries>
