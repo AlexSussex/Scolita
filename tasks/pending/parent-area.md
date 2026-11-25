@@ -1,7 +1,6 @@
 # Task: feature/parent-area
 
-> **Status: Ready after `progress-review`** (decision D8: the session
-> limit's default).
+> **Status: In progress (parent-area).**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Security and privacy" → the parent
 gate, "Fresh-eyes review"), and the completion records in `tasks/done/`.
