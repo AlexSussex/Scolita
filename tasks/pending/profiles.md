@@ -131,3 +131,133 @@ or agrees with the child's gender (`AGENTS.md` → "Romanian, checked":
 - `local/for-human-next-steps.md`: "make your tester profile and a profile
   for her" with the steps.
 - Release (the next MINOR). Technical notes: the save-format change.
+
+## Progress
+
+_Agent `profiles`, worktree `C:\Projects\scolita-profiles`, emulator `emulator-5600`._
+
+### Design note (a medium change: a new save file, a migration, deleting a folder, three screens, a new scene)
+
+**Where the logic lives.** Every rule is in Core (`Scripts/Core/Profiles`, no UnityEngine); the Unity side reads
+and writes `profiles.json`, deletes a folder when Core says so, and draws.
+
+- **`ProfileName`**: what the parent typed, trimmed; 1–20 characters of letters (any letter, so ă â î ș ț and every
+  name), with one space or hyphen between letters ("Ana-Maria", "Ana Maria"); a cedilla ş ţ typed on an old
+  keyboard is turned into ș ț. **`ProfileName.None`** is a profile without a name: the first profile, made by the
+  app (no one ever typed a name for `child-1`), until the parent gives it one. Its card shows only its avatar, and
+  tapping it greets without a name („Bună! Hai să zburăm!”, already in `voice-lines.csv`). A parent may also
+  leave the name empty for a new child (a child who can't read finds her card by its picture anyway).
+- **`Profile`**: a stable `ProfileId`, a `ProfileName`, an avatar id (a `ContentId` of the avatar catalog), a
+  `ProfileKind` (`Child`, `Tester`) and its creation day. What the tester adds is asked of the profile, never of
+  a flag anywhere else: `OpensEveryLesson`, `CanSkipSteps`, `ShowsTestInfo` (true only for `Tester`).
+- **`ProfileList`** (the one owner of these rules): the profiles in the order they were made; `LastChild` (the
+  child who played last: the yellow ring on "Who's playing?"); `Playing` (whose map, lessons and saves are open
+  now, a child or the tester; none while "Who's playing?" waits); `NextChildNumber`.
+  - `AddChild(name, avatar, day)` makes `child-<n>` from `NextChildNumber`, which only grows, so a deleted
+    child's id (and folder name) is **never reused**; at most `ParentRules.MostChildProfiles` children (6, in the
+    learning rules asset).
+  - `AddTester(avatar, day)` makes the one tester, id `tester`.
+  - `Change(id, name, avatar)`; `Delete(id)`: a child only, never the last child (the parent resets progress
+    instead); the tester is never deleted, only its progress is reset (in one tap).
+  - **Avatars are one per child** (a child finds hers by its picture): an avatar another child has can't be
+    chosen (`IsAvatarFree`); the tester may share one.
+  - `Play(id)` (a child also becomes `LastChild`), `StopPlaying()`; `ProfileToOpen` (the one playing, else the
+    last child, else the first: never none, never a deleted one); `StartsWithPicker` (two or more children).
+  - `FromFolders(folders, avatars, day)`: the list made from the profile folders on the tablet (below).
+- **`ProfileSummary`** (Core/Parent): a row's "Litere învățate: română 5, engleză 3 · Ultima dată: azi", from the
+  same `ParentReport` the grid shows (the learned letters per language) and `LearnerProgress.DaysPlayed`.
+- **The tester's unlocks:** `MapRoute` takes `everyStopOpen` (every stop `CanOpen`; the rocket and the planets'
+  faces stay as the tester's progress says); `LessonRun.Skip()` ends the current step as done with its answer
+  shown, so a skipped step is "practised", never "right", in the tester's own progress, and the lesson moves on as
+  after any step.
+
+**The save files.**
+
+- **`profiles.json`** (new, the tablet's folder, version 1; `ProfilesData`):
+  ```json
+  { "version": 1,
+    "profiles": [ { "id": "child-1", "name": "", "avatar": "kitty", "kind": "child", "created": "2026-11-25" },
+                  { "id": "tester", "name": "", "avatar": "rocket", "kind": "tester", "created": "2026-11-25" } ],
+    "lastChild": "child-1", "playing": "child-1", "nextChild": 2 }
+  ```
+  Read with the usual rules (`SaveStore`): an entry with an id that isn't a profile id, a second entry with the
+  same id, an unknown kind or a second tester is left out with a warning; a name that isn't a `ProfileName`
+  reads as none; an avatar the catalog doesn't have is kept in the file and drawn as the first avatar; `playing`
+  or `lastChild` naming no profile reads as none; `nextChild` is raised above every `child-<n>` in the list.
+- **Per profile** (`profiles/<id>/`, unchanged files): `progress.json` (letters, words, reviews, lessons done,
+  the rocket's stop), `rewards.json` (stars, stickers, the sticker scene, trails), `lesson-run.json`,
+  `learning-settings.json` (the language mix, the daily limit), `play-time.json` (today's count). "Letter case
+  first" is not built (`parent-area`'s deviation, still with the human).
+- **Per tablet** (the save root): `settings.json` (volumes, vibration, the app's language) and `profiles.json`;
+  the gate's numbers are in the learning rules asset. A test checks the split: every file a profile's scene saves
+  is under its folder, and nothing of a profile's is in the root.
+- **Migration (an older tablet) and a damaged list:** when `profiles.json` is missing (every release before this
+  one) or damaged (set aside, dated, as every save), the list is **made from the profile folders on the tablet**:
+  `child-1` first, then any other `child-<n>` by number, then `tester`; names none, avatars in catalog order
+  (`kitty` first) skipping the used ones, today as their day. With no folder at all (a new install) it is
+  `child-1` alone. So her `child-1` folder from 0.13.0 is the first child, untouched, with everything in it; and
+  a damaged list never loses a profile's progress (only its name and avatar, which the parent sets again). The
+  list is saved at once. Folders are never deleted because they are missing from the list.
+- **Deleting a profile** (the parent area, two questions): the list without it is saved first; only then is its
+  folder deleted (`ProfileFolders.Delete`), which deletes exactly `<root>/profiles/<id>` for a valid id that the
+  saved list no longer has, and nothing else. If the folder can't be deleted, the profile is still gone from the
+  list (its id is never reused, so no later profile sees those files) and the area says so. A failed list save
+  deletes nothing.
+
+**Who opens what.**
+
+- **Boot** reads the list (making it, above), then: two or more children → `StopPlaying`, the new **Profiles**
+  scene (`Profiles.unity`, "Who's playing?"); otherwise `Play(the only child)` and the Map, as before. So the app
+  never starts as the tester.
+- **The Map, Lesson and Parent scenes** open `ProfileToOpen`'s folder (no runner names `BuiltInProfiles.FirstChild`
+  any more; it stays only as the id of the first profile in the migration). A tester's map opens every stop and
+  shows "TEST" (with the version) by the title.
+- **"Who's playing?"** (`ProfilesRunner`, design screen 9): the mascot says „Cine se joacă? Atinge poza ta.” (in the
+  app's language); a card per child (avatar, name, stars from `rewards.json`), the last child ringed. A tap greets
+  her in her own map's language („Bună, Ana! Hai să zburăm!” through the tablet's voice; with no tablet voice the
+  bubble shows it) and opens her map when the line ends (never cut off). The parent button and gate as on the
+  map (to the Parent scene). Android Back does nothing (it is the start). One to three cards in a row, four to six
+  in two rows, each at least 96 px.
+- **The map's avatar button** (`AvatarPlace`, 64 px, beside "Școlița"): the profile's avatar; shown with two or
+  more children, and always for the tester (the tester's way back to a child); a tap opens "Who's playing?" (no
+  gate). "Who's playing?" opened this way also shows a single child.
+- **The parent area** shows the **chosen** profile (the one playing when it opens): a button in its header shows the
+  chosen profile's avatar and name and opens **Profiluri** (design screen 10, `ParentProfiles.prefab`, over the
+  area). There: a row per profile (avatar, name or "Fără nume", kind, the summary, **Schimbă**); tapping a row
+  chooses it for the grid, the settings and reset; **Adaugă un copil** (hidden at the most children); the tester's
+  row (**Joacă ca tester** opens the map as the tester; **Șterge progresul de test** in one tap) or **Fă un profil
+  de test** when there is none. The right card edits the chosen profile or the new child: the name (a text field
+  of 20, Romanian letters from the tablet's keyboard; a name that can't be used says why and isn't saved), the 14
+  avatars (7 × 2, the ones other children have dimmed), the language mix, **Salvează**, and **Șterge profilul…**
+  (children only, not the last one; asks twice, saying what is lost and that the other profiles stay). Back (and
+  Android Back) close a question, then the page, then leave: to the map of the one playing, or to "Who's
+  playing?" when nobody is.
+- **The lesson as the tester:** a strip at the bottom with "TEST", the version, the lesson and step ids, the step's
+  kind and the line being said (its id and whether a clip, the tablet's voice or the bubble said it), and a
+  **Sari peste pas** button (64 px) that skips the step. A child's lesson has none of it (the strip is off unless
+  `ShowsTestInfo`).
+
+**Words and voice.** New lines: none (`ro|en-line-who-plays`, `-hello-name` and `-hello` are in `voice-lines.csv`
+since `content-model`). The name goes only into „Bună, {name}! Hai să zburăm!” / "Hi, {name}! Let's fly!": the
+nominative after "Bună,", the same for a girl or a boy, whatever the name (Ana, Matei, Ștefan, Ioana-Maria); with
+no name, „Bună! Hai să zburăm!” / "Hello! Let's fly!". The parent area's new words go in the `App` table (both
+languages), worded without a name in the genitive or dative and without agreeing with the child ("Schimbă
+profilul", "Fără nume", "acest profil"). The 14 avatars become content: `content/avatars.csv` (`id`, `retired`,
+`notes`; design screen 11's ids, in its order), read with the rewards' tables (the same pipeline: an id, a picture
+per id, the ledger of released ids), imported into `AvatarCatalog` with `Art/Avatars/avatar-<id>.png`.
+
+**Tests.** EditMode: `ProfileNameTests` (bounds, Romanian letters, spaces and hyphens, the cedilla, none),
+`ProfileListTests` (ids never reused, the most children, the last child can't go, the tester once and never
+deleted, avatars one per child, `Play`/`ProfileToOpen`/last child, from folders: `child-1` first, a new install,
+the tester's folder), `ProfilesDataTests` (round trip, every damaged entry, the migration from a real 0.13.0
+folder), `ProfileFoldersTests` (deletes only that folder; refuses a listed id), the per-profile/per-tablet split,
+`MapRouteTests` (every stop open), `LessonRunTests` (skip), `ProfileSummaryTests`, the avatar table. PlayMode: one
+child → straight to the map; two → the picker, a tap says the name and opens her map; the avatar button back to
+the picker; two children each playing a lesson keep their own progress, stars and settings; the tester (from the
+area only, "TEST", every stop open, skip, never on the picker, its one-tap reset leaving the children's files);
+adding, changing and deleting through the gate (two questions, only that folder gone); the monkey test on the
+picker and the map (random taps never open the area or delete anything). Emulator: every new screen at every size;
+0.13.0 with progress, then this release over it.
+
+**Another domain.** Profiles know nothing of letters: a numbers or music domain's progress and rewards are in the
+same folders; only the row's summary reads the letters' report (a later domain adds its own line there).

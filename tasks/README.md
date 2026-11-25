@@ -100,7 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
-| profiles | [profiles](pending/profiles.md) | `Scripts/Core/Profiles`, `Scripts/Game/Profiles`, `Scripts/Game/Saving`, `Scripts/UI/Profiles`, the runners (Boot, Map, Lesson, Parent), `Scenes/Profiles.unity` (new), `Boot.unity`, `Map.unity`, `Lesson.unity`, `Parent.unity`, `MapScreen.prefab`, `LessonScreen.prefab`, `ParentArea.prefab`, `Prefabs/Profiles/` (new), `content/avatars.csv` (new) and `AvatarCatalog`, the importer, `voice-lines.csv`, the `App` string tables, `EditorBuildSettings` | emulator-5600 | 2026-11-25 | Claimed; Design note next |
+| profiles | [profiles](pending/profiles.md) | `Scripts/Core/Profiles`, `Scripts/Game/Profiles`, `Scripts/Game/Saving`, `Scripts/UI/Profiles`, the runners (Boot, Map, Lesson, Parent), `Scenes/Profiles.unity` (new), `Boot.unity`, `Map.unity`, `Lesson.unity`, `Parent.unity`, `MapScreen.prefab`, `LessonScreen.prefab`, `ParentArea.prefab`, `Prefabs/Profiles/` (new), `content/avatars.csv` (new) and `AvatarCatalog`, the importer, `voice-lines.csv`, the `App` string tables, `EditorBuildSettings` | emulator-5600 | 2026-11-25 | Design note pushed; building Core |
 
 ## Where we are
 
