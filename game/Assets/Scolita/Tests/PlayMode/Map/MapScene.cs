@@ -5,9 +5,11 @@ using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Content;
 using Scolita.Core.Map;
+using Scolita.Core.Progress;
 using Scolita.Game.Lessons;
 using Scolita.Game.Map;
 using Scolita.Game.Profiles;
+using Scolita.Game.Progress;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -27,7 +29,7 @@ namespace Scolita.Tests.PlayMode.Map
     {
         private static readonly string[] ProfileFiles =
         {
-            MapProgressData.FileName, LessonRunData.FileName, LearningSettingsData.FileName
+            ProgressData.FileName, LessonRunData.FileName, LearningSettingsData.FileName
         };
 
         /// <summary>The Editor's own profile files the map touches, as they are now (null for a missing one); used by the map tests.</summary>
@@ -54,15 +56,15 @@ namespace Scolita.Tests.PlayMode.Map
             SaveStore store = Store();
             Assert.That(store.Save(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()), Is.True);
             File.Delete(Path.Combine(store.Folder, LessonRunData.FileName + ".json"));
-            MapProgress progress = new MapProgress(doneLessons.Select(ContentId.Create),
+            MapProgress lessons = new MapProgress(doneLessons.Select(ContentId.Create),
                 rocketStop == null ? default : ContentId.Create(rocketStop));
-            Assert.That(MapProgressFile.Save(store, progress), Is.True);
+            Assert.That(ProgressFile.Save(store, new LearnerProgress(lessons, null, null)), Is.True);
         }
 
-        /// <summary>Her map progress as saved now; used by the map tests.</summary>
+        /// <summary>Her map progress (the lessons done, the rocket's stop) as saved now; used by the map tests.</summary>
         public static MapProgress SavedProgress()
         {
-            return Store().Load(MapProgressData.FileName, MapProgressData.CreateDefaults()).Data.ToProgress();
+            return Store().Load(ProgressData.FileName, ProgressData.CreateDefaults()).Data.ToProgress().Lessons;
         }
 
         /// <summary>Opens the Map scene and waits for its route; used by the map tests.</summary>

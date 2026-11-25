@@ -3,9 +3,11 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
+using Scolita.Core.Progress;
 using Scolita.Core.Voice;
 using Scolita.Game.Lessons;
 using Scolita.Game.Profiles;
+using Scolita.Game.Progress;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -17,7 +19,7 @@ namespace Scolita.Game.Map
     /// <summary>
     /// The Map scene's composition root (AGENTS.md → "How the app is put together"), the only place the
     /// galaxy map is wired together. It builds the curriculum, the voice and Core's <see cref="MapRoute"/>
-    /// from her settings and her <c>map-progress</c>, has the screen draw it and bring the rocket (the trip
+    /// from her settings and her <c>progress</c> (<see cref="ProgressFile"/>), has the screen draw it and bring the rocket (the trip
     /// after a finished planet), says the mascot's lines (<see cref="MapLines"/>), and opens a lesson: Go's,
     /// or a stop she taps, written into <c>lesson-run.json</c> for the Lesson scene unless that already names
     /// it (so a lesson left half-way resumes at its step).
@@ -35,7 +37,7 @@ namespace Scolita.Game.Map
         [SerializeField] private MapScreenView screen;
 
         private SaveStore profileFiles;
-        private MapProgress progress;
+        private LearnerProgress progress;
         private MapRoute route;
         private MapLines lines;
         private LessonVoice mapVoice;
@@ -130,7 +132,7 @@ namespace Scolita.Game.Map
 
             Domain domain = curriculum.Domains[0];
             LessonOrder order = new LessonOrder(domain, mix, new PlayableSteps(registry.PlayableKinds(), curriculum));
-            progress = MapProgressFile.Load(profileFiles, order);
+            progress = ProgressFile.Load(profileFiles, curriculum, order);
             route = new MapRoute(curriculum, domain, order, progress);
             if (route.GoStop == null)
             {
@@ -144,7 +146,7 @@ namespace Scolita.Game.Map
             voice.PartStarted += OnPartStarted;
             screen.Bind(this);
             screen.Show(route, appLanguage);
-            Arrive(RocketMove.Between(route, progress.RocketStop));
+            Arrive(RocketMove.Between(route, progress.Lessons.RocketStop));
         }
 
         private void Update()
@@ -202,8 +204,8 @@ namespace Scolita.Game.Map
                 return;
             }
 
-            progress.ShowRocketAt(route.GoStop.Lesson.Id);
-            MapProgressFile.Save(profileFiles, progress);
+            progress.Lessons.ShowRocketAt(route.GoStop.Lesson.Id);
+            ProgressFile.Save(profileFiles, progress);
         }
 
         private void Open(MapStop stop)

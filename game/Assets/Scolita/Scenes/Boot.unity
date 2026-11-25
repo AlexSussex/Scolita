@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scolita.Game::Scolita.Game.Boot.BootLoader
   targetFrameRate: 60
+  learningRules: {fileID: 11400000, guid: 310c5ea080032ca40bfef6001167e970, type: 2}
 --- !u!4 &153228120
 Transform:
   m_ObjectHideFlags: 0

@@ -9,9 +9,9 @@ namespace Scolita.Game.Lessons
     /// The lesson in progress, or the one Go opens next, saved as <c>lesson-run.json</c> in the
     /// profile's folder through <see cref="SaveStore.ForProfile"/> (AGENTS.md, seam 5): its id, the
     /// lesson's own step number to resume at (from 1), and the signature of the lesson's steps when it
-    /// was saved, so a lesson whose steps changed starts again from its first step.
-    /// <c>galaxy-map</c> and <c>progress-review</c> replace "the one Go opens next" with the map's
-    /// stops and her progress.
+    /// was saved, so a lesson whose steps changed starts again from its first step. The map writes the
+    /// lesson it opens here; a profile from before the map (0.9.0 and earlier) had only this file, so
+    /// her progress is made from it then (<c>MapProgress.Before</c>).
     /// </summary>
     [Serializable]
     public sealed class LessonRunData : ISaveData<LessonRunData>

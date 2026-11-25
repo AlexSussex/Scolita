@@ -4,7 +4,7 @@ using Scolita.Core.Content;
 using Scolita.Core.Lessons;
 using Scolita.Core.Tracing;
 using Scolita.Game.Lessons;
-using Scolita.Game.Map;
+using Scolita.Game.Progress;
 using Scolita.Game.Settings;
 using Scolita.Game.Tracing;
 using Scolita.UI.Tracing;
@@ -31,10 +31,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_ThreeRoundsToTheEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-a", ActivityKind.TraceLetter);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WritingBoardView view = (WritingBoardView)runner.ShownView;
@@ -54,7 +55,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -67,10 +68,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestPress_OneFingerNoPalm()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-a", ActivityKind.TraceLetter);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WritingBoardView view = (WritingBoardView)runner.ShownView;
@@ -105,7 +107,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -118,10 +120,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestMove_DrawingAllocatesNothing()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-a", ActivityKind.TraceLetter);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WritingBoardView view = (WritingBoardView)runner.ShownView;
@@ -159,7 +162,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -172,10 +175,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_AHandwrittenLetterInOneLine()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-a", ActivityKind.TraceLetter, "handwritten");
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WritingBoardView view = (WritingBoardView)runner.ShownView;
@@ -196,7 +200,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -209,10 +213,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_MamaLetterByLetter()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-words-1", ActivityKind.TraceWord);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WritingBoardView view = (WritingBoardView)runner.ShownView;
@@ -231,7 +236,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -244,10 +249,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_HandwritingMatchesTheStrokes()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-a", ActivityKind.TraceLetter, "handwritten");
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 TraceFigure figure = runner.Run.Current.Round.Trace.Figure;
@@ -275,7 +281,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }

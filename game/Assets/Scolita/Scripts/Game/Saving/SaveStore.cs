@@ -4,8 +4,12 @@ using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Scolita.Core.Profiles;
+using Scolita.Core.Saving;
+using Scolita.Core.Timing;
+using Scolita.Game.Timing;
 using UnityEngine;
 
 namespace Scolita.Game.Saving
@@ -20,7 +24,11 @@ namespace Scolita.Game.Saving
     /// rescued by hand: the human, 2026-11-24) and the defaults are used; a file that can't be opened right
     /// now, or that a newer version of the app wrote, is kept as it is and never saved over; a
     /// folder that can't be used gives the defaults without saving. So a bad save never stops the
-    /// app, and a good one is never thrown away.
+    /// app, and a good one is never thrown away. The dated copies are removed by themselves once a
+    /// newer version of the app has read and saved their file fine on several days (the human,
+    /// 2026-11-24): each folder's ledger, <c>broken-copies.json</c> (<see cref="DamagedCopiesData"/>),
+    /// notes the version that set a copy aside and the days a newer one read and saved the file fine,
+    /// and <see cref="RemoveSettledCopies"/> removes them (Core's <see cref="DamagedCopies"/> rule).
     /// </summary>
     public sealed class SaveStore
     {
@@ -37,12 +45,18 @@ namespace Scolita.Game.Saving
 
         private readonly string directory;
         private readonly bool directoryUsable;
+        private readonly IClock clock;
+        private readonly Version appVersion;
         private readonly HashSet<string> keptUnreadable = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> readFine = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> fineDayNoted = new HashSet<string>(StringComparer.Ordinal);
 
-        private SaveStore(string directory)
+        private SaveStore(string directory, IClock clock, string appVersion)
         {
             this.directory = directory;
             directoryUsable = !string.IsNullOrWhiteSpace(directory) && Path.IsPathRooted(directory);
+            this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
+            this.appVersion = Version.TryParse(appVersion, out Version version) ? version : DamagedCopies.UnknownVersion;
         }
 
         private enum ReadProblem
@@ -64,7 +78,17 @@ namespace Scolita.Game.Saving
         /// </summary>
         public static SaveStore ForTablet(string saveRoot)
         {
-            return new SaveStore(saveRoot);
+            return new SaveStore(saveRoot, new SystemClock(), Application.version);
+        }
+
+        /// <summary>
+        /// A store for the tablet's own files, as <see cref="ForTablet(string)"/>, that takes the day from
+        /// <paramref name="clock"/> and the app's version from <paramref name="appVersion"/>
+        /// (<c>MAJOR.MINOR.PATCH</c>) for its damaged copies' ledger. Called by <c>SaveStoreTests</c>.
+        /// </summary>
+        public static SaveStore ForTablet(string saveRoot, IClock clock, string appVersion)
+        {
+            return new SaveStore(saveRoot, clock, appVersion);
         }
 
         /// <summary>
@@ -75,10 +99,50 @@ namespace Scolita.Game.Saving
         /// </summary>
         public static SaveStore ForProfile(string saveRoot, ProfileId profile)
         {
-            string folder = string.IsNullOrWhiteSpace(saveRoot)
-                ? saveRoot
-                : Path.Combine(saveRoot, ProfilesFolderName, profile.Value);
-            return new SaveStore(folder);
+            return new SaveStore(ProfileFolder(saveRoot, profile), new SystemClock(), Application.version);
+        }
+
+        /// <summary>
+        /// A store for <paramref name="profile"/>'s files, as <see cref="ForProfile(string, ProfileId)"/>, that takes
+        /// the day from <paramref name="clock"/> and the app's version from <paramref name="appVersion"/> for its
+        /// damaged copies' ledger. Called by the saving tests.
+        /// </summary>
+        public static SaveStore ForProfile(string saveRoot, ProfileId profile, IClock clock, string appVersion)
+        {
+            return new SaveStore(ProfileFolder(saveRoot, profile), clock, appVersion);
+        }
+
+        /// <summary>
+        /// The profiles with a folder under <paramref name="saveRoot"/>'s <c>profiles</c> folder (a folder whose name
+        /// can't be a profile's id is left out); none when there is no such folder or it can't be read. Called by
+        /// <c>BootLoader</c> (removing settled copies in every profile) and <c>SaveStoreTests</c>.
+        /// </summary>
+        public static IReadOnlyList<ProfileId> ProfilesIn(string saveRoot)
+        {
+            string profiles = string.IsNullOrWhiteSpace(saveRoot) ? null : Path.Combine(saveRoot, ProfilesFolderName);
+            try
+            {
+                if (profiles == null || !Directory.Exists(profiles))
+                {
+                    return new ProfileId[0];
+                }
+
+                List<ProfileId> found = new List<ProfileId>();
+                foreach (string folder in Directory.GetDirectories(profiles))
+                {
+                    if (ProfileId.TryCreate(Path.GetFileName(folder), out ProfileId profile))
+                    {
+                        found.Add(profile);
+                    }
+                }
+
+                return found;
+            }
+            catch (Exception exception) when (IsFileSystemError(exception))
+            {
+                Debug.LogWarning("Scolita: the profiles' folders could not be listed: " + exception.Message);
+                return new ProfileId[0];
+            }
         }
 
         /// <summary>
@@ -92,6 +156,91 @@ namespace Scolita.Game.Saving
         /// <see cref="ISaveData{T}.Upgraded"/>. Called by <c>BootLoader</c> and by <c>SaveStoreTests</c>.
         /// </summary>
         public SaveLoadResult<T> Load<T>(string name, T defaults) where T : class, ISaveData<T>
+        {
+            return Read(name, defaults);
+        }
+
+        /// <summary>
+        /// Writes <paramref name="data"/> to <c>&lt;name&gt;.json</c> through a temporary file of its
+        /// own, flushed to the disk before it replaces the old one, so a write cut short never leaves
+        /// a half-written save. Returns false, after logging the error, if the file could not be
+        /// written, or if this store loaded it as <see cref="SaveLoadOutcome.Unreadable"/> (a file
+        /// kept as it is is never saved over). A file this store read fine and now saved fine counts a fine
+        /// day for its damaged copies, if it has any (once a day). Called by <c>BootLoader</c> and by
+        /// <c>SaveStoreTests</c>.
+        /// </summary>
+        public bool Save<T>(string name, T data) where T : class, ISaveData<T>
+        {
+            bool written = Write(name, data);
+            if (written && readFine.Contains(name) && fineDayNoted.Add(name))
+            {
+                NoteFineDay(name);
+            }
+
+            return written;
+        }
+
+        /// <summary>
+        /// Removes the damaged copies of every file in this folder that a newer version of the app has read and saved fine
+        /// on at least <paramref name="fineDays"/> different days, and forgets them in the ledger; copies found without a
+        /// watch (made before the ledger, or after a damaged ledger) are watched from now on, as set aside by this
+        /// version, so only a later one removes them. Nothing is removed or written while the ledger can't be read or
+        /// the folder can't be listed. Returns how many copies were removed. Called by <c>BootLoader</c> at each
+        /// start, for the tablet's folder and each profile's, and by <c>SaveStoreTests</c>.
+        /// </summary>
+        public int RemoveSettledCopies(int fineDays)
+        {
+            if (!directoryUsable || !Directory.Exists(directory))
+            {
+                return 0;
+            }
+
+            SaveLoadResult<DamagedCopiesData> read = Read(DamagedCopiesData.FileName, DamagedCopiesData.CreateDefaults());
+            if (read.Outcome == SaveLoadOutcome.Unreadable)
+            {
+                return 0;
+            }
+
+            DamagedCopies ledger = read.Data.ToCopies();
+            if (read.Outcome == SaveLoadOutcome.Loaded)
+            {
+                ledger.ReadAndSavedFine(DamagedCopiesData.FileName, appVersion, clock.Today);
+            }
+
+            Dictionary<string, List<string>> copies = CopiesByFile();
+            if (copies == null || (copies.Count == 0 && read.Outcome != SaveLoadOutcome.Loaded))
+            {
+                return 0;
+            }
+
+            foreach (string name in copies.Keys)
+            {
+                ledger.Found(name, appVersion);
+            }
+
+            foreach (string gone in ledger.Watches.Select(watch => watch.FileName).Where(name => !copies.ContainsKey(name)).ToArray())
+            {
+                ledger.Forget(gone);
+            }
+
+            int removed = 0;
+            foreach (string settled in ledger.Settled(fineDays))
+            {
+                int deleted = DeleteCopies(copies[settled]);
+                removed += deleted;
+                if (deleted == copies[settled].Count)
+                {
+                    ledger.Forget(settled);
+                    Debug.Log("Scolita: the damaged copies of " + settled + FileExtension + " were removed (" + deleted
+                        + "): a newer version read and saved it fine on " + fineDays + " days.");
+                }
+            }
+
+            Write(DamagedCopiesData.FileName, new DamagedCopiesData(ledger));
+            return removed;
+        }
+
+        private SaveLoadResult<T> Read<T>(string name, T defaults) where T : class, ISaveData<T>
         {
             RequireValidName(name);
             if (!directoryUsable)
@@ -111,6 +260,7 @@ namespace Scolita.Game.Saving
             if (kind == ReadProblem.None)
             {
                 keptUnreadable.Remove(name);
+                readFine.Add(name);
                 return new SaveLoadResult<T>(loaded.Upgraded(), SaveLoadOutcome.Loaded);
             }
 
@@ -130,14 +280,7 @@ namespace Scolita.Game.Saving
             return new SaveLoadResult<T>(defaults, SaveLoadOutcome.Unreadable);
         }
 
-        /// <summary>
-        /// Writes <paramref name="data"/> to <c>&lt;name&gt;.json</c> through a temporary file of its
-        /// own, flushed to the disk before it replaces the old one, so a write cut short never leaves
-        /// a half-written save. Returns false, after logging the error, if the file could not be
-        /// written, or if this store loaded it as <see cref="SaveLoadOutcome.Unreadable"/> (a file
-        /// kept as it is is never saved over). Called by <c>BootLoader</c> and by <c>SaveStoreTests</c>.
-        /// </summary>
-        public bool Save<T>(string name, T data) where T : class, ISaveData<T>
+        private bool Write<T>(string name, T data) where T : class, ISaveData<T>
         {
             RequireValidName(name);
             if (data == null)
@@ -174,6 +317,31 @@ namespace Scolita.Game.Saving
                 DeleteIfLeft(temporaryPath);
                 return false;
             }
+        }
+
+        private static int DeleteCopies(IEnumerable<string> paths)
+        {
+            int deleted = 0;
+            foreach (string path in paths)
+            {
+                try
+                {
+                    File.Delete(path);
+                    deleted++;
+                }
+                catch (Exception exception) when (IsFileSystemError(exception))
+                {
+                    Debug.LogWarning("Scolita: the damaged copy " + Path.GetFileName(path) + " could not be removed: "
+                        + exception.Message);
+                }
+            }
+
+            return deleted;
+        }
+
+        private static string ProfileFolder(string saveRoot, ProfileId profile)
+        {
+            return string.IsNullOrWhiteSpace(saveRoot) ? saveRoot : Path.Combine(saveRoot, ProfilesFolderName, profile.Value);
         }
 
         private static T TryRead<T>(string path, out ReadProblem kind, out string problem) where T : class, ISaveData<T>
@@ -290,6 +458,7 @@ namespace Scolita.Game.Saving
                 File.Move(path, brokenPath);
                 Debug.LogWarning("Scolita: " + name + FileExtension + " could not be read (" + problem
                     + "); it was set aside as " + Path.GetFileName(brokenPath) + " and the defaults are used.");
+                NoteSetAside(name);
                 return true;
             }
             catch (Exception exception) when (IsFileSystemError(exception))
@@ -298,6 +467,74 @@ namespace Scolita.Game.Saving
                     + ") nor set aside (" + exception.Message + "); it is kept as it is and the defaults are used.");
                 return false;
             }
+        }
+
+        private void NoteSetAside(string name)
+        {
+            if (name == DamagedCopiesData.FileName)
+            {
+                return;
+            }
+
+            SaveLoadResult<DamagedCopiesData> read = Read(DamagedCopiesData.FileName, DamagedCopiesData.CreateDefaults());
+            if (read.Outcome == SaveLoadOutcome.Unreadable)
+            {
+                return;
+            }
+
+            DamagedCopies ledger = read.Data.ToCopies();
+            ledger.SetAside(name, appVersion);
+            Write(DamagedCopiesData.FileName, new DamagedCopiesData(ledger));
+        }
+
+        private void NoteFineDay(string name)
+        {
+            if (name == DamagedCopiesData.FileName || !File.Exists(PathOf(DamagedCopiesData.FileName, FileExtension)))
+            {
+                return;
+            }
+
+            SaveLoadResult<DamagedCopiesData> read = Read(DamagedCopiesData.FileName, DamagedCopiesData.CreateDefaults());
+            DamagedCopies ledger = read.Data.ToCopies();
+            if (read.Outcome == SaveLoadOutcome.Loaded && ledger.ReadAndSavedFine(name, appVersion, clock.Today))
+            {
+                Write(DamagedCopiesData.FileName, new DamagedCopiesData(ledger));
+            }
+        }
+
+        private Dictionary<string, List<string>> CopiesByFile()
+        {
+            Dictionary<string, List<string>> copies = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            string[] paths;
+            try
+            {
+                paths = Directory.GetFiles(directory, "*" + BrokenFileMark + "*" + FileExtension);
+            }
+            catch (Exception exception) when (IsFileSystemError(exception))
+            {
+                Debug.LogWarning("Scolita: the damaged copies in " + directory + " could not be listed: " + exception.Message);
+                return null;
+            }
+
+            foreach (string path in paths)
+            {
+                string fileName = Path.GetFileName(path);
+                string name = fileName.Substring(0, fileName.IndexOf(BrokenFileMark, StringComparison.Ordinal));
+                if (!NamePattern.IsMatch(name) || !fileName.EndsWith(FileExtension, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (!copies.TryGetValue(name, out List<string> named))
+                {
+                    named = new List<string>();
+                    copies.Add(name, named);
+                }
+
+                named.Add(path);
+            }
+
+            return copies;
         }
 
         private string FreeBrokenPath(string name)

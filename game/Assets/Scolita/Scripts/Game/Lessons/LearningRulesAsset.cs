@@ -1,4 +1,5 @@
 using Scolita.Core.Lessons;
+using Scolita.Core.Progress;
 using Scolita.Core.Tracing;
 using UnityEngine;
 
@@ -7,8 +8,9 @@ namespace Scolita.Game.Lessons
     /// <summary>
     /// The learning rules asset (<c>Assets/Scolita/Settings/LearningRules.asset</c>): the numbers of
     /// how she learns, in one place, read into Core's <see cref="LearningRules"/>. The tracing numbers are in a
-    /// letter shape's units (a small letter is 100 high).
-    /// <c>progress-review</c> adds <c>docs/curriculum.md</c> §5's numbers here.
+    /// letter shape's units (a small letter is 100 high). <c>docs/curriculum.md</c> §5's numbers (learned,
+    /// the reviews, the warm-ups) and how long a damaged save's copies are kept are read into Core's
+    /// <see cref="ProgressRules"/>.
     /// </summary>
     [CreateAssetMenu(fileName = "LearningRules", menuName = "Scolita/Learning rules")]
     public sealed class LearningRulesAsset : ScriptableObject
@@ -28,6 +30,15 @@ namespace Scolita.Game.Lessons
         [SerializeField, Min(1f)] private float traceStartDotStartRadius = 28f;
         [SerializeField, Range(0.1f, 1f)] private float traceStartDotCoverage = 0.9f;
         [SerializeField, Min(1f)] private float traceJoinRadius = 44f;
+        [SerializeField, Min(1)] private int romanianRightsForLearned = 6;
+        [SerializeField, Min(1)] private int englishRightsForLearned = 6;
+        [SerializeField, Min(1)] private int kindsForLearned = 2;
+        [SerializeField, Range(1, ItemProgress.MostRightDaysKept)] private int daysForLearned = 2;
+        [SerializeField] private int[] reviewIntervalDays = { 1, 3, 7, 14, 30 };
+        [SerializeField, Min(0)] private int reviewStepsBackAfterMiss = 1;
+        [SerializeField, Min(0)] private int warmUpsAtStart = 2;
+        [SerializeField, Range(2, 4)] private int warmUpChoices = 3;
+        [SerializeField, Min(1)] private int damagedCopyFineDays = 3;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -41,6 +52,17 @@ namespace Scolita.Game.Lessons
                     new StrokeTolerance(traceFaintCorridor, traceFaintStartRadius, traceFaintCoverage),
                     new StrokeTolerance(traceStartDotCorridor, traceStartDotStartRadius, traceStartDotCoverage),
                     traceJoinRadius));
+        }
+
+        /// <summary>
+        /// The numbers of "learned", the reviews and the warm-ups, and the days before a damaged save's copies go, for
+        /// Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number out of range. Called by
+        /// <see cref="LessonRunner"/> when a lesson is built, <c>BootLoader</c> at start, and the tests.
+        /// </summary>
+        public ProgressRules ToProgressRules()
+        {
+            return new ProgressRules(romanianRightsForLearned, englishRightsForLearned, kindsForLearned, daysForLearned,
+                reviewIntervalDays, reviewStepsBackAfterMiss, warmUpsAtStart, warmUpChoices, damagedCopyFineDays);
         }
     }
 }

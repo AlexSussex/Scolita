@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Scolita.Content;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
+using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
+using Scolita.Core.Timing;
 using Scolita.Core.Voice;
-using Scolita.Game.Map;
 using Scolita.Game.Profiles;
+using Scolita.Game.Progress;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
+using Scolita.Game.Timing;
 using Scolita.Game.Voice;
 using UnityEngine;
 
@@ -23,8 +27,9 @@ namespace Scolita.Game.Lessons
     /// (the one in progress at its step, else the next one: the human, 2026-11-24), builds Core's
     /// <see cref="LessonRun"/> and each kind's view from <see cref="ActivityRegistry"/>, passes her taps
     /// to Core and says what Core decides, saves where she is after each step and when the app goes to
-    /// the background, records a finished lesson in her map progress, and keeps the screen awake while
-    /// the lesson is open.
+    /// the background, puts her warm-ups before the lesson (<see cref="WarmUps"/>), records what she does
+    /// in her progress (<see cref="LessonProgress"/>) and saves it after each step, and keeps the screen
+    /// awake while the lesson is open.
     /// </summary>
     public sealed class LessonRunner : MonoBehaviour, IActivityInput, ILessonScreenInput
     {
@@ -44,6 +49,8 @@ namespace Scolita.Game.Lessons
         private readonly Dictionary<ActivityKind, ActivityView> views = new Dictionary<ActivityKind, ActivityView>();
         private LessonRun run;
         private LessonOrder order;
+        private LearnerProgress progress;
+        private LessonProgress recorder;
         private LessonVoice lessonVoice;
         private ActivityViewContext context;
         private SaveStore profileFiles;
@@ -118,14 +125,21 @@ namespace Scolita.Game.Lessons
             }
 
             order = new LessonOrder(curriculum.Domains[0], mix, new PlayableSteps(playable, curriculum));
-            LessonPlan plan = ChoosePlan();
+            progress = ProgressFile.Load(profileFiles, curriculum, order);
+            IClock clock = new SystemClock();
+            ProgressRules progressRules = learningRules.ToProgressRules();
+            IRandom random = new SeededRandom((ulong)DateTime.UtcNow.Ticks);
+            LessonPlan plan = ChoosePlan(new WarmUps(progress, curriculum, mix, order.PlayableSteps, progressRules, clock.Today, random));
             if (plan == null)
             {
                 Debug.LogError("Lesson: no lesson has a step that can be played yet.");
                 return;
             }
 
-            Build(curriculum, plan);
+            Build(curriculum, plan, random);
+            recorder = new LessonProgress(run, progress, curriculum, progressRules, clock);
+            recorder.Recorded += SaveProgress;
+            progress.ItemMastered += OnItemMastered;
             run.Start();
             ShowStep();
         }
@@ -188,6 +202,9 @@ namespace Scolita.Game.Lessons
             run.StepCompleted -= OnStepCompleted;
             run.LessonCompleted -= OnLessonCompleted;
             voice.PartStarted -= OnPartStarted;
+            recorder.Recorded -= SaveProgress;
+            recorder.Stop();
+            progress.ItemMastered -= OnItemMastered;
         }
 
         private IReadOnlyCollection<ActivityKind> PlayableKinds()
@@ -201,7 +218,7 @@ namespace Scolita.Game.Lessons
             return playable;
         }
 
-        private LessonPlan ChoosePlan()
+        private LessonPlan ChoosePlan(IWarmUps warmUps)
         {
             LessonRunData saved = profileFiles.Load(LessonRunData.FileName, LessonRunData.CreateDefaults()).Data;
             saved.TryGetLessonId(out ContentId savedId);
@@ -217,15 +234,25 @@ namespace Scolita.Game.Lessons
             }
 
             stepsDoneBefore = resume.StepsDoneBefore;
-            return resume.Plan;
+            LessonPlan plan = resume.WithWarmUps(warmUps);
+            int warmUpCount = plan.Steps.Count(step => step.IsReview);
+            if (warmUpCount > 0)
+            {
+                Debug.Log("Lesson: " + plan.Lesson.Id + " starts with " + warmUpCount + " warm-up(s): "
+                    + string.Join(", ", plan.Steps.Where(step => step.IsReview)
+                        .Select(step => step.Step.Kind + " " + step.Step.Letters[0] + " (" + LanguageCodes.CodeOf(step.Step.Languages) + ")")) + ".");
+            }
+
+            return plan;
         }
 
-        private void Build(Curriculum curriculum, LessonPlan plan)
+        private void Build(Curriculum curriculum, LessonPlan plan, IRandom random)
         {
             LearningRules rules = learningRules.ToRules();
-            run = new LessonRun(plan, curriculum, rules, new SeededRandom((ulong)DateTime.UtcNow.Ticks));
+            run = new LessonRun(plan, curriculum, rules, random);
             lessonSignature = LessonSignature.Of(plan.Lesson);
-            voice.LoadLines(LessonVoiceLines.Of(curriculum, plan.Lesson));
+            IEnumerable<Step> warmUps = plan.Steps.Where(step => step.IsReview).Select(step => step.Step);
+            voice.LoadLines(LessonVoiceLines.Of(curriculum, plan.Lesson).Concat(LessonVoiceLines.OfWarmUps(curriculum, warmUps)).Distinct());
             lessonVoice = new LessonVoice(voice.Voice, screen.Bubble);
             lessonVoice.Prepare(curriculum, run.Lines);
             context = new ActivityViewContext(this, new PictureSprites(pictures, missingPicture), rules);
@@ -258,7 +285,7 @@ namespace Scolita.Game.Lessons
             view.Show(run.Current.Round, context);
             screen.ShowProgress(stepsDoneBefore + run.StepIndex, stepsDoneBefore + run.StepCount);
             screen.ShowMood(GuideMood.Happy);
-            lessonVoice.Say(run.Current.Instruction, null);
+            lessonVoice.Say(run.CurrentInstruction, null);
             SaveWhereSheIs();
         }
 
@@ -274,7 +301,6 @@ namespace Scolita.Game.Lessons
 
         private void OnLessonCompleted(LessonCompleted completed)
         {
-            MapProgressFile.RecordDone(profileFiles, order, run.Plan.Lesson.Id);
             if (shownView != null)
             {
                 shownView.Hide();
@@ -289,6 +315,16 @@ namespace Scolita.Game.Lessons
         private void OnPartStarted(VoiceUtterance part)
         {
             lessonVoice.PartStarted();
+        }
+
+        private void SaveProgress()
+        {
+            ProgressFile.Save(profileFiles, progress);
+        }
+
+        private void OnItemMastered(ItemMastered mastered)
+        {
+            Debug.Log("Progress: " + mastered.Item + " is learned (" + mastered.Day + ").");
         }
 
         private void SaveWhereSheIs()

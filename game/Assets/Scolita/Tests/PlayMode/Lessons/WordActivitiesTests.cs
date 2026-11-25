@@ -6,7 +6,7 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Game.Lessons;
-using Scolita.Game.Map;
+using Scolita.Game.Progress;
 using Scolita.Game.Settings;
 using Scolita.UI.Lesson;
 using UnityEngine;
@@ -31,10 +31,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestSyllablesView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-words-1", ActivityKind.Syllables);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 SyllablesView view = (SyllablesView)runner.ShownView;
@@ -65,7 +66,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -79,10 +80,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestBuildWordView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-words-1", ActivityKind.BuildWord);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 BuildWordView view = (BuildWordView)runner.ShownView;
@@ -122,7 +124,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -136,10 +138,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestReadAndMatchView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("ro-words-1", ActivityKind.ReadAndMatch);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 ReadAndMatchView view = (ReadAndMatchView)runner.ShownView;
@@ -169,7 +172,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -184,10 +187,11 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestWordTwinsView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
-            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
                 yield return LessonScene.OpenAtStep("party-1", ActivityKind.WordTwins);
                 LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
                 WordTwinsView view = (WordTwinsView)runner.ShownView;
@@ -231,7 +235,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
-                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }

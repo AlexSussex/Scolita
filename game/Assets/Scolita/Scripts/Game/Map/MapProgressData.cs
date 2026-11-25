@@ -9,10 +9,10 @@ using UnityEngine;
 namespace Scolita.Game.Map
 {
     /// <summary>
-    /// Where she is on the galaxy map, saved as <c>map-progress.json</c> in the profile's folder through
-    /// <see cref="SaveStore.ForProfile"/> (AGENTS.md, seam 5): the lessons she has finished and the stop
-    /// where the map last showed the rocket. Read into Core's <see cref="MapProgress"/>.
-    /// <c>progress-review</c> replaces it with its <c>progress</c> file, migrating this one.
+    /// Where she was on the galaxy map in 0.10.0, saved as <c>map-progress.json</c> in the profile's folder: the
+    /// lessons she had finished and the stop where the map last showed the rocket. Read into Core's
+    /// <see cref="MapProgress"/> only to make her <c>progress</c> file from it (<c>ProgressFile</c>); never written
+    /// by the app any more.
     /// </summary>
     [Serializable]
     public sealed class MapProgressData : ISaveData<MapProgressData>
@@ -26,7 +26,7 @@ namespace Scolita.Game.Map
         [SerializeField] private string[] doneLessons;
         [SerializeField] private string rocketStop;
 
-        /// <summary>The data of <paramref name="progress"/>; called by <see cref="MapProgressFile"/> and the tests.</summary>
+        /// <summary>The data of <paramref name="progress"/>; called by the tests (writing a 0.10.0 file).</summary>
         public MapProgressData(MapProgress progress)
             : this(progress.DoneLessons.Select(id => id.Value), progress.RocketStop.IsSet ? progress.RocketStop.Value : string.Empty)
         {
@@ -53,14 +53,14 @@ namespace Scolita.Game.Map
 
         /// <summary>
         /// Nothing done yet and the map never shown: the rocket starts on the first stop. Called by
-        /// <see cref="MapProgressFile"/> and the tests.
+        /// <c>ProgressFile</c> and the tests.
         /// </summary>
         public static MapProgressData CreateDefaults()
         {
             return new MapProgressData(Enumerable.Empty<string>(), string.Empty);
         }
 
-        /// <summary>Core's progress from this data; called by <see cref="MapProgressFile"/> and the tests.</summary>
+        /// <summary>Core's progress from this data; called by <c>ProgressFile</c> and the tests.</summary>
         public MapProgress ToProgress()
         {
             ContentId shownAt = ContentId.TryCreate(rocketStop, out ContentId stop) ? stop : default;
