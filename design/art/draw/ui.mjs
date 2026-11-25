@@ -135,8 +135,35 @@ export function icon(kind) {
     back: `<path d="M 38 14 L 20 32 L 38 50" ${s}/>`,
     replay: `<path d="M 48 32 a 16 16 0 1 1 -5 -11.5" ${s}/><path d="M 46 10 V 22 H 34" ${s}/>`,
     pencil: `<path d="M 14 50 L 16 40 L 42 14 L 50 22 L 24 48 Z" ${s}/><path d="M 36 20 L 44 28" ${s}/>`,
+    constellation: `<path d="M 12 46 L 26 22 L 44 30 L 54 12" stroke="#FFFFFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/><circle cx="12" cy="46" r="6" fill="#FFFFFF"/><circle cx="26" cy="22" r="5" fill="#FFFFFF"/><circle cx="44" cy="30" r="5" fill="#FFFFFF"/><circle cx="54" cy="12" r="6" fill="#FFFFFF"/>`,
+    sticker: `<path d="M 14 10 H 50 a 4 4 0 0 1 4 4 V 36 L 36 54 H 14 a 4 4 0 0 1 -4 -4 V 14 a 4 4 0 0 1 4 -4 Z" ${s}/><path d="M 54 36 H 40 a 4 4 0 0 0 -4 4 V 54" ${s}/><circle cx="26" cy="28" r="6" fill="#FFFFFF"/>`,
+    trail: `<path d="M 8 46 Q 20 30 32 40 T 56 26" ${s}/><path d="M 8 56 Q 20 42 32 50 T 56 38" ${s} opacity="0.6"/><path d="M 50 6 Q 52 14 60 16 Q 52 18 50 26 Q 48 18 40 16 Q 48 14 50 6 Z" fill="#FFFFFF"/>`,
   };
   return d.render(shapes[kind]);
+}
+
+/** The gift box a new sticker pops out of (rewards): a purple box with a yellow ribbon, its lid apart (192 × 160). */
+export function giftBox() {
+  const d = new Drawing(192, 160, 'gbox');
+  return d.render(
+    `<ellipse cx="98" cy="150" rx="78" ry="8" fill="#000000" opacity="0.18" filter="${d.blur(3)}"/>` +
+      `<path d="${roundedRect(20, 30, 152, 118, 18)}" fill="${d.shade(palette.purple, { light: 0.35 })}"/>` +
+      `<rect x="84" y="30" width="24" height="118" fill="${palette.yellow}"/>` +
+      `<rect x="20" y="30" width="152" height="14" fill="#000000" opacity="0.12"/>` +
+      d.gloss(52, 62, 16, 10, 0.35),
+  );
+}
+
+/** The gift box's lid with its bow (rewards), lifted when the sticker pops out (208 × 112). */
+export function giftLid() {
+  const d = new Drawing(208, 112, 'glid');
+  return d.render(
+    `<path d="M 104 52 C 70 10 44 22 58 44 C 66 56 92 56 104 52 Z" fill="${palette.yellow}" stroke="#E0A800" stroke-width="4"/>` +
+      `<path d="M 104 52 C 138 10 164 22 150 44 C 142 56 116 56 104 52 Z" fill="${palette.yellow}" stroke="#E0A800" stroke-width="4"/>` +
+      `<path d="${roundedRect(8, 50, 192, 48, 16)}" fill="${d.shade(palette.purple, { light: 0.45 })}"/>` +
+      `<rect x="92" y="50" width="24" height="48" fill="${palette.yellow}"/>` +
+      d.gloss(44, 64, 18, 7, 0.4),
+  );
 }
 
 /** The adaptive launcher icon's background: the purple sky with three soft stars (minimum API 26: every launcher uses the adaptive icon). */
@@ -175,7 +202,9 @@ export function sprites() {
     { path: 'UI/bubble', width: 160, height: 160, svg: bubble() },
     { path: 'UI/panel-translucent', width: 128, height: 128, svg: translucentPanel() },
     { path: 'UI/home-button', width: 128, height: 128, svg: homeButton() },
-    ...['play', 'speaker', 'lock', 'back', 'replay', 'pencil'].map((k) => ({ path: `UI/icon-${k}`, width: 64, height: 64, svg: icon(k) })),
+    { path: 'UI/gift-box', width: 192, height: 160, svg: giftBox() },
+    { path: 'UI/gift-lid', width: 208, height: 112, svg: giftLid() },
+    ...['play', 'speaker', 'lock', 'back', 'replay', 'pencil', 'constellation', 'sticker', 'trail'].map((k) => ({ path: `UI/icon-${k}`, width: 64, height: 64, svg: icon(k) })),
     { path: 'Icon/icon-adaptive-background', width: 432, height: 432, svg: iconAdaptiveBackground() },
   ];
 }

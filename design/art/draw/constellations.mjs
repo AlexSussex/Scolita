@@ -1,5 +1,7 @@
 // The constellations she lights with her stars (rewards): a faint figure per planet and the lit
-// and empty star. The stickers are ChatGPT's (drafts.json, chosen 2026-11-25).
+// and empty star. The stickers are ChatGPT's (drafts.json, chosen 2026-11-25). The app draws each
+// constellation from content/constellations.csv with star-lit, star-empty and line; the figures
+// below are the first drafts, kept for the design.
 
 import { Drawing, palette, starPath } from '../lib/svg.mjs';
 
@@ -53,6 +55,12 @@ function starEmpty() {
   return d.render(emptyRing(48, 48, 30));
 }
 
+/** A piece of a constellation's line, stretched between two places by the app (64 × 16). */
+function line() {
+  const d = new Drawing(64, 16, 'cline');
+  return d.render(`<path d="M 8 8 H 56" stroke="#D8CCFF" stroke-width="6" stroke-linecap="round"/>`);
+}
+
 /** Every constellation sprite, by its path under Art/. */
 export function sprites() {
   const list = [];
@@ -61,5 +69,6 @@ export function sprites() {
   }
   list.push({ path: 'Constellations/star-lit', width: 96, height: 96, svg: starLit() });
   list.push({ path: 'Constellations/star-empty', width: 96, height: 96, svg: starEmpty() });
+  list.push({ path: 'Constellations/line', width: 64, height: 16, svg: line() });
   return list;
 }
