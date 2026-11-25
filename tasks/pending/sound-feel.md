@@ -242,7 +242,7 @@ the sound maker deterministic; the conventions.
 
 **Blocked: waiting for the human's Tab A7 numbers** (step 0 in `local/for-human-next-steps.md`: the frames per second on
 the map and in each activity from the tester's strip, the app and a lesson timed, one lesson heard, sound off, whether
-it ticks). The try APK is `C:\Projects\Scolita\localpks\Scolita-0.14.0-sound-try-debug.apk`. Next: fix whatever
+it ticks). The try APK is `C:\Projects\Scolita\local\apks\Scolita-0.14.0-sound-try-debug.apk`. Next: fix whatever
 misses a budget, record the numbers here, then the close-out as the MVP release (the next MINOR from `origin/main`,
 the after-MVP order in "Where we are" as the human agrees it).
 
