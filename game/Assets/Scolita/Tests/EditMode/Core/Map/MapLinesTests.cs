@@ -91,7 +91,10 @@ namespace Scolita.Tests.EditMode.Core.Map
             Assert.That(letter.Line.ToString(), Is.EqualTo("ro-sound-s"));
         }
 
-        /// <summary>Tests that the two "not yet"s are their own lines, and <see cref="MapLines.All"/> lists every line once.</summary>
+        /// <summary>
+        /// Tests that the two "not yet"s and the rocket's rest are their own lines, and <see cref="MapLines.All"/> lists
+        /// every line once.
+        /// </summary>
         [Test]
         public void TestNotYet_TheirOwnLines()
         {
@@ -99,7 +102,11 @@ namespace Scolita.Tests.EditMode.Core.Map
 
             Assert.That(lines.PlanetAsleep.Lead.ToString(), Is.EqualTo("en-line-planet-asleep"));
             Assert.That(lines.StopAhead.Lead.ToString(), Is.EqualTo("en-line-stop-ahead"));
-            Assert.That(lines.All, Is.EquivalentTo(new[] { lines.Greeting, lines.Landed, lines.PlanetAsleep, lines.StopAhead }));
+            Assert.That(lines.Resting.Lead.ToString(), Is.EqualTo("en-line-rocket-rests"));
+            Assert.That(lines.All, Is.EquivalentTo(new[]
+            {
+                lines.Greeting, lines.Landed, lines.PlanetAsleep, lines.StopAhead, lines.Resting
+            }));
             Assert.That(lines.Language, Is.EqualTo(Language.English));
         }
 
@@ -111,7 +118,8 @@ namespace Scolita.Tests.EditMode.Core.Map
 
             Assert.That(lines.SpokenLines.Select(line => line.ToString()), Is.EquivalentTo(new[]
             {
-                "ro-line-today-letter", "ro-sound-m", "ro-line-planet-landed", "ro-line-planet-asleep", "ro-line-stop-ahead"
+                "ro-line-today-letter", "ro-sound-m", "ro-line-planet-landed", "ro-line-planet-asleep", "ro-line-stop-ahead",
+                "ro-line-rocket-rests"
             }));
         }
 

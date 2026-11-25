@@ -8,7 +8,8 @@ namespace Scolita.Core.Map
     /// <summary>
     /// What the mascot says on the galaxy map, in one language, all from <c>voice-lines.csv</c>: the
     /// greeting (the next stop's new letter, else a hello, or the line for every planet done), the
-    /// landing after a trip, and the two kind "not yet"s (a sleepy planet, a stop ahead). Made by
+    /// landing after a trip, the two kind "not yet"s (a sleepy planet, a stop ahead), and the rocket's rest at the daily
+    /// limit. Made by
     /// <c>MapRunner</c> each time the map opens, and by the tests.
     /// </summary>
     public sealed class MapLines
@@ -23,6 +24,7 @@ namespace Scolita.Core.Map
             Landed = Add(LandingOf(route, language));
             PlanetAsleep = Add(VoiceSequence.Of(Line(language, "planet-asleep")));
             StopAhead = Add(VoiceSequence.Of(Line(language, "stop-ahead")));
+            Resting = Add(VoiceSequence.Of(Line(language, "rocket-rests")));
         }
 
         /// <summary>The language every line is in.</summary>
@@ -39,6 +41,12 @@ namespace Scolita.Core.Map
 
         /// <summary>Said when she taps a stop ahead of the rocket on its planet: it never opens.</summary>
         public VoiceSequence StopAhead { get; }
+
+        /// <summary>
+        /// Said when the daily limit is reached and the map sleeps, and again on any tap that would open a lesson:
+        /// „Racheta se odihnește. Ne vedem mâine!”
+        /// </summary>
+        public VoiceSequence Resting { get; }
 
         /// <summary>Every line above, for the bubble's words.</summary>
         public IReadOnlyList<VoiceSequence> All => all;
@@ -105,7 +113,8 @@ namespace Scolita.Core.Map
                 Line(language, "all-planets"),
                 Line(language, "planet-landed"),
                 Line(language, "planet-asleep"),
-                Line(language, "stop-ahead")
+                Line(language, "stop-ahead"),
+                Line(language, "rocket-rests")
             };
         }
 
