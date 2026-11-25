@@ -8,9 +8,11 @@ namespace Scolita.Game.Tracing
 {
     /// <summary>
     /// Reads the finger drawing on the writing board through the Input System's Enhanced Touch API (every
-    /// sample since the last frame, so a fast finger leaves no gaps), and the mouse when there is no touch
+    /// sample since the last one read, oldest first, from the touch's history, so a fast finger leaves no
+    /// gaps), and the mouse when there is no touch
     /// (the Editor): the first finger down on the board draws, a second finger or a resting palm is ignored
-    /// (<see cref="FingerPicker"/>). It sends the stroke to its <see cref="ITraceInput"/> in the board's
+    /// (<see cref="FingerPicker"/>), and a drawing touch that grows to a palm's size is dropped (a palm that
+    /// landed lightly). It sends the stroke to its <see cref="ITraceInput"/> in the board's
     /// local pixels, allocating nothing.
     /// </summary>
     public sealed class TraceFinger : MonoBehaviour
@@ -23,6 +25,7 @@ namespace Scolita.Game.Tracing
 
         private readonly FingerPicker picker = new FingerPicker();
         private ITraceInput input;
+        private double lastSampleTime;
 
         /// <summary>
         /// Sends the strokes drawn on the board to <paramref name="traceInput"/> from now on (null to stop);
@@ -94,7 +97,11 @@ namespace Scolita.Game.Tracing
                 switch (touch.phase)
                 {
                     case TouchPhase.Began:
-                        Down(touch.touchId, touch.startScreenPosition, touch.radius.magnitude);
+                        if (Down(touch.touchId, touch.startScreenPosition, RadiusOf(touch)))
+                        {
+                            lastSampleTime = touch.startTime;
+                        }
+
                         MovedThroughHistory(touch);
                         break;
                     case TouchPhase.Moved:
@@ -119,12 +126,28 @@ namespace Scolita.Game.Tracing
                 return;
             }
 
-            for (int sample = touch.history.Count - 1; sample >= 0; sample--)
+            if (RadiusOf(touch) > PalmRadiusInPixels())
             {
-                Moved(touch.touchId, touch.history[sample].screenPosition);
+                Up(touch.touchId, true);
+                return;
             }
 
-            Moved(touch.touchId, touch.screenPosition);
+            TouchHistory history = touch.history;
+            for (int index = history.Count - 1; index >= 0; index--)
+            {
+                Touch sample = history[index];
+                if (sample.touchId == touch.touchId && sample.time > lastSampleTime)
+                {
+                    Moved(touch.touchId, sample.screenPosition);
+                    lastSampleTime = sample.time;
+                }
+            }
+
+            if (touch.time > lastSampleTime)
+            {
+                Moved(touch.touchId, touch.screenPosition);
+                lastSampleTime = touch.time;
+            }
         }
 
         private void ReadMouse()
@@ -151,13 +174,25 @@ namespace Scolita.Game.Tracing
             }
         }
 
-        private void Down(int touchId, Vector2 screen, float radius)
+        private bool Down(int touchId, Vector2 screen, float radius)
         {
             bool onBoard = RectTransformUtility.RectangleContainsScreenPoint(board, screen, null);
-            if (input != null && picker.Began(touchId, onBoard, radius > PalmRadiusInPixels()) && ToBoard(screen, out Vector2 local))
+            if (input == null || !picker.Began(touchId, onBoard, radius > PalmRadiusInPixels()))
+            {
+                return false;
+            }
+
+            if (ToBoard(screen, out Vector2 local))
             {
                 input.StrokeBegan(local);
             }
+
+            return true;
+        }
+
+        private static float RadiusOf(Touch touch)
+        {
+            return Mathf.Max(touch.radius.x, touch.radius.y);
         }
 
         private void Moved(int touchId, Vector2 screen)
