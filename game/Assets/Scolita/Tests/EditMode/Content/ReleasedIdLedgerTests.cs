@@ -195,7 +195,7 @@ namespace Scolita.Tests.EditMode.Content
             {
                 ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
                 ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
-                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
+                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails, ContentFileNames.Avatars
             }));
             Assert.That(ledger.Ids.Select(id => id.ToString()), Does.Contain("words.csv ro-mama").And.Contain("lessons.csv party-1"));
         }
@@ -212,7 +212,7 @@ namespace Scolita.Tests.EditMode.Content
             {
                 ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
                 ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
-                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
+                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails, ContentFileNames.Avatars
             };
             return files
                 .SelectMany(file => csvs[file].Split('\n').Skip(1)

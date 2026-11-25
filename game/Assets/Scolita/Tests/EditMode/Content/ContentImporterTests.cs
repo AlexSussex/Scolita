@@ -295,8 +295,9 @@ namespace Scolita.Tests.EditMode.Content
         }
 
         /// <summary>
-        /// Tests that <see cref="ContentImporter.Import"/> writes the stickers with their pictures, the constellations and
-        /// the trails, and their catalogs make the same rewards as the CSVs (<see cref="RewardContentAssets.Build"/>).
+        /// Tests that <see cref="ContentImporter.Import"/> writes the stickers with their pictures, the constellations,
+        /// the trails and the avatars with their pictures, and their catalogs make the same rewards as the CSVs
+        /// (<see cref="RewardContentAssets.Build"/>) and offer the same avatars.
         /// </summary>
         [Test]
         public void TestImport_WritesTheRewards()
@@ -318,6 +319,9 @@ namespace Scolita.Tests.EditMode.Content
                 Assert.That(fromAssets.Constellations.All[0].Lines.Select(line => line.To),
                     Is.EqualTo(fromCsvs.Constellations.All[0].Lines.Select(line => line.To)));
                 Assert.That(AssetDatabase.LoadAssetAtPath<StickerAsset>(paths.Sticker("guitar")).Sprite.name, Is.EqualTo("sticker-guitar"));
+                AvatarCatalog avatars = AssetDatabase.LoadAssetAtPath<AvatarCatalog>(paths.Catalog("AvatarCatalog"));
+                Assert.That(avatars.OfferedIds(), Is.EqualTo(fromCsvs.Avatars.All.Select(avatar => avatar.Id)));
+                Assert.That(avatars.SpriteOf(ContentId.Create("dog")).name, Is.EqualTo("avatar-dog"));
                 Assert.That(AssetDatabase.LoadAssetAtPath<TrailAsset>(paths.Trail("stars")).Sprite.name, Is.EqualTo("trail-stars"));
             });
         }

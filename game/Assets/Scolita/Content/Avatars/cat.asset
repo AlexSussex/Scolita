@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5aa3fd20b9ae7e46928222eb5bc9389, type: 3}
+  m_Name: cat
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.AvatarAsset
+  id: cat
+  retired: 0
+  sprite: {fileID: 21300000, guid: 445c05e9e9f43a34191b3ae78ec32ce2, type: 3}

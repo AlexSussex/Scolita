@@ -20,6 +20,8 @@ namespace Scolita.Editor.ContentImport
         private const string Stickers = "Rewards/Stickers";
         private const string Constellations = "Rewards/Constellations";
         private const string Trails = "Rewards/Trails";
+        private const string Avatars = "Avatars";
+        private const string AvatarArtFolder = "Assets/Scolita/Art/Avatars";
         private const string StickerArtFolder = "Assets/Scolita/Art/Stickers";
         private const string TrailArtFolder = "Assets/Scolita/Art/Map";
 
@@ -39,7 +41,7 @@ namespace Scolita.Editor.ContentImport
         public IReadOnlyList<string> OwnedFolders => new[]
         {
             Under(Letters), Under(Words), Under(Pictures), Under(Voice), Under(Domains), Under(Units),
-            Under(Lessons), Under(Strokes), Under(Stickers), Under(Constellations), Under(Trails)
+            Under(Lessons), Under(Strokes), Under(Stickers), Under(Constellations), Under(Trails), Under(Avatars)
         };
 
         /// <summary>A letter's asset; called by <see cref="ContentImportPlan"/>.</summary>
@@ -127,6 +129,21 @@ namespace Scolita.Editor.ContentImport
         public string Trail(string id)
         {
             return Under(Trails) + "/" + id + ".asset";
+        }
+
+        /// <summary>An avatar's asset; called by <see cref="ContentImportPlan"/>.</summary>
+        public string Avatar(string id)
+        {
+            return Under(Avatars) + "/" + id + ".asset";
+        }
+
+        /// <summary>
+        /// An avatar's picture, made by <c>look</c>'s tools (<c>Art/Avatars/avatar-&lt;id&gt;.png</c>), whatever the asset
+        /// folder; called by <see cref="ContentImportPlan"/>.
+        /// </summary>
+        public static string AvatarArt(string id)
+        {
+            return AvatarArtFolder + "/avatar-" + id + ".png";
         }
 
         /// <summary>

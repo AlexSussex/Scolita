@@ -29,7 +29,7 @@ namespace Scolita.Editor.ContentImport
         {
             ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
             ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
-            ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
+            ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails, ContentFileNames.Avatars
         };
 
         private static readonly char[] Spaces = { ' ', '\t' };
@@ -182,7 +182,8 @@ namespace Scolita.Editor.ContentImport
                 .Concat(curriculum.AllLessons.Select(lesson => Unwritten(ContentFileNames.Lessons, lesson.Id)))
                 .Concat(rewards.Stickers.All.Select(sticker => Unwritten(ContentFileNames.Stickers, sticker.Id)))
                 .Concat(rewards.Constellations.All.Select(constellation => Unwritten(ContentFileNames.Constellations, constellation.Id)))
-                .Concat(rewards.Trails.All.Select(trail => Unwritten(ContentFileNames.Trails, trail.Id)));
+                .Concat(rewards.Trails.All.Select(trail => Unwritten(ContentFileNames.Trails, trail.Id)))
+                .Concat(rewards.Avatars.All.Select(avatar => Unwritten(ContentFileNames.Avatars, avatar.Id)));
         }
 
         private static ReleasedId Unwritten(string file, ContentId id)

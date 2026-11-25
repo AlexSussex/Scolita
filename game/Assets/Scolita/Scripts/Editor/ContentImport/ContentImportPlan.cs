@@ -6,6 +6,7 @@ using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Csv;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Profiles;
 using Scolita.Core.Rewards;
 using Scolita.Core.Tracing;
 using UnityEditor;
@@ -290,6 +291,13 @@ namespace Scolita.Editor.ContentImport
                 planned.Add(new PlannedAsset(paths.Trail(trail.Id.Value), asset));
             }
 
+            foreach (ProfileAvatar avatar in rewards.Avatars.All)
+            {
+                AvatarAsset asset = New<AvatarAsset>(avatar.Id);
+                asset.Fill(avatar, Load<Sprite>(ContentAssetPaths.AvatarArt(avatar.Id.Value)));
+                planned.Add(new PlannedAsset(paths.Avatar(avatar.Id.Value), asset));
+            }
+
             return planned;
         }
 
@@ -332,7 +340,8 @@ namespace Scolita.Editor.ContentImport
                 Catalog<StickerCatalog, StickerAsset>(rewards.Stickers.All.Select(sticker => paths.Sticker(sticker.Id.Value))),
                 Catalog<ConstellationCatalog, ConstellationAsset>(
                     rewards.Constellations.All.Select(constellation => paths.Constellation(constellation.Id.Value))),
-                Catalog<TrailCatalog, TrailAsset>(rewards.Trails.All.Select(trail => paths.Trail(trail.Id.Value)))
+                Catalog<TrailCatalog, TrailAsset>(rewards.Trails.All.Select(trail => paths.Trail(trail.Id.Value))),
+                Catalog<AvatarCatalog, AvatarAsset>(rewards.Avatars.All.Select(avatar => paths.Avatar(avatar.Id.Value)))
             };
         }
 
@@ -376,6 +385,16 @@ namespace Scolita.Editor.ContentImport
                 if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
                 {
                     problems.Error(trail.Source, "the trail " + trail.Id + " has no picture: " + art
+                        + " is missing (or not a sprite).");
+                }
+            }
+
+            foreach (ProfileAvatar avatar in rewards.Avatars.All)
+            {
+                string art = ContentAssetPaths.AvatarArt(avatar.Id.Value);
+                if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
+                {
+                    problems.Error(avatar.Source, "the avatar " + avatar.Id + " has no picture: " + art
                         + " is missing (or not a sprite).");
                 }
             }
@@ -433,6 +452,7 @@ namespace Scolita.Editor.ContentImport
                 .Concat(rewards.Constellations.All.Select(constellation =>
                     Typed<ConstellationAsset>(paths.Constellation(constellation.Id.Value))))
                 .Concat(rewards.Trails.All.Select(trail => Typed<TrailAsset>(paths.Trail(trail.Id.Value))))
+                .Concat(rewards.Avatars.All.Select(avatar => Typed<AvatarAsset>(paths.Avatar(avatar.Id.Value))))
                 .Append(Typed<LetterCatalog>(paths.Catalog(nameof(LetterCatalog))))
                 .Append(Typed<WordCatalog>(paths.Catalog(nameof(WordCatalog))))
                 .Append(Typed<PictureCatalog>(paths.Catalog(nameof(PictureCatalog))))
@@ -441,7 +461,8 @@ namespace Scolita.Editor.ContentImport
                 .Append(Typed<LetterShapeCatalog>(paths.Catalog(nameof(LetterShapeCatalog))))
                 .Append(Typed<StickerCatalog>(paths.Catalog(nameof(StickerCatalog))))
                 .Append(Typed<ConstellationCatalog>(paths.Catalog(nameof(ConstellationCatalog))))
-                .Append(Typed<TrailCatalog>(paths.Catalog(nameof(TrailCatalog))));
+                .Append(Typed<TrailCatalog>(paths.Catalog(nameof(TrailCatalog))))
+                .Append(Typed<AvatarCatalog>(paths.Catalog(nameof(AvatarCatalog))));
         }
 
         private static KeyValuePair<string, Type> Typed<TAsset>(string path)
