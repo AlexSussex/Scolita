@@ -1,8 +1,8 @@
 # Task: feature/handwriting
 
-> **Status: Ready after `tracing`** (the human, 2026-11-24: she must also
+> **Status: In progress (handwriting).** (The human, 2026-11-24: she must also
 > learn how letters are made by hand, not only typed letters; decision D3
-> answered: handwritten letters are in the MVP). The handwriting model is
+> answered: handwritten letters are in the MVP.) The handwriting model is
 > the Romanian school's "litere de mână" for both languages (assumed in
 > D3; `curriculum-research` confirms the shapes).
 

@@ -59,7 +59,7 @@ Each brief file therefore reads, top to bottom:
 | 4 | `feature/voice` | Done 2026-11-24, released as 0.3.0 | [done/voice.md](done/voice.md) |
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
 | 6 | `feature/tracing` | Done 2026-11-25, released as 0.7.0 | [done/tracing.md](done/tracing.md) |
-| 7 | `feature/handwriting` | Ready after 6 (decision D3 answered: handwritten letters in the MVP) | [pending/handwriting.md](pending/handwriting.md) |
+| 7 | `feature/handwriting` | In progress (handwriting) | [pending/handwriting.md](pending/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
@@ -100,6 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
+| handwriting | [handwriting](pending/handwriting.md) | New: `Scripts/Core/Activities/TraceWordRules`, `Scripts/UI/Tracing/` (`HandwritingView`, `TraceWordView`), `Prefabs/Lesson/TraceWordView.prefab`, `content/strokes/*-handwritten.json`; changes: `Scripts/Core/Tracing`, `Core/Content` (shape rules, kinds), the importer (the form field), `Prefabs/Lesson/TraceLetterView.prefab`, `Prefabs/Lesson/MeetLetterView.prefab` (the "de mână" button), `ActivityRegistry.asset` (one row), `LearningRules.asset`, `steps.csv`, `voice-lines.csv` | emulator-5600 | 2026-11-25 | Claimed; Design note next |
 
 ## Where we are
 
