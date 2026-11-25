@@ -1,6 +1,6 @@
 # Task: feature/rewards
 
-> **Status: In progress (rewards).**
+> **Status: Done 2026-11-25, released as 0.12.0.**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Usability" → no pressure and no
 tricks), and the completion records in `tasks/done/`.
@@ -197,9 +197,12 @@ and pictures.
   `ConstellationPlaces`, `RewardTables`, `RewardContentRules`, `RewardLines`), `240d730`
   `content:` (the three CSVs, 14 voice lines, the asset types and catalogs), `a256f28` `build:`
   (the importer and the ledger read the rewards; `Content/Rewards/` imported).
-- **Then:** `game:` (the `rewards` save, `RewardsSession`, the runners' hook, the prefabs, the
-  scenes' fields, `RewardRules.asset`) and `ui:` (the end, the bar, the books, the trail), with the
-  art (`design/art/draw/`: the gift box and lid, three bar icons, the constellation's line).
+- **Pushed, rebased on 0.11.0:** `e843cfc` `content:` (the art: the gift box and lid, three bar
+  icons, the constellation's line), `2021519` `game:` (the `rewards` save, `RewardsSession`, the
+  runners' hook, the end, the bar, the books, the trail, the prefabs, the scenes' fields,
+  `RewardRules.asset`; the Game and UI sides in one commit, as the views' abstract types changed with
+  them), `58fb435` `core:`, `3c18bc7` `build:`, `033f44b` `game:` (the review's fixes), `8d35043`
+  `docs:`.
 
 ### Decisions
 
@@ -361,3 +364,86 @@ folder as `S`, and `F=/storage/emulated/0/Android/data/com.softshack.scolita/fil
     and the trail picker: everything on screen, the back button and the strip clear of the edges.
 
 Cleanup: `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `rewards`; released as 0.12.0 (tag `v0.12.0`)._
+
+### What was built
+
+- **Pushed:** `a02b97a` `core:`, `240d730` `content:`, `a256f28` `build:` (the rules, the three CSVs and
+  their import), then, rebased on 0.11.0, `e843cfc` `content:` (the art), `2021519` `game:` (the save,
+  the session, the end, the bar, the books, the trail, the prefabs and the scenes), `58fb435` `core:`,
+  `3c18bc7` `build:`, `033f44b` `game:` (the review's fixes), `8d35043` `docs:`, then this close-out
+  (tagged).
+- **Core** (`Scripts/Core/Rewards`): `RewardGiver` (the one owner of rewards: 3 stars a lesson, a sticker
+  every second lesson and at a planet's end with no repeat until all are given, a trail per planet,
+  `CatchUp`; raises `RewardEarned`), `RewardBook` (her rewards and the sticker scene's rules),
+  `SkyChart` / `SkyConstellation` / `ConstellationPlaces` (3 places per lesson spread over the
+  figure), `RewardTables`, `RewardContentRules`, `RewardLines`, `RewardRules`.
+- **Content:** `content/stickers.csv` (18), `content/constellations.csv` (unicorn, rocket, whale),
+  `content/trails.csv` (rainbow, stars, bubbles), 14 voice lines; `Scripts/Content`: the three asset
+  types and catalogs, `RewardContentAssets`; the importer and the ledger read them
+  (`Content/Rewards/`).
+- **Game** (`Scripts/Game/Rewards`): `RewardsData` / `RewardsFile` (`rewards.json`), `RewardsSession`
+  (made by `LessonRunner` and `MapRunner`), `RewardsView`, `LessonEndView`, `RewardRulesAsset`
+  (`Settings/RewardRules.asset`), `RewardSources`, `RewardSprites`, `StickerShelf`.
+- **UI** (`Scripts/UI/Rewards`): `LessonEndScreen` (design screen 6), `RewardBar`, `SkyBookView` /
+  `SkyCard`, `StickerBookView` / `StickerTrayItem` / `PlacedStickerView`, `TrailPickerView` /
+  `TrailCard`, `ConstellationView`, `RewardScreens`; `RocketView` wears the trail.
+  `Prefabs/Rewards/LessonEnd.prefab` and `RewardBooks.prefab` (in `LessonScreen.prefab` and
+  `MapScreen.prefab`).
+- **Tests:** EditMode `RewardGiverTests` (10), `RewardBookTests` (6), `ConstellationPlacesTests` (3),
+  `SkyChartTests` (3), `RewardTablesTests` (3), `RewardContentRulesTests` (5), `RewardsDataTests` (6),
+  `RewardRulesAssetTests`, the importer's and the ledger's; PlayMode `RewardsFlowTests` (3).
+
+### Conventions for later briefs
+
+- **Give rewards only through `RewardGiver`;** nothing removes a star, a sticker or a trail.
+  `sound-feel` listens to `RewardsSession.Giver.RewardEarned` for the sounds.
+- **A new planet needs its constellation** (a row of `constellations.csv` and its two lines per
+  language, `stars-<id>` and `constellation-<id>`): the import refuses a planet without one. A new
+  sticker or trail is a row and its picture (`Art/Stickers/sticker-<id>`, `Art/Map/trail-<id>`).
+- **The stars lines say "3"**: change them with `RewardRules.asset`'s stars per lesson.
+- **A screen over the map or the lesson** goes below the guide and its bubble in the hierarchy, so
+  its line is seen while said; its back button sits top left above the guide.
+- **`rewards.json` is per profile** (`profiles` keeps it per child; `parent-area`'s reset deletes it
+  with the others).
+
+### How it was tested
+
+- **Batch mode** on the rebased tree: EditMode 696/696, PlayMode 30/30, `BuildAndroidDebug`, no
+  `warning CS` or `error CS`.
+- **Emulator** (`emulator-5602`, 2560 × 1600 tablet AVD, `wm size`): a lesson's end with the stars
+  landing, with a sticker (the box opening), the sticker book from the end (drag out, move, take off,
+  place again, saved and read back after killing the app), the sky book, the trail picker and the
+  rocket's trail, a profile from before rewards caught up; 2000 × 1200, 1280 × 800, 2048 × 1536,
+  2400 × 1080 and 2560 × 1600 (screenshots in the agent's scratch folder).
+- **GC:** the Editor probe in Progress → "Measured".
+- **Not run:** a two-finger pinch on the emulator (`adb input` has one finger; the pinch is covered
+  by PlayMode with two pointers) — for the human's tablet; listening (no clips, and no voice on the
+  emulator: the lines were read in the bubble); the Device Simulator's cut-out profile; the device
+  Profiler.
+
+### Decisions and deviations
+
+In Progress → "Decisions" and "Fresh-eyes review". In short: the reward content sits beside the
+curriculum; constellations are drawn from data (`look`'s PNGs unused); planet 3 is the whale; a replay
+gives stars again; one sticker per lesson end at most; copies per sticker; its own rules asset; the
+bar's and the end's words in Romanian only (string tables are `parent-area`'s); the game and UI
+slices are one commit, as the views' abstract types changed with them.
+
+### Follow-ups
+
+- **The human:** try 0.12.0 with her (the pinch, the stars, the gift box); the 0.12.0 rows of
+  `docs/manual-testing.md`; „Ai câștigat” or „Ai primit”; the constellations she would like (the
+  human's ChatGPT guitar, unicorn and rocket could be traced into `constellations.csv`).
+- **`parent-area`:** the bar's words, "În cartea mea" and "Bravo!"/"Well done!" into the string
+  tables; reset deletes `rewards.json`.
+- **`profiles`:** the runners still open `BuiltInProfiles.FirstChild`; the stars count can show on
+  "Who's playing?" (design screen 9) from `RewardBook.StarsEarned`.
+- **`sound-feel`:** a sound per star landing, the gift box opening, a sticker placed; the music under
+  the books.
+- **`look` (a chore):** `Art/Constellations/constellation-*.png` are not used; the empty rings and
+  the unicorn's figure could be redrawn; a bigger scene (more backdrops than the Earth) later.
+- **Later:** saying a sticker's name when tapped (words in both languages), more scenes.

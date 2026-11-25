@@ -64,7 +64,7 @@ Each brief file therefore reads, top to bottom:
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Done 2026-11-25, released as 0.10.0 | [done/galaxy-map.md](done/galaxy-map.md) |
 | 11 | `feature/progress-review` | Done 2026-11-25, released as 0.11.0 | [done/progress-review.md](done/progress-review.md) |
-| 12 | `feature/rewards` | In progress (rewards) | [pending/rewards.md](pending/rewards.md) |
+| 12 | `feature/rewards` | Done 2026-11-25, released as 0.12.0 | [done/rewards.md](done/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
@@ -99,13 +99,12 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| rewards | [rewards](pending/rewards.md) | New: `Scripts/Core/Rewards`, `Scripts/Game/Rewards`, `Scripts/UI/Rewards`, `Prefabs/Rewards/`, `content/stickers.csv`, `content/constellations.csv`, `content/trails.csv`, `Content/Rewards/` (imported), the `rewards` save; changes: the importer and `Scripts/Content` (three catalogs), `ContentFileNames`, `ReleasedIdLedger`, `content/voice-lines.csv` (new rows at the end), `Prefabs/UI/MapScreen.prefab`, `Prefabs/Lesson/LessonScreen.prefab` (the end), `Scenes/Map.unity` and `Scenes/Lesson.unity` (the runners' reward fields), small hunks in `MapRunner` and `LessonRunner` (the rewards at a lesson's end), `UI/Map/RocketView` (the trail), `design/art/draw/constellations.mjs` | emulator-5602 | 2026-11-25 | Design note first |
 | parent-area | [parent-area](pending/parent-area.md) | New: `Scripts/Core/Parent`, `Scripts/Game/Parent`, `Scripts/UI/Parent`, `Prefabs/Parent/`, `Scenes/Parent.unity`, `Assets/Scolita/Localization/` (the first string tables), `Assets/AddressableAssetsData/` (made by Localization); changes: `LearningSettingsData` (the session limit, migrated), `SaveStore` (delete a file), `LearningRulesAsset` (+ asset), `AppScene`, `ProjectSettings/EditorBuildSettings.asset` (the Parent scene, Localization's settings), `content/voice-lines.csv` (new rows at the end), `VoiceHost` (the voice's volume), `BootLoader` (the app's language); after `rewards` closes out: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `MapRunner`, `MapScreen`, `LessonRunner` (the parent button, the sleeping map, play time) | emulator-5600 | 2026-11-25 | Design note pushed; Core and the parent area next; the map's button waits for `rewards` |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `progress-review` (her progress and the warm-ups, release 0.11.0)._
+_Last updated 2026-11-25 by agent `rewards` (stars, stickers and trails, release 0.12.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -198,8 +197,20 @@ _Update this section whenever a slice is pushed or a brief is finished._
   after 6 right answers in 2 kinds on 2 days; warm-ups at a lesson's start after 1, 3, 7, 14 and 30
   days („Hai să ne amintim!”); the language mix hides the other language and keeps its progress; a
   damaged save's dated copies go once a newer version read and saved the file fine on 3 days.
+- **Done 2026-11-25:** `rewards`, release 0.12.0. Three stars per finished lesson fly into the
+  planet's constellation (drawn from `constellations.csv`); a sticker from a gift box every second
+  lesson and at a planet's end, none repeated until all are given (`stickers.csv`); a rocket trail per
+  planet (`trails.csv`); the map's bar (sky book, sticker book with the Earth scene, trail picker);
+  `rewards.json` per profile (caught up from her progress for an older tablet).
 
 ### Open follow-ups across briefs
+
+- **From `rewards`** (full list in its completion record):
+  - `parent-area`: the bar's words, "În cartea mea", "Bravo!"/"Well done!" into the string tables;
+    reset deletes `rewards.json`.
+  - `profiles`: the star count on "Who's playing?" from `RewardBook.StarsEarned`.
+  - `sound-feel`: the stars landing, the gift box, a sticker placed (`RewardsSession.Giver.RewardEarned`).
+  - `look` (a chore): `Art/Constellations/constellation-*.png` unused; the constellations' figures.
 
 - **From `progress-review`** (full list in its completion record):
   - `parent-area`: the grid reads `LearnerProgress` (`StateOf`, `DaysPlayed`); reset deletes
@@ -211,8 +222,8 @@ _Update this section whenever a slice is pushed or a brief is finished._
   - ~~`progress-review`: put `LearnerProgress` behind `IDoneLessons`, migrate
     `map-progress.json` (keep `rocketStop`'s role: it decides the trip), clean up
     the dated broken copies~~: done in 0.11.0.
-  - `rewards`: the bottom bar's band and buttons go in `SkyBookPlace` and
-    `StickerBookPlace`; the rocket's trail along the path.
+  - ~~`rewards`: the bottom bar's band and buttons go in `SkyBookPlace` and
+    `StickerBookPlace`; the rocket's trail along the path~~: done in 0.12.0.
   - `parent-area`: the parent button in `ParentPlace`; "Hai!" / "Go!" into a
     string table. `profiles`: the avatar in `AvatarPlace`.
   - `look` (a chore): delete the old planet parts and rocket in `Art/Map/`.
@@ -267,7 +278,7 @@ _Update this section whenever a slice is pushed or a brief is finished._
     about 15 KB in the voice's planning (a follow-up for the voice).
   - `look`: the lesson screen is `Prefabs/Lesson/LessonScreen.prefab`;
     `LessonHud.prefab`'s placeholder card is hidden in the scene.
-  - `rewards`: design screen 6 replaces the end panel.
+  - ~~`rewards`: design screen 6 replaces the end panel~~: done in 0.12.0.
 
 - **From `voice`** (full list in its completion record):
   - ~~`lesson-engine`: load a lesson's clips, replace the voice sampler~~:

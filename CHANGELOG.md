@@ -18,6 +18,48 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.12.0 (2026-11-25)
+
+Rewards: stars, stickers and rocket trails. Every lesson she finishes lights three stars in her
+planet's constellation; every second lesson, and at the end of each planet, a sticker pops out of a
+gift box for her sticker book; each finished planet gives the rocket a new trail. Nothing can ever be
+lost or bought.
+
+- **For the child:**
+  - **The end of a lesson:** "Bravo!", and three gold stars fly one after another into the planet's
+    constellation (the unicorn, the rocket, the whale), each lighting as it lands; „Bravo! Ai aprins
+    3 stele în constelația Unicornului.” Then, when one is earned, the gift box opens and a sticker
+    pops out („Ai câștigat un abțibild!”), and at a planet's end the new trail („Ai câștigat o dâră
+    nouă pentru rachetă!”). **Mai departe** goes back to the map; **În cartea mea** opens the sticker
+    book.
+  - **The map's bottom bar:** **Cerul meu** (her stars in a yellow pill), **Abțibilduri** (once she
+    has a sticker) and **Dâre** (once she has a trail).
+  - **The sky book:** a constellation per planet over its planet, lit star by star; tapping one says
+    its name.
+  - **The sticker book:** the Earth on the purple sky and her stickers in a strip below. She drags a
+    sticker onto the scene, moves it, makes it bigger or smaller with two fingers, and drags it back
+    to the strip to take it off. It stays where she put it, even after the app is closed.
+  - **The trails:** she picks the rocket's trail (the rainbow, the stars, the bubbles), and the rocket
+    wears it on the map.
+- **For the parent:** nothing to set. A tablet that played an earlier version gets the stars of the
+  lessons she already finished and the trail of a finished planet (no stickers for the past).
+
+### Technical notes
+
+- **A new save file:** `profiles/<id>/rewards.json` (version 1): the stars earned, the lessons lit
+  (in order), the lessons finished, the stickers given (in order), the planets rewarded, the trails
+  earned and the one chosen, the stickers on the scene (x, y, size). Missing: made from her progress;
+  damaged: set aside, dated, and made again the same way.
+- **Content:** three new files, `content/stickers.csv` (the 18 stickers of `look`),
+  `content/constellations.csv` (unicorn, rocket, whale, drawn from their stars and lines) and
+  `content/trails.csv` (rainbow, stars, bubbles), imported into `Content/Rewards/`, in the ledger of
+  released ids (recorded under 0.11.0, whose close-out came after they were pushed). 14 new voice lines in both languages (a new trail, the constellations' names, the
+  sky book, the sticker book, the trail picker), not recorded yet.
+- **The reward rules asset** (`Settings/RewardRules.asset`): 3 stars a lesson, a sticker every 2
+  lessons, sticker sizes from 0.5 to 2.5.
+- **Art** (drawn by agents): the gift box and its lid, the bar's three icons, the constellation's line.
+- The brief: [`tasks/done/rewards.md`](tasks/done/rewards.md).
+
 ## 0.11.0 (2026-11-25)
 
 Her progress and reviews. The app now keeps, for each letter in each language, how often she got it

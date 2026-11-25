@@ -39,6 +39,26 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.12.0 (2026-11-25): stars, stickers and trails
+
+On the tablet, with the 0.12.0 APK (`local/apks/Scolita-0.12.0-debug.apk`), installed over 0.11.0
+without clearing its data. The lines are said by the tablet's voice (none recorded yet).
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.12.0-1 | The map, after the update | Open the app | The bottom bar: **Cerul meu** with her stars (3 for each lesson she already finished); **Dâre** too if she finished planet 1 | |
+| 0.12.0-2 | The end of a lesson | Finish a lesson | "Bravo!", three gold stars flying into the constellation one after another, each lighting as it lands; „Bravo! Ai aprins 3 stele în constelația …” | |
+| 0.12.0-3 | The end of the next lesson | Finish one more | After the stars, the purple gift box opens and a sticker pops out; „Ai câștigat un abțibild!”; **În cartea mea** beside **Mai departe** | |
+| 0.12.0-4 | The sticker book | Tap **În cartea mea** | The Earth and, below, her sticker; „Trage abțibildurile pe Pământ. …” | |
+| 0.12.0-5 | The sticker book | Drag the sticker up onto the Earth, move it, pinch it with two fingers | It follows her finger, stays where she lets go, grows and shrinks (not too small, not too big) | |
+| 0.12.0-6 | The sticker book | Drag it back down onto the strip | It leaves the Earth and is back in the strip | |
+| 0.12.0-7 | It stays | Put a sticker on the Earth, close the app, open it, tap **Abțibilduri** | The sticker is where she left it, at its size | |
+| 0.12.0-8 | The sky book | Tap **Cerul meu**, then a constellation | A card per planet, the stars she earned lit; its name is said („Aceasta este constelația Unicornului.”); the back arrow closes it | |
+| 0.12.0-9 | A planet's end | Finish the last lesson of a planet | A sticker and the trail's card; „… Ai câștigat o dâră nouă pentru rachetă!”; on the map the rocket wears the trail | |
+| 0.12.0-10 | The trails | Tap **Dâre**, then another trail | The one worn has a yellow ring; tapping another gives it to the rocket | |
+| 0.12.0-11 | The words | Read and hear the new lines | „Ai câștigat …” or „Ai primit …”? „dâră” for the rocket's trail? The constellations' names right and natural? | |
+| 0.12.0-12 | The pictures | Look at the constellations with her | Does she see a unicorn, a rocket and a whale? Which ones would she rather have (the guitar, the cat)? | |
+
 ### 0.11.0 (2026-11-25): her progress and the warm-ups
 
 On the tablet, with the 0.11.0 APK (`local/apks/Scolita-0.11.0-debug.apk`), installed over 0.10.0
