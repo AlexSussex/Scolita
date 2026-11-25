@@ -12,7 +12,8 @@ namespace Scolita.Game.Lessons
     /// never cut off otherwise. It remembers the last line (the mascot says it again when tapped) and
     /// the line being said when the app goes to the background, to say it again on its return. The
     /// bubble's words are made when the lesson is built (<see cref="Prepare"/>), so saying a line
-    /// allocates nothing here. Moved on every frame by <see cref="LessonRunner"/>.
+    /// allocates nothing here. Moved on every frame by <see cref="LessonRunner"/>; the galaxy map's
+    /// <c>MapRunner</c> speaks through one too.
     /// </summary>
     public sealed class LessonVoice
     {

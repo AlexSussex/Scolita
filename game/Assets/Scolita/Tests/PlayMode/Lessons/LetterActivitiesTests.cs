@@ -7,6 +7,7 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Game.Lessons;
+using Scolita.Game.Map;
 using Scolita.Game.Settings;
 using Scolita.UI.Lesson;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestLetterHuntView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -73,6 +75,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -86,6 +89,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestFirstSoundView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -114,6 +118,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -127,6 +132,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestTwoSoundsView_RunsToItsEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -171,6 +177,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }

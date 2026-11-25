@@ -4,6 +4,7 @@ using Scolita.Core.Content;
 using Scolita.Core.Lessons;
 using Scolita.Core.Tracing;
 using Scolita.Game.Lessons;
+using Scolita.Game.Map;
 using Scolita.Game.Settings;
 using Scolita.Game.Tracing;
 using Scolita.UI.Tracing;
@@ -30,6 +31,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_ThreeRoundsToTheEnd()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -52,6 +54,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -64,6 +67,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestPress_OneFingerNoPalm()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -101,6 +105,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -113,6 +118,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestMove_DrawingAllocatesNothing()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -153,6 +159,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -165,6 +172,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_AHandwrittenLetterInOneLine()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -188,6 +196,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -200,6 +209,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_MamaLetterByLetter()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -221,6 +231,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }
@@ -233,6 +244,7 @@ namespace Scolita.Tests.PlayMode.Lessons
         public IEnumerator TestShow_HandwritingMatchesTheStrokes()
         {
             string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptMap = LessonScene.KeepFile(MapProgressData.FileName);
             string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
             try
             {
@@ -263,6 +275,7 @@ namespace Scolita.Tests.PlayMode.Lessons
             finally
             {
                 LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(MapProgressData.FileName, keptMap);
                 LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
             }
         }

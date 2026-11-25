@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using UnityEngine;
 
@@ -27,16 +28,27 @@ namespace Scolita.Game.Lessons
         /// </summary>
         public IReadOnlyList<ActivityKind> KindsWithViews()
         {
-            List<ActivityKind> kinds = new List<ActivityKind>(views.Length);
-            foreach (Entry entry in views)
+            return ViewKinds();
+        }
+
+        /// <summary>
+        /// The kinds a lesson can play: those with rules (<see cref="ActivityRulesFactory.Kinds"/>, in their
+        /// order) and a view here, as a new list. Called by <see cref="LessonRunner"/> and <c>MapRunner</c>, so
+        /// the map's stops and the lesson agree on what can be played.
+        /// </summary>
+        public IReadOnlyList<ActivityKind> PlayableKinds()
+        {
+            List<ActivityKind> withViews = ViewKinds();
+            List<ActivityKind> playable = new List<ActivityKind>(withViews.Count);
+            foreach (ActivityKind kind in ActivityRulesFactory.Kinds)
             {
-                if (entry.View != null)
+                if (withViews.Contains(kind))
                 {
-                    kinds.Add(entry.Kind);
+                    playable.Add(kind);
                 }
             }
 
-            return kinds;
+            return playable;
         }
 
         /// <summary>
@@ -56,6 +68,20 @@ namespace Scolita.Game.Lessons
 
             view = null;
             return false;
+        }
+
+        private List<ActivityKind> ViewKinds()
+        {
+            List<ActivityKind> kinds = new List<ActivityKind>(views.Length);
+            foreach (Entry entry in views)
+            {
+                if (entry.View != null)
+                {
+                    kinds.Add(entry.Kind);
+                }
+            }
+
+            return kinds;
         }
 
         /// <summary>One kind and its view prefab.</summary>

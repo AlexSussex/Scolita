@@ -1,0 +1,235 @@
+using Scolita.Content;
+using Scolita.Core.Content;
+using Scolita.Core.Languages;
+using Scolita.Core.Lessons;
+using Scolita.Core.Map;
+using Scolita.Core.Voice;
+using Scolita.Game.Lessons;
+using Scolita.Game.Profiles;
+using Scolita.Game.Saving;
+using Scolita.Game.Scenes;
+using Scolita.Game.Settings;
+using Scolita.Game.Voice;
+using UnityEngine;
+
+namespace Scolita.Game.Map
+{
+    /// <summary>
+    /// The Map scene's composition root (AGENTS.md → "How the app is put together"), the only place the
+    /// galaxy map is wired together. It builds the curriculum, the voice and Core's <see cref="MapRoute"/>
+    /// from her settings and her <c>map-progress</c>, has the screen draw it and bring the rocket (the trip
+    /// after a finished planet), says the mascot's lines (<see cref="MapLines"/>), and opens a lesson: Go's,
+    /// or a stop she taps, written into <c>lesson-run.json</c> for the Lesson scene unless that already names
+    /// it (so a lesson left half-way resumes at its step).
+    /// </summary>
+    public sealed class MapRunner : MonoBehaviour, IMapInput
+    {
+        [SerializeField] private DomainCatalog domains;
+        [SerializeField] private LetterCatalog letters;
+        [SerializeField] private WordCatalog words;
+        [SerializeField] private PictureCatalog pictures;
+        [SerializeField] private VoiceLineCatalog voiceLines;
+        [SerializeField] private LetterShapeCatalog shapes;
+        [SerializeField] private ActivityRegistry registry;
+        [SerializeField] private VoiceHost voice;
+        [SerializeField] private MapScreenView screen;
+
+        private SaveStore profileFiles;
+        private MapProgress progress;
+        private MapRoute route;
+        private MapLines lines;
+        private LessonVoice mapVoice;
+        private bool opening;
+
+        /// <summary>The map as drawn; null before it is built, or when the content has no domain.</summary>
+        public MapRoute Route => route;
+
+        /// <summary>The mascot's lines on this map; null before it is built.</summary>
+        public MapLines Lines => lines;
+
+        /// <summary>The map's voice; null before it is built.</summary>
+        public LessonVoice MapVoice => mapVoice;
+
+        /// <inheritdoc/>
+        public void Go()
+        {
+            if (route?.GoStop != null && !screen.IsTripPlaying)
+            {
+                Open(route.GoStop);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void TapStop(MapStop stop)
+        {
+            if (route == null || screen.IsTripPlaying)
+            {
+                return;
+            }
+
+            if (stop.CanOpen)
+            {
+                Open(stop);
+                return;
+            }
+
+            screen.Wobble(stop);
+            mapVoice.Say(route.Planets[stop.PlanetIndex].IsAsleep ? lines.PlanetAsleep : lines.StopAhead, null);
+        }
+
+        /// <inheritdoc/>
+        public void TapPlanet(MapPlanet planet)
+        {
+            if (route == null || screen.IsTripPlaying)
+            {
+                return;
+            }
+
+            if (!planet.IsAsleep)
+            {
+                mapVoice.Say(lines.Greeting, null);
+                return;
+            }
+
+            screen.Wobble(planet);
+            mapVoice.Say(lines.PlanetAsleep, null);
+        }
+
+        /// <inheritdoc/>
+        public void RepeatLastLine()
+        {
+            mapVoice?.SayAgain();
+        }
+
+        /// <inheritdoc/>
+        public void TripEnded()
+        {
+            if (route == null)
+            {
+                return;
+            }
+
+            RocketArrived();
+            mapVoice.Say(lines.Landed, null);
+        }
+
+        private void Start()
+        {
+            Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
+            voice.Begin(curriculum);
+            string saveRoot = Application.persistentDataPath;
+            Language appLanguage = SaveStore.ForTablet(saveRoot)
+                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.AppLanguage;
+            profileFiles = SaveStore.ForProfile(saveRoot, BuiltInProfiles.FirstChild);
+            LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
+            if (curriculum.Domains.Count == 0)
+            {
+                Debug.LogError("Map: the content has no domain, so there is no planet to show.");
+                return;
+            }
+
+            Domain domain = curriculum.Domains[0];
+            LessonOrder order = new LessonOrder(domain, mix, new PlayableSteps(registry.PlayableKinds(), curriculum));
+            progress = MapProgressFile.Load(profileFiles, order);
+            route = new MapRoute(curriculum, domain, order, progress);
+            if (route.GoStop == null)
+            {
+                Debug.LogError("Map: no lesson has a step that can be played yet.");
+            }
+
+            lines = new MapLines(route, MapLines.LanguageFor(route, mix, appLanguage));
+            voice.LoadLines(lines.SpokenLines);
+            mapVoice = new LessonVoice(voice.Voice, screen.Bubble);
+            mapVoice.Prepare(curriculum, lines.All);
+            voice.PartStarted += OnPartStarted;
+            screen.Bind(this);
+            screen.Show(route, appLanguage);
+            Arrive(RocketMove.Between(route, progress.RocketStop));
+        }
+
+        private void Update()
+        {
+            if (mapVoice == null)
+            {
+                return;
+            }
+
+            mapVoice.Tick();
+            screen.SetTalking(mapVoice.IsSpeaking);
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (mapVoice == null)
+            {
+                return;
+            }
+
+            if (paused)
+            {
+                mapVoice.Pause();
+            }
+            else
+            {
+                mapVoice.Resume();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (mapVoice != null)
+            {
+                voice.PartStarted -= OnPartStarted;
+            }
+        }
+
+        private void Arrive(RocketMove move)
+        {
+            screen.MoveRocket(move);
+            if (move.Kind == RocketMoveKind.Trip)
+            {
+                return;
+            }
+
+            RocketArrived();
+            mapVoice.Say(lines.Greeting, null);
+        }
+
+        private void RocketArrived()
+        {
+            if (route.GoStop == null)
+            {
+                return;
+            }
+
+            progress.ShowRocketAt(route.GoStop.Lesson.Id);
+            MapProgressFile.Save(profileFiles, progress);
+        }
+
+        private void Open(MapStop stop)
+        {
+            if (opening)
+            {
+                return;
+            }
+
+            Lesson lesson = stop.Lesson;
+            LessonRunData saved = profileFiles.Load(LessonRunData.FileName, LessonRunData.CreateDefaults()).Data;
+            bool alreadySaved = saved.TryGetLessonId(out ContentId savedId) && savedId == lesson.Id;
+            if (!alreadySaved
+                && !profileFiles.Save(LessonRunData.FileName, new LessonRunData(lesson.Id, 1, LessonSignature.Of(lesson))))
+            {
+                Debug.LogError("Map: " + lesson.Id + " could not be saved as the lesson to open, so it isn't opened.");
+                return;
+            }
+
+            opening = true;
+            SceneNavigator.Load(AppScene.Lesson);
+        }
+
+        private void OnPartStarted(VoiceUtterance part)
+        {
+            mapVoice.PartStarted();
+        }
+    }
+}

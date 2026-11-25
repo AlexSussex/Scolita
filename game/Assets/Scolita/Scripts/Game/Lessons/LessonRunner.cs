@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Scolita.Content;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
@@ -8,6 +7,7 @@ using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
+using Scolita.Game.Map;
 using Scolita.Game.Profiles;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
@@ -23,7 +23,8 @@ namespace Scolita.Game.Lessons
     /// (the one in progress at its step, else the next one: the human, 2026-11-24), builds Core's
     /// <see cref="LessonRun"/> and each kind's view from <see cref="ActivityRegistry"/>, passes her taps
     /// to Core and says what Core decides, saves where she is after each step and when the app goes to
-    /// the background, and keeps the screen awake while the lesson is open.
+    /// the background, records a finished lesson in her map progress, and keeps the screen awake while
+    /// the lesson is open.
     /// </summary>
     public sealed class LessonRunner : MonoBehaviour, IActivityInput, ILessonScreenInput
     {
@@ -191,10 +192,7 @@ namespace Scolita.Game.Lessons
 
         private IReadOnlyCollection<ActivityKind> PlayableKinds()
         {
-            IReadOnlyList<ActivityKind> withViews = registry.KindsWithViews();
-            ActivityKind[] playable = ActivityRulesFactory.Kinds
-                .Where(kind => withViews.Contains(kind))
-                .ToArray();
+            IReadOnlyList<ActivityKind> playable = registry.PlayableKinds();
             if (registry.NotBuiltYet.Count > 0)
             {
                 Debug.Log("Lesson: the steps of the kinds not built yet are skipped: " + string.Join(", ", registry.NotBuiltYet) + ".");
@@ -276,6 +274,7 @@ namespace Scolita.Game.Lessons
 
         private void OnLessonCompleted(LessonCompleted completed)
         {
+            MapProgressFile.RecordDone(profileFiles, order, run.Plan.Lesson.Id);
             if (shownView != null)
             {
                 shownView.Hide();
