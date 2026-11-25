@@ -131,3 +131,174 @@ language"), both languages, each heard before the push:
 
 - Release (the next MINOR). Ask the human to let her try writing "mama"
   by hand on the Tab A7 and note whether the joins feel natural.
+
+## Progress
+
+_Kept by `handwriting` while the brief is in flight._
+
+### Status
+
+- **Claimed** in `51cabec`.
+- **Design note** (below): a **medium change**. The stroke file format is unchanged (tracing's
+  eight print files keep working as they are); the new meanings are read from what the files
+  already hold (the entry and exit runs, where strokes begin and end). The content model gains
+  one optional step option (`rounds`); the lesson engine is unchanged.
+- **Next:** Core with its tests, then the handwritten shapes, then the board, `TraceWord`'s
+  view and `MeetLetter`'s "de mână" button.
+
+### Design note
+
+#### The choices, in short
+
+1. **No new field in the stroke files.** A handwritten shape is a file like the print ones
+   (`a-lower-handwritten.json`, `slant` 0.2) using the run kinds tracing already reads
+   (`entry`, `body`, `exit`). Three rules are read from the points, so nobody writes them twice:
+   - **a stroke continues the one before** when it begins exactly where that one ended (within
+     half a unit): she may then write both in one line, or lift between them;
+   - **the join points** are the entry run's first point (or the first point when there is no
+     entry: m, n) and the exit run's last point;
+   - **the marks** are the strokes after the stroke holding the exit (i's dot, t's bar): in a
+     word they are written after the whole word, as the manuals show ("tati").
+2. **What she traces is a `TraceFigure`** (Core): its strokes in order, each knowing its letter,
+   its number within the letter, whether it continues the one before and whether it ends its
+   letter's line. A figure is made from one letter's shape (`TraceLetter`, any form) or from a
+   word's handwritten letters joined (`TraceWord`). The board, the check and the rules see only
+   the figure, so one board view draws a print letter, a handwritten letter and a joined word.
+3. **A line through several strokes is judged as those strokes in order** (`LineCheck`): her
+   line is followed along the chain of strokes that continue each other; every stroke she
+   covered enough of is done at once; a line lifted part-way into the next stroke keeps what was
+   done, and she goes on from the next start dot (no miss).
+4. **A skipped entry is its own verdict,** `StrokeVerdict.SkippedEntry`: she began where the
+   entry run ends (the letter's body) instead of on the line. Its hint is „Pornește de pe
+   linie.” (never for m and n: they have no entry run).
+5. **`TraceWord` is a kind like the others:** Core rules (`TraceWordRules`), a view prefab, a
+   registry row, its lines, the validator's checks. A word plays when every letter has its
+   handwritten lower-case shape (`PlayableSteps` via `ActivityRulesFactory.CanCreate`, as
+   tracing set up).
+
+#### The handwritten a: three strokes (the human, 2026-11-24)
+
+The human: the handwritten a "looks a lot more like @ but with 2 small legs" and has three
+strokes. Read with `curriculum-research` §8 (the entry rises "to the top right of the oval,
+which is then drawn anticlockwise back over it"):
+
+1. **the entry, the left leg:** from the baseline at the left, up the oval's left side and over
+   its top to the top right (only its foot shows below the oval: the first small leg);
+2. **the round body:** from the top right, anticlockwise, back over the entry's path, round the
+   bottom and up the right side (the @'s inner a);
+3. **the stem with the exit, the right leg:** down the right side, then the small hook to the
+   right on the baseline (the second small leg), where the next letter joins.
+
+Stroke 2 begins where stroke 1 ends and stroke 3 where stroke 2 ends, so **each has its numbered
+start dot** (she may lift, as the human counts three), and **one line through all three is
+accepted** (as a word needs: "fără să ridici degetul"). The other planet 1 letters follow the
+draft (m one stroke with its hook and exit; t its line, then the bar; p its line; the capitals
+as drawn). All are `draft`, for the human to check against her school's manual.
+
+#### Entry and exit strokes, and joins in a word
+
+- **Entry:** a run of kind `entry`, the first run of the first stroke, starting on the baseline
+  (a d o i t p s e). m and n have none: they start at the middle line with their hook.
+- **Exit:** a run of kind `exit`, the last run of the letter's line, ending between the middle
+  line and the baseline (o leaves at the middle line, the others low, rising to the right).
+- **Joining a word** (`JoinedWord.Of`, Core, made once when the lesson is built): the first
+  letter is placed as it is; each next letter is moved right so its entry's first point lands
+  on the previous exit's last point (that point becomes the join: the entry's first point is
+  moved onto it, so the join is part of the next letter, as `joined-words-draft.svg` draws it).
+  A letter without an entry (m, n), or a join that leaves high (after o), gets a join run from
+  the exit's end to its first body point, a small gap to the right. Slant is applied after the
+  letters are placed, so the word leans as one.
+- **Order of a word's strokes:** each letter's line, letter by letter, then every mark in
+  letter order (tata: the whole word, then the two bars).
+- **A lifted finger at a join is forgiven:** a stroke that begins at a join may start within
+  the **join radius** (a new number in the learning rules, wider than the start radius) of it;
+  a stroke lifted just before the exit's end is already covered by tracing's end allowance.
+
+#### How handwritten letters are drawn from the stroke data
+
+- **`HandwritingView`** (UI): draws a `TraceFigure` fitted into its rectangle, from each
+  stroke's sampled path (the same samples `StrokeCheck` follows), as an even pen line in ink
+  `#2A2140`; it can also write the figure itself at a pen's pace (the `MeetLetter` card's
+  "de mână" button). No cursive font anywhere (D3). A PlayMode test compares its line's points
+  with the paths.
+- **The board** (tracing's `TraceLetterView`, renamed `WritingBoardView`, its `.meta` kept):
+  draws the figure's guide, dots, arrow and her trail as now; for a handwritten figure the
+  "tip I" lines (dashed top, solid middle, solid baseline, dashed below) and faint slant
+  guides; the letters done stay in ink; the start dot's number is the stroke's number within
+  its letter. `TraceWord`'s prefab is the same board with the right panel of screen 8 (the word
+  in print, "tipar / de mână").
+
+#### `TraceLetter` by hand and `TraceWord`: rounds, lines, hints
+
+- **Rounds:** three as print (dotted, faint, start dot only); a new optional step option
+  **`rounds`** (1 to 3) plays the first N; the English handwritten steps get `rounds=1`
+  (curriculum §4.1: "one round by hand"). `TracingTuning.Rounds` stays the most.
+- **`TraceLetter` by hand:** „Scrie litera de mână.” (+ „Linia de jos: de aici pornești.” when
+  the letter starts on the baseline) + „Începe de la punct și urmează săgeata.”; per stroke the
+  print checkpoints; per letter „Bravo, ai scris litera {x} de mână!”.
+- **`TraceWord`:** „Scrie cuvântul de mână, fără să ridici degetul.” and the word said slowly
+  (its `slow` line). Each letter's line done: **„Bravo, ai făcut litera {x}! Acum leag-o de
+  litera {y}, fără să ridici degetul.”** (`word-join`), said at once, the bubble with the same
+  words; then the marks („Acum trage liniuța literei t.”, „Acum pune punctul pe i.”); the word
+  done: „Bravo, ai scris cuvântul {word}!” (with the next round's line between rounds). Every
+  line is built when the lesson is built.
+- **The voice is not cut off by her writing on:** the checkpoint is the step's `Response`; a
+  later stroke done within a letter says nothing new in `TraceWord`, so the letter's line plays
+  to its end; tapping the mascot repeats it (the `Prompt`).
+- **Hints:** a skipped entry „Pornește de pe linie.” (`trace-hint-from-line`,
+  `word-hint-from-line`); begun elsewhere „Începe de la punctul verde.”; backwards or too short
+  „Urmează săgeata.”; off the path „Rămâi pe linia punctată.” / „Încet și cu grijă: o să
+  reușești!”; in a word, a line lifted inside a join „Nu ridica degetul la legătură.” and one
+  lifted inside a letter „Nu-i nimic! Pune degetul înapoi pe punct și continuă.” (both said
+  without a miss); the answer shown: the next letter writes itself once, slowly („Uite cum se
+  leagă literele.”). All are in `voice-lines.csv` already, in both languages.
+- **{x} and {y} are the letters' sounds,** as tracing's „Bravo, ai scris litera a!” and every
+  line of planets 1–3 (the curriculum: names come later). The brief says "name clips"; that
+  conflicts with the agreed curriculum, so the sound is used and the human is asked (one
+  switch in `TraceWordRules`).
+
+#### What changes in Core, and how tracing's files keep working
+
+- `StrokePath` gains `EntryLength` (how far along the entry run ends; 0 without one) and a way
+  to join paths into a chain; `StrokeCheck` gains `SkippedEntry`; `TraceState` holds a
+  `TraceFigure` and the step's rounds, and moves on by several strokes at once. The print
+  shapes have no entry and no strokes that continue each other, so **print tracing judges
+  exactly as before** (its tests and recorded strokes run unchanged).
+- `ShapeRules`: a missing handwritten shape for a step is now an **error** (tracing made it a
+  warning); for a handwritten lower-case shape: an entry only as the first run and starting on
+  the baseline, at most one exit and it ends the letter's line between the middle line and the
+  baseline, the strokes up to the exit continue each other; a `TraceWord` word has at most 5
+  letters (`ActivityLimits.MostTracedLetters`), each with a handwritten lower-case shape, all
+  but the last with an exit.
+- `MeetLetterRules` gets a third choice, the "de mână" button, when the letter has its
+  handwritten lower-case shape: a tap is neutral and says „Uite cum se scrie litera de mână.”
+  while the card writes the letter.
+
+#### How it is tested
+
+- **EditMode:** `TraceFigure`, `JoinedWord` (joins land on the exits, marks last, slant after
+  placing), `LineCheck` (one line through a's three strokes, a lift part-way, a skipped entry,
+  backwards), `TraceLetterRules` by hand (rounds option, lines, hints), `TraceWordRules` with
+  the real planet 1 words (mama, tata, map, mat: every checkpoint line, the marks, rounds),
+  `ShapeRules` with broken handwritten files, the factory and `PlayableSteps`; recorded strokes
+  in `Tests/EditMode/Tracing/Strokes/handwritten/` (good, sloppy, backwards, no entry, a lifted
+  join) for a m t p and for mama and tata.
+- **PlayMode:** a scripted handwritten trace completes a letter and a word; `HandwritingView`'s
+  points match the paths; drawing allocates nothing.
+- **Emulator:** strokes drawn with `input motionevent` on a handwritten a (good, backwards,
+  without its entry, off, two fingers) and on mama (letter by letter, a lifted join);
+  screenshots of screen 8 at 2000 × 1200 and 1280 × 800 and the other sizes.
+
+#### How it serves other domains
+
+- **Digits** (numbers, later): `7-lower-print.json` and `7-lower-handwritten.json`, no entry
+  or exit (digits aren't joined): `TraceLetter` traces them unchanged; a digit drawn with or
+  without a lift (4) is the "continues" rule. A number is not joined like a word.
+- **Music, drawing:** `HandwritingView` draws any figure (a note's stem and head, a stencil).
+
+#### For the human (not blocking; asked in the next steps)
+
+1. The handwritten a's three strokes as read above, and all eight handwritten shapes (a m t p,
+   A M T P), are drafts: check them against her manual.
+2. {x} and {y} in „Bravo, ai făcut litera {x}! …” said as the letters' sounds (as tracing), not
+   their names (the brief's words), since names come later in the curriculum.
