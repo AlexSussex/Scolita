@@ -12,6 +12,8 @@
 //     --merge 12               how close (in sheet pixels) two blobs must be to count as one part
 //     --grid 4x2               the sheet is a grid of cells (columns x rows): one part per cell, empty cells skipped,
 //                              small slivers of a neighbour reaching over the cell's edge left out
+//     --pad 72                 transparent margin round the square (an icon's safe zone)
+//     --aspect 1.6             with --background: crop the picture's middle to this width / height first
 //     --background             the whole sheet is one picture (a sky): no keying, scaled to --size wide
 //
 // Raw sheets stay in local/art-inbox; only the cleaned parts are committed.
@@ -38,6 +40,22 @@ const keyOut = (p, green) => {
       else { p[i] = r - keyness; p[i + 2] = b - keyness; }
     }
     p[i + 3] = Math.round(p[i + 3] * a);
+  }
+};
+
+const shiftHues = (p, from, to, shift) => {
+  for (let i = 0; i < p.length; i += 4) {
+    const r = p[i] / 255, g = p[i + 1] / 255, b = p[i + 2] / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2, d = max - min;
+    if (d < 0.08) continue;
+    const s = d / (1 - Math.abs(2 * l - 1));
+    let h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h = (h * 60 + 360) % 360;
+    if (h < from || h > to) continue;
+    h = (h + shift + 360) % 360;
+    const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = l - c / 2;
+    const [r1, g1, b1] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+    p[i] = Math.round((r1 + m) * 255); p[i + 1] = Math.round((g1 + m) * 255); p[i + 2] = Math.round((b1 + m) * 255);
   }
 };
 
@@ -124,29 +142,35 @@ const gridParts = (p, W, H, cols, rows, merge) => {
     const sctx = src.getContext('2d', { willReadFrequently: true });
     sctx.drawImage(img, 0, 0);
     if (job.background) {
-      const h = Math.round(H * job.size / W);
+      let sx = 0, sy = 0, sw = W, sh = H;
+      if (job.aspect) {
+        if (W / H > job.aspect) { sw = Math.round(H * job.aspect); sx = Math.round((W - sw) / 2); }
+        else { sh = Math.round(W / job.aspect); sy = Math.round((H - sh) / 2); }
+      }
+      const h = Math.round(sh * job.size / sw);
       const c = document.createElement('canvas');
       c.width = job.size; c.height = h;
       const ctx = c.getContext('2d');
       ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(src, 0, 0, job.size, h);
+      ctx.drawImage(src, sx, sy, sw, sh, 0, 0, job.size, h);
       results[job.names[0] || 'background'] = c.toDataURL('image/png').split(',')[1];
       continue;
     }
     const data = sctx.getImageData(0, 0, W, H);
     keyOut(data.data, job.key === 'green');
+    if (job.recolour) shiftHues(data.data, job.recolour.from, job.recolour.to, job.recolour.shift);
     sctx.putImageData(data, 0, 0);
     const parts = job.grid ? gridParts(data.data, W, H, job.grid[0], job.grid[1], job.merge) : blobParts(data.data, W, H, job.merge);
     const largest = Math.max(...parts.map((q) => Math.max(q.w, q.h)));
     const scale = (job.size * 0.94) / largest;
     parts.forEach((q, i) => {
       const c = document.createElement('canvas');
-      c.width = job.size; c.height = job.size;
+      c.width = job.size + 2 * job.pad; c.height = job.size + 2 * job.pad;
       const ctx = c.getContext('2d');
       ctx.imageSmoothingQuality = 'high';
       const w = q.w * scale, h = q.h * scale;
-      const x = (job.size - w) / 2;
-      const y = job.align === 'bottom' ? job.size * 0.98 - h : (job.size - h) / 2;
+      const x = job.pad + (job.size - w) / 2;
+      const y = job.pad + (job.align === 'bottom' ? job.size * 0.98 - h : (job.size - h) / 2);
       ctx.drawImage(src, q.x, q.y, q.w, q.h, x, y, w, h);
       results[job.names[i] || ('part-' + (i + 1))] = c.toDataURL('image/png').split(',')[1];
     });
@@ -164,6 +188,8 @@ function parseArgs(argv) {
     else if (argv[i] === '--names') args.names = value.split(',');
     else if (argv[i] === '--merge') args.merge = Number(value);
     else if (argv[i] === '--grid') args.grid = value.split('x').map(Number);
+    else if (argv[i] === '--pad') args.pad = Number(value);
+    else if (argv[i] === '--aspect') args.aspect = Number(value);
     else if (argv[i] === '--background') {
       args.background = true;
       continue;
@@ -175,8 +201,18 @@ function parseArgs(argv) {
   return args;
 }
 
-/** Cuts one sheet and returns a map of part name → PNG bytes. Called from main and choose.mjs. */
+/** Throws if a cut's options can't be right, naming the option. */
+function checkOptions(options) {
+  if (options.key !== undefined && !['green', 'magenta'].includes(options.key)) throw new Error(`key is green or magenta, not ${options.key}.`);
+  if (options.align !== undefined && !['center', 'bottom'].includes(options.align)) throw new Error(`align is center or bottom, not ${options.align}.`);
+  const grid = options.grid;
+  if (grid && !(Array.isArray(grid) && grid.length === 2 && grid.every((n) => Number.isInteger(n) && n > 0))) throw new Error(`grid is columns x rows, not ${grid}.`);
+  if (options.size !== undefined && !(Number.isInteger(options.size) && options.size > 0)) throw new Error(`size is a whole number of pixels, not ${options.size}.`);
+}
+
+/** Cuts one sheet and returns a map of part name → PNG bytes. Called from main and import-drafts.mjs. */
 export function cutSheet(sheetPath, options) {
+  checkOptions(options);
   const job = {
     png: readFileSync(sheetPath).toString('base64'),
     key: options.key ?? 'green',
@@ -186,6 +222,9 @@ export function cutSheet(sheetPath, options) {
     merge: options.merge ?? 12,
     background: options.background ?? false,
     grid: options.grid ?? null,
+    pad: options.pad ?? 0,
+    aspect: options.aspect ?? null,
+    recolour: options.recolour ?? null,
   };
   return runInChrome(cutScript, [job]);
 }

@@ -2,7 +2,7 @@
 // a page draws each SVG on a canvas and writes the PNGs into its DOM, which Chrome prints.
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -18,6 +18,16 @@ function findChrome() {
   const found = chromeCandidates.find((p) => existsSync(p));
   if (!found) throw new Error('No Chrome or Edge found; set SCOLITA_CHROME to its chrome.exe.');
   return found;
+}
+
+/**
+ * The version of the Chrome that renders (the name of its version folder beside chrome.exe):
+ * the PNGs are the same for the same code and the same Chrome, so the tools print it.
+ */
+export function chromeVersion() {
+  const folder = dirname(findChrome());
+  const version = readdirSync(folder).find((name) => /^\d+\.\d+\.\d+\.\d+$/.test(name));
+  return version ?? 'unknown';
 }
 
 /** Puts the Baloo 2 font inside every SVG that writes text, since an SVG image can't load files. */

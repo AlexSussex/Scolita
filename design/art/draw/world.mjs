@@ -1,5 +1,8 @@
-// The world: the sky, sparkles, the rainbow path, the planets and their faces,
-// the rocket, its flame and trails, the moon and the Earth, the map's stops.
+// The world drawn by the agent: sparkles, particles, the rainbow path, the map's stops, the
+// rocket's trails, and the planets in parts (bodies, faces, rings, shadow, z z z) with the
+// rocket and its flame. The parts are kept because galaxy-map is being built on them; the
+// chosen art (ChatGPT's whole planets in Planets/ and rocket in Trip/, drafts.json) replaces
+// them there, and then they go. The sky, the moon and the Earth are ChatGPT's.
 
 import { Drawing, palette, ink, lighter, darker, sparkle, eye, happyEye, sleepyEye, cheek, label, mix } from '../lib/svg.mjs';
 
@@ -13,31 +16,6 @@ function seeded(seed) {
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-}
-
-/** The purple sky at dusk with soft star dust (2016 × 1260: 16:10, and it fits a 2048 atlas with padding). */
-export function sky() {
-  const w = 2016;
-  const h = 1260;
-  const d = new Drawing(w, h, 'sky');
-  const random = seeded(20261124);
-  let dust = '';
-  for (let i = 0; i < 170; i += 1) {
-    const x = random() * w;
-    const y = random() * h;
-    const r = 1.6 + random() * 2.4;
-    const o = 0.35 + random() * 0.45;
-    dust += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#FFFFFF" opacity="${o.toFixed(2)}"/>`;
-  }
-  for (let i = 0; i < 9; i += 1) {
-    dust += sparkle(random() * w, random() * h * 0.8, 6 + random() * 6, palette.sparkle, 0.5 + random() * 0.3);
-  }
-  const glow =
-    `<ellipse cx="${w * 0.22}" cy="${h * 0.3}" rx="${w * 0.35}" ry="${h * 0.28}" fill="${palette.purple}" opacity="0.18" filter="${d.blur(120)}"/>` +
-    `<ellipse cx="${w * 0.8}" cy="${h * 0.75}" rx="${w * 0.3}" ry="${h * 0.25}" fill="${palette.pink}" opacity="0.10" filter="${d.blur(140)}"/>`;
-  const body =
-    `<rect width="${w}" height="${h}" fill="${d.linear([[0, palette.skyTop], [1, palette.skyBottom]])}"/>` + glow + dust;
-  return d.render(body);
 }
 
 /** A four-pointed sparkle on its own, to twinkle on the sky (64 × 64). */
@@ -259,61 +237,14 @@ export function trail(kind) {
   return d.render(`<g mask="url(#${maskId})">${body}</g>`);
 }
 
-/** The moon: a friendly full moon with craters and a sleepy smile (256 × 256). */
-export function moon() {
-  const d = new Drawing(256, 256, 'moon');
-  const base = '#FFE9A8';
-  const clip = d.clip('<circle cx="128" cy="128" r="112"/>');
-  return d.render(
-    `<circle cx="128" cy="128" r="124" fill="${palette.sparkle}" opacity="0.25" filter="${d.blur(8)}"/>` +
-      `<circle cx="128" cy="128" r="112" fill="${d.shade(base, { light: 0.5, dark: 0.22 })}"/>` +
-      `<g clip-path="${clip}">` +
-      `<circle cx="176" cy="80" r="20" fill="${darker(base, 0.1)}" opacity="0.6"/>` +
-      `<circle cx="70" cy="176" r="16" fill="${darker(base, 0.1)}" opacity="0.55"/>` +
-      `<circle cx="186" cy="176" r="11" fill="${darker(base, 0.1)}" opacity="0.5"/>` +
-      `<circle cx="82" cy="84" r="9" fill="${darker(base, 0.1)}" opacity="0.45"/>` +
-      `</g>` +
-      happyEye(98, 124, 15, '#6B4A00', 6) +
-      happyEye(158, 124, 15, '#6B4A00', 6) +
-      `<path d="M 110 156 Q 128 172 146 156" stroke="#6B4A00" stroke-width="6" fill="none" stroke-linecap="round"/>` +
-      cheek(d, 80, 148, 14, 9) +
-      cheek(d, 176, 148, 14, 9) +
-      d.gloss(90, 70, 30, 16, 0.4),
-  );
-}
-
-/** The Earth, home: blue seas, green lands, white clouds, a smile (256 × 256). */
-export function earth() {
-  const d = new Drawing(256, 256, 'earth');
-  const clip = d.clip('<circle cx="128" cy="128" r="112"/>');
-  return d.render(
-    `<circle cx="128" cy="128" r="124" fill="${palette.blue}" opacity="0.3" filter="${d.blur(8)}"/>` +
-      `<circle cx="128" cy="128" r="112" fill="${d.shade(palette.blue)}"/>` +
-      `<g clip-path="${clip}">` +
-      `<path d="M 40 70 C 70 40, 110 50, 118 78 C 126 104, 96 112, 84 136 C 72 160, 40 150, 30 120 Z" fill="${d.shade(palette.green)}"/>` +
-      `<path d="M 150 40 C 186 36, 220 60, 226 96 C 200 104, 186 90, 168 96 C 150 100, 140 70, 150 40 Z" fill="${d.shade(palette.green)}"/>` +
-      `<path d="M 140 170 C 170 150, 214 160, 222 190 C 210 226, 170 236, 150 222 C 130 206, 120 184, 140 170 Z" fill="${d.shade(palette.green)}"/>` +
-      `<path d="M 20 196 Q 60 180 100 200 Q 70 212 30 206 Z" fill="#FFFFFF" opacity="0.85"/>` +
-      `<path d="M 170 120 Q 210 108 246 126 Q 214 136 176 130 Z" fill="#FFFFFF" opacity="0.85"/>` +
-      `</g>` +
-      eye(100, 126, 11, '#0C2F4D') +
-      eye(156, 126, 11, '#0C2F4D') +
-      `<path d="M 110 156 Q 128 174 146 156" stroke="#0C2F4D" stroke-width="6" fill="none" stroke-linecap="round"/>` +
-      cheek(d, 80, 150, 13, 8) +
-      cheek(d, 176, 150, 13, 8) +
-      d.gloss(88, 70, 32, 16, 0.4),
-  );
-}
-
 /** Every world sprite, by its path under Art/. */
 export function sprites() {
   const list = [
-    { path: 'Sky/sky', width: 2016, height: 1260, svg: sky() },
     { path: 'Sky/sky-sparkle', width: 64, height: 64, svg: skySparkle() },
     { path: 'Effects/particle-dot', width: 32, height: 32, svg: particleDot() },
     { path: 'Effects/particle-star', width: 64, height: 64, svg: particleStar() },
     { path: 'Map/rainbow-band', width: 128, height: 72, svg: rainbowBand() },
-    { path: 'Map/rainbow-wave', width: 2032, height: 635, svg: rainbowWave() },
+    { path: 'Path/rainbow-wave', width: 2032, height: 635, svg: rainbowWave() },
     { path: 'Map/planet-shadow', width: 384, height: 96, svg: planetShadow() },
     { path: 'Map/planet-sleepy-z', width: 128, height: 128, svg: sleepyZ() },
     { path: 'Map/stop-done', width: 64, height: 64, svg: stop('done') },
@@ -325,8 +256,6 @@ export function sprites() {
     { path: 'Map/trail-rainbow', width: 256, height: 96, svg: trail('rainbow') },
     { path: 'Map/trail-stars', width: 256, height: 96, svg: trail('stars') },
     { path: 'Map/trail-bubbles', width: 256, height: 96, svg: trail('bubbles') },
-    { path: 'Map/moon', width: 256, height: 256, svg: moon() },
-    { path: 'Map/earth', width: 256, height: 256, svg: earth() },
   ];
   for (const key of Object.keys(planetColours)) {
     list.push({ path: `Map/planet-${key}`, width: 384, height: 384, svg: planetBody(key) });

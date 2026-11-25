@@ -1,9 +1,8 @@
 // The writing board, the UI pieces (buttons with their lip, cards, tiles, the bubble, the
-// home button) and the app icon. Pieces meant to stretch are drawn for 9-slicing: their
+// home button) and the app icon's background (its foreground is ChatGPT's unicorn, drafts.json). Pieces meant to stretch are drawn for 9-slicing: their
 // border sizes are in UI_BORDERS, which the Unity importer applies.
 
 import { Drawing, palette, ink, darker, lighter } from '../lib/svg.mjs';
-import { unicorn } from './guides.mjs';
 
 /** 9-slice borders (left, bottom, right, top, in pixels) for the stretchable pieces, by path. */
 export const UI_BORDERS = {
@@ -152,22 +151,10 @@ function iconSky(d, size) {
   );
 }
 
-/** The unicorn's helmet as an image inside an icon (the chosen take's happy face). */
-function iconHelmet(x, y, size) {
-  const svg = unicorn('helmet', 'happy-idle', 384);
-  return `<image x="${x}" y="${y}" width="${size}" height="${size}" href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}"/>`;
-}
-
 /** The adaptive icon's background layer (432 × 432). */
 export function iconAdaptiveBackground() {
   const d = new Drawing(432, 432, 'iab');
   return d.render(iconSky(d, 432));
-}
-
-/** The adaptive icon's foreground layer: the helmet inside the central safe zone (432 × 432). */
-export function iconAdaptiveForeground() {
-  const d = new Drawing(432, 432, 'iaf');
-  return d.render(iconHelmet(62, 66, 308));
 }
 
 /** Every board, UI and icon sprite. */
@@ -190,6 +177,5 @@ export function sprites() {
     { path: 'UI/home-button', width: 128, height: 128, svg: homeButton() },
     ...['play', 'speaker', 'lock', 'back', 'replay', 'pencil'].map((k) => ({ path: `UI/icon-${k}`, width: 64, height: 64, svg: icon(k) })),
     { path: 'Icon/icon-adaptive-background', width: 432, height: 432, svg: iconAdaptiveBackground() },
-    { path: 'Icon/icon-adaptive-foreground', width: 432, height: 432, svg: iconAdaptiveForeground() },
   ];
 }

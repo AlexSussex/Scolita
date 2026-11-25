@@ -3,26 +3,27 @@
 //   node design/art/build.mjs                 every sprite, into game/Assets/Scolita/Art/
 //   node design/art/build.mjs Map/ Guides/    only sprites whose path starts with one of these
 //   node design/art/build.mjs --out <folder>  write somewhere else (for candidates and reviews)
-//   node design/art/choose.mjs <folder>       the choosing page (keep it in local/)
+//   node design/art/import-drafts.mjs           the parts cut from the human's ChatGPT sheets (drafts.json)
 //
 // Needs Node 18+ and Chrome (or Edge) on the PC; SCOLITA_CHROME overrides where Chrome is.
-// The output is deterministic: the same code gives the same PNGs.
+// The same code and the same Chrome give the same PNGs (a Chrome update may change a few pixels;
+// the version is printed).
 
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFont, renderAll, writeFile } from './lib/render.mjs';
+import { chromeVersion, readFont, renderAll, writeFile } from './lib/render.mjs';
 import * as world from './draw/world.mjs';
 import * as guides from './draw/guides.mjs';
 import * as badges from './draw/badges.mjs';
 import * as avatars from './draw/avatars.mjs';
 import * as ui from './draw/ui.mjs';
-import * as stickers from './draw/stickers.mjs';
+import * as constellations from './draw/constellations.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repo = resolve(here, '..', '..');
 const fontPath = join(repo, 'game', 'Assets', 'ThirdParty', 'Baloo2', 'Baloo2-Variable.ttf');
 
-const modules = [world, guides, badges, avatars, ui, stickers];
+const modules = [world, guides, badges, avatars, ui, constellations];
 
 /** The 9-slice borders the Unity importer applies (Scolita.Editor.Art.ArtTextureImporter), as JSON. */
 function spriteBorders() {
@@ -61,7 +62,7 @@ async function main() {
   );
   for (const s of chosen) writeFile(join(out, `${s.path}.png`), pngs.get(s.path));
   writeFile(join(out, 'sprite-borders.json'), Buffer.from(spriteBorders(), 'utf8'));
-  console.log(`Drew ${chosen.length} sprites into ${out}.`);
+  console.log(`Drew ${chosen.length} sprites into ${out} (Chrome ${chromeVersion()}).`);
 }
 
 main().catch((e) => {

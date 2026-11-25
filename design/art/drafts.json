@@ -1,0 +1,312 @@
+{
+  "about": "The parts of the art that come from the human's ChatGPT sheets (chosen 2026-11-25, local/look/answers.txt). import-drafts.mjs cuts them from the sheets in local/art-inbox into game/Assets/Scolita/Art/ (and the word pictures into content/pictures/, as the pictures' art). The raw sheets stay in local/; only these cleaned parts are committed. A part listed as null is cut but not used.",
+  "sheets": [
+    {
+      "file": "Purple cat astronaut pose sprite sheet.png",
+      "cut": {
+        "grid": "4x2",
+        "align": "bottom",
+        "size": 384
+      },
+      "parts": {
+        "happy": "Guides/guide-cat/happy-idle",
+        "talking": "Guides/guide-cat/happy-talk",
+        "cheering": "Guides/guide-cat/cheering-0",
+        "curious": "Guides/guide-cat/thinking-idle",
+        "waving": "Guides/guide-cat/cheering-1",
+        "giggling": "Guides/guide-cat/thinking-talk",
+        "sleepy": "Guides/guide-cat/sleepy-0",
+        "blink": "Guides/guide-cat/happy-blink"
+      },
+      "copies": {
+        "Guides/guide-cat/sleepy-1": "sleepy"
+      }
+    },
+    {
+      "file": "unicorn-astronaut-sheet-01.png",
+      "cut": {
+        "grid": "4x2",
+        "align": "center",
+        "size": 288,
+        "pad": 72
+      },
+      "parts": {
+        "happy": "Icon/icon-adaptive-foreground",
+        "talking": null,
+        "talking 2": null,
+        "cheering": null,
+        "thinking": null,
+        "pointing": null,
+        "sleepy": null,
+        "blink": null
+      }
+    },
+    {
+      "file": "Six playful rocket adventure sprites.png",
+      "cut": {
+        "grid": "3x2",
+        "align": "bottom",
+        "size": 384
+      },
+      "parts": {
+        "standing": "Trip/rocket-standing",
+        "flying": "Trip/rocket-flying",
+        "flying fast": "Trip/rocket-flying-fast",
+        "landing": "Trip/rocket-landing",
+        "friends": "Trip/rocket-friends",
+        "asleep": "Trip/rocket-asleep"
+      }
+    },
+    {
+      "file": "Three golden planets, three moods.png",
+      "cut": {
+        "grid": "3x1",
+        "size": 384
+      },
+      "parts": {
+        "beaming": "Planets/planet-gold-beaming",
+        "awake": "Planets/planet-gold-awake",
+        "sleepy": "Planets/planet-gold-sleepy"
+      }
+    },
+    {
+      "file": "Kawaii pink planet trio.png",
+      "cut": {
+        "grid": "3x1",
+        "size": 384
+      },
+      "parts": {
+        "beaming": "Planets/planet-pink-beaming",
+        "awake": "Planets/planet-pink-awake",
+        "sleepy": "Planets/planet-pink-sleepy"
+      }
+    },
+    {
+      "file": "Three Friendly Green Planet Expressions.png",
+      "cut": {
+        "grid": "3x1",
+        "key": "magenta",
+        "size": 384
+      },
+      "parts": {
+        "beaming": "Planets/planet-green-beaming",
+        "awake": "Planets/planet-green-awake",
+        "sleepy": "Planets/planet-green-sleepy"
+      }
+    },
+    {
+      "file": "Three Magical Purple Planets.png",
+      "cut": {
+        "grid": "3x1",
+        "size": 384
+      },
+      "parts": {
+        "beaming": "Planets/planet-purple-beaming",
+        "awake": "Planets/planet-purple-awake",
+        "sleepy": "Planets/planet-purple-sleepy"
+      }
+    },
+    {
+      "file": "Three Magical Purple Planets.png",
+      "cut": {
+        "grid": "3x1",
+        "size": 384,
+        "recolour": {
+          "from": 235,
+          "to": 300,
+          "shift": -50
+        }
+      },
+      "parts": {
+        "beaming": "Planets/planet-blue-beaming",
+        "awake": "Planets/planet-blue-awake",
+        "sleepy": "Planets/planet-blue-sleepy"
+      }
+    },
+    {
+      "file": "Moon, Earth, and Rainbow Comet Sprites-2.png",
+      "cut": {
+        "grid": "2x2",
+        "size": 256
+      },
+      "parts": {
+        "moon": "Map/moon",
+        "crescent": "Trip/moon-crescent",
+        "earth": "Map/earth",
+        "comet": "Trip/comet"
+      }
+    },
+    {
+      "file": "Dreamy purple starfield-1.png",
+      "cut": {
+        "background": true,
+        "aspect": 1.6,
+        "size": 2016
+      },
+      "parts": {
+        "sky": "Sky/sky"
+      }
+    },
+    {
+      "file": "Kawaii Eight-Avatar Badge Sprite Sheet.png",
+      "cut": {
+        "grid": "4x2",
+        "size": 320
+      },
+      "parts": {
+        "cat": null,
+        "unicorn": "Avatars/avatar-unicorn",
+        "rocket": "Avatars/avatar-rocket",
+        "star": "Avatars/avatar-star",
+        "moon": "Avatars/avatar-moon",
+        "planet": "Avatars/avatar-planet",
+        "whale": "Avatars/avatar-whale",
+        "guitar": "Avatars/avatar-guitar"
+      }
+    },
+    {
+      "file": "Pastel pals_ bike, rainbow, fox, owl, puppy.png",
+      "cut": {
+        "size": 320
+      },
+      "parts": {
+        "bicycle": null,
+        "rainbow": "Avatars/avatar-rainbow",
+        "fox": "Avatars/avatar-fox",
+        "owl": "Avatars/avatar-owl",
+        "puppy": "Avatars/avatar-dog"
+      }
+    },
+    {
+      "file": "Lavender bicycle badge with flower basket.png",
+      "cut": {
+        "size": 320
+      },
+      "parts": {
+        "bicycle": "Avatars/avatar-bicycle"
+      }
+    },
+    {
+      "file": "Whimsical rainbow sticker sheet.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 320
+      },
+      "parts": {
+        "rainbow": "Stickers/sticker-rainbow",
+        "unicorn": "Stickers/sticker-unicorn",
+        "guitar": "Stickers/sticker-guitar",
+        "bicycle": "Stickers/sticker-bicycle",
+        "palette": "Stickers/sticker-palette",
+        "moon-star": "Stickers/sticker-moon-star",
+        "helmet-heart": "Stickers/sticker-helmet-heart",
+        "whale-rainbow": "Stickers/sticker-whale-rainbow",
+        "tambourine": "Stickers/sticker-tambourine"
+      }
+    },
+    {
+      "file": "Cheerful school-themed sticker sheet.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 320
+      },
+      "parts": {
+        "violin": "Stickers/sticker-violin",
+        "telescope": "Stickers/sticker-telescope",
+        "comet": "Stickers/sticker-comet",
+        "rocket-heart": "Stickers/sticker-rocket-heart",
+        "earth": "Stickers/sticker-earth",
+        "xylophone": "Stickers/sticker-xylophone",
+        "sunflower": "Stickers/sticker-sunflower",
+        "star-kite": "Stickers/sticker-star-kite",
+        "dino-astronaut": "Stickers/sticker-dino-astronaut"
+      }
+    },
+    {
+      "file": "Nine cheerful learning picture cards.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 384
+      },
+      "parts": {
+        "mother": "content/pictures/mother",
+        "father": "content/pictures/father",
+        "bed": "content/pictures/bed",
+        "water": "content/pictures/water",
+        "map": "content/pictures/map",
+        "mat": "content/pictures/mat",
+        "tap": "content/pictures/tap",
+        "pin": "content/pictures/pin",
+        "man": "content/pictures/man"
+      }
+    },
+    {
+      "file": "Kawaii nine-picture learning sheet.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 384
+      },
+      "parts": {
+        "nose": "content/pictures/nose",
+        "table": "content/pictures/table",
+        "piano": "content/pictures/piano",
+        "village": "content/pictures/village",
+        "tin-can": "content/pictures/tin-can",
+        "sitting": "content/pictures/sitting",
+        "tooth": "content/pictures/tooth",
+        "star": "content/pictures/star",
+        "panda": "content/pictures/panda"
+      }
+    },
+    {
+      "file": "Cheerful nine-picture sheet on magenta.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 384,
+        "key": "magenta"
+      },
+      "parts": {
+        "fruit-tree": "content/pictures/fruit-tree",
+        "bridge": "content/pictures/bridge",
+        "pea-pod": "content/pictures/pea-pod",
+        "pine-tree": "content/pictures/pine-tree",
+        "pen": "content/pictures/pen",
+        "mop": "content/pictures/mop",
+        "dot": "content/pictures/dot",
+        "pony": "content/pictures/pony",
+        "ten": "content/pictures/ten"
+      }
+    },
+    {
+      "file": "Cheerful 3x3 picture cards.png",
+      "cut": {
+        "grid": "3x3",
+        "size": 384
+      },
+      "parts": {
+        "pug": "content/pictures/pug",
+        "kitten": "content/pictures/kitten",
+        "python": "content/pictures/python",
+        "stop-sign": "content/pictures/stop-sign",
+        "tennis": "content/pictures/tennis",
+        "domino": "content/pictures/domino",
+        "skates": "content/pictures/skates",
+        "music-note": "content/pictures/music-note",
+        "knot": "content/pictures/knot"
+      }
+    }
+  ],
+  "avatarDiscs": [
+    {
+      "out": "Avatars/avatar-cat",
+      "from": "Guides/guide-cat/happy-idle",
+      "colour": "#E7DCFF"
+    }
+  ],
+  "reused": {
+    "content/pictures/rocket": "Trip/rocket-standing",
+    "content/pictures/planet": "Planets/planet-purple-awake",
+    "content/pictures/moon": "Trip/moon-crescent",
+    "content/pictures/sleeping-moon": "Map/moon"
+  }
+}

@@ -1,6 +1,6 @@
-// The guides: the unicorn astronaut (decision D5) in three takes to choose from, and the
-// co-pilot, her purple cat with black spots and a pink scarf. Each guide has four moods
-// (happy, cheering, thinking, sleepy), a few frames each, so a guide is art only.
+// The guide: the unicorn astronaut (decision D5), take C (the round one), the stand-in until
+// the chosen art arrives (ChatGPT's unicorn with a full astronaut body). Every guide has four
+// moods (happy, cheering, thinking, sleepy), a few frames each, so a guide is art only.
 
 import { Drawing, palette, ink, lighter, darker, sparkle, cheek, label, roundStar } from '../lib/svg.mjs';
 
@@ -16,12 +16,6 @@ export const frames = [
   { id: 'sleepy-0', mood: 'sleepy', eyes: 'sleepy', mouth: 'small', arms: 'down', z: 0 },
   { id: 'sleepy-1', mood: 'sleepy', eyes: 'sleepy', mouth: 'yawn', arms: 'down', z: 1 },
 ];
-
-export const unicornTakes = {
-  helmet: 'A: the helmet (the design canvas): the head in a round glass helmet, a collar',
-  suit: 'B: the whole astronaut: the helmet on a little white and lilac spacesuit',
-  round: 'C: the round one: a chubby round suit with the face in its window',
-};
 
 const face = '#FFF8F2';
 const snoutPink = '#FFE3EC';
@@ -99,26 +93,6 @@ function unicornHead(d, f) {
   );
 }
 
-/** The round glass helmet over a head in the 120 space: glass, rim and reflection. */
-function helmetGlass(d) {
-  return (
-    `<circle cx="60" cy="62" r="50" fill="${d.radial([[0, '#FFFFFF', 0.05], [0.75, '#DDF1FF', 0.25], [1, '#BFE3FF', 0.55]], { cx: '40%', cy: '35%', r: '60%' })}"/>` +
-    `<circle cx="60" cy="62" r="50" fill="none" stroke="#FFFFFF" stroke-width="3.2" opacity="0.95"/>` +
-    `<circle cx="60" cy="62" r="47" fill="none" stroke="#BFE3FF" stroke-width="1.4" opacity="0.6"/>` +
-    `<path d="M 26 40 Q 34 22 54 16" stroke="#FFFFFF" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.85"/>` +
-    `<path d="M 22 54 Q 22 50 24 46" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>` +
-    `<ellipse cx="60" cy="12.5" rx="9" ry="3.2" fill="${d.shade(collar, { light: 0.4 })}" stroke="${darker(collar, 0.2)}" stroke-width="1"/>`
-  );
-}
-
-/** The helmet's collar with a purple star, in the 120 space. */
-function helmetCollar(d) {
-  return (
-    `<path d="M 22 100 Q 60 118 98 100 L 94 112 Q 60 126 26 112 Z" fill="${d.shade(collar, { light: 0.45, dark: 0.18 })}" stroke="${darker(collar, 0.22)}" stroke-width="1.2" stroke-linejoin="round"/>` +
-    roundStar(60, 113, 5.5, palette.purple, { strokeWidth: 1.4 })
-  );
-}
-
 /** A white glove (a round hoof in a glove) at (x, y), radius r. */
 function glove(d, x, y, r) {
   return `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 0.9}" fill="${d.shade(suitWhite, { light: 0.5, dark: 0.16 })}" stroke="${darker(suitWhite, 0.2)}" stroke-width="${r * 0.12}"/>`;
@@ -150,74 +124,7 @@ function extras(d, f, box) {
   return s;
 }
 
-/** Take A: the head in its helmet with the collar (as on the design canvas). */
-function unicornHelmet(f, size = 384) {
-  const d = new Drawing(size, size, `uA${f.id}`);
-  const k = size / 132;
-  let arms = '';
-  if (f.arms === 'chin') arms = glove(d, 44, 98, 9);
-  if (f.arms === 'up' || f.arms === 'up-high') {
-    const y = f.arms === 'up' ? 92 : 84;
-    arms = glove(d, 12, y, 8.5) + glove(d, 108, y, 8.5);
-  }
-  if (f.arms === 'wave') arms = glove(d, 109, 88, 8.5);
-  const body =
-    `<g transform="translate(${6 * k} ${4 * k}) scale(${k})">` +
-    d.groundShadow(62, 124, 38, 4, 0.18) +
-    helmetCollar(d) +
-    unicornHead(d, f) +
-    helmetGlass(d) +
-    `<path d="M 60 4 L 54.5 14 L 65.5 14 Z" fill="${d.shade(palette.yellow, { light: 0.5 })}" stroke="#E0A800" stroke-width="1.2" stroke-linejoin="round"/>` +
-    arms +
-    `</g>` +
-    extras(d, f, size);
-  return d.render(body);
-}
-
-/** The spacesuit body for take B, in a 120 × 150 space under a 120 head; arms by pose. */
-function suitBody(d, f) {
-  const arm = (x1, y1, x2, y2) =>
-    `<path d="M ${x1} ${y1} L ${x2} ${y2}" stroke="${darker(suitWhite, 0.2)}" stroke-width="17" stroke-linecap="round"/>` +
-    `<path d="M ${x1} ${y1} L ${x2} ${y2}" stroke="${suitWhite}" stroke-width="14" stroke-linecap="round"/>` +
-    glove(d, x2, y2, 9);
-  let arms;
-  if (f.arms === 'up') arms = arm(36, 120, 18, 98) + arm(84, 120, 102, 98);
-  else if (f.arms === 'up-high') arms = arm(36, 120, 22, 88) + arm(84, 120, 98, 88);
-  else if (f.arms === 'chin') arms = arm(36, 122, 24, 146) + arm(84, 122, 70, 104);
-  else if (f.arms === 'wave') arms = arm(36, 122, 24, 146) + arm(84, 120, 104, 100);
-  else arms = arm(36, 122, 26, 148) + arm(84, 122, 94, 148);
-  return (
-    `<path d="M 20 132 C 2 128, 0 150, 14 156" stroke="${palette.pink}" stroke-width="7" fill="none" stroke-linecap="round"/>` +
-    `<path d="M 22 138 C 8 138, 8 156, 20 160" stroke="${palette.purple}" stroke-width="7" fill="none" stroke-linecap="round"/>` +
-    `<rect x="30" y="108" width="60" height="44" rx="14" fill="${d.shade(suitLilac, { dark: 0.2 })}"/>` +
-    `<path d="M 34 110 C 30 130, 32 150, 40 160 L 80 160 C 88 150, 90 130, 86 110 Z" fill="${d.shade(suitWhite, { light: 0.5, dark: 0.16 })}" stroke="${darker(suitWhite, 0.18)}" stroke-width="1.4"/>` +
-    `<rect x="48" y="124" width="24" height="18" rx="6" fill="${d.shade(suitLilac)}"/>` +
-    roundStar(60, 133, 6, palette.yellow, { strokeWidth: 1.6 }) +
-    `<rect x="38" y="156" width="18" height="12" rx="6" fill="${d.shade(palette.purple)}"/>` +
-    `<rect x="64" y="156" width="18" height="12" rx="6" fill="${d.shade(palette.purple)}"/>` +
-    arms
-  );
-}
-
-/** Take B: the whole astronaut, the helmet on a little suit. */
-function unicornSuit(f, size = 384) {
-  const d = new Drawing(size, size, `uB${f.id}`);
-  const k = size / 178;
-  const body =
-    `<g transform="translate(${28 * k} ${2 * k}) scale(${k})">` +
-    d.groundShadow(62, 170, 34, 4, 0.18) +
-    suitBody(d, f) +
-    `<g transform="translate(6 2) scale(0.9)">` +
-    helmetCollar(d) +
-    unicornHead(d, f) +
-    helmetGlass(d) +
-    `<path d="M 60 4 L 54.5 14 L 65.5 14 Z" fill="${d.shade(palette.yellow, { light: 0.5 })}" stroke="#E0A800" stroke-width="1.2" stroke-linejoin="round"/>` +
-    `</g></g>` +
-    extras(d, f, size);
-  return d.render(body);
-}
-
-/** Take C: the round one, a chubby round suit with the face in its big window. */
+/** The round one: a chubby round suit with the face in its big window. */
 function unicornRound(f, size = 384) {
   const d = new Drawing(size, size, `uC${f.id}`);
   const k = size / 140;
@@ -251,94 +158,16 @@ function unicornRound(f, size = 384) {
   return d.render(body);
 }
 
-const catPurple = '#9B6CFF';
-
-/** The co-pilot: her purple cat with black spots and a pink scarf, sitting (a 120 × 120 space). */
-function catFigure(d, f) {
-  const spot = (x, y, r) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 0.8}" fill="${ink}" opacity="0.92"/>`;
-  let paws = `<ellipse cx="48" cy="112" rx="9" ry="6" fill="${d.shade(catPurple)}"/><ellipse cx="72" cy="112" rx="9" ry="6" fill="${d.shade(catPurple)}"/>`;
-  if (f.arms === 'up' || f.arms === 'up-high') {
-    const y = f.arms === 'up' ? 72 : 64;
-    paws += `<ellipse cx="22" cy="${y}" rx="8" ry="7" fill="${d.shade(catPurple)}"/><ellipse cx="98" cy="${y}" rx="8" ry="7" fill="${d.shade(catPurple)}"/>`;
-  } else if (f.arms === 'wave') {
-    paws += `<ellipse cx="98" cy="66" rx="8" ry="7" fill="${d.shade(catPurple)}"/>`;
-  } else if (f.arms === 'chin') {
-    paws += `<ellipse cx="50" cy="74" rx="8" ry="7" fill="${d.shade(catPurple)}"/>`;
-  }
-  const catMouth =
-    f.mouth === 'talk' || f.mouth === 'open-smile' || f.mouth === 'yawn'
-      ? `<ellipse cx="60" cy="66" rx="4.5" ry="${f.mouth === 'yawn' ? 5 : 3.8}" fill="#7A2848"/>`
-      : `<path d="M 54 64 q 3 3 6 0 q 3 3 6 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-  let catEyes;
-  if (f.eyes === 'open' || f.eyes === 'up') {
-    const dx = f.eyes === 'up' ? 1.2 : 0;
-    const dy = f.eyes === 'up' ? -1.6 : 0;
-    catEyes = [48, 72]
-      .map((x) => `<ellipse cx="${x}" cy="52" rx="7" ry="7.5" fill="#FFFFFF"/><ellipse cx="${x + dx}" cy="${53 + dy}" rx="4.4" ry="4.8" fill="${ink}"/><circle cx="${x + dx + 1.6}" cy="${51 + dy}" r="1.6" fill="#FFFFFF"/>`)
-      .join('');
-  } else if (f.eyes === 'happy') {
-    catEyes = [48, 72].map((x) => `<path d="M ${x - 6} 54 Q ${x} 45 ${x + 6} 54" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`).join('');
-  } else {
-    catEyes = [48, 72].map((x) => `<path d="M ${x - 6} 52 Q ${x} 58 ${x + 6} 52" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`).join('');
-  }
-  return (
-    `<path d="M 86 104 C 112 102, 112 74, 100 68" stroke="${darker(catPurple, 0.2)}" stroke-width="10" fill="none" stroke-linecap="round"/>` +
-    `<path d="M 86 104 C 110 102, 110 76, 100 68" stroke="${catPurple}" stroke-width="8" fill="none" stroke-linecap="round"/>` +
-    `<circle cx="106" cy="86" r="2.6" fill="${ink}"/>` +
-    `<ellipse cx="60" cy="96" rx="27" ry="21" fill="${d.shade(catPurple)}"/>` +
-    spot(46, 98, 4) +
-    spot(74, 92, 3.5) +
-    spot(64, 108, 3) +
-    `<path d="M 30 38 L 33 12 L 51 28 Z" fill="${d.shade(catPurple)}"/><path d="M 90 38 L 87 12 L 69 28 Z" fill="${d.shade(catPurple, { cx: '20%' })}"/>` +
-    `<path d="M 35 33 L 37 20 L 46 29 Z" fill="#FFB3D1"/><path d="M 85 33 L 83 20 L 74 29 Z" fill="#FFB3D1"/>` +
-    `<ellipse cx="60" cy="54" rx="33" ry="28" fill="${d.shade(catPurple)}"/>` +
-    spot(36, 44, 4) +
-    spot(80, 40, 3.5) +
-    spot(86, 60, 4) +
-    spot(32, 62, 3) +
-    catEyes +
-    `<path d="M 57 59 L 63 59 L 60 62.5 Z" fill="${palette.pink}"/>` +
-    catMouth +
-    `<path d="M 40 62 L 26 59 M 40 65 L 26 67 M 80 62 L 94 59 M 80 65 L 94 67" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>` +
-    cheek(d, 40, 64, 4.5, 2.8) +
-    cheek(d, 80, 64, 4.5, 2.8) +
-    `<path d="M 34 76 Q 60 88 86 76 L 87 84 Q 60 96 33 84 Z" fill="${d.shade(palette.pink, { light: 0.45 })}"/>` +
-    `<path d="M 74 84 L 80 104 L 90 98 Z" fill="${d.shade(palette.pink, { light: 0.45 })}"/>` +
-    paws
-  );
+/** The unicorn in one frame. Called by sprites. */
+function unicorn(frameId, size = 384) {
+  return unicornRound(frames.find((x) => x.id === frameId), size);
 }
 
-/** The co-pilot cat in one frame. */
-function cat(f, size = 384) {
-  const d = new Drawing(size, size, `cat${f.id}`);
-  const k = size / 128;
-  const body =
-    `<g transform="translate(${4 * k} ${6 * k}) scale(${k})">` + d.groundShadow(60, 118, 34, 4, 0.18) + catFigure(d, f) + `</g>` + extras(d, f, size);
-  return d.render(body);
-}
-
-const takeDrawers = { helmet: unicornHelmet, suit: unicornSuit, round: unicornRound };
-
-/** The unicorn in one take and one frame (for the choosing page and the chosen take's sprites). */
-export function unicorn(take, frameId, size = 384) {
-  const f = frames.find((x) => x.id === frameId);
-  return takeDrawers[take](f, size);
-}
-
-/** The co-pilot cat in one frame. */
-export function catFrame(frameId, size = 384) {
-  return cat(frames.find((x) => x.id === frameId), size);
-}
-
-/** The chosen take (decision D5, the canvas's helmet until she chooses on the candidates page). */
-export const chosenTake = 'helmet';
-
-/** Every guide sprite: Guides/<guide-id>/<frame>.png, 384 × 384. */
+/**
+ * The guide's sprites: Guides/guide-unicorn/<frame>.png, 384 × 384. This is take C, the stand-in
+ * until the human's art for ChatGPT's unicorn with a full body arrives (local/art-prompts); the
+ * co-pilot cat is ChatGPT's (drafts.json).
+ */
 export function sprites() {
-  const list = [];
-  for (const f of frames) {
-    list.push({ path: `Guides/guide-unicorn/${f.id}`, width: 384, height: 384, svg: unicorn(chosenTake, f.id) });
-    list.push({ path: `Guides/guide-cat/${f.id}`, width: 384, height: 384, svg: catFrame(f.id) });
-  }
-  return list;
+  return frames.map((f) => ({ path: `Guides/guide-unicorn/${f.id}`, width: 384, height: 384, svg: unicorn(f.id) }));
 }
