@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125147c52ebf6354c938a1c8805d431a, type: 3}
+  m_Name: ConstellationCatalog
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.ConstellationCatalog
+  items:
+  - {fileID: 11400000, guid: 1aecff0a407483742a19dc9bacdcdf24, type: 2}
+  - {fileID: 11400000, guid: 9c2c110eda157c142a5395955cba175a, type: 2}
+  - {fileID: 11400000, guid: 82986a768143d044aa49410bb10e8d36, type: 2}

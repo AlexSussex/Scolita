@@ -6,6 +6,7 @@ using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Csv;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Rewards;
 using Scolita.Core.Tracing;
 using UnityEditor;
 using UnityEngine;
@@ -29,19 +30,21 @@ namespace Scolita.Editor.ContentImport
         private readonly ContentAssetPaths paths;
         private readonly ContentProblems problems;
         private readonly Curriculum curriculum;
+        private readonly RewardContent rewards;
         private readonly ReleasedIdLedger ledger;
         private readonly IReadOnlyList<PlannedImage> images;
         private readonly IReadOnlyList<PlannedClip> clips;
         private readonly string filledVoiceLines;
 
         private ContentImportPlan(ContentFolder source, ContentAssetPaths paths, ContentProblems problems,
-            Curriculum curriculum, ReleasedIdLedger ledger, IReadOnlyList<PlannedImage> images,
+            Curriculum curriculum, RewardContent rewards, ReleasedIdLedger ledger, IReadOnlyList<PlannedImage> images,
             IReadOnlyList<PlannedClip> clips, string filledVoiceLines)
         {
             this.source = source;
             this.paths = paths;
             this.problems = problems;
             this.curriculum = curriculum;
+            this.rewards = rewards;
             this.ledger = ledger;
             this.images = images;
             this.clips = clips;
@@ -56,6 +59,9 @@ namespace Scolita.Editor.ContentImport
 
         /// <summary>The content read from the CSVs; called by <see cref="ReleasedIdsRecorder"/>.</summary>
         public Curriculum Curriculum => curriculum;
+
+        /// <summary>The rewards read from the CSVs; called by <see cref="ReleasedIdsRecorder"/>.</summary>
+        public RewardContent Rewards => rewards;
 
         /// <summary>The ledger of released ids read from the content folder; called by <see cref="ReleasedIdsRecorder"/>.</summary>
         public ReleasedIdLedger Ledger => ledger;
@@ -79,24 +85,27 @@ namespace Scolita.Editor.ContentImport
 
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             ContentRules.Check(curriculum, source, problems);
+            RewardContent rewards = RewardTables.Read(csvs, problems);
+            RewardContentRules.Check(rewards, curriculum, problems);
+            CheckRewardArt(rewards, problems);
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse(source.ReleasedIdsText(problems), problems);
             if (problems.HasErrors)
             {
-                return new ContentImportPlan(source, paths, problems, curriculum, ledger, new PlannedImage[0],
+                return new ContentImportPlan(source, paths, problems, curriculum, rewards, ledger, new PlannedImage[0],
                     new PlannedClip[0], null);
             }
 
-            ledger.CheckNoneDeleted(curriculum, problems);
+            ledger.CheckNoneDeleted(curriculum, rewards, problems);
             if (!problems.HasErrors)
             {
-                CheckNothingDeleted(curriculum, paths, problems);
+                CheckNothingDeleted(curriculum, rewards, paths, problems);
             }
 
-            CheckAssetTypes(curriculum, paths, problems);
+            CheckAssetTypes(curriculum, rewards, paths, problems);
             bool good = !problems.HasErrors;
             IReadOnlyList<PlannedImage> images = good ? PlanImages(source, paths, curriculum) : new PlannedImage[0];
             IReadOnlyList<PlannedClip> clips = good ? PlanClips(source, paths, curriculum) : new PlannedClip[0];
-            return new ContentImportPlan(source, paths, problems, curriculum, ledger, images, clips, filledVoiceLines);
+            return new ContentImportPlan(source, paths, problems, curriculum, rewards, ledger, images, clips, filledVoiceLines);
         }
 
         /// <summary>
@@ -260,6 +269,27 @@ namespace Scolita.Editor.ContentImport
                 planned.Add(new PlannedAsset(paths.Lesson(lesson.Id.Value), asset));
             }
 
+            foreach (Sticker sticker in rewards.Stickers.All)
+            {
+                StickerAsset asset = New<StickerAsset>(sticker.Id);
+                asset.Fill(sticker, Load<Sprite>(ContentAssetPaths.StickerArt(sticker.Id.Value)));
+                planned.Add(new PlannedAsset(paths.Sticker(sticker.Id.Value), asset));
+            }
+
+            foreach (Constellation constellation in rewards.Constellations.All)
+            {
+                ConstellationAsset asset = New<ConstellationAsset>(constellation.Id);
+                asset.Fill(constellation);
+                planned.Add(new PlannedAsset(paths.Constellation(constellation.Id.Value), asset));
+            }
+
+            foreach (Trail trail in rewards.Trails.All)
+            {
+                TrailAsset asset = New<TrailAsset>(trail.Id);
+                asset.Fill(trail, Load<Sprite>(ContentAssetPaths.TrailArt(trail.Id.Value)));
+                planned.Add(new PlannedAsset(paths.Trail(trail.Id.Value), asset));
+            }
+
             return planned;
         }
 
@@ -298,7 +328,11 @@ namespace Scolita.Editor.ContentImport
                 Catalog<PictureCatalog, PictureAsset>(curriculum.Pictures.All.Select(picture => paths.Picture(picture.Id.Value))),
                 Catalog<VoiceLineCatalog, VoiceLineAsset>(curriculum.VoiceLines.All.Select(line => paths.VoiceLine(line.Id.Value))),
                 Catalog<DomainCatalog, DomainAsset>(curriculum.Domains.Select(domain => paths.Domain(domain.Id.Value))),
-                Catalog<LetterShapeCatalog, LetterShapeAsset>(curriculum.Shapes.All.Select(shape => paths.Shape(shape.Id.Value)))
+                Catalog<LetterShapeCatalog, LetterShapeAsset>(curriculum.Shapes.All.Select(shape => paths.Shape(shape.Id.Value))),
+                Catalog<StickerCatalog, StickerAsset>(rewards.Stickers.All.Select(sticker => paths.Sticker(sticker.Id.Value))),
+                Catalog<ConstellationCatalog, ConstellationAsset>(
+                    rewards.Constellations.All.Select(constellation => paths.Constellation(constellation.Id.Value))),
+                Catalog<TrailCatalog, TrailAsset>(rewards.Trails.All.Select(trail => paths.Trail(trail.Id.Value)))
             };
         }
 
@@ -324,9 +358,33 @@ namespace Scolita.Editor.ContentImport
             return AssetDatabase.LoadAssetAtPath<TAsset>(path);
         }
 
-        private static void CheckNothingDeleted(Curriculum curriculum, ContentAssetPaths paths, ContentProblems problems)
+        private static void CheckRewardArt(RewardContent rewards, ContentProblems problems)
         {
-            HashSet<string> planned = new HashSet<string>(PlannedPaths(curriculum, paths));
+            foreach (Sticker sticker in rewards.Stickers.All.Where(sticker => !sticker.Retired))
+            {
+                string art = ContentAssetPaths.StickerArt(sticker.Id.Value);
+                if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
+                {
+                    problems.Error(sticker.Source, "the sticker " + sticker.Id + " has no picture: " + art
+                        + " is missing (or not a sprite).");
+                }
+            }
+
+            foreach (Trail trail in rewards.Trails.All.Where(trail => !trail.Retired))
+            {
+                string art = ContentAssetPaths.TrailArt(trail.Id.Value);
+                if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
+                {
+                    problems.Error(trail.Source, "the trail " + trail.Id + " has no picture: " + art
+                        + " is missing (or not a sprite).");
+                }
+            }
+        }
+
+        private static void CheckNothingDeleted(Curriculum curriculum, RewardContent rewards, ContentAssetPaths paths,
+            ContentProblems problems)
+        {
+            HashSet<string> planned = new HashSet<string>(PlannedPaths(curriculum, rewards, paths));
             foreach (string folder in paths.OwnedFolders.Where(folder => folder != paths.ShapeFolder))
             {
                 string fullFolder = FullPath(folder);
@@ -346,9 +404,10 @@ namespace Scolita.Editor.ContentImport
             }
         }
 
-        private static void CheckAssetTypes(Curriculum curriculum, ContentAssetPaths paths, ContentProblems problems)
+        private static void CheckAssetTypes(Curriculum curriculum, RewardContent rewards, ContentAssetPaths paths,
+            ContentProblems problems)
         {
-            foreach (KeyValuePair<string, Type> planned in PlannedAssetTypes(curriculum, paths))
+            foreach (KeyValuePair<string, Type> planned in PlannedAssetTypes(curriculum, rewards, paths))
             {
                 Type existing = AssetDatabase.GetMainAssetTypeAtPath(planned.Key);
                 if (existing != null && existing != planned.Value)
@@ -360,7 +419,7 @@ namespace Scolita.Editor.ContentImport
         }
 
         private static IEnumerable<KeyValuePair<string, Type>> PlannedAssetTypes(Curriculum curriculum,
-            ContentAssetPaths paths)
+            RewardContent rewards, ContentAssetPaths paths)
         {
             return curriculum.Letters.All.Select(letter => Typed<LetterAsset>(paths.Letter(letter.Id.Value)))
                 .Concat(curriculum.Words.All.Select(word => Typed<WordAsset>(paths.Word(word.Id.Value))))
@@ -370,12 +429,19 @@ namespace Scolita.Editor.ContentImport
                 .Concat(curriculum.AllLessons.Select(lesson => Typed<LessonAsset>(paths.Lesson(lesson.Id.Value))))
                 .Concat(curriculum.Domains.SelectMany(domain => domain.Units).Select(unit => Typed<UnitAsset>(paths.Unit(unit.Id.Value))))
                 .Concat(curriculum.Domains.Select(domain => Typed<DomainAsset>(paths.Domain(domain.Id.Value))))
+                .Concat(rewards.Stickers.All.Select(sticker => Typed<StickerAsset>(paths.Sticker(sticker.Id.Value))))
+                .Concat(rewards.Constellations.All.Select(constellation =>
+                    Typed<ConstellationAsset>(paths.Constellation(constellation.Id.Value))))
+                .Concat(rewards.Trails.All.Select(trail => Typed<TrailAsset>(paths.Trail(trail.Id.Value))))
                 .Append(Typed<LetterCatalog>(paths.Catalog(nameof(LetterCatalog))))
                 .Append(Typed<WordCatalog>(paths.Catalog(nameof(WordCatalog))))
                 .Append(Typed<PictureCatalog>(paths.Catalog(nameof(PictureCatalog))))
                 .Append(Typed<VoiceLineCatalog>(paths.Catalog(nameof(VoiceLineCatalog))))
                 .Append(Typed<DomainCatalog>(paths.Catalog(nameof(DomainCatalog))))
-                .Append(Typed<LetterShapeCatalog>(paths.Catalog(nameof(LetterShapeCatalog))));
+                .Append(Typed<LetterShapeCatalog>(paths.Catalog(nameof(LetterShapeCatalog))))
+                .Append(Typed<StickerCatalog>(paths.Catalog(nameof(StickerCatalog))))
+                .Append(Typed<ConstellationCatalog>(paths.Catalog(nameof(ConstellationCatalog))))
+                .Append(Typed<TrailCatalog>(paths.Catalog(nameof(TrailCatalog))));
         }
 
         private static KeyValuePair<string, Type> Typed<TAsset>(string path)
@@ -383,9 +449,9 @@ namespace Scolita.Editor.ContentImport
             return new KeyValuePair<string, Type>(path, typeof(TAsset));
         }
 
-        private static IEnumerable<string> PlannedPaths(Curriculum curriculum, ContentAssetPaths paths)
+        private static IEnumerable<string> PlannedPaths(Curriculum curriculum, RewardContent rewards, ContentAssetPaths paths)
         {
-            return PlannedAssetTypes(curriculum, paths)
+            return PlannedAssetTypes(curriculum, rewards, paths)
                 .Select(planned => planned.Key)
                 .Concat(curriculum.Pictures.All.Select(picture => paths.PictureImage(picture.Id.Value)));
         }

@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Rewards;
 
 namespace Scolita.Tests.EditMode.Fakes
 {
@@ -317,6 +318,15 @@ namespace Scolita.Tests.EditMode.Fakes
             Curriculum curriculum = ContentTables.Read(csvs, problems);
             Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
             return curriculum;
+        }
+
+        /// <summary>Reads the rewards of <paramref name="csvs"/>, asserting there was no error; called by the content tests.</summary>
+        public static RewardContent ReadRewards(Dictionary<string, string> csvs)
+        {
+            ContentProblems problems = new ContentProblems();
+            RewardContent rewards = RewardTables.Read(csvs, problems);
+            Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
+            return rewards;
         }
 
         /// <summary>

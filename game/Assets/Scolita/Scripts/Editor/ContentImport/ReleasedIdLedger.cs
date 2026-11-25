@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Scolita.Core.Content;
 using Scolita.Core.Ids;
+using Scolita.Core.Rewards;
 
 namespace Scolita.Editor.ContentImport
 {
@@ -27,7 +28,8 @@ namespace Scolita.Editor.ContentImport
         private static readonly string[] IdFiles =
         {
             ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
-            ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons
+            ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
+            ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
         };
 
         private static readonly char[] Spaces = { ' ', '\t' };
@@ -111,12 +113,13 @@ namespace Scolita.Editor.ContentImport
 
         /// <summary>
         /// Reports an error into <paramref name="problems"/>, at the CSV it belongs to, for every id in
-        /// the ledger that <paramref name="curriculum"/> no longer has (its row was deleted, not retired).
-        /// Called by <see cref="ContentImportPlan.Make"/> (for the importer and <see cref="ReleasedIdsRecorder"/>) and tests.
+        /// the ledger that <paramref name="curriculum"/> and <paramref name="rewards"/> no longer have (its row was
+        /// deleted, not retired). Called by <see cref="ContentImportPlan.Make"/> (for the importer and
+        /// <see cref="ReleasedIdsRecorder"/>) and tests.
         /// </summary>
-        public void CheckNoneDeleted(Curriculum curriculum, ContentProblems problems)
+        public void CheckNoneDeleted(Curriculum curriculum, RewardContent rewards, ContentProblems problems)
         {
-            HashSet<string> present = new HashSet<string>(ContentIds(curriculum).Select(id => id.ToString()));
+            HashSet<string> present = new HashSet<string>(ContentIds(curriculum, rewards).Select(id => id.ToString()));
             foreach (ReleasedId released in ids.Where(released => !present.Contains(released.ToString())))
             {
                 problems.Error(new ContentSource(released.File, 0), "the id " + released.Id + " was released (" + FileName
@@ -126,13 +129,13 @@ namespace Scolita.Editor.ContentImport
         }
 
         /// <summary>
-        /// The ids of <paramref name="curriculum"/> not in the ledger yet, by file then in their CSV's
-        /// order. Called by <see cref="ReleasedIdsRecorder"/> and tests.
+        /// The ids of <paramref name="curriculum"/> and <paramref name="rewards"/> not in the ledger yet, by file then in
+        /// their CSV's order. Called by <see cref="ReleasedIdsRecorder"/> and tests.
         /// </summary>
-        public IReadOnlyList<ReleasedId> NewIds(Curriculum curriculum)
+        public IReadOnlyList<ReleasedId> NewIds(Curriculum curriculum, RewardContent rewards)
         {
             HashSet<string> released = new HashSet<string>(ids.Select(id => id.ToString()));
-            return ContentIds(curriculum)
+            return ContentIds(curriculum, rewards)
                 .Where(id => !released.Contains(id.ToString()))
                 .ToArray();
         }
@@ -169,14 +172,17 @@ namespace Scolita.Editor.ContentImport
             return added.ToString();
         }
 
-        private static IEnumerable<ReleasedId> ContentIds(Curriculum curriculum)
+        private static IEnumerable<ReleasedId> ContentIds(Curriculum curriculum, RewardContent rewards)
         {
             return curriculum.Letters.All.Select(letter => Unwritten(ContentFileNames.Letters, letter.Id))
                 .Concat(curriculum.Words.All.Select(word => Unwritten(ContentFileNames.Words, word.Id)))
                 .Concat(curriculum.Pictures.All.Select(picture => Unwritten(ContentFileNames.Pictures, picture.Id)))
                 .Concat(curriculum.VoiceLines.All.Select(line => Unwritten(ContentFileNames.VoiceLines, line.Id)))
                 .Concat(curriculum.Domains.SelectMany(domain => domain.Units).Select(unit => Unwritten(ContentFileNames.Units, unit.Id)))
-                .Concat(curriculum.AllLessons.Select(lesson => Unwritten(ContentFileNames.Lessons, lesson.Id)));
+                .Concat(curriculum.AllLessons.Select(lesson => Unwritten(ContentFileNames.Lessons, lesson.Id)))
+                .Concat(rewards.Stickers.All.Select(sticker => Unwritten(ContentFileNames.Stickers, sticker.Id)))
+                .Concat(rewards.Constellations.All.Select(constellation => Unwritten(ContentFileNames.Constellations, constellation.Id)))
+                .Concat(rewards.Trails.All.Select(trail => Unwritten(ContentFileNames.Trails, trail.Id)));
         }
 
         private static ReleasedId Unwritten(string file, ContentId id)

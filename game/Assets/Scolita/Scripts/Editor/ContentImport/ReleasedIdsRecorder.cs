@@ -37,7 +37,7 @@ namespace Scolita.Editor.ContentImport
             }
 
             ReleasedIdLedger ledger = plan.Ledger;
-            IReadOnlyList<ReleasedId> added = ledger.NewIds(plan.Curriculum);
+            IReadOnlyList<ReleasedId> added = ledger.NewIds(plan.Curriculum, plan.Rewards);
             if (added.Count == 0)
             {
                 return new ReleasedIdsRecord(plan.Problems, added);

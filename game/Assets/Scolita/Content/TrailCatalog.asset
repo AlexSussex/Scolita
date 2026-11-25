@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3df0ec84961424abcc4a14747ea03f, type: 3}
+  m_Name: TrailCatalog
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.TrailCatalog
+  items:
+  - {fileID: 11400000, guid: 9a123ec3cd151724bb2499bdd97135f4, type: 2}
+  - {fileID: 11400000, guid: 0e8a7445b44f2574e96fd745a90b7674, type: 2}
+  - {fileID: 11400000, guid: 1593dd0bab657954ea6f10d24d7a71d8, type: 2}

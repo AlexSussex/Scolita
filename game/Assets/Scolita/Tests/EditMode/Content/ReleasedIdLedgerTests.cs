@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Content;
+using Scolita.Core.Rewards;
 using Scolita.Editor.ContentImport;
 using Scolita.Tests.EditMode.Fakes;
 
@@ -74,7 +75,7 @@ namespace Scolita.Tests.EditMode.Content
 
             string text = ledger.WithIds("0.3.1", new[] { new ReleasedId(ContentFileNames.Letters, "m", 0) });
 
-            Assert.That(ledger.NewIds(ContentCsvs.Read(csvs)).First().ToString(), Is.EqualTo("letters.csv m"));
+            Assert.That(ledger.NewIds(ContentCsvs.Read(csvs), ContentCsvs.ReadRewards(csvs)).First().ToString(), Is.EqualTo("letters.csv m"));
             Assert.That(text, Is.EqualTo("# 0.2.0\nletters.csv a\n\n# 0.3.1\nletters.csv m\n"));
         }
 
@@ -103,7 +104,7 @@ namespace Scolita.Tests.EditMode.Content
             ContentProblems problems = new ContentProblems();
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse("words.csv ro-mama\nwords.csv ro-am\nvoice-lines.csv ro-word-am\n", problems);
 
-            ledger.CheckNoneDeleted(ContentCsvs.Read(csvs), problems);
+            ledger.CheckNoneDeleted(ContentCsvs.Read(csvs), ContentCsvs.ReadRewards(csvs), problems);
 
             ContentCsvs.AssertError(problems.All, ContentFileNames.Words, 0, "ro-am", "released", "row 2", "retired");
             ContentCsvs.AssertError(problems.All, ContentFileNames.VoiceLines, 0, "ro-word-am", "released", "row 3");
@@ -122,7 +123,7 @@ namespace Scolita.Tests.EditMode.Content
             ContentProblems problems = new ContentProblems();
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse("words.csv ro-am\nlessons.csv ro-a\nletters.csv ro-a\n", problems);
 
-            ledger.CheckNoneDeleted(ContentCsvs.Read(csvs), problems);
+            ledger.CheckNoneDeleted(ContentCsvs.Read(csvs), ContentCsvs.ReadRewards(csvs), problems);
 
             Assert.That(problems.All.Select(problem => problem.ToString()), Is.EqualTo(new[]
             {
@@ -144,7 +145,7 @@ namespace Scolita.Tests.EditMode.Content
             string released = string.Join("\n", AllIdLines(ContentCsvs.Valid())) + "\n";
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse("# ledger\n" + released, new ContentProblems());
 
-            IReadOnlyList<ReleasedId> newIds = ledger.NewIds(curriculum);
+            IReadOnlyList<ReleasedId> newIds = ledger.NewIds(curriculum, ContentCsvs.ReadRewards(csvs));
             string text = ledger.WithIds("0.3.1", newIds);
 
             Assert.That(newIds.Select(id => id.ToString()), Is.EqualTo(new[] { "pictures.csv moon" }));
@@ -162,7 +163,7 @@ namespace Scolita.Tests.EditMode.Content
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse(string.Empty, new ContentProblems());
 
-            IReadOnlyList<ReleasedId> newIds = ledger.NewIds(ContentCsvs.Read(csvs));
+            IReadOnlyList<ReleasedId> newIds = ledger.NewIds(ContentCsvs.Read(csvs), ContentCsvs.ReadRewards(csvs));
 
             Assert.That(newIds.Select(id => id.ToString()), Is.EqualTo(AllIdLines(csvs)));
             Assert.That(ledger.WithIds("0.2.0", newIds), Does.StartWith("# 0.2.0\nletters.csv a\n"));
@@ -178,16 +179,23 @@ namespace Scolita.Tests.EditMode.Content
         {
             ContentFolder folder = ContentImporter.RepositoryContent();
             ContentProblems problems = new ContentProblems();
-            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
+            Dictionary<string, string> texts = folder.ReadTexts(problems);
+            Curriculum curriculum = ContentTables.Read(texts, problems);
+            RewardContent rewards = RewardTables.Read(texts, problems);
 
             ReleasedIdLedger ledger = ReleasedIdLedger.Parse(folder.ReleasedIdsText(problems), problems);
-            ledger.CheckNoneDeleted(curriculum, problems);
+            ledger.CheckNoneDeleted(curriculum, rewards, problems);
 
             Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
-            Assert.That(ledger.Ids.Select(id => id.File).Distinct(), Is.EquivalentTo(new[]
+            Assert.That(ledger.Ids.Select(id => id.File).Distinct(), Is.SupersetOf(new[]
             {
                 ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
                 ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons
+            }).And.SubsetOf(new[]
+            {
+                ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
+                ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
+                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
             }));
             Assert.That(ledger.Ids.Select(id => id.ToString()), Does.Contain("words.csv ro-mama").And.Contain("lessons.csv party-1"));
         }
@@ -203,7 +211,8 @@ namespace Scolita.Tests.EditMode.Content
             string[] files =
             {
                 ContentFileNames.Letters, ContentFileNames.Words, ContentFileNames.Pictures,
-                ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons
+                ContentFileNames.VoiceLines, ContentFileNames.Units, ContentFileNames.Lessons,
+                ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails
             };
             return files
                 .SelectMany(file => csvs[file].Split('\n').Skip(1)

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 844781c8711c2734290eab8643b70862, type: 3}
+  m_Name: rocket
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.ConstellationAsset
+  id: rocket
+  unit: planet-2
+  stars:
+  - {x: 320, y: 50}
+  - {x: 262, y: 168}
+  - {x: 378, y: 168}
+  - {x: 262, y: 318}
+  - {x: 378, y: 318}
+  - {x: 196, y: 404}
+  - {x: 444, y: 404}
+  - {x: 320, y: 432}
+  lines:
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 1, y: 3}
+  - {x: 2, y: 4}
+  - {x: 3, y: 5}
+  - {x: 4, y: 6}
+  - {x: 3, y: 7}
+  - {x: 7, y: 4}
+  retired: 0

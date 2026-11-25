@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
+using Scolita.Core.Rewards;
 using Scolita.Editor;
 using Scolita.Editor.ContentImport;
 using Scolita.Tests.EditMode.Fakes;
@@ -291,6 +292,51 @@ namespace Scolita.Tests.EditMode.Content
             {
                 Directory.Delete(root, true);
             }
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ContentImporter.Import"/> writes the stickers with their pictures, the constellations and
+        /// the trails, and their catalogs make the same rewards as the CSVs (<see cref="RewardContentAssets.Build"/>).
+        /// </summary>
+        [Test]
+        public void TestImport_WritesTheRewards()
+        {
+            RunInTemporaryFolders(ContentCsvs.Valid(), (source, paths) =>
+            {
+                ContentImporter.Import(source, paths);
+
+                RewardContent fromAssets = RewardContentAssets.Build(
+                    AssetDatabase.LoadAssetAtPath<StickerCatalog>(paths.Catalog("StickerCatalog")),
+                    AssetDatabase.LoadAssetAtPath<ConstellationCatalog>(paths.Catalog("ConstellationCatalog")),
+                    AssetDatabase.LoadAssetAtPath<TrailCatalog>(paths.Catalog("TrailCatalog")));
+                RewardContent fromCsvs = ContentCsvs.ReadRewards(ContentCsvs.Valid());
+
+                Assert.That(fromAssets.Stickers.All.Select(sticker => sticker.Id), Is.EqualTo(fromCsvs.Stickers.All.Select(sticker => sticker.Id)));
+                Assert.That(fromAssets.Trails.All.Select(trail => trail.Id), Is.EqualTo(fromCsvs.Trails.All.Select(trail => trail.Id)));
+                Assert.That(fromAssets.Constellations.All[0].Stars.Select(star => star.X),
+                    Is.EqualTo(fromCsvs.Constellations.All[0].Stars.Select(star => star.X)));
+                Assert.That(fromAssets.Constellations.All[0].Lines.Select(line => line.To),
+                    Is.EqualTo(fromCsvs.Constellations.All[0].Lines.Select(line => line.To)));
+                Assert.That(AssetDatabase.LoadAssetAtPath<StickerAsset>(paths.Sticker("guitar")).Sprite.name, Is.EqualTo("sticker-guitar"));
+                Assert.That(AssetDatabase.LoadAssetAtPath<TrailAsset>(paths.Trail("stars")).Sprite.name, Is.EqualTo("trail-stars"));
+            });
+        }
+
+        /// <summary>Tests that <see cref="ContentImportPlan.Make"/> refuses a sticker or a trail with no picture.</summary>
+        [Test]
+        public void TestMake_RefusesARewardWithNoPicture()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            int stickerRow = ContentCsvs.AddRow(csvs, ContentFileNames.Stickers, "no-such-sticker,,");
+            int trailRow = ContentCsvs.AddRow(csvs, ContentFileNames.Trails, "no-such-trail,,");
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImportPlan plan = ContentImportPlan.Make(source, paths);
+
+                ContentProblem[] errors = plan.Problems.Where(problem => problem.IsError).ToArray();
+                ContentCsvs.AssertError(errors, ContentFileNames.Stickers, stickerRow, "no-such-sticker", "no picture");
+                ContentCsvs.AssertError(errors, ContentFileNames.Trails, trailRow, "no-such-trail", "no picture");
+            });
         }
 
         private static void RunInTemporaryFolders(Dictionary<string, string> csvs, Action<ContentFolder, ContentAssetPaths> test)

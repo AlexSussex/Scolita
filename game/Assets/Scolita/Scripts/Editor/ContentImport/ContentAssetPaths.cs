@@ -17,6 +17,11 @@ namespace Scolita.Editor.ContentImport
         private const string Units = "Domains/Units";
         private const string Lessons = "Domains/Lessons";
         private const string Strokes = "Strokes";
+        private const string Stickers = "Rewards/Stickers";
+        private const string Constellations = "Rewards/Constellations";
+        private const string Trails = "Rewards/Trails";
+        private const string StickerArtFolder = "Assets/Scolita/Art/Stickers";
+        private const string TrailArtFolder = "Assets/Scolita/Art/Map";
 
         /// <summary>Creates the paths under <paramref name="folder"/> (a project path, <c>Assets/…</c>); called by <see cref="ContentImportPlan"/>.</summary>
         public ContentAssetPaths(string folder)
@@ -34,7 +39,7 @@ namespace Scolita.Editor.ContentImport
         public IReadOnlyList<string> OwnedFolders => new[]
         {
             Under(Letters), Under(Words), Under(Pictures), Under(Voice), Under(Domains), Under(Units),
-            Under(Lessons), Under(Strokes)
+            Under(Lessons), Under(Strokes), Under(Stickers), Under(Constellations), Under(Trails)
         };
 
         /// <summary>A letter's asset; called by <see cref="ContentImportPlan"/>.</summary>
@@ -104,6 +109,42 @@ namespace Scolita.Editor.ContentImport
         public string Shape(string id)
         {
             return Under(Strokes) + "/" + id + ".asset";
+        }
+
+        /// <summary>A sticker's asset; called by <see cref="ContentImportPlan"/>.</summary>
+        public string Sticker(string id)
+        {
+            return Under(Stickers) + "/" + id + ".asset";
+        }
+
+        /// <summary>A constellation's asset; called by <see cref="ContentImportPlan"/>.</summary>
+        public string Constellation(string id)
+        {
+            return Under(Constellations) + "/" + id + ".asset";
+        }
+
+        /// <summary>A trail's asset; called by <see cref="ContentImportPlan"/>.</summary>
+        public string Trail(string id)
+        {
+            return Under(Trails) + "/" + id + ".asset";
+        }
+
+        /// <summary>
+        /// A sticker's picture, made by <c>look</c>'s tools (<c>Art/Stickers/sticker-&lt;id&gt;.png</c>), whatever the asset
+        /// folder; called by <see cref="ContentImportPlan"/>.
+        /// </summary>
+        public static string StickerArt(string id)
+        {
+            return StickerArtFolder + "/sticker-" + id + ".png";
+        }
+
+        /// <summary>
+        /// A trail's picture, made by <c>look</c>'s tools (<c>Art/Map/trail-&lt;id&gt;.png</c>), whatever the asset folder;
+        /// called by <see cref="ContentImportPlan"/>.
+        /// </summary>
+        public static string TrailArt(string id)
+        {
+            return TrailArtFolder + "/trail-" + id + ".png";
         }
 
         /// <summary>A catalog's asset (<c>LetterCatalog</c>), at the folder's top.</summary>

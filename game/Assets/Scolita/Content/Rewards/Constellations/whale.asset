@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 844781c8711c2734290eab8643b70862, type: 3}
+  m_Name: whale
+  m_EditorClassIdentifier: Scolita.Content::Scolita.Content.ConstellationAsset
+  id: whale
+  unit: planet-3
+  stars:
+  - {x: 120, y: 260}
+  - {x: 200, y: 190}
+  - {x: 330, y: 170}
+  - {x: 450, y: 200}
+  - {x: 540, y: 140}
+  - {x: 570, y: 260}
+  - {x: 470, y: 270}
+  - {x: 330, y: 320}
+  - {x: 190, y: 320}
+  - {x: 230, y: 90}
+  lines:
+  - {x: 0, y: 1}
+  - {x: 1, y: 2}
+  - {x: 2, y: 3}
+  - {x: 3, y: 6}
+  - {x: 6, y: 4}
+  - {x: 4, y: 5}
+  - {x: 5, y: 6}
+  - {x: 6, y: 7}
+  - {x: 7, y: 8}
+  - {x: 8, y: 0}
+  - {x: 1, y: 9}
+  retired: 0
