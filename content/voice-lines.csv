@@ -72,6 +72,10 @@ ro-line-planet-landed,ro,line,Am aterizat pe o planetă nouă!,,,,
 en-line-planet-landed,en,line,We have landed on a new planet!,,,,
 ro-line-planet-asleep,ro,line,Planeta aceasta încă doarme. Ajungem și acolo curând.,,,,'not yet'
 en-line-planet-asleep,en,line,This planet is still asleep. We will get there soon.,,,,'not yet'
+ro-line-stop-ahead,ro,line,Aici ajungem mai târziu. Hai să mergem întâi la rachetă.,,,,'not yet' for a stop ahead of the rocket on its planet
+en-line-stop-ahead,en,line,We will get here later. Let's go to the rocket first.,,,,'not yet' for a stop ahead of the rocket on its planet
+ro-line-all-planets,ro,line,Bravo! Ai fost pe toate planetele. Hai să le vizităm din nou!,,,,the map when every lesson is done; 'le': planetele (feminine plural)
+en-line-all-planets,en,line,Well done! You have been to every planet. Let's visit them again!,,,,the map when every lesson is done
 ro-line-who-plays,ro,line,Cine se joacă? Atinge poza ta.,,,,design screen 9
 en-line-who-plays,en,line,Who's playing? Tap your picture.,,,,design screen 9
 ro-line-lets-remember,ro,line,Hai să ne amintim!,,,,
