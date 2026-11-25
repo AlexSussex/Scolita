@@ -34,10 +34,10 @@ namespace Scolita.Core.Rewards
         /// The keys of the lines every language of the lessons needs, whatever the constellations. Called by
         /// <see cref="RewardContentRules"/> and <c>RewardsSession</c>.
         /// </summary>
-        public static IReadOnlyList<string> CommonKeys { get; } = new[]
+        public static IReadOnlyList<string> CommonKeys { get; } = System.Array.AsReadOnly(new[]
         {
             StickerKey, TrailKey, SkyBookKey, StickerBookKey, TrailPickerKey
-        };
+        });
 
         /// <summary>
         /// "Bravo! Ai aprins 3 stele în constelația …": the stars a lesson lit in <paramref name="constellation"/>,

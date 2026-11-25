@@ -104,5 +104,18 @@ namespace Scolita.Tests.EditMode.Core.Rewards
             Assert.That(book.Placed[0].Y, Is.EqualTo(0.5f));
             Assert.That(book.Placed[0].Size, Is.EqualTo(1f));
         }
+
+        /// <summary>Tests that <see cref="RewardBook.FitSizes"/> brings a saved size from a damaged file within the rules.</summary>
+        [Test]
+        public void TestFitSizes_WithinTheRules()
+        {
+            ContentId guitar = ContentId.Create("guitar");
+            RewardBook book = new RewardBook(0, null, 0, new[] { guitar, guitar }, null, null, default,
+                new[] { new PlacedSticker(guitar, 0.5f, 0.5f, 1e30f), new PlacedSticker(guitar, 0.5f, 0.5f, 0.01f) });
+
+            book.FitSizes(RewardTestContent.Rules());
+
+            Assert.That(book.Placed.Select(sticker => sticker.Size), Is.EqualTo(new[] { 3f, 0.5f }));
+        }
     }
 }

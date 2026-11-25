@@ -140,6 +140,19 @@ namespace Scolita.Core.Rewards
         }
 
         /// <summary>
+        /// Brings every placed sticker's size within <paramref name="rules"/> (a saved file knows no rules). Called by
+        /// <c>RewardsSession</c> once her book is read.
+        /// </summary>
+        public void FitSizes(RewardRules rules)
+        {
+            for (int index = 0; index < placed.Count; index++)
+            {
+                PlacedSticker sticker = placed[index];
+                placed[index] = new PlacedSticker(sticker.StickerId, sticker.X, sticker.Y, rules.ClampSize(sticker.Size));
+            }
+        }
+
+        /// <summary>
         /// The rocket wears <paramref name="trailId"/>; false, with nothing changed, for a trail not earned. Called
         /// by <c>RewardsSession</c> from the trail picker.
         /// </summary>

@@ -187,5 +187,25 @@ namespace Scolita.Tests.EditMode.Core.Rewards
             Assert.That(book.ChosenTrail.ToString(), Is.EqualTo("rainbow"));
             Assert.That(book.GivenStickers, Is.Empty);
         }
+
+        /// <summary>Tests that <see cref="RewardGiver.LessonFinished"/> gives no sticker when every sticker is retired, and no trail once they have all been earned.</summary>
+        [Test]
+        public void TestLessonFinished_NothingLeftToGiveGivesStarsOnly()
+        {
+            Curriculum curriculum = RealContent.Read();
+            LessonOrder order = RewardTestContent.Order(curriculum);
+            RewardGiver giver = new RewardGiver(RewardTestContent.Of(1, "s1"), RewardTestContent.Rules(), new FixedRandom());
+            RewardBook book = new RewardBook(0, null, 1, null, null, RewardTestContent.TrailIds.Select(ContentId.Create), default, null);
+            Lesson[] planet = RewardTestContent.LessonsOf(order, "planet-1");
+
+            LessonRewards[] given = planet.Select(lesson => giver.LessonFinished(book, lesson, order)).ToArray();
+            LessonRewards last = given[given.Length - 1];
+
+            Assert.That(last.FinishedPlanet, Is.True);
+            Assert.That(last.Sticker, Is.Null);
+            Assert.That(last.Trail, Is.Null);
+            Assert.That(last.Stars, Is.EqualTo(3));
+            Assert.That(book.GivenStickers, Is.Empty);
+        }
     }
 }
