@@ -102,7 +102,23 @@ _Kept by `tracing` while the brief is in flight._
   the `Curriculum`) and changes which steps the lesson engine can play.
   **The human agreed it on 2026-11-24** (relayed by the lead): questions 1,
   3, 4, 5, 6 and 7 as recommended; question 2 answered **two strokes** (see
-  "The human's answers" below). Being built: Core first.
+  "The human's answers" below).
+- **Built and pushed** (tested together at the last of them, after the
+  fresh-eyes review):
+  - `70a74a3` `core:` shapes, the JSON reader, `StrokeCheck`, `TraceLetterRules`,
+    `PlayableSteps`, `ShapeRules`, the tolerances;
+  - `5acd8e7` `content:` the shape asset and its catalog;
+  - `3477c73` `build:` the importer reads `content/strokes/`;
+  - `769a3c9` `content:` planet 1's eight print shapes and the recorded strokes;
+  - `1dc3026` `game:` `TraceFinger` and `FingerPicker`;
+  - `ac72ba3` `ui:` the writing board view;
+  - `070da45` `game:` the prefab, the registry row, the scene's catalog, the
+    PlayMode tests;
+  - `60f8a82`, `596682d`, `caf7864`, `5765d2a`, `ee04ea0`: the review's fixes
+    (below).
+- **The test APK** for the human: `local/apks/Scolita-0.6.0-tracing-try-debug.apk`
+  (step 2 of `local/for-human-next-steps.md`).
+- **Next:** the close-out (0.7.0).
 
 ### The human's answers (2026-11-24)
 
@@ -125,8 +141,206 @@ _Kept by `tracing` while the brief is in flight._
 6. The round labels as pictures, without words, for now: **yes**.
 7. A lifted finger ends the stroke, judged as it is: **yes**.
 
+### Decisions while building (within the agreed note)
+
+- **The print a is two strokes** (the human's answer 2): `a-lower-print.json`
+  has the round (from the top right, anticlockwise, closing near its start)
+  and the stem (from the middle line down), so design screen 3 stands. The
+  draft's other print letters are used as drawn: m and p one stroke each, t
+  two (the stem with its flick, then the bar), A two, M one, T two (the
+  stem, then the top bar), P one. All eight files are `draft`.
+- **A shape file removed has its asset removed** at the next import (the
+  review's finding 7; the note had said "refused like a deleted row").
+- **Leaving the path is judged near where she is,** not against the whole
+  letter: a point is off when it is farther than the corridor from the part
+  of the stroke she has reached (a line cutting across m to its last stem,
+  or into a's round, has left it). Her line may stray for at most the
+  corridor's width in all before it is `LeftThePath`.
+- **`WrongDirection` needs her to begin at the stroke's end** (for a round
+  stroke the end is near the start): a line begun near the start that
+  wanders is `LeftThePath`, never "follow the arrow" (found by the recorded
+  wobbly bar of t, which the window ahead let the backwards follow reach).
+- **A stroke drawn during a round's pause starts the next round at once**
+  (the ink of the round just finished goes): she is never made to wait.
+- **The answer shown uses round 1's tolerance** for that stroke (its dotted
+  guide is shown then, in every round).
+- **The writing board holds at most 4 strokes** (`ActivityLimits.MostStrokes`,
+  checked by the import), like the other screens' limits.
+- **The steps that can be played** are a `PlayableSteps` (the kinds with a
+  view, and `ActivityRulesFactory.CanCreate`: a tracing step's shape is in
+  the content); `LessonPlan.Of` and `LessonOrder` take it instead of the
+  list of kinds. 14 handwritten tracing steps of planet 1 are skipped, with
+  a warning at each import ("skipped until it has one").
+- **`ReadCsvs` is now `ContentFolder.ReadTexts`:** it reads the CSVs and the
+  shape files (`strokes/a-lower-print.json` in the texts' names).
+- **No new voice line:** the instruction is `trace-print` + `trace-start`;
+  the hints are `trace-hint-dot`, `-arrow`, `-stay`, `-slow`, `-watch`; the
+  checkpoints `trace-next-2`, `trace-next-3`, `trace-done` (with the letter's
+  sound spliced in) and `trace-round-2`, `-3`. All were in
+  `voice-lines.csv`; `ActivityKinds` now requires them for `TraceLetter`.
+- **The recorded strokes** in `Tests/EditMode/Tracing/Strokes/` are made from
+  the shapes with seeded jitter (a good line, sloppy but fine, wobbly,
+  backwards, off the path, too short, begun elsewhere, for every stroke of
+  the eight letters, each with its verdict in each round), not drawn by a
+  finger: no real recording exists yet. The emulator runs below drew real
+  touch strokes through the app.
+- **Drawing allocates nothing:** the stardust sparkles stay active and are
+  hidden by their alpha (enabling a UI element can allocate), and the finger
+  glow likewise.
+
+### Fresh-eyes review (2026-11-25)
+
+A second agent, which didn't write the code, read the seven commits and the
+uncommitted fixes against AGENTS.md. It found the seams intact (Core and its
+JSON reader have no engine reference; verdicts and rounds live in
+`StrokeCheck` and `TraceLetterRules`), the main cases of the check right, every
+voice line used present in both languages, and no allocation on the drawing
+path. Its findings, and what was done:
+
+1. **Blocker: round 2's faint shadow was cut off** (the prefab gave it 64
+   points). Fixed: 4096 like the dotted guide; seen whole on the emulator.
+2. **A short stroke could pass half drawn, or backwards:** coverage counted
+   from the start, and the first point's window let `reached` jump ahead.
+   Fixed: coverage is now the part she drew herself (from where her first
+   point reached the stroke); a stroke shorter than the start radius is told
+   by direction. Test `TestCheck_AShortBar` (half a bar `TooShort`, a bar and
+   a 20-unit tick drawn backwards `WrongDirection`).
+3. **The end was very strict on short strokes** (round 3 asked for t's bar to
+   within 5 units of its end). Fixed: "enough" is the coverage share or all of
+   the stroke but half the start radius at its end, whichever is less (never
+   under half). The tolerances stay for the human to try.
+4. **After the answer is shown she could get stuck** (every miss replays it).
+   Kept as the lesson run's one ladder (the shown stroke uses round 1's
+   tolerance); **a question for the human** in Follow-ups: accept any stroke
+   from the dot after the answer, or move on after N tries.
+5. **`TraceFinger`'s history:** (a) a second finger's or a palm's `Began`
+   moved the drawing finger's high-water mark. Fixed: set only when the touch
+   is the one drawing. (b) The history's order: confirmed in the Input
+   System's source (`TouchHistory`: index 0 is the newest), so it is read from
+   the last index to the first.
+6. **A palm that lands lightly and grows:** fixed: a drawing touch whose
+   radius grows past the palm threshold is cancelled; the radius is the
+   larger of its two axes.
+7. **A shape could never be removed** (the importer refused it as a deleted
+   row). Fixed: shapes are replaced, not retired, so the importer removes the
+   asset of a shape whose file is gone; test
+   `TestApply_ShapesKeepTheirGuidAndGoWithTheirFile` (also the GUID kept on a
+   re-import); `content/README.md` says so.
+8. **A raw byte order mark (and Romanian letters) in C# literals:** now `\u`
+   escapes.
+9. **Round 3 said "follow the arrow" with no arrow shown:** the prompt there
+   is now „Începe de la punctul verde.” (`trace-hint-dot`).
+10. **Accidental touches count as misses** (two taps show the answer): a
+    question for the human (Follow-ups).
+11. **„Bravo, ai scris litera a!” says the letter's sound,** as every line of
+    planets 1–3 does (names come later): for the human's listening check.
+12. **Tests:** the unused line in the PlayMode test removed; the test names
+    follow `Test<Method>_<Case>`; the recorded strokes are said to be generated
+    (below, and in "How to test locally"); the Profiler check is still to do
+    on the tablet. Not added: a test of `TraceFinger.Update` (it needs the
+    Input System's test fixture, which isn't in the project's testables).
+13. **`TracingTuning`** now checks the start radius tightens too, and names
+    the right round.
+14. **Numbers in the shape reader's errors** are written with the invariant
+    culture.
+15. **A dot is `Good` for any line begun on it:** kept for now (no dot in
+    planet 1); a follow-up for `handwriting` (i's dot).
+16. **Docs and robustness:** `TracePoints`' callers, `PlayableSteps`' null
+    check, fixed.
+
+### Test results (2026-11-25, at `ee04ea0`, before the docs)
+
+- **Batch mode:** EditMode **486/486** (was 413), PlayMode **17/17** (was 14),
+  `BuildAndroidDebug` exit 0 (`Scolita-0.6.0-debug.apk`); no `warning CS` or
+  `error CS` in any log.
+- **The import:** exit 0, "imported, with 37 warnings" (17 placeholder pictures, 8
+  draft shapes, 12 handwritten tracing steps skipped); `git status` clean after.
+- **The emulator** (`emulator-5600`, Pixel Tablet, Android 16 image, `wm size
+  2000x1200`, `-force-gles`), strokes drawn with `input motionevent` chains and raw
+  `sendevent` multi-touch (see "How to test locally"):
+  - round 1: a good round and stem: rainbow ink kept, „Foarte bine! Acum mergi la
+    punctul cu numărul doi.”, the bounce and „… Acum scrie pe umbră.”;
+  - round 2: the whole faint shadow; backwards: „Urmează săgeata.”; off the
+    letter (second miss): „Uită-te cum se scrie, apoi încearcă tu.” and the round
+    drawing itself; half a stroke: a miss;
+  - round 3: the start dot only; a tap: „Urmează săgeata.”; begun at the
+    bottom: the answer shown;
+  - **two fingers:** the first finger's stem counted, the second drew nothing,
+    the letter done and the lesson moved on;
+  - **a palm:** not verifiable on the emulator: its touch device reports no
+    contact size to the app, so a large `ABS_MT_TOUCH_MAJOR` came through as a
+    normal finger (it became the drawing touch). Verified in PlayMode with a
+    scripted radius (`TestPress_OneFingerNoPalm`); **to check on the Tab A7**.
+  - The development console showed "Unhandled pen event action: 5/6" during the
+    raw multi-touch runs: the emulator's virtio touch device also declares a
+    stylus; not seen with `input motionevent`.
+- **Screen sizes** (screenshots in the scratch folder): 2000 × 1200, 1280 × 800,
+  2560 × 1600, 2048 × 1536 and 2400 × 1080: the board on the left below the
+  mascot's bubble (the bubble covered the board's top at first: the board now ends
+  at 69% of the height), the letter centred and whole, the stars and round
+  pictures on the right. The cut-out profile was not run (the board sits inside
+  the lesson screen's safe area, like the other views).
+- **Allocation:** `TestMove_DrawingAllocatesNothing` (the finger moving, the trail
+  and stardust growing, the lines' meshes rebuilt: 0 B), and
+  `TestCheck_AllocatesNothing`, `TestAdd_AllocatesNothing` in EditMode. **Not
+  measured:** the whole frame in the device Profiler (no Editor window in this
+  session); to measure on the Tab A7.
+- **Not run:** the Device Simulator (batch mode only; `wm size` stood in),
+  listening by ear (no new line; the lines said were checked by their lengths in
+  the log), frame time on a real tablet.
+
+### How the writing board meets "Usability" and "Learning"
+
+- **Spoken:** every bubble is a voice line (the instruction, each checkpoint,
+  each hint, the answer shown); tapping the mascot repeats the prompt (the
+  arrow's line while the arrow shows, the green dot's in round 3).
+- **Big targets:** the board is about 65% of the screen's width and 65% of its
+  height (the tracing area as large as the lesson screen allows beside the
+  mascot and the rounds); the start dot is 60 px at the reference size (about
+  90 dp on the Tab A7), the corridor about 32 units either side in round 1.
+- **Kind feedback:** a miss fades her line and pulses the dot, never red, never
+  lost stars; the second miss shows the stroke.
+- **One finger, no pressure:** no timer; a second finger and a palm are
+  ignored; home is always there.
+- **The language:** the board carries the RO star; the lines are Romanian.
+- **Learning:** one stroke at a time, in the order and direction of the stroke
+  data; three rounds from most to least help; print only until `handwriting`.
+
 ### Follow-ups
 
+- **`handwriting`:**
+  - the handwritten shapes (`<id>-lower-handwritten.json`, entry, body and
+    exit runs, `slant` 0.2): the 14 handwritten `TraceLetter` steps of planet
+    1 play as soon as their files exist; make a missing one an error then
+    (`ShapeRules`);
+  - the board's handwritten look: the "tip I" lines (dashed, solid, solid,
+    dashed) and faint slant guides; the entry-stroke hint („Pornește de pe
+    linie.”, never for m and n) from `StrokeResult.Covered` over the entry
+    run; `TraceWord` joining shapes at their exit and entry points, and a
+    lifted finger at a join forgiven;
+  - the English lessons' `TraceLetter` is "one round by hand"
+    (curriculum §4.1): a `rounds` option on the step, which
+    `TraceLetterRules` would take (it always plays three rounds now).
+- **For the human:** the tolerances (corridor, start radius, coverage per
+  round, in `Settings/LearningRules.asset`) are first guesses: watch her
+  trace on the Tab A7 and say whether a stroke she drew well was refused,
+  or a sloppy one passed. The eight print shapes are drafts: check them
+  against `print-stroke-order-draft.svg` and her manual.
+- **Real recorded strokes:** the recorded lines are made from the shapes;
+  strokes drawn by her finger on the tablet (logged in a development build)
+  would make better test data.
+- **`look`:** the round pictures beside the stars are drawn from the shape
+  (a dotted, a faint, and a start dot); the board's slate and dots are
+  `look`'s; the larger, 4:3, phone and cut-out sizes of the board are in
+  "Test results".
+- **The voice:** a stroke's checkpoint line starting allocates (the voice's
+  planning, as `lesson-engine` found): per stroke, not per frame.
+- **For the human (from the review):** after the answer is shown, should any
+  stroke from the dot count (or the step move on after a number of tries in the
+  learning rules)? Should a touch of only a few units be ignored instead of
+  counting as a miss? And „Bravo, ai scris litera a!” says the letter's sound.
+- **`handwriting`:** a dot stroke (i's dot) is `Good` for any line begun on it;
+  check its length too.
 - **`handwriting`: the handwritten a** (the human, 2026-11-24, still to be
   checked against her manual). The human's words: "An 'a' on a font that
   would look like it was written by hand would have 3 strokes", and "the
@@ -403,3 +617,107 @@ _Kept by `tracing` while the brief is in flight._
 7. **A lifted finger ends the stroke** and it is judged as it is (a stroke
    left half-way gets „Urmează săgeata.”); finishing a stroke after lifting
    is left for `handwriting`'s joins.
+
+## How to test locally
+
+Run the commands in Git Bash from the worktree (or checkout) root, with
+`UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"`,
+`ADB="$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe"` and `S=<your scratch
+folder>`. Close your Editor on this project before any batch-mode run. Reset the
+app's saves with `"$ADB" -s <emulator> shell pm clear com.softshack.scolita`.
+
+### Core slice (shapes, the stroke check, `TraceLetter`'s rules)
+
+1. **EditMode tests:**
+   `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
+   Expected: exit 0, all passed, among them:
+   - `JsonReaderTests` (every kind of value; nine broken files, each with its line);
+   - `LetterShapeReaderTests` (the valid shape; bad names; twelve broken files, each
+     with its line and reason; a cedilla);
+   - `StrokePathTests`, `TracePointsTests` (and `TestAdd_AllocatesNothing`);
+   - `StrokeCheckTests`: each verdict, m's down-and-up, a round drawn the wrong way,
+     a dot, the rounds tightening, a short bar, `TestCheck_AllocatesNothing`;
+   - `TraceLetterRulesTests`: three rounds of two strokes, the hint for each
+     mistake, the answer shown, the lines, the lesson run's ladder;
+   - `ShapeRulesTests`, `PlayableStepsTests`, `LearningRulesTests.TestForRound_…`.
+   No `warning CS` or `error CS` in the log.
+
+### Content and Build slices (the shape files and their import)
+
+1. **The import:**
+   `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.ContentImport.ContentImporter.ImportFromCommandLine -logFile $S/import.log; echo $?`.
+   Expected: exit 0, `imported, with 37 warnings`: the 17 pictures on their
+   placeholder, the 8 shapes still drafts (`strokes/a-lower-print.json: the shape is
+   a draft …`), and 12 handwritten tracing steps skipped (`steps.csv, row 4: the
+   letter a has no handwritten shape yet (strokes/a-lower-handwritten.json): the step
+   is skipped until it has one.`). `git status` shows no change.
+2. **`RecordedStrokeTests`** (in the EditMode run): every recorded line of the
+   eight letters gets its verdict in each round.
+3. **A broken shape stops the import:** in `content/strokes/t-lower-print.json`
+   change `"kind": "body"` to `"kind": "stem"` and import. Expected: exit 1,
+   `strokes/t-lower-print.json, row 7: a run's "kind" is "body", "entry" or "exit".`,
+   and nothing written. Then `git checkout content`.
+4. **A print step without its shape is an error:** rename
+   `content/strokes/m-upper-print.json` to `m-upper-print.json.off` and import.
+   Expected: exit 1 with `steps.csv, row 61: the letter m has no print shape for
+   this step: it needs strokes/m-upper-print.json.`, nothing written. Then rename
+   it back. (With the step removed too, the import would remove the shape's asset:
+   `TestApply_ShapesKeepTheirGuidAndGoWithTheirFile`.)
+
+### Game and UI slices (the writing board)
+
+**Prerequisites:** the debug APK
+(`"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`,
+APK in `game/Builds/Android/`), your emulator started with
+`emulator -avd <yours> -port <port>` (with `-feature -Vulkan`; the app started with `-e unity -force-gles`), and the app installed fresh:
+`"$ADB" -s <emulator> install -r game/Builds/Android/Scolita-<version>-debug.apk`,
+`"$ADB" -s <emulator> shell pm clear com.softshack.scolita`,
+`"$ADB" -s <emulator> shell wm size 2000x1200`. Start it with
+`"$ADB" -s <emulator> shell am start -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`.
+
+The strokes below were drawn with `input motionevent` chains (one finger) and raw
+`sendevent` multi-touch on `/dev/input/event2` after `adb root` (two fingers, a palm with a
+large contact); the points come from the letter's units mapped with the board's layout
+(canvas 1280 × 800, match 0.5; board anchors 0.03–0.68 × 0.04–0.69; the four lines over
+84% of the board's height). At 2000 × 1200 the print a's start dot is at (776, 606), the
+stem's at (788, 576).
+
+1. **Get to the board:** tap through the system's "Viewing full screen" notice, **Hai!**,
+   then the letter card and the picture of `ro-a`'s first step. Expected: the board as in
+   manual row 0.7.0-1, two step dots, „Scrie litera de tipar. Începe de la punct și urmează
+   săgeata.” in the bubble.
+2. **A good round 1:** the round from (776, 606) anticlockwise back up the right side, then
+   the stem (788, 576) → (788, 828). Expected: the rainbow trail kept; after the round
+   „Foarte bine! Acum mergi la punctul cu numărul doi.” (dot 2 and a down arrow); after the
+   stem the bounce and „Bravo, ai scris litera a! Acum scrie pe umbră.” (46 characters in
+   the log's `Voice: Bubble` line), the faint a, the second star gold.
+3. **Round 2, backwards then off:** the round from its end; then the first 40% and a jump
+   300 px to the right. Expected: „Urmează săgeata.” (16), the trail fading, dot 1 pulsing;
+   then „Uită-te cum se scrie, apoi încearcă tu.” (39) and the round drawing itself in cream
+   with its dots.
+4. **Round 3:** after a good round and stem: only the start dot. A tap on it: „Urmează
+   săgeata.”; a stroke begun at the round's bottom: the answer shown again.
+5. **Two fingers:** finger A traces the stem while finger B comes down 300 px to the right
+   and moves. Expected: only A's line, the letter done, a praise („Foarte bine, așa
+   este!”), the lesson moves on. (The development console shows "Unhandled pen event
+   action: 5/6": the emulator's raw touch device also reports a stylus; not the app's.)
+6. **A palm:** a touch with a large contact (`ABS_MT_TOUCH_MAJOR` 4000) put down first, then
+   a finger tracing a stroke. Expected: the palm draws nothing; the finger's stroke counts.
+7. **Screen sizes:** `wm size 1280x800`, `2560x1600`, `2048x1536`, `2400x1080`, then
+   `wm size reset`; restart the app between sizes (`am force-stop`). Expected: the board
+   left, below the mascot's bubble, the stars and the round pictures on the right, the
+   letter centred on the board and fully inside it.
+
+**Automated (PlayMode):** `TracingTests` draws through the finger: three rounds to the
+step's end, one finger with a palm and a second finger ignored and a stroke drawn backwards
+hinted, and `TestMove_DrawingAllocatesNothing` (the finger moving and the lines' meshes
+rebuilt allocate 0 B).
+
+**The recorded strokes** in `Tests/EditMode/Tracing/Strokes/` are generated from the shapes
+(each stroke's path sampled every 5–6 units, seeded jitter of 1–3 units, an offset beside
+it for the sloppy and wobbly lines, reversed for backwards, a detour of 60 units for off,
+35% for too short, begun half-way for begun elsewhere). To regenerate them after a shape
+changes, sample the new paths the same way and check each verdict by hand.
+
+**Cleanup:** `"$ADB" -s <emulator> shell pm clear com.softshack.scolita` and
+`"$ADB" -s <emulator> shell wm size reset`.
