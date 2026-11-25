@@ -1,8 +1,7 @@
 # Task: feature/galaxy-map
 
-> **Status: Ready after `lesson-engine`** (can run beside `tracing` and the
-> activities briefs). Decision D5 (the mascot) is not needed: a
-> placeholder mascot until `look`.
+> **Status: In progress (galaxy-map)** (since 2026-11-25). Decision D5 (the
+> mascot) is not needed: a placeholder mascot until `look`.
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Usability" → one tap to continue,
 "Performance"), `design/README.md`, and the completion records in

@@ -62,7 +62,7 @@ Each brief file therefore reads, top to bottom:
 | 7 | `feature/handwriting` | Done 2026-11-25, released as 0.8.0 | [done/handwriting.md](done/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
-| 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
+| 10 | `feature/galaxy-map` | In progress (galaxy-map) | [pending/galaxy-map.md](pending/galaxy-map.md) |
 | 11 | `feature/progress-review` | Ready after 7, 9 and 10 | [pending/progress-review.md](pending/progress-review.md) |
 | 12 | `feature/rewards` | Ready after 10 | [pending/rewards.md](pending/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
@@ -100,6 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`, `design/README.md`; for the word pictures: `content/pictures.csv` and the picture assets under `Assets/Scolita/Content/Pictures/` (released: `MapScreen.prefab`, `LessonHud.prefab`, `ProjectSettings.asset`) | emulator-5604 | 2026-11-24 | The human chose (2026-11-25, `local/look/answers.txt`); slice 2 in progress: the chosen art (ChatGPT's), the word pictures, the guide's stand-in |
+| galaxy-map | [galaxy-map](pending/galaxy-map.md) | New: `Scripts/Core/Map`, `Scripts/UI/Map`, `Scripts/Game/Map`, `Tests/EditMode/Map`, `Tests/PlayMode` (map tests), map prefabs under `Prefabs/Map/`, the `map-progress` save; changes: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `Scenes/Lesson.unity` (only if the return needs it), `content/voice-lines.csv` (new rows at the end) and its imported assets, `Localization/` (new keys at the end) | emulator-5602 | 2026-11-25 | Claimed; reading the brief and the done records |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
