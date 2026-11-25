@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Scolita.Core.Languages;
 using Scolita.Game.Rewards;
+using Scolita.Game.Settings;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +15,9 @@ namespace Scolita.UI.Rewards
     /// </summary>
     public sealed class LessonEndScreen : LessonEndView
     {
+        private const string TitleKey = "end-title";
+
         [SerializeField] private TMP_Text title;
-        [SerializeField] private string romanianTitle = "Bravo!";
-        [SerializeField] private string englishTitle = "Well done!";
         [SerializeField] private GameObject constellationGroup;
         [SerializeField] private ConstellationView constellation;
         [SerializeField] private RectTransform flightStart;
@@ -78,7 +78,7 @@ namespace Scolita.UI.Rewards
             shown = end;
             input = rewardsInput;
             shownAt = Time.unscaledTime;
-            title.SetText(end.Language == Language.English ? englishTitle : romanianTitle);
+            title.SetText(AppLocale.TextIn(end.Language, TitleKey));
             constellationGroup.SetActive(end.Constellation != null);
             int flying = end.Constellation == null ? 0 : end.PlaceCount;
             if (end.Constellation != null)

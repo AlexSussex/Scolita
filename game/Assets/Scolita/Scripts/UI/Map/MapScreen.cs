@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Scolita.Core.Languages;
 using Scolita.Core.Map;
+using Scolita.Game.Lessons;
 using Scolita.Game.Map;
+using Scolita.Game.Parent;
 using Scolita.Game.Rewards;
 using Scolita.Game.Voice;
 using Scolita.UI.Lesson;
@@ -15,8 +16,8 @@ namespace Scolita.UI.Map
     /// <summary>
     /// The galaxy map (design/screens.md, screen 1), drawn from Core's <see cref="MapRoute"/>: the rainbow path
     /// across a map that scrolls sideways by drag, a planet per unit with its letters, the stops on the path,
-    /// the rocket on the next stop, the mascot and its bubble, and the big "Hai!" / "Go!"; the trip plays over
-    /// it. Its taps go to <see cref="IMapInput"/> (the Map scene's <c>MapRunner</c>). Everything is placed once
+    /// the rocket on the next stop, the mascot and its bubble, the big "Hai!" / "Go!" (its word from the string tables), and the parent button;
+    /// the trip plays over it. Its taps go to <see cref="IMapInput"/> (the Map scene's <c>MapRunner</c>). Everything is placed once
     /// when the map opens; nothing allocates per frame.
     /// </summary>
     public sealed class MapScreen : MapScreenView
@@ -35,10 +36,9 @@ namespace Scolita.UI.Map
         [SerializeField] private SpeechBubbleView bubble;
         [SerializeField] private Button goButton;
         [SerializeField] private TMP_Text goLabel;
-        [SerializeField] private string romanianGo = "Hai!";
-        [SerializeField] private string englishGo = "Go!";
         [SerializeField] private TripView trip;
         [SerializeField] private RewardsView rewards;
+        [SerializeField] private ParentGateView parentGate;
 
         private readonly List<PlanetView> planets = new List<PlanetView>();
         private readonly List<StopView> stops = new List<StopView>();
@@ -50,6 +50,9 @@ namespace Scolita.UI.Map
 
         /// <inheritdoc/>
         public override RewardsView Rewards => rewards;
+
+        /// <inheritdoc/>
+        public override ParentGateView ParentGate => parentGate;
 
         /// <inheritdoc/>
         public override bool IsTripPlaying => trip.IsPlaying;
@@ -65,6 +68,9 @@ namespace Scolita.UI.Map
 
         /// <summary>Go's word, in the app's language.</summary>
         public string GoWord => goLabel.text;
+
+        /// <summary>The mascot.</summary>
+        public GuideFigure Guide => guide;
 
         /// <summary>The rocket.</summary>
         public RocketView Rocket => rocket;
@@ -83,7 +89,7 @@ namespace Scolita.UI.Map
         }
 
         /// <inheritdoc/>
-        public override void Show(MapRoute route, Language appLanguage)
+        public override void Show(MapRoute route)
         {
             layout = new MapLayout(route.Planets.Select(planet => planet.Stops.Count).ToArray(), layoutSettings);
             content.sizeDelta = new Vector2(layout.Width, content.sizeDelta.y);
@@ -107,7 +113,6 @@ namespace Scolita.UI.Map
                 stops.Add(view);
             }
 
-            goLabel.SetText(appLanguage == Language.English ? englishGo : romanianGo);
             goButton.gameObject.SetActive(route.GoStop != null);
             ScrollTo(route.GoStop);
         }
@@ -145,6 +150,12 @@ namespace Scolita.UI.Map
         public override void Wobble(MapPlanet planet)
         {
             planets[planet.Index].StartWobble();
+        }
+
+        /// <inheritdoc/>
+        public override void ShowResting()
+        {
+            guide.ShowMood(GuideMood.Sleepy);
         }
 
         /// <inheritdoc/>

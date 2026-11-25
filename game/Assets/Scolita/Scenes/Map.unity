@@ -418,6 +418,7 @@ MonoBehaviour:
   constellations: {fileID: 11400000, guid: b204ac1640cf4364ea5e1bd65d223c2d, type: 2}
   trails: {fileID: 11400000, guid: 4632eda073db2af41b137d09a5c90e3d, type: 2}
   rewardRules: {fileID: 11400000, guid: 4c425ba33dacd904c9a0b63e225d2619, type: 2}
+  learningRules: {fileID: 11400000, guid: 310c5ea080032ca40bfef6001167e970, type: 2}
 --- !u!4 &1299258642
 Transform:
   m_ObjectHideFlags: 0

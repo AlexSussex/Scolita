@@ -3,16 +3,19 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
+using Scolita.Core.Parent;
 using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
 using Scolita.Game.Lessons;
+using Scolita.Game.Parent;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Rewards;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
+using Scolita.Game.Timing;
 using Scolita.Game.Voice;
 using UnityEngine;
 
@@ -24,7 +27,9 @@ namespace Scolita.Game.Map
     /// from her settings and her <c>progress</c> (<see cref="ProgressFile"/>), has the screen draw it and bring the rocket (the trip
     /// after a finished planet), says the mascot's lines (<see cref="MapLines"/>), and opens a lesson: Go's,
     /// or a stop she taps, written into <c>lesson-run.json</c> for the Lesson scene unless that already names
-    /// it (so a lesson left half-way resumes at its step).
+    /// it (so a lesson left half-way resumes at its step). It also counts her play time for the daily limit
+    /// (<see cref="PlayClock"/>): at the limit the rocket rests and no lesson opens; and it runs the parent gate
+    /// (<see cref="ParentGateFlow"/>), which opens the Parent scene. Android Back closes the gate or an open book.
     /// </summary>
     public sealed class MapRunner : MonoBehaviour, IMapInput
     {
@@ -41,6 +46,7 @@ namespace Scolita.Game.Map
         [SerializeField] private ConstellationCatalog constellations;
         [SerializeField] private TrailCatalog trails;
         [SerializeField] private RewardRulesAsset rewardRules;
+        [SerializeField] private LearningRulesAsset learningRules;
 
         private SaveStore profileFiles;
         private LearnerProgress progress;
@@ -48,6 +54,10 @@ namespace Scolita.Game.Map
         private MapLines lines;
         private LessonVoice mapVoice;
         private RewardsSession rewards;
+        private PlayClock playClock;
+        private SessionLimit limit;
+        private ParentGateFlow gate;
+        private bool resting;
         private bool opening;
 
         /// <summary>The map as drawn; null before it is built, or when the content has no domain.</summary>
@@ -62,13 +72,27 @@ namespace Scolita.Game.Map
         /// <summary>Her rewards on the map (the bottom bar and its books); null before it is built.</summary>
         public RewardsSession Rewards => rewards;
 
+        /// <summary>The parent gate on this map; null before it is built.</summary>
+        public ParentGateFlow Gate => gate;
+
+        /// <summary>Whether the rocket rests (the daily limit is reached): no lesson opens.</summary>
+        public bool IsResting => resting;
+
         /// <inheritdoc/>
         public void Go()
         {
-            if (route?.GoStop != null && !screen.IsTripPlaying)
+            if (route?.GoStop == null || screen.IsTripPlaying)
             {
-                Open(route.GoStop);
+                return;
             }
+
+            if (resting)
+            {
+                mapVoice.Say(lines.Resting, null);
+                return;
+            }
+
+            Open(route.GoStop);
         }
 
         /// <inheritdoc/>
@@ -76,6 +100,12 @@ namespace Scolita.Game.Map
         {
             if (route == null || screen.IsTripPlaying)
             {
+                return;
+            }
+
+            if (stop.CanOpen && resting)
+            {
+                mapVoice.Say(lines.Resting, null);
                 return;
             }
 
@@ -122,7 +152,7 @@ namespace Scolita.Game.Map
             }
 
             RocketArrived();
-            mapVoice.Say(lines.Landed, null);
+            mapVoice.Say(resting ? lines.Resting : lines.Landed, null);
         }
 
         private void Start()
@@ -130,10 +160,19 @@ namespace Scolita.Game.Map
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
             string saveRoot = Application.persistentDataPath;
-            Language appLanguage = SaveStore.ForTablet(saveRoot)
-                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.AppLanguage;
+            TabletSettingsData tablet = SaveStore.ForTablet(saveRoot)
+                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
+            Language appLanguage = tablet.AppLanguage;
+            voice.SetVolume(tablet.VoiceVolume);
+            AppLocale.Select(appLanguage);
             profileFiles = SaveStore.ForProfile(saveRoot, BuiltInProfiles.FirstChild);
-            LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
+            LearningSettingsData learning = profileFiles.Load(LearningSettingsData.FileName,
+                LearningSettingsData.CreateDefaults()).Data;
+            LanguageMix mix = learning.LanguageMix;
+            ParentRules parentRules = learningRules.ToParentRules();
+            limit = learning.SessionLimitBy(parentRules);
+            playClock = new PlayClock(profileFiles, new SystemClock());
+            resting = playClock.HasReached(limit);
             if (curriculum.Domains.Count == 0)
             {
                 Debug.LogError("Map: the content has no domain, so there is no planet to show.");
@@ -155,7 +194,15 @@ namespace Scolita.Game.Map
             mapVoice.Prepare(curriculum, lines.All);
             voice.PartStarted += OnPartStarted;
             screen.Bind(this);
-            screen.Show(route, appLanguage);
+            screen.Show(route);
+            gate = new ParentGateFlow(new ParentGate(parentRules, new SeededRandom((ulong)System.DateTime.UtcNow.Ticks)),
+                voice.Voice, screen.ParentGate, appLanguage, mapVoice.Silence, OpenParentArea);
+            screen.ParentGate.Bind(gate);
+            if (resting)
+            {
+                screen.ShowResting();
+            }
+
             ShowRewards(curriculum, order);
             Arrive(RocketMove.Between(route, progress.Lessons.RocketStop));
         }
@@ -167,8 +214,24 @@ namespace Scolita.Game.Map
                 return;
             }
 
+            gate.Tick(Time.unscaledDeltaTime);
+            if (AndroidBack.WasPressed())
+            {
+                Back();
+            }
+
             mapVoice.Tick();
             screen.SetTalking(mapVoice.IsSpeaking);
+            if (resting)
+            {
+                return;
+            }
+
+            playClock.Tick(Time.unscaledDeltaTime);
+            if (playClock.HasReached(limit))
+            {
+                Rest();
+            }
         }
 
         private void OnApplicationPause(bool paused)
@@ -180,6 +243,8 @@ namespace Scolita.Game.Map
 
             if (paused)
             {
+                gate.Release();
+                playClock.Save();
                 mapVoice.Pause();
             }
             else
@@ -193,6 +258,7 @@ namespace Scolita.Game.Map
             if (mapVoice != null)
             {
                 voice.PartStarted -= OnPartStarted;
+                playClock.Save();
             }
         }
 
@@ -214,7 +280,7 @@ namespace Scolita.Game.Map
             }
 
             RocketArrived();
-            mapVoice.Say(lines.Greeting, null);
+            mapVoice.Say(resting ? lines.Resting : lines.Greeting, null);
         }
 
         private void RocketArrived()
@@ -251,7 +317,45 @@ namespace Scolita.Game.Map
 
         private void OnPartStarted(VoiceUtterance part)
         {
+            gate.PartStarted(part);
             mapVoice.PartStarted();
+        }
+
+        private void Rest()
+        {
+            resting = true;
+            playClock.Save();
+            screen.ShowResting();
+            if (!gate.IsAsking)
+            {
+                mapVoice.Say(lines.Resting, null);
+            }
+        }
+
+        private void Back()
+        {
+            if (gate.IsAsking)
+            {
+                gate.Close();
+                return;
+            }
+
+            if (rewards.IsBookOpen)
+            {
+                rewards.CloseBook();
+            }
+        }
+
+        private void OpenParentArea()
+        {
+            if (opening)
+            {
+                return;
+            }
+
+            opening = true;
+            playClock.Save();
+            SceneNavigator.Load(AppScene.Parent);
         }
     }
 }

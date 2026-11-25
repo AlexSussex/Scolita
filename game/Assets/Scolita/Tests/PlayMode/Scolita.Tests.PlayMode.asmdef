@@ -7,7 +7,9 @@
         "Scolita.Core",
         "Scolita.Content",
         "Scolita.Game",
-        "Scolita.UI"
+        "Scolita.UI",
+        "Unity.Localization",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

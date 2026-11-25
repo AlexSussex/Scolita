@@ -8,6 +8,7 @@ using Scolita.Core.Map;
 using Scolita.Core.Progress;
 using Scolita.Game.Lessons;
 using Scolita.Game.Map;
+using Scolita.Game.Parent;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Rewards;
@@ -30,7 +31,8 @@ namespace Scolita.Tests.PlayMode.Map
     {
         private static readonly string[] ProfileFiles =
         {
-            ProgressData.FileName, LessonRunData.FileName, LearningSettingsData.FileName, RewardsData.FileName
+            ProgressData.FileName, LessonRunData.FileName, LearningSettingsData.FileName, RewardsData.FileName,
+            PlayTimeData.FileName
         };
 
         /// <summary>The Editor's own profile files the map touches, as they are now (null for a missing one); used by the map tests.</summary>

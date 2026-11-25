@@ -7,7 +7,7 @@ namespace Scolita.UI.Lesson
 {
     /// <summary>
     /// The mascot in a lesson (design/README.md → "The mascot"; the unicorn guide's frames from
-    /// <c>look</c>, standing in for the guide she chooses): happy, thinking or cheering, its mouth
+    /// <c>look</c>, standing in for the guide she chooses): happy, thinking, cheering or sleepy (the map at the daily limit), its mouth
     /// moving while it speaks, floating slowly; tapping it says its last line again. Its frames are
     /// swapped by time in <c>Update</c>, allocating nothing.
     /// </summary>
@@ -21,6 +21,8 @@ namespace Scolita.UI.Lesson
         [SerializeField] private Sprite thinkingTalk;
         [SerializeField] private Sprite cheering0;
         [SerializeField] private Sprite cheering1;
+        [SerializeField] private Sprite sleepy0;
+        [SerializeField] private Sprite sleepy1;
         [SerializeField] private float framesPerSecond = 5f;
         [SerializeField] private float floatPixels = 6f;
         [SerializeField] private float floatsPerSecond = 0.5f;
@@ -76,6 +78,8 @@ namespace Scolita.UI.Lesson
             {
                 case GuideMood.Cheering:
                     return second ? cheering1 : cheering0;
+                case GuideMood.Sleepy:
+                    return second ? sleepy1 : sleepy0;
                 case GuideMood.Thinking:
                     return talking && second ? thinkingTalk : thinkingIdle;
                 default:
