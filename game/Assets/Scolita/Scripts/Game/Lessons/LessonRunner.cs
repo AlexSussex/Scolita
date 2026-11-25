@@ -341,8 +341,8 @@ namespace Scolita.Game.Lessons
             view.Show(run.Current.Round, context);
             screen.ShowProgress(stepsDoneBefore + run.StepIndex, stepsDoneBefore + run.StepCount);
             screen.ShowMood(GuideMood.Happy);
-            lessonVoice.Say(run.CurrentInstruction, null);
             ShowTestInfo("-");
+            lessonVoice.Say(run.CurrentInstruction, null);
             SaveWhereSheIs();
         }
 
