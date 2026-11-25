@@ -1,6 +1,6 @@
 # Task: feature/look
 
-> **Status: In progress (look).** Decisions answered
+> **Status: Done (look, 2026-11-25), released as 0.9.0.** Decisions answered
 > 2026-11-24: D5 the unicorn astronaut, named by her, with her purple cat
 > as the co-pilot; build the guide as data (its poses and moods as art in
 > a catalog), so more guides later are art only (`feature/guides`); D6 the

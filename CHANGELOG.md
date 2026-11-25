@@ -18,6 +18,54 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.9.0 (2026-11-25)
+
+The look. The art her parents chose: ChatGPT's purple sky, planets with faces, the rocket, the
+moon and the Earth, her purple cat in a space helmet, 14 profile pictures, 18 stickers, the
+app's icon and pictures for 40 words. The agents drew the rest: the cards, the buttons, the
+writing board, the badges, the rainbow path. The sky, the icon, the word pictures and the
+lesson's planets show now. The map, the profiles and the sticker book use the rest when they
+come. The unicorn guide is a stand-in until its full astronaut body is made.
+
+- **For the child:**
+  - **A starry purple sky** behind the map and every lesson.
+  - **The unicorn astronaut** on the map and in the lessons: a round stand-in for now, until
+    the chosen unicorn gets its full body.
+  - **Pictures for 40 words** of planets 1–3 instead of plain circles: in Romanian mama, tata,
+    pat, apă, nas, masa, pian, sat, dinte, stea, panda, pom, pod, pin, mop, ponei, mops,
+    pisoi, piton, stop, tenis, domino, patine, nota, nod, rachetă, planetă, nani (a sleeping
+    moon); in English map, mat, tap, pin, man, tin, sit, pen, dot, ten, pod, moon.
+  - **One letter, two sounds** has a gold Romanian planet and a blue English planet, with faces.
+  - **The home button** is a house; **Hai!** is a big yellow button.
+- **For the parent:** the launcher shows the unicorn astronaut's icon.
+
+### Technical notes
+
+- **The art:** `game/Assets/Scolita/Art/`, one sprite atlas per folder, each fitting one page:
+  Sky, Map, Planets, Trip, Path, Effects, Guides, Badges, Board, UI, Stickers, Constellations,
+  Avatars. `Art/SOURCE.md` says which pictures are ChatGPT's (the human's) and which the agents
+  drew.
+- **For `galaxy-map`:** the chosen planets are whole pictures in `Planets/`, and the rocket's
+  six pictures are in `Trip/`. The old planet parts and rocket stay in `Map/` until
+  `galaxy-map` has switched.
+- **The tools:**
+  - `node design/art/build.mjs` redraws the agents' art.
+  - `node design/art/import-drafts.mjs` cuts the chosen parts of the ChatGPT sheets kept in
+    `local/art-inbox/`, as `design/art/drafts.json` lists them.
+  - Școlița → Rebuild sprite atlases rebuilds the atlases.
+- **Content:** 40 pictures in `content/pictures/` and `pictures.csv`; 48 still have
+  placeholders. No new ids.
+- **Prefabs:** the map, the lesson HUD and `TwoSoundsView` show the art. `TwoSoundsView`'s
+  planets are whole pictures (its face and ring objects removed).
+- **The launcher icon** is adaptive (two layers).
+- **No package, save-format or voice-line change.**
+- **For the human:**
+  - Make the guide's full body (and 12 more stickers, and the 48 missing word pictures) with
+    ChatGPT: step 8 in `local/for-human-next-steps.md`, prompts in
+    `local/art-prompts/look-guide-body.md`.
+  - The badges stay as they are for now.
+- **The brief:** [`tasks/done/look.md`](tasks/done/look.md).
+
 ## 0.8.1 (2026-11-25)
 
 Planets 2 and 3. After planet 1 (a m t p) come s i n and o d e, each letter in Romanian and in English, with the same

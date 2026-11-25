@@ -68,7 +68,7 @@ Each brief file therefore reads, top to bottom:
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
-| 16 | `feature/look` | In progress (look) | [pending/look.md](pending/look.md) |
+| 16 | `feature/look` | Done 2026-11-25 (0.9.0; the chosen art; the guide's full body is a ChatGPT round for the human) | [done/look.md](done/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
 | 18 | `feature/content-ledger` | Done 2026-11-24, released as 0.3.1 (a chore from `content-model`'s follow-ups) | [done/content-ledger.md](done/content-ledger.md) |
 
@@ -99,13 +99,12 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| look | [look](pending/look.md) | `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`, `design/README.md`; for the word pictures: `content/pictures.csv` and the picture assets under `Assets/Scolita/Content/Pictures/` (released: `MapScreen.prefab`, `LessonHud.prefab`, `ProjectSettings.asset`) | emulator-5604 | 2026-11-24 | The human chose (2026-11-25, `local/look/answers.txt`); slice 2 in progress: the chosen art (ChatGPT's), the word pictures, the guide's stand-in |
 | galaxy-map | [galaxy-map](pending/galaxy-map.md) | New: `Scripts/Core/Map`, `Scripts/UI/Map`, `Scripts/Game/Map`, `Tests/EditMode/Map`, `Tests/PlayMode` (map tests), map prefabs under `Prefabs/Map/`, the `map-progress` save; changes: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `Scenes/Lesson.unity` (only if the return needs it), `content/voice-lines.csv` (new rows at the end) and its imported assets, `Localization/` (new keys at the end) | emulator-5602 | 2026-11-25 | Claimed; reading the brief and the done records |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `content-letters-1` (planets 2–3, release 0.8.1)._
+_Last updated 2026-11-25 by agent `look` (the look, release 0.9.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -175,6 +174,16 @@ _Update this section whenever a slice is pushed or a brief is finished._
   2–3) can follow `tracing`'s stroke format. `curriculum-research-2` (docs
   only) can start whenever the human says. The human: try 0.6.0 on the
   tablet (`local/for-human-next-steps.md`).
+
+- **Done 2026-11-25:** `look`, release 0.9.0. The art the human chose:
+  ChatGPT's sky, planets (whole pictures in `Art/Planets/`), rocket
+  (`Art/Trip/`), moon and Earth, the cat co-pilot, 13 avatars, 18 stickers, the
+  icon and 40 word pictures, cut in by `design/art/import-drafts.mjs`. The
+  agents drew the board, the UI kit, the badges, the path, the stops and the
+  guide's stand-in. One atlas per art folder, each a page (`ArtTests`). The
+  guide's full body is a ChatGPT round for the human; `galaxy-map` switches to
+  `Planets/` and `Trip/`, then the old parts in `Map/` go
+  (`tasks/done/look.md`, follow-ups).
 
 ### Open follow-ups across briefs
 

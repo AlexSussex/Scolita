@@ -39,6 +39,22 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.9.0 (2026-11-25): the look
+
+On the tablet, with the 0.9.0 APK (the debug one is `local/apks/Scolita-0.9.0-debug.apk`). The
+art you chose: the sky, the word pictures, the lesson's planets and the icon show now. The
+rocket, the planets on the map, the profile pictures and the stickers wait for their screens.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.9.0-1 | The launcher | Look for Școlița among the apps | The unicorn astronaut (ChatGPT's) on purple, inside the launcher's circle, its horn not cut off | |
+| 0.9.0-2 | The map | Open the app | ChatGPT's starry purple sky; the round unicorn (the stand-in) top left; the big yellow **Hai!** with its darker lip | |
+| 0.9.0-3 | A lesson | Tap **Hai!** | The same sky behind the cards; the home button is a cream square with a house | |
+| 0.9.0-4 | `ro-m`'s last step (the first sound of mama), then `en-m` (meet m) | Look at the pictures | mama: a smiling mum; moon: a smiling crescent moon; not plain circles | |
+| 0.9.0-5 | The two sounds of a (`en-a`, its second step) | Look at the two planets | A gold planet with a ring for Romanian, a blue one with gold stars for English, both awake with faces, each standing above its tray | |
+| 0.9.0-6 | Any word lesson of planets 1–3 | Look at the pictures | Each picture matches its word (a bed for pat, a pug for mops, a pony for ponei). „nas” (a boy's head) and „dot” (a pink blob) are to be redrawn: do they confuse her? | |
+| 0.9.0-7 | Any lesson | Look at the guide | The round unicorn stands in. The chosen unicorn with a full body comes after you make it (step 8 in your next steps) | |
+
 ### 0.8.1 (2026-11-25): planets 2 and 3
 
 On the tablet, with the 0.8.1 APK (the debug one is `local/apks/Scolita-0.8.1-debug.apk`). Planets 2–3 come after
