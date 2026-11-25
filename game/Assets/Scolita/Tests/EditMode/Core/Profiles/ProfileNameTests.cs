@@ -94,5 +94,17 @@ namespace Scolita.Tests.EditMode.Core.Profiles
             Assert.That(tooLong, Is.EqualTo(ProfileNameProblem.TooLong));
             Assert.That(refused.IsNone, Is.True);
         }
+
+        /// <summary>Tests that <see cref="ProfileName.ReadSaved"/> keeps a saved name of any length, and still refuses what isn't letters.</summary>
+        [Test]
+        public void TestReadSaved_NoLengthLimit()
+        {
+            ProfileNameProblem saved = ProfileName.ReadSaved("Alexandra-Ioana Elena Maria", out ProfileName name);
+            ProfileNameProblem notLetters = ProfileName.ReadSaved("Ana1", out ProfileName _);
+
+            Assert.That(saved, Is.EqualTo(ProfileNameProblem.None));
+            Assert.That(name.Text, Is.EqualTo("Alexandra-Ioana Elena Maria"));
+            Assert.That(notLetters, Is.EqualTo(ProfileNameProblem.NotLetters));
+        }
     }
 }

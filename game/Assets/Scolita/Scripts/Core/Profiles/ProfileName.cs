@@ -50,6 +50,21 @@ namespace Scolita.Core.Profiles
                 throw new ArgumentNullException(nameof(rules));
             }
 
+            return Parse(typed, rules.NameMostCharacters, out name);
+        }
+
+        /// <summary>
+        /// Reads a name saved by any version of the app, as <see cref="Read"/> but without today's length limit (a later
+        /// release with a lower limit never erases a saved name). Called by the profile list's loading and
+        /// <c>ProfileNameTests</c>.
+        /// </summary>
+        public static ProfileNameProblem ReadSaved(string saved, out ProfileName name)
+        {
+            return Parse(saved, int.MaxValue, out name);
+        }
+
+        private static ProfileNameProblem Parse(string typed, int mostCharacters, out ProfileName name)
+        {
             name = None;
             string tidy = Tidy(typed);
             if (tidy.Length == 0)
@@ -62,7 +77,7 @@ namespace Scolita.Core.Profiles
                 return ProfileNameProblem.NotLetters;
             }
 
-            if (tidy.Length > rules.NameMostCharacters)
+            if (tidy.Length > mostCharacters)
             {
                 return ProfileNameProblem.TooLong;
             }

@@ -258,13 +258,33 @@ namespace Scolita.Tests.EditMode.Core.Profiles
             Assert.That(ProfileList.IsIdOfKind(ProfileList.TesterId, ProfileKind.Tester), Is.True);
         }
 
+        /// <summary>
+        /// Tests that a next number too high to be an id reads as the highest child's plus one, and that
+        /// <see cref="ProfileList.KeepIdsAbove"/> raises it above every child folder.
+        /// </summary>
+        [Test]
+        public void TestNextChildNumber_AlwaysAnIdAndAboveTheFolders()
+        {
+            CalendarDay day = CalendarDay.FromDate(2026, 11, 25);
+            Profile child = new Profile(ProfileId.Create("child-4"), ProfileName.None, Avatar("cat"), ProfileKind.Child, day);
+
+            ProfileList list = new ProfileList(new[] { child }, default, default, int.MaxValue, TestProfileRules.Default());
+            int afterTheList = list.NextChildNumber;
+            list.KeepIdsAbove(new[] { "child-1", "child-9", "tester", "child-09" }.Select(ProfileId.Create));
+
+            Assert.That(afterTheList, Is.EqualTo(5));
+            Assert.That(list.NextChildNumber, Is.EqualTo(10));
+            Assert.That(list.AddChild(ProfileName.None, Avatar("dog"), day).Id.Value, Is.EqualTo("child-10"));
+        }
+
         /// <summary>Tests that <see cref="ProfileRules"/> refuses numbers out of their range.</summary>
         [Test]
         public void TestRules_RefuseNumbersOutOfRange()
         {
             Assert.That(() => new ProfileRules(1, 20), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new ProfileRules(7, 20), Throws.InstanceOf<ArgumentOutOfRangeException>());
-            Assert.That(() => new ProfileRules(6, 1), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new ProfileRules(6, 19), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new ProfileRules(6, 41), Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         private static ProfileList NewInstall()

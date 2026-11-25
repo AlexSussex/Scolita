@@ -17,6 +17,9 @@ namespace Scolita.Core.Profiles
     /// </summary>
     public sealed class ProfileList
     {
+        /// <summary>The highest number a child's id can have (<c>child-999999</c>).</summary>
+        public const int HighestChildNumber = 999999;
+
         private const string ChildIdPrefix = "child-";
 
         private readonly List<Profile> profiles;
@@ -58,7 +61,8 @@ namespace Scolita.Core.Profiles
 
             LastChild = Find(lastChild)?.IsChild == true ? lastChild : default;
             Playing = Find(playing) != null ? playing : default;
-            NextChildNumber = Math.Max(Math.Max(1, nextChildNumber), HighestChildNumber(this.profiles) + 1);
+            int highest = HighestNumberOf(this.profiles.Select(profile => profile.Id));
+            NextChildNumber = nextChildNumber > HighestChildNumber ? highest + 1 : Math.Max(Math.Max(1, nextChildNumber), highest + 1);
         }
 
         /// <summary>The id of the tester's profile.</summary>
@@ -153,7 +157,21 @@ namespace Scolita.Core.Profiles
             return IdFits(id, kind);
         }
 
-        /// <summary>Finds the profile <paramref name="id"/>; false when the list has none (or the id isn't set).</summary>
+        /// <summary>
+        /// Raises <see cref="NextChildNumber"/> above every <c>child-&lt;n&gt;</c> of <paramref name="folders"/> (the profile
+        /// folders on the tablet), so a new child never gets the id of a folder left behind (a profile whose files could
+        /// not all be deleted, or one a damaged list lost). Called by the profile store when it loads the list, and the
+        /// tests.
+        /// </summary>
+        public void KeepIdsAbove(IEnumerable<ProfileId> folders)
+        {
+            NextChildNumber = Math.Max(NextChildNumber, HighestNumberOf(folders ?? Enumerable.Empty<ProfileId>()) + 1);
+        }
+
+        /// <summary>
+        /// Finds the profile <paramref name="id"/>; false when the list has none (or the id isn't set). Called by every
+        /// scene's composition root and the tests.
+        /// </summary>
         public bool TryGet(ProfileId id, out Profile profile)
         {
             profile = Find(id);
@@ -197,6 +215,11 @@ namespace Scolita.Core.Profiles
             }
 
             RequireFree(avatar, default);
+            if (NextChildNumber > HighestChildNumber)
+            {
+                throw new InvalidOperationException("A child's id can't go above child-" + HighestChildNumber + ".");
+            }
+
             Profile child = new Profile(ChildId(NextChildNumber), name, avatar, ProfileKind.Child, day);
             NextChildNumber++;
             profiles.Add(child);
@@ -311,9 +334,9 @@ namespace Scolita.Core.Profiles
             return kind == ProfileKind.Tester ? id == TesterId : ChildNumberOf(id) > 0;
         }
 
-        private static int HighestChildNumber(IEnumerable<Profile> profiles)
+        private static int HighestNumberOf(IEnumerable<ProfileId> ids)
         {
-            return profiles.Select(profile => ChildNumberOf(profile.Id)).DefaultIfEmpty(0).Max();
+            return ids.Select(ChildNumberOf).DefaultIfEmpty(0).Max();
         }
 
         private static ContentId FirstFree(IEnumerable<Profile> profiles, IReadOnlyList<ContentId> offered)
