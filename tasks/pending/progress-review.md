@@ -1,6 +1,6 @@
 # Task: feature/progress-review
 
-> **Status: Ready after `activities-words`, `handwriting` and `galaxy-map`.** Decision D1
+> **Status: In progress (progress-review).** Decision D1
 > (the language mix) is read from the settings. The human, 2026-11-24 (Q1):
 > each damaged save is kept, dated (`<name>.broken-<date-time>.json`), never
 > replaced by the next, and removed by themselves once a newer version has
