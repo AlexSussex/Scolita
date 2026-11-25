@@ -1,0 +1,260 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: App Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: App
+  m_TableCollectionNameGuidString: ee8b3c5d63fa2864f873169ff6cfe091
+  m_Entries:
+  - m_Id: 1473302528
+    m_Key: go
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1645268992
+    m_Key: parent-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463296
+    m_Key: parent-version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463297
+    m_Key: learned-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463298
+    m_Key: legend-learned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463299
+    m_Key: legend-learning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463300
+    m_Key: legend-new
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463301
+    m_Key: language-ro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463302
+    m_Key: language-en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463303
+    m_Key: days-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463304
+    m_Key: next-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463305
+    m_Key: next-letter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463306
+    m_Key: next-practice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463307
+    m_Key: next-in-ro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463308
+    m_Key: next-in-en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463309
+    m_Key: next-in-both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463310
+    m_Key: next-none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463311
+    m_Key: voices-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463312
+    m_Key: voices-status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463313
+    m_Key: settings-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463314
+    m_Key: mix-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463315
+    m_Key: mix-both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463316
+    m_Key: mix-ro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463317
+    m_Key: mix-en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463318
+    m_Key: limit-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463319
+    m_Key: limit-off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463320
+    m_Key: limit-minutes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463321
+    m_Key: limit-note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463322
+    m_Key: voice-volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463323
+    m_Key: menus-in-english
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463324
+    m_Key: reset-button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463325
+    m_Key: reset-first-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463326
+    m_Key: reset-first-body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463327
+    m_Key: reset-second-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463328
+    m_Key: reset-second-body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463329
+    m_Key: reset-no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463330
+    m_Key: reset-first-yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463331
+    m_Key: reset-second-yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463332
+    m_Key: reset-done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463333
+    m_Key: gate-ask
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463334
+    m_Key: gate-ask-digits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463335
+    m_Key: gate-listen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463336
+    m_Key: number-11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463337
+    m_Key: number-12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463338
+    m_Key: number-13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463339
+    m_Key: number-14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463340
+    m_Key: number-15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463341
+    m_Key: number-16
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463342
+    m_Key: number-17
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463343
+    m_Key: number-18
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463344
+    m_Key: number-19
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593630437376
+    m_Key: bar-sky
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072192
+    m_Key: bar-stickers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072193
+    m_Key: bar-trails
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072194
+    m_Key: end-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072195
+    m_Key: end-next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072196
+    m_Key: end-my-book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8785503506432
+    m_Key: reset-failed
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2598031111010385944
+  references:
+    version: 2
+    RefIds:
+    - rid: 2598031111010385944
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1795629902345

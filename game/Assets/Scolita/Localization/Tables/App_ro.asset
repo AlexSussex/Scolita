@@ -1,0 +1,260 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: App_ro
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: ro
+  m_SharedData: {fileID: 11400000, guid: ee8b3c5d63fa2864f873169ff6cfe091, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1473302528
+    m_Localized: Hai!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1645268992
+    m_Localized: "Pentru p\u0103rin\u021Bi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463296
+    m_Localized: Versiunea {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463297
+    m_Localized: "Ce a \xEEnv\u0103\u021Bat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463298
+    m_Localized: "\xEEnv\u0103\u021Bat\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463299
+    m_Localized: "\xEEn lucru"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463300
+    m_Localized: "nou\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463301
+    m_Localized: "Rom\xE2n\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463302
+    m_Localized: "Englez\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463303
+    m_Localized: "Zile \xEEn care a jucat (ultimele 2 s\u0103pt\u0103m\xE2ni)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463304
+    m_Localized: "Urmeaz\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463305
+    m_Localized: 'Planeta {0}: litera {1}, {2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463306
+    m_Localized: 'Planeta {0}: exersare, {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463307
+    m_Localized: "\xEEn rom\xE2n\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463308
+    m_Localized: "\xEEn englez\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463309
+    m_Localized: "\xEEn ambele limbi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463310
+    m_Localized: "Toate lec\u021Biile sunt f\u0103cute."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463311
+    m_Localized: "Vocile \xEEnregistrate"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463312
+    m_Localized: "Rom\xE2n\u0103: {0} din {1} \xB7 Englez\u0103: {2} din {3}. Restul
+      \xEEl spune vocea tabletei."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463313
+    m_Localized: "Set\u0103ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463314
+    m_Localized: "Limbile lec\u021Biilor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463315
+    m_Localized: "Am\xE2ndou\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463316
+    m_Localized: "Doar rom\xE2n\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463317
+    m_Localized: "Doar englez\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463318
+    m_Localized: "Limit\u0103 de timp pe zi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463319
+    m_Localized: "F\u0103r\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463320
+    m_Localized: '{0} min'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463321
+    m_Localized: "Lec\u021Bia \xEEnceput\u0103 se termin\u0103 mereu; apoi racheta
+      se odihne\u0219te p\xE2n\u0103 m\xE2ine."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463322
+    m_Localized: Vocea
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463323
+    m_Localized: "Meniurile \xEEn englez\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463324
+    m_Localized: "\u0218terge progresul\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463325
+    m_Localized: "\u0218tergi progresul?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463326
+    m_Localized: "Se pierd literele \xEEnv\u0103\u021Bate, lec\u021Biile f\u0103cute,
+      locul de pe hart\u0103, stelele, ab\u021Bibildurile \u0219i d\xE2rele. Set\u0103rile
+      r\u0103m\xE2n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463327
+    m_Localized: Sigur?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463328
+    m_Localized: "Progresul nu se mai poate aduce \xEEnapoi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463329
+    m_Localized: "Nu, p\u0103streaz\u0103-l"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463330
+    m_Localized: "Da, \u0219terge"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463331
+    m_Localized: "\u0218terge tot"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463332
+    m_Localized: "Progresul a fost \u0219ters."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463333
+    m_Localized: "Atinge num\u0103rul pe care \xEEl auzi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463334
+    m_Localized: "Atinge num\u0103rul {0}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463335
+    m_Localized: "Ascult\u0103 din nou"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463336
+    m_Localized: unsprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463337
+    m_Localized: doisprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463338
+    m_Localized: treisprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463339
+    m_Localized: paisprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463340
+    m_Localized: cincisprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463341
+    m_Localized: "\u0219aisprezece"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463342
+    m_Localized: "\u0219aptesprezece"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463343
+    m_Localized: optsprezece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463344
+    m_Localized: "nou\u0103sprezece"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593630437376
+    m_Localized: Cerul meu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072192
+    m_Localized: "Ab\u021Bibilduri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072193
+    m_Localized: "D\xE2re"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072194
+    m_Localized: Bravo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072195
+    m_Localized: Mai departe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072196
+    m_Localized: "\xCEn cartea mea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8785503506432
+    m_Localized: "Progresul nu a putut fi \u0219ters de tot. \xCEncearc\u0103 din
+      nou."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

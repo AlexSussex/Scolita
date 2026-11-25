@@ -15,5 +15,7 @@ EditorBuildSettings:
     path: Assets/Scolita/Scenes/Lesson.unity
     guid: 9c261baa6e5b3c8439ca46fcc3f886ea
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 6cb21f19195777648a0b3588e58c333e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: 9ff53516ec685984da18737f441112b8, type: 2}
   m_UseUCBPForAssetBundles: 0

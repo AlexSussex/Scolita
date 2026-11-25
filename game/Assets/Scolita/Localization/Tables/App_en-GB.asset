@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: App_en-GB
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en-GB
+  m_SharedData: {fileID: 11400000, guid: ee8b3c5d63fa2864f873169ff6cfe091, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1473302528
+    m_Localized: Go!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1645268992
+    m_Localized: For parents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463296
+    m_Localized: Version {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463297
+    m_Localized: What has been learned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463298
+    m_Localized: learned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463299
+    m_Localized: learning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463300
+    m_Localized: new
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463301
+    m_Localized: Romanian
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463302
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463303
+    m_Localized: Days played (the last 2 weeks)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463304
+    m_Localized: Coming next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463305
+    m_Localized: 'Planet {0}: the letter {1}, {2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463306
+    m_Localized: 'Planet {0}: practice, {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463307
+    m_Localized: in Romanian
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463308
+    m_Localized: in English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463309
+    m_Localized: in both languages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463310
+    m_Localized: Every lesson is done.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463311
+    m_Localized: Recorded voices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463312
+    m_Localized: "Romanian: {0} of {1} \xB7 English: {2} of {3}. The tablet's voice
+      says the rest."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463313
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463314
+    m_Localized: The lessons' languages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463315
+    m_Localized: Both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463316
+    m_Localized: Romanian only
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463317
+    m_Localized: English only
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463318
+    m_Localized: Time limit per day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463319
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463320
+    m_Localized: '{0} min'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463321
+    m_Localized: A lesson that has begun always finishes; then the rocket rests until
+      tomorrow.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463322
+    m_Localized: Voice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463323
+    m_Localized: Menus in English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463324
+    m_Localized: "Delete the progress\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463325
+    m_Localized: Delete the progress?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463326
+    m_Localized: The letters learned, the lessons done, the place on the map, the
+      stars, the stickers and the trails are lost. The settings stay.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463327
+    m_Localized: Are you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463328
+    m_Localized: The progress can't be brought back.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463329
+    m_Localized: No, keep it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463330
+    m_Localized: Yes, delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463331
+    m_Localized: Delete everything
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463332
+    m_Localized: The progress has been deleted.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463333
+    m_Localized: Tap the number you hear.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463334
+    m_Localized: Tap the number {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463335
+    m_Localized: Listen again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463336
+    m_Localized: eleven
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463337
+    m_Localized: twelve
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463338
+    m_Localized: thirteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463339
+    m_Localized: fourteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463340
+    m_Localized: fifteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463341
+    m_Localized: sixteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463342
+    m_Localized: seventeen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463343
+    m_Localized: eighteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1649463344
+    m_Localized: nineteen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593630437376
+    m_Localized: My sky
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072192
+    m_Localized: Stickers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072193
+    m_Localized: Trails
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072194
+    m_Localized: Well done!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072195
+    m_Localized: Keep going
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3593752072196
+    m_Localized: In my book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8785503506432
+    m_Localized: The progress could not all be deleted. Try again.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

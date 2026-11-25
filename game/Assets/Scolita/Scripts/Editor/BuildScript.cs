@@ -19,7 +19,8 @@ namespace Scolita.Editor
     /// and removed from the process at the start of every build (Unity prints the whole environment
     /// to the log when Gradle fails), and a release build hands the key to Gradle through a
     /// <see cref="GradleSigningFile"/>, deleted afterwards. Every APK is checked not to ask for the
-    /// internet, and a release APK to be signed with the release key and not debuggable.
+    /// internet, and a release APK to be signed with the release key and not debuggable. The Editor switches to the
+    /// Android build target first, so the string tables' Addressables are built for Android.
     /// </summary>
     public static class BuildScript
     {
@@ -72,6 +73,7 @@ namespace Scolita.Editor
             }
 
             ReleaseSigning signing = TakeSigningVariables(kind);
+            RequireAndroidTarget();
             string projectFolder = Directory.GetParent(Application.dataPath).FullName;
             AppVersion version = AppVersion.ReadFile(
                 Path.Combine(Directory.GetParent(projectFolder).FullName, VersionFileName));
@@ -138,6 +140,24 @@ namespace Scolita.Editor
             if (cleanupFailure != null)
             {
                 throw cleanupFailure;
+            }
+        }
+
+        /// <summary>
+        /// Switches the Editor to the Android build target: the string tables' Addressables are built with the player for
+        /// the active build target and their paths name it, and a fresh checkout opens on the desktop target. Called by
+        /// <see cref="BuildApk"/>.
+        /// </summary>
+        private static void RequireAndroidTarget()
+        {
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+                return;
+            }
+
+            if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android))
+            {
+                throw new BuildFailedException("The Editor could not switch its build target to Android.");
             }
         }
 
