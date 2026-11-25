@@ -93,8 +93,26 @@ namespace Scolita.Core.Content
             }
         }
 
+        /// <summary>
+        /// Reads the CSV <paramref name="fileName"/> of <paramref name="textsByFileName"/>, whose header must have
+        /// exactly <paramref name="columns"/>, checking every cell's spelling (no cedilla) and handing each row to
+        /// <paramref name="readRow"/>; a missing file, a missing or unknown column and a cedilla are reported into
+        /// <paramref name="problems"/>. Called by <c>RewardTables</c> for the rewards' files.
+        /// </summary>
+        public static void ReadTable(IReadOnlyDictionary<string, string> textsByFileName, string fileName,
+            IReadOnlyList<string> columns, ContentProblems problems, Action<CsvTable, CsvRow> readRow)
+        {
+            ReadRows(textsByFileName, fileName, columns, problems, readRow);
+        }
+
         private static void ReadTable(IReadOnlyDictionary<string, string> textsByFileName, string fileName,
             ContentProblems problems, Action<CsvTable, CsvRow> readRow)
+        {
+            ReadRows(textsByFileName, fileName, ColumnsByFile[fileName], problems, readRow);
+        }
+
+        private static void ReadRows(IReadOnlyDictionary<string, string> textsByFileName, string fileName,
+            IReadOnlyList<string> columns, ContentProblems problems, Action<CsvTable, CsvRow> readRow)
         {
             if (!textsByFileName.TryGetValue(fileName, out string text))
             {
@@ -103,7 +121,7 @@ namespace Scolita.Core.Content
             }
 
             CsvTable table = CsvReader.Read(fileName, text, problems);
-            CheckColumns(table, ColumnsByFile[fileName], problems);
+            CheckColumns(table, columns, problems);
             foreach (CsvRow row in table.Rows)
             {
                 CheckSpelling(table, row, problems);

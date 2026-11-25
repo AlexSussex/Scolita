@@ -26,10 +26,19 @@ namespace Scolita.Core.Content
         /// <summary>The lessons' steps, one row each.</summary>
         public const string Steps = "steps.csv";
 
-        /// <summary>Every file, in the order they are read; called by the importer and <c>ContentTables</c>.</summary>
+        /// <summary>The stickers for her sticker book (<c>Scolita.Core.Rewards</c>).</summary>
+        public const string Stickers = "stickers.csv";
+
+        /// <summary>The planets' constellations in her sky book (<c>Scolita.Core.Rewards</c>).</summary>
+        public const string Constellations = "constellations.csv";
+
+        /// <summary>The rocket's trails, in the order they are earned (<c>Scolita.Core.Rewards</c>).</summary>
+        public const string Trails = "trails.csv";
+
+        /// <summary>Every file, in the order they are read; called by the importer, <c>ContentTables</c> and <c>RewardTables</c>.</summary>
         public static IReadOnlyList<string> All { get; } = new[]
         {
-            Letters, Words, Pictures, VoiceLines, Units, Lessons, Steps
+            Letters, Words, Pictures, VoiceLines, Units, Lessons, Steps, Stickers, Constellations, Trails
         };
     }
 }

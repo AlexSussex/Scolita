@@ -7,8 +7,8 @@ using Scolita.Core.Content.Rules;
 namespace Scolita.Tests.EditMode.Fakes
 {
     /// <summary>
-    /// A small, valid set of the seven content CSVs (three letters, seven words, one planet in both
-    /// languages) for the content tests, and helpers to break one thing in it and check it. Each
+    /// A small, valid set of the content CSVs (three letters, seven words, one planet in both
+    /// languages, its constellation, two stickers and two trails) for the content tests, and helpers to break one thing in it and check it. Each
     /// test takes its own copy from <see cref="Valid"/>.
     /// </summary>
     public static class ContentCsvs
@@ -125,7 +125,35 @@ namespace Scolita.Tests.EditMode.Fakes
             + "ro-line-praise-1,ro,line,\"Bravo, ai reu\u0219it!\",,,\n"
             + "en-line-praise-1,en,line,\"Well done, you did it!\",,,\n"
             + "ro-line-praise-2,ro,line,E\u0219ti o stea!,,,\n"
-            + "en-line-praise-2,en,line,You're a star!,,,\n";
+            + "en-line-praise-2,en,line,You're a star!,,,\n"
+            + "ro-line-stars-unicorn,ro,line,Bravo! Ai aprins 3 stele \u00EEn constela\u021Bia Unicornului.,,,\n"
+            + "en-line-stars-unicorn,en,line,Well done! You lit 3 stars in the Unicorn constellation.,,,\n"
+            + "ro-line-constellation-unicorn,ro,line,Aceasta este constela\u021Bia Unicornului.,,,\n"
+            + "en-line-constellation-unicorn,en,line,This is the Unicorn constellation.,,,\n"
+            + "ro-line-sticker,ro,line,Ai c\u00E2\u0219tigat un ab\u021Bibild!,,,\n"
+            + "en-line-sticker,en,line,You got a sticker!,,,\n"
+            + "ro-line-trail,ro,line,Ai c\u00E2\u0219tigat o d\u00E2r\u0103 nou\u0103 pentru rachet\u0103!,,,\n"
+            + "en-line-trail,en,line,You got a new trail for the rocket!,,,\n"
+            + "ro-line-sky-book,ro,line,Acestea sunt constela\u021Biile tale.,,,\n"
+            + "en-line-sky-book,en,line,These are your constellations.,,,\n"
+            + "ro-line-sticker-book,ro,line,Trage ab\u021Bibildurile pe P\u0103m\u00E2nt.,,,\n"
+            + "en-line-sticker-book,en,line,Drag your stickers onto the Earth.,,,\n"
+            + "ro-line-trail-picker,ro,line,Alege d\u00E2ra rachetei.,,,\n"
+            + "en-line-trail-picker,en,line,Choose the rocket's trail.,,,\n";
+
+        private const string Stickers =
+            "id,retired,notes\n"
+            + "guitar,,\n"
+            + "whale-rainbow,,\n";
+
+        private const string Constellations =
+            "id,unit,stars,lines,retired,notes\n"
+            + "unicorn,planet-1,470:56 418:150 356:146 282:182,1-2 2-3 3-4,,\n";
+
+        private const string Trails =
+            "id,retired,notes\n"
+            + "rainbow,,\n"
+            + "stars,,\n";
 
         private const string Units =
             "id,domain,retired,notes\n"
@@ -227,6 +255,9 @@ namespace Scolita.Tests.EditMode.Fakes
                 { ContentFileNames.Units, Units },
                 { ContentFileNames.Lessons, Lessons },
                 { ContentFileNames.Steps, Steps },
+                { ContentFileNames.Stickers, Stickers },
+                { ContentFileNames.Constellations, Constellations },
+                { ContentFileNames.Trails, Trails },
                 { ShapeFileName, Shape }
             };
         }
