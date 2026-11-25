@@ -6,7 +6,7 @@ namespace Scolita.Core.Audio
     /// </summary>
     public enum SoundCue
     {
-        /// <summary>A soft tick: a tap that isn't an answer, a stop or a planet that opens.</summary>
+        /// <summary>A soft tick: an awake planet tapped on the map, the sounds slider let go.</summary>
         Tap,
 
         /// <summary>A right answer, and the step goes on.</summary>
