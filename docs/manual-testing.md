@@ -39,6 +39,27 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.8.0 (2026-11-25): writing by hand
+
+On the tablet, with the 0.8.0 APK (the debug one is `local/apks/Scolita-0.8.0-debug.apk`; or
+README → "Build a release APK" from tag `v0.8.0`, then "Install on the tablet"). Play from the
+map with **Hai!**: the letter by hand comes right after the print one in a Romanian letter
+lesson (`ro-a` first); the words by hand end `ro-words-1` and `en-words-1`. Write with one
+finger. If the tablet's voices aren't installed, the lines show in the bubble only.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.8.0-1 | Meeting a letter (`ro-a`, first step) | Look between the letter card and the picture; tap the small card | A small cream card with the a by hand (and the RO star). The tap: the a writes itself again, „Uite cum se scrie litera de mână.” | |
+| 0.8.0-2 | The letter by hand (`ro-a`, after the print a) | Look, then tap the unicorn | The board with four lines (dashed top, solid middle, solid baseline, dashed bottom) and faint slanted lines; a dotted, leaning a; dot "1" on the baseline at the left, the yellow arrow up. „Scrie litera de mână. Linia de jos: de aici pornești. Începe de la punct și urmează săgeata.” | |
+| 0.8.0-3 | The a by hand, round 1 | Write the whole a without lifting: up from dot 1, over the top and back round, then down the stem and out to the right | The rainbow trail stays; „Bravo, ai scris litera a de mână! Acum scrie pe umbră.”; the second star lights. (Lifting after the up stroke or after the round is fine too: dots 2 and 3 show where to go on) | |
+| 0.8.0-4 | Round 2 | Start at the top of the round instead of on the line | The trail fades, dot 1 pulses: „Pornește de pe linie.” A second miss: „Uită-te cum se scrie, apoi încearcă tu.” and the stroke draws itself | |
+| 0.8.0-5 | `ro-m` by hand; `en-a` by hand | Write m (from its hook at the middle line); in English, write the a | m: no "bottom line" sentence (it starts at the middle line). English: one round only (one star), "Well done, you wrote the letter a by hand!" | |
+| 0.8.0-6 | A word by hand (`ro-words-1`, mama) | Listen; write the m alone and lift | The word "mama" in print on the right; „Scrie cuvântul de mână, fără să ridici degetul.” and „m-a-m-a”. After the m, at once: „Bravo, ai făcut litera m! Acum leag-o de litera a, fără să ridici degetul.” (the same words in the bubble); she can write on while it speaks | |
+| 0.8.0-7 | mama, going on | Put the finger down a little beside the join, write the a; then write "ma" in one line | The lifted join is accepted; after the a „… ai făcut litera a! Acum leag-o de litera m …”; the word done: „Bravo, ai scris cuvântul mama! Acum scrie pe umbră.”; three rounds in all | |
+| 0.8.0-8 | tata | Write the whole word in one line, then the two bars | After the word: „Acum trage liniuța literei t.” and the first bar's dot; after each bar the same line, then the word's line | |
+| 0.8.0-9 | `en-words-1` (map, mat) | Write map and mat | "Well done, you made the letter m! Now join it to the letter a without lifting your finger." and "Well done, you wrote the word map!" | |
+| 0.8.0-10 | All of the above, with her | Let her write mama by hand | **To tell the agent:** (1) do the joins feel natural under her finger (the human's check from the brief)? (2) do the handwritten a m t p and A M T P match her manual, above all the a's three strokes and the t's tall entry? (3) are the word lines right with the letters' sounds („litera mmm”), or should they say the names? (4) is „Linia de jos: de aici pornești.” right, and every line of rows 1–9 correct Romanian? | |
+
 ### 0.7.0 (2026-11-25): tracing letters
 
 On the tablet, with the 0.7.0 APK (the debug one is `local/apks/Scolita-0.7.0-debug.apk`; or

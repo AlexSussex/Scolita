@@ -59,7 +59,7 @@ Each brief file therefore reads, top to bottom:
 | 4 | `feature/voice` | Done 2026-11-24, released as 0.3.0 | [done/voice.md](done/voice.md) |
 | 5 | `feature/lesson-engine` | Done 2026-11-24, released as 0.4.0 | [done/lesson-engine.md](done/lesson-engine.md) |
 | 6 | `feature/tracing` | Done 2026-11-25, released as 0.7.0 | [done/tracing.md](done/tracing.md) |
-| 7 | `feature/handwriting` | In progress (handwriting) | [pending/handwriting.md](pending/handwriting.md) |
+| 7 | `feature/handwriting` | Done 2026-11-25, released as 0.8.0 | [done/handwriting.md](done/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Ready after 5, beside 6–9 | [pending/galaxy-map.md](pending/galaxy-map.md) |
@@ -100,11 +100,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
-| handwriting | [handwriting](pending/handwriting.md) | New: `Scripts/Core/Activities/TraceWordRules`, `Scripts/UI/Tracing/` (`HandwritingView`, `TraceWordView`), `Prefabs/Lesson/TraceWordView.prefab`, `content/strokes/*-handwritten.json`; changes: `Scripts/Core/Tracing`, `Core/Content` (shape rules, kinds), the importer (the form field), `Prefabs/Lesson/TraceLetterView.prefab`, `Prefabs/Lesson/MeetLetterView.prefab` (the "de mână" button), `ActivityRegistry.asset` (one row), `LearningRules.asset`, `steps.csv`, `voice-lines.csv` | emulator-5600 | 2026-11-25 | Built, reviewed and tested (brief → Progress); pushing, then the test APK and the close-out |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `tracing` (tracing done, release 0.7.0)._
+_Last updated 2026-11-25 by agent `handwriting` (handwriting done, release 0.8.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -159,10 +158,13 @@ _Update this section whenever a slice is pushed or a brief is finished._
   planet 1's eight print shapes (drafts). A step plays when its content is
   there (`PlayableSteps`): the handwritten tracing steps wait for
   `handwriting`. Only `TraceWord` is left "not built yet".
-- **Next** (lead, 2026-11-24; `tracing` updated it): `handwriting` can start
-  (the handwritten shapes, once the human has checked the drawings against
-  her manual).
-  `galaxy-map` waits for `look` (both change `MapScreen.prefab`), and
+- **Done 2026-11-25:** `handwriting`, release 0.8.0: planet 1's handwritten shapes
+  (a m t p, A M T P; the a in three strokes; drafts), the board's "tip I" lines, the letter by
+  hand in every Romanian letter lesson (one round in English), `TraceWord` (mama, tata, map,
+  mat joined, a checkpoint line at each letter), the "de mână" tile on `MeetLetter`. Every
+  activity kind is built now.
+- **Next** (`handwriting` updated it): `content-letters-1` (planets 2–3, print and handwritten
+  shapes as data). `galaxy-map` waits for `look` (both change `MapScreen.prefab`), and
   `look` waits for the human's art choices. `content-letters-1` (planets
   2–3) can follow `tracing`'s stroke format. `curriculum-research-2` (docs
   only) can start whenever the human says. The human: try 0.6.0 on the
@@ -170,12 +172,18 @@ _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Open follow-ups across briefs
 
+- **From `handwriting`** (full list in its completion record):
+  - `content-letters-1`: s i n o d e by hand as data (the import checks entries, exits, lines,
+    one slant); i's dot has its line; o's high exit is joined; words to trace up to 5 letters.
+  - The human: the eight handwritten drafts (the a's three strokes, the t's tall entry), the
+    word lines with the letters' sounds or names, how the joins feel (test APK, step 0).
+  - `look`: the screen-8 pills "tipar / de mână" and words on the "de mână" tile (string tables);
+    the bubble breaks „leag-o” at its hyphen; at phone size the bubble covers the board's badge.
+  - Planet 7: a mark's line key for ă, ș, ț, â, î (now only dots and bars).
+
 - **From `tracing`** (full list in its completion record):
-  - `handwriting`: the handwritten shapes (`<id>-lower-handwritten.json`;
-    the 14 skipped steps then play), the four-line board, the entry hint,
-    `TraceWord`, a `rounds` option for the English steps; the handwritten
-    „a” is "like @ but with 2 small legs", in three strokes (the human, to
-    check against her manual; the draft is one stroke).
+  - ~~`handwriting`: the handwritten shapes, the four-line board, the entry hint, `TraceWord`, a
+    `rounds` option~~: done in 0.8.0.
   - The human: the tolerances on the Tab A7 (test APK), the eight print
     drafts, whether a stroke from the dot counts after the answer is shown,
     whether a quick tap is ignored, a palm on the tablet, the Profiler.

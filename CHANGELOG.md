@@ -18,6 +18,55 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.8.0 (2026-11-25)
+
+Writing by hand. After the print letter, each Romanian letter lesson has the letter by hand
+("litera de mână", as Romanian clasa I teaches it), and each planet's word lessons end with a
+short word written by hand and joined: mama, tata, map, mat. The handwritten letters are drawn
+from their stroke data, never from a font, so what she sees is exactly what she traces.
+
+- **For the child:**
+  - **Meeting a letter:** a small card beside the letter shows it by hand; a tap writes it
+    before her eyes, „Uite cum se scrie litera de mână.”
+  - **The letter by hand** (`ro-a` … `ro-p`, after the print one): the board with the school's
+    four lines (dashed, solid, solid, dashed) and faint slanted lines; „Scrie litera de mână.
+    Linia de jos: de aici pornești. Începe de la punct și urmează săgeata.” (m starts at the
+    middle line, so it has no "bottom line" sentence). The a has three strokes (its entry
+    from the line, its round, its stem with the exit); she may lift between them or write it
+    in one line. Three rounds as in print; „Bravo, ai scris litera a de mână!”. Begun
+    without the entry: „Pornește de pe linie.”
+  - **In English** (`en-a` … `en-p`): one round of the letter by hand.
+  - **A word by hand** (`ro-words-1`: mama, tata; `en-words-1`: map, mat): the word in print
+    on the right, said slowly; she writes it letter by letter or in one line. At each letter,
+    at once: „Bravo, ai făcut litera m! Acum leag-o de litera a, fără să ridici degetul.”;
+    the line plays to its end while she writes on. tata's bars come after the word („Acum
+    trage liniuța literei t.”). The word done: „Bravo, ai scris cuvântul mama!”. A finger
+    lifted at a join and put down near it is forgiven; lifted inside a letter: „Nu-i nimic!
+    Pune degetul înapoi pe punct și continuă.”; the answer shown: „Uite cum se leagă
+    literele.”
+- **For the parent:** the handwritten shapes of a m t p and A M T P are drafts until you
+  check them against her manual (above all the a's three strokes); the letters in the word
+  lines are said by their sounds (names come later).
+
+### Technical notes
+
+- No new package; no save-format change (the lessons' steps are unchanged except the English
+  handwritten steps' `rounds=1`, so an English lesson in progress restarts at its first step).
+- **Content:** eight handwritten shapes (`content/strokes/*-handwritten.json`, all `draft`);
+  the stroke format is unchanged: a stroke that begins where the one before ends continues it,
+  the strokes after the exit are marks, joins are read from the entry and exit runs
+  (`content/README.md` → "strokes/"). A new step option `rounds` (1–3). The import now
+  refuses a tracing step whose letter has no shape for its form, and checks handwritten
+  entries, exits and lines. No new voice line (all were in `voice-lines.csv`).
+- **Core:** `TraceFigure`, `JoinedWord`, `LineCheck`, `StrokeVerdict.SkippedEntry`,
+  `TraceWordRules`, `TracingTuning.JoinRadius` (in `Settings/LearningRules.asset`),
+  `MeetLetterRules`' "de mână" button. **Unity:** `WritingBoardView` (was `TraceLetterView`),
+  `HandwritingView`, `FigureFit`, `Prefabs/Lesson/TraceWordView.prefab`.
+- **For the human:** try the test APK `local/apks/Scolita-0.7.0-handwriting-try-debug.apk` (or
+  this release's) with her and say whether the joins feel natural; check the handwritten
+  shapes against her manual; say whether the word lines should name the letters instead.
+- Brief: [`tasks/done/handwriting.md`](tasks/done/handwriting.md).
+
 ## 0.7.0 (2026-11-25)
 
 Tracing letters with a finger. In each Romanian letter lesson and in the capitals lesson, she

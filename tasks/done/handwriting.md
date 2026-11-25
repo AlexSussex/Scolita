@@ -1,6 +1,6 @@
 # Task: feature/handwriting
 
-> **Status: In progress (handwriting).** (The human, 2026-11-24: she must also
+> **Status: Done 2026-11-25, released as 0.8.0.** (The human, 2026-11-24: she must also
 > learn how letters are made by hand, not only typed letters; decision D3
 > answered: handwritten letters are in the MVP.) The handwriting model is
 > the Romanian school's "litere de mână" for both languages (assumed in
@@ -146,8 +146,9 @@ _Kept by `handwriting` while the brief is in flight._
 - **Built** (Core, the eight handwritten shapes, the board, `TraceWord`, the "de mână" tile), reviewed by a
   second agent (below) and tested together; pushed as `core:`, `content:`, `ui:` and `game:` commits (hashes in
   the completion record).
-- **The test APK** for the human: `local/apks/Scolita-0.7.0-handwriting-try-debug.apk` (step 1 of
+- **The test APK** for the human: `local/apks/Scolita-0.7.0-handwriting-try-debug.apk` (step 0 of
   `local/for-human-next-steps.md`).
+- **Closed out** as release 0.8.0 (see "Completion record").
 
 ### Decisions while building (within the note)
 
@@ -538,3 +539,69 @@ a finger; regenerate them when a shape changes and check each verdict by hand.
 
 **Cleanup:** `"$ADB" -s <emulator> shell pm clear com.softshack.scolita` and
 `"$ADB" -s <emulator> shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `handwriting`; released as 0.8.0 (tag `v0.8.0`)._
+
+### What was built
+
+- **Pushed:** `51cabec` the claim; `42dce67` the Design note; `31da274` `core:`, `cfc3e56` `content:`, `fc5b8b1` `ui:`,
+  `547d280` `game:` (pushed together, tested at the last of them, as tracing's slices); `29c8d48` `docs:`; the
+  close-out.
+- **Handwritten shapes as data:** planet 1's a m t p and A M T P by hand
+  (`content/strokes/*-handwritten.json`, `slant` 0.2, all `draft`), the a in three strokes (the human); no new
+  field in the stroke format: continued strokes, marks and joins are read from the points and run kinds
+  (`content/README.md` → "strokes/"). The step option `rounds`; the English handwritten steps play one round.
+- **Core** (`Scripts/Core/Tracing`): `TraceFigure` (a letter or a joined word, each stroke's letter, number,
+  continuation, line end, mark), `JoinedWord`, `LineCheck` (a line through strokes that continue each other),
+  `StrokeReach`, `LineResult`, `StrokeVerdict.SkippedEntry`, `StrokePath.EntryLength` and `Chain`,
+  `TracingTuning.JoinRadius`, `TraceState` with a figure and its rounds; `Activities/TraceWordRules`,
+  `TraceJudging`, `TraceLetterRules` by hand; `MeetLetterRules`' "de mână" button (`ActivityRound.Handwriting`);
+  `ShapeRules`' handwriting rules; `ActivityLimits.MostTracedLetters`; the factory's `TraceWord`.
+- **Unity side:** `UI/Tracing/WritingBoardView` (tracing's `TraceLetterView`, renamed, its `.meta` kept; the "tip
+  I" lines and slant guides, dots numbered within their letter, the word in print), `HandwritingView`,
+  `FigureFit`; `Prefabs/Lesson/TraceWordView.prefab` and its registry row (`TraceWord` off "not built yet"); the
+  "de mână" tile in `MeetLetterView.prefab`; the join radius in `Settings/LearningRules.asset`.
+- **Tests:** EditMode 512 (was 486): `TraceFigureTests`, `HandwrittenStrokeTests` (with
+  `Tests/EditMode/Tracing/Strokes/handwritten/`), `TraceWordRulesTests`, new `ShapeRulesTests`,
+  `MeetLetterRulesTests`, `ActivityRulesFactoryTests` cases. PlayMode 20 (was 17): a handwritten a in one line,
+  mama letter by letter, `HandwritingView` matching the stroke data.
+
+### Conventions for later briefs
+
+- **A handwritten letter is a file:** its line's strokes each begin where the one before ends; its entry (if
+  any) is the first run, on the baseline; its exit the last run of its line; strokes after the exit are marks
+  (written after a word); every handwritten small letter leans alike. The import checks all of it.
+- **What is traced is a `TraceFigure`;** judge lines with `LineCheck` (never `StrokeCheck` alone) so strokes that
+  continue each other can be written in one line; views read `ActivityRound.Trace.Figure`.
+- **A word by hand** is `JoinedWord.Of` of its letters' handwritten small shapes, at most 5 letters.
+- **A mark's line** is `trace-dot-<strokes id>` or `trace-bar-<strokes id>`, in both languages.
+- **Fitting a figure in a rectangle** is `FigureFit` (board and pen line alike).
+
+### How it was tested
+
+Batch mode at the pushed commits (EditMode 512/512, PlayMode 20/20, `BuildAndroidDebug`, no compiler warning),
+the import, the emulator at 2000 × 1200 with drawn lines (the a by hand in one line, without its entry,
+backwards, off during and after a stroke, two fingers; mama letter by letter, a lifted join, lifted inside a
+join and a letter, in one line; tata with its bars), five screen sizes, the 0 B drawing test, and a fresh-eyes
+review (Progress, findings resolved or recorded). Școlița → Record released ids at this close-out (`VERSION`
+0.8.0): nothing was added (no new id; shapes are not in the ledger). Not run: the Device Simulator, the device Profiler, listening by ear (no new line).
+
+### Decisions and deviations
+
+- **The handwritten a is three strokes** that continue each other (the human), read as entry, round, stem with
+  exit; a line through all three is accepted.
+- **{x} and {y} are the letters' sounds,** not their names as the brief said (the agreed curriculum: names
+  after planet 6); one switch in `TraceWordRules` if the human prefers names.
+- **No words on the "de mână" tile or the screen-8 pills** (no string tables yet); the board's view class is
+  renamed `WritingBoardView`; capitals by hand don't join yet (P's and T's hooks are body runs).
+- **The four code slices were pushed together,** tested at the last (each needs the others to compile: the
+  figure replaces the shape on the board), as tracing's were.
+
+### Follow-ups
+
+In Progress → "Follow-ups": the human (the drafts, sounds or names, the joins under her finger, the join
+radius); `content-letters-1` (s i n o d e by hand as data, i's dot, o's high exit, planets 2–3's words);
+later marks' line keys (planet 7); `look` (the screen-8 pills, the bubble's hyphen break, the phone-size
+bubble); a dot's length; joined capitals (`handwriting-2`).
