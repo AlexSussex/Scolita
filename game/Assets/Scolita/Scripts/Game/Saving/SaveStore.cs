@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Text;
@@ -15,7 +16,8 @@ namespace Scolita.Game.Saving
     /// (<see cref="Application.persistentDataPath"/> in the app); every file about a learner sits in
     /// its profile's folder, <c>profiles/&lt;profileId&gt;/</c> (<see cref="ForProfile"/>), so one
     /// profile never touches another's files. A damaged file is set aside as
-    /// <c>&lt;name&gt;.broken.json</c> and the defaults are used; a file that can't be opened right
+    /// <c>&lt;name&gt;.broken-&lt;date-time&gt;.json</c> (each damaged copy kept, so her progress can be
+    /// rescued by hand: the human, 2026-11-24) and the defaults are used; a file that can't be opened right
     /// now, or that a newer version of the app wrote, is kept as it is and never saved over; a
     /// folder that can't be used gives the defaults without saving. So a bad save never stops the
     /// app, and a good one is never thrown away.
@@ -26,7 +28,8 @@ namespace Scolita.Game.Saving
         public const string ProfilesFolderName = "profiles";
 
         private const string FileExtension = ".json";
-        private const string BrokenFileExtension = ".broken.json";
+        private const string BrokenFileMark = ".broken-";
+        private const string BrokenFileTimeFormat = "yyyyMMdd-HHmmss";
         private const string TemporaryFileExtension = ".tmp";
 
         private static readonly Regex NamePattern = new Regex(@"^[a-z0-9_-]+\z", RegexOptions.CultureInvariant);
@@ -81,7 +84,8 @@ namespace Scolita.Game.Saving
         /// <summary>
         /// Reads <c>&lt;name&gt;.json</c>. Returns <paramref name="defaults"/> when the file is
         /// missing; when it is damaged (empty, not JSON, version 0), after renaming it
-        /// <c>&lt;name&gt;.broken.json</c> (replacing an older one); and when it can't be opened, was
+        /// <c>&lt;name&gt;.broken-&lt;date-time&gt;.json</c> in the tablet's local time (never replacing an
+        /// older copy: a second one in the same second gets <c>-2</c>, and so on); and when it can't be opened, was
         /// written by a newer version of the app, can't be set aside, or the folder can't be used,
         /// in which case the file is left as it is (<see cref="SaveLoadOutcome.Unreadable"/>) and
         /// this store refuses to save over it. A file that is read is brought to the current shape by
@@ -282,9 +286,10 @@ namespace Scolita.Game.Saving
         {
             try
             {
-                ReplaceOrMove(path, PathOf(name, BrokenFileExtension));
+                string brokenPath = FreeBrokenPath(name);
+                File.Move(path, brokenPath);
                 Debug.LogWarning("Scolita: " + name + FileExtension + " could not be read (" + problem
-                    + "); it was set aside as " + name + BrokenFileExtension + " and the defaults are used.");
+                    + "); it was set aside as " + Path.GetFileName(brokenPath) + " and the defaults are used.");
                 return true;
             }
             catch (Exception exception) when (IsFileSystemError(exception))
@@ -293,6 +298,18 @@ namespace Scolita.Game.Saving
                     + ") nor set aside (" + exception.Message + "); it is kept as it is and the defaults are used.");
                 return false;
             }
+        }
+
+        private string FreeBrokenPath(string name)
+        {
+            string stamp = BrokenFileMark + DateTime.Now.ToString(BrokenFileTimeFormat, CultureInfo.InvariantCulture);
+            string path = PathOf(name, stamp + FileExtension);
+            for (int copy = 2; File.Exists(path); copy++)
+            {
+                path = PathOf(name, stamp + "-" + copy.ToString(CultureInfo.InvariantCulture) + FileExtension);
+            }
+
+            return path;
         }
 
         private string PathOf(string name, string extension)

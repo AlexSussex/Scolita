@@ -11,7 +11,7 @@ namespace Scolita.Game.Saving
 
         /// <summary>
         /// The file is damaged (empty, not JSON, or of version 0) and was renamed
-        /// <c>&lt;name&gt;.broken.json</c>; the defaults are returned.
+        /// <c>&lt;name&gt;.broken-&lt;date-time&gt;.json</c>, beside any older copy; the defaults are returned.
         /// </summary>
         SetAside,
 

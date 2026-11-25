@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using Scolita.Core.Languages;
@@ -202,7 +203,10 @@ namespace Scolita.Tests.EditMode.Saving
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.SetAside));
                 Assert.That(loaded.Data, Is.SameAs(defaults));
                 Assert.That(File.Exists(Path.Combine(root, "settings.json")), Is.False);
-                Assert.That(File.ReadAllText(Path.Combine(root, "settings.broken.json")), Is.EqualTo("{{{"));
+                string[] broken = BrokenCopies(root, "settings");
+                Assert.That(broken, Has.Length.EqualTo(1));
+                Assert.That(Path.GetFileName(broken[0]), Does.Match(@"^settings\.broken-\d{8}-\d{6}\.json$"));
+                Assert.That(File.ReadAllText(broken[0]), Is.EqualTo("{{{"));
             }
             finally
             {
@@ -228,7 +232,7 @@ namespace Scolita.Tests.EditMode.Saving
 
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.SetAside));
                 Assert.That(loaded.Data.LanguageMix, Is.EqualTo(LanguageMix.Both));
-                Assert.That(File.Exists(Path.Combine(folder, "learning-settings.broken.json")), Is.True);
+                Assert.That(BrokenCopies(folder, "learning-settings"), Has.Length.EqualTo(1));
             }
             finally
             {
@@ -339,7 +343,7 @@ namespace Scolita.Tests.EditMode.Saving
 
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.Unreadable));
                 Assert.That(written, Is.False);
-                Assert.That(File.Exists(Path.Combine(root, "settings.broken.json")), Is.False);
+                Assert.That(BrokenCopies(root, "settings"), Is.Empty);
                 Assert.That(afterUnlock.Outcome, Is.EqualTo(SaveLoadOutcome.Loaded));
                 Assert.That(afterUnlock.Data.MusicOn, Is.False);
                 Assert.That(store.Save(TabletSettingsData.FileName, afterUnlock.Data), Is.True);
@@ -350,21 +354,31 @@ namespace Scolita.Tests.EditMode.Saving
             }
         }
 
-        /// <summary>Tests that <see cref="SaveStore.Load{T}"/> replaces an older broken file with the newer one.</summary>
+        /// <summary>
+        /// Tests that <see cref="SaveStore.Load{T}"/> keeps every damaged copy, dated, beside the older ones
+        /// (a second one in the same second numbered), and leaves an older version's <c>.broken.json</c> alone.
+        /// </summary>
         [Test]
-        public void TestLoad_OlderBrokenFileIsReplaced()
+        public void TestLoad_EachBrokenFileIsKept()
         {
             string root = CreateTemporaryFolder();
             try
             {
-                File.WriteAllText(Path.Combine(root, "settings.broken.json"), "old");
-                File.WriteAllText(Path.Combine(root, "settings.json"), "new");
+                File.WriteAllText(Path.Combine(root, "settings.broken.json"), "older version");
+                SaveStore store = SaveStore.ForTablet(root);
+                LogAssert.Expect(LogType.Warning, new Regex("settings\\.json could not be read"));
                 LogAssert.Expect(LogType.Warning, new Regex("settings\\.json could not be read"));
 
-                SaveStore.ForTablet(root).Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
+                File.WriteAllText(Path.Combine(root, "settings.json"), "first");
+                store.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
+                File.WriteAllText(Path.Combine(root, "settings.json"), "second");
+                store.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
-                Assert.That(File.ReadAllText(Path.Combine(root, "settings.broken.json")), Is.EqualTo("new"));
-                Assert.That(Directory.GetFiles(root), Has.Length.EqualTo(1));
+                string[] broken = BrokenCopies(root, "settings");
+                Assert.That(broken.Select(file => File.ReadAllText(file)), Is.EquivalentTo(new[] { "first", "second" }));
+                Assert.That(broken.Select(file => Path.GetFileName(file)), Has.All.Match(@"^settings\.broken-\d{8}-\d{6}(-\d+)?\.json$"));
+                Assert.That(File.ReadAllText(Path.Combine(root, "settings.broken.json")), Is.EqualTo("older version"));
+                Assert.That(File.Exists(Path.Combine(root, "settings.json")), Is.False);
             }
             finally
             {
@@ -458,6 +472,11 @@ namespace Scolita.Tests.EditMode.Saving
 
             Assert.That(() => store.Load(name, TabletSettingsData.CreateDefaults()), Throws.ArgumentException);
             Assert.That(() => store.Save(name, TabletSettingsData.CreateDefaults()), Throws.ArgumentException);
+        }
+
+        private static string[] BrokenCopies(string folder, string name)
+        {
+            return Directory.GetFiles(folder, name + ".broken-*.json");
         }
 
         private static string CreateTemporaryFolder()
