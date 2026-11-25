@@ -1,0 +1,85 @@
+id,language,kind,text,clip,status,retired,notes
+ro-name-a-breve,ro,name,ă,,,,id from content/README.md
+ro-name-a-circumflex,ro,name,â din a,,,,"DOOM 3: â is read [î], 'denumită și â din a'; id proposed"
+ro-name-b,ro,name,be,,,,the alphabet name (DOOM 3)
+ro-name-c,ro,name,ce,,,,the alphabet name (DOOM 3)
+ro-name-f,ro,name,fe,,,,the alphabet name (DOOM 3)
+ro-name-g,ro,name,ge,,,,or 'ghe' (question 4)
+ro-name-h,ro,name,haș,,,,DOOM 3 [cit. haș/hî]
+ro-name-i-circumflex,ro,name,î din i,,,,DOOM 3: 'denumită și î din i'; id proposed
+ro-name-j,ro,name,je,,,,the alphabet name (DOOM 3)
+ro-name-k,ro,name,ca,,,,DOOM 3 [cit. ka/kapa]
+ro-name-l,ro,name,le,,,,the alphabet name (DOOM 3)
+ro-name-q,ro,name,kü,,,,DOOM 3 [cit. kü]; or the older 'chiu' (question 3)
+ro-name-r,ro,name,re,,,,the alphabet name (DOOM 3)
+ro-name-s-comma,ro,name,șe,,,,id proposed
+ro-name-t-comma,ro,name,țe,,,,id proposed
+ro-name-u,ro,name,u,,,,a vowel: the name is the sound (DOOM 3)
+ro-name-v,ro,name,ve,,,,the alphabet name (DOOM 3)
+ro-name-w,ro,name,dublu ve,,,,DOOM 3 [cit. dublu ve/dublu vî]
+ro-name-x,ro,name,ics,,,,DOOM 3 [cit. iks]
+ro-name-y,ro,name,i grec,,,,DOOM 3 [cit. igrec]
+ro-name-z,ro,name,ze,,,,DOOM 3 [cit. ze/zet/zî]; 'ze' keeps it apart from English 'zed'
+en-name-b,en,name,bee,,,,the alphabet name
+en-name-c,en,name,see,,,,the alphabet name
+en-name-f,en,name,ef,,,,the alphabet name
+en-name-g,en,name,gee,,,,the alphabet name
+en-name-h,en,name,aitch,,,,"British 'aitch', not 'haitch'"
+en-name-j,en,name,jay,,,,the alphabet name
+en-name-k,en,name,kay,,,,the alphabet name
+en-name-l,en,name,el,,,,the alphabet name
+en-name-q,en,name,cue,,,,the alphabet name
+en-name-r,en,name,ar,,,,British: no r sound in the name
+en-name-u,en,name,you,,,,the alphabet name
+en-name-v,en,name,vee,,,,the alphabet name
+en-name-w,en,name,double-you,,,,the alphabet name
+en-name-x,en,name,ex,,,,the alphabet name
+en-name-y,en,name,wye,,,,the alphabet name
+en-name-z,en,name,zed,,,,British (D4)
+ro-line-station-arrive,ro,line,Am ajuns la Stația Alfabetului! Aici literele își spun numele.,,,,the station's arrival; check (research §5.4)
+en-line-station-arrive,en,line,We've reached the Alphabet Station! Here the letters tell us their names.,,,,the station's arrival; check (research §5.4)
+ro-line-names-intro,ro,line,Fiecare literă are un nume și un sunet.,,,,first names lesson
+en-line-names-intro,en,line,Every letter has a name and a sound.,,,,first names lesson
+ro-line-names-meet,ro,line,Numele literei este {xname}. Sunetul ei este {xsound}.,,,,MeetLetter name round; 'ei': litera is feminine
+en-line-names-meet,en,line,This letter's name is {xname}. Its sound is {xsound}.,,,,MeetLetter name round; 'ei': litera is feminine
+ro-line-names-same,ro,line,"La litera aceasta, numele și sunetul sunt la fel.",,,,Romanian vowels only (DOOM 3: the name is the sound)
+ro-line-names-different,ro,line,Ascultă: numele și sunetul sunt diferite.,,,,"MeetLetter name round, letters whose name differs from the sound"
+en-line-names-different,en,line,Listen: the name and the sound are different.,,,,"MeetLetter name round, letters whose name differs from the sound"
+ro-line-names-tap-name,ro,line,Atinge numele literei ca să-l auzi.,,,,the name pill; 'să-l': numele is neuter
+en-line-names-tap-name,en,line,Tap the letter's name to hear it.,,,,the name pill; 'să-l': numele is neuter
+ro-line-names-tap-sound,ro,line,Atinge sunetul literei ca să-l auzi.,,,,the sound pill; 'să-l': sunetul is neuter
+en-line-names-tap-sound,en,line,Tap the letter's sound to hear it.,,,,the sound pill; 'să-l': sunetul is neuter
+ro-line-names-done,ro,line,"Bravo, acum știi numele acestor litere!",,,,names lesson checkpoint
+en-line-names-done,en,line,"Well done, now you know these letters' names!",,,,names lesson checkpoint
+ro-line-pick-name,ro,line,Atinge litera care se numește {xname}.,,,,"ListenAndPick, cue=name"
+en-line-pick-name,en,line,Tap the letter called {xname}.,,,,"ListenAndPick, cue=name"
+ro-line-pick-name-hint-again,ro,line,Ascultă încă o dată numele: {xname}.,,,,hint
+en-line-pick-name-hint-again,en,line,Listen to the name again: {xname}.,,,,hint
+ro-line-pick-name-hint-sound,ro,line,Litera care se numește {xname} are sunetul {xsound}. Caut-o!,,,,hint; 'Caut-o': litera is feminine
+en-line-pick-name-hint-sound,en,line,The letter called {xname} has the sound {xsound}. Find it!,,,,hint; 'Caut-o': litera is feminine
+ro-line-pick-name-hint-show,ro,line,"Uite, aceasta este litera care se numește {xname}. Atinge-o!",,,,second miss
+en-line-pick-name-hint-show,en,line,"Look, this is the letter called {xname}. Tap it!",,,,second miss
+ro-line-song-start,ro,line,Hai să cântăm alfabetul!,,,,SingAlong
+en-line-song-start,en,line,Let's sing the alphabet!,,,,SingAlong
+ro-line-song-along,ro,line,Cântă și tu cu mine!,,,,SingAlong
+en-line-song-along,en,line,Sing along with me!,,,,SingAlong
+ro-line-song-tap,ro,line,Atinge o literă ca să-i auzi numele.,,,,SingAlong; 'să-i': dative of litera
+en-line-song-tap,en,line,Tap a letter to hear its name.,,,,SingAlong; 'să-i': dative of litera
+ro-line-song-next,ro,line,Ce literă vine după {xname}?,,,,"SingAlong, what comes next"
+en-line-song-next,en,line,Which letter comes after {xname}?,,,,"SingAlong, what comes next"
+ro-line-song-hint-again,ro,line,Ascultă cântecul până la {xname}.,,,,hint
+en-line-song-hint-again,en,line,Listen to the song up to {xname}.,,,,hint
+ro-line-song-hint-show,ro,line,"Uite, după {xname} vine {yname}. Atinge-o!",,,,second miss; check 'Atinge-o' (research §5.4)
+en-line-song-hint-show,en,line,"Look, after {xname} comes {yname}. Tap it!",,,,second miss; check 'Atinge-o' (research §5.4)
+ro-line-song-done,ro,line,"Bravo, ai cântat tot alfabetul!",,,,SingAlong checkpoint
+en-line-song-done,en,line,"Well done, you sang the whole alphabet!",,,,SingAlong checkpoint
+ro-line-two-names-same,ro,line,Aceeași literă are două nume!,,,,"names bridge (TwoSounds, cue=name)"
+en-line-two-names-same,en,line,The same letter has two names!,,,,"names bridge (TwoSounds, cue=name)"
+ro-line-two-names-tap,ro,line,Atinge fiecare planetă ca să-i auzi numele.,,,,names bridge
+en-line-two-names-tap,en,line,Tap each planet to hear its name.,,,,names bridge
+ro-line-two-names-sort,ro,line,Ascultă numele și atinge planeta lui.,,,,names bridge; 'lui': numele is neuter; check (research §5.4)
+en-line-two-names-sort,en,line,Listen to the name and tap its planet.,,,,names bridge; 'lui': numele is neuter; check (research §5.4)
+ro-line-two-names-hint-show,ro,line,"Uite, aceasta este planeta potrivită. Atinge-o!",,,,"names bridge, second miss"
+en-line-two-names-hint-show,en,line,"Look, this is the right planet. Tap it!",,,,"names bridge, second miss"
+ro-song-alphabet,ro,song,"a, ă, â din a, be, ce, de, e, fe, ge, haș, i, î din i, je, ca, le, me, ne, o, pe, kü, re, se, șe, te, țe, u, ve, dublu ve, ics, i grec, ze. Acum știu tot alfabetul!",,,,proposed: chanted on the Syllables drum (question 6); 'song' is a proposed new kind
+en-song-alphabet,en,song,"A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y and Zed. Now I know my ABC, next time won't you sing with me?",,,,"the traditional alphabet song, British (zed); 'song' is a proposed new kind"

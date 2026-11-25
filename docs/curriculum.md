@@ -17,6 +17,13 @@ What changed from v0 is listed at the end. How the curriculum grows
 its own briefs first, for both languages (`tasks/README.md` → "After the
 MVP").
 
+**Proposed, not yet agreed** (agent `curriculum-research-names`,
+2026-11-25): **§9 "Letter names"** and the lines marked "proposed (§9)" in
+§1, §3, §4.2 and §8. The research is in
+[`design/research/curriculum-research-names.md`](../design/research/curriculum-research-names.md)
+(cited below as "names research §n"). The rest of v1 is unchanged and
+stays agreed. The proposal waits for the human (names research §7).
+
 **How v1's open questions were answered** (the human, 2026-11-24; research §10):
 
 1. English planet 1 keeps its 7 readable words (no swap of t and n).
@@ -70,7 +77,8 @@ records.
   both school systems teach it first and the letter's name later (the
   English name of e, "ee", is even the Romanian sound of i). In planets
   1–3 every letter is met and spoken of by its **sound**; the names are
-  taught later, on their own (research §6.7; agreed 2026-11-24). Sounds are said
+  taught later, on their own (research §6.7; agreed 2026-11-24): when and
+  how is proposed in §9 (not yet agreed). Sounds are said
   pure, with no extra vowel (/mmm/, not "muh"; /t/ short, not "tuh").
 - **Letters made by hand, not only typed** (the human, 2026-11-24). She
   reads print letters, and she learns to write each letter the way a hand
@@ -115,6 +123,7 @@ systems (research §4.1).
 | 4 | u r c l | lună (with ă, see the note), cal, rac, cer (soft c later) | cat, cup, run, red, lot, sun | r, c and u get `TwoSounds`. Whether ă comes here: `curriculum-research-2` (research §4.2) |
 | 5 | b f g h | balon, bufniță (listen only), floare | bat, bus, fan, fog, hat, hop | g: hard first; soft g with the Romanian groups |
 | 6 | v z j k | vulpe, zebră (listen only), vioară (listen only) | van, zip, jet, kit | j gets `TwoSounds`; then the letter names (an alphabet song) |
+| Alphabet Station *(proposed, §9)* | no new letter | — | — | The names of the 22 letters met so far, both languages, Romanian first; the alphabet songs |
 | 7 (Romanian) | ă â î ș ț | rachetă, așa, țară | — | The "little hats and tails" planet (ă may move earlier: `curriculum-research-2`) |
 | 7 (English) | ck sh ch th ng | — | duck, ship, chip, moth, ring | The English-only planet, in parallel |
 | 8 | w x y q | — (only in borrowed words) | wet, box, yes, quiz | |
@@ -166,7 +175,7 @@ listen-only words (it needs no reading): astronaut, planetă, rachetă.
 
 | Kind | What happens | The hint after a miss | Learned from it |
 | --- | --- | --- | --- |
-| `MeetLetter` | The mascot holds up the letter; she hears its sound three times and a word with a picture ("m … m … muzică"); she taps the letter to hear it again, then taps the picture; the "de mână" button writes it by hand. The name is not taught in planets 1–3 | — (no wrong answers) | First contact |
+| `MeetLetter` | The mascot holds up the letter; she hears its sound three times and a word with a picture ("m … m … muzică"); she taps the letter to hear it again, then taps the picture; the "de mână" button writes it by hand. The name is not taught in planets 1–3. *Proposed (§9):* not in planets 1–6; a name round (the name pill, „Numele literei este me. Sunetul ei este mmm.”) at the Alphabet Station and, from planet 7, after the sound | — (no wrong answers) | First contact |
 | `ListenAndPick` | She hears a sound (or a word) and taps the right one of 2–4 letters (or pictures), shown as planets, bubbles or asteroids | The sound again, slower; the wrong choice fades | Sound → letter |
 | `LetterHunt` | Stars float by; she pops each one that carries the letter (both cases), among 2 other letters | The right stars twinkle | Shape |
 | `FirstSound` | A picture and its word; she taps the letter the word starts with | The word again, its first sound stretched ("mmmuzică") | Hearing the first sound |
@@ -177,6 +186,7 @@ listen-only words (it needs no reading): astronaut, planetă, rachetă.
 | `ReadAndMatch` | A word to read; she taps its picture among 2–3 | She can tap the word to hear it after the first try | Reading |
 | `TwoSounds` | One letter on two little planets, each with its language badge; she taps each to hear its sound, then sorts pictures to the planet whose sound they start with | The two sounds again, one after the other | The languages' differences |
 | `WordTwins` | Romanian words on one side, English on the other; she joins the twins (mop — mop, pian — piano), hearing both; false friends (pat — pat) are shown with both pictures | The pair's pictures appear | Bridging the languages |
+| `SingAlong` *(proposed, §9)* | A song whose items light up in order on a frieze (the alphabet now; numbers or notes later); she taps any item to hear it; then "what comes next": an item lights, she taps the one after it among three | The song again up to that item | Names, order |
 
 ### 4.3 Kind feedback
 
@@ -331,7 +341,8 @@ planets 1–3 is
 [`design/research/voice-lines-draft.csv`](../design/research/voice-lines-draft.csv)
 (584 lines: 316 Romanian, 268 English; research §9):
 
-- each letter's **sound** and **name** (names recorded now, taught later);
+- each letter's **sound** and **name** (names recorded now, taught later;
+  *proposed:* the names of both whole alphabets, §9.6);
 - each **word**, and each word said **slowly** (sound by sound, for
   `BuildWord`) and in **syllables** (for `Syllables`), the listen-only
   words too;
@@ -346,12 +357,172 @@ planets 1–3 is
   (a stroke done, a letter done, a word done), as in "Bravo, ai făcut
   litera m! Acum leag-o de litera a, fără să ridici degetul." Every bubble
   on screen has its line, spoken as it appears. Every letter pair the
-  TraceWord words need is listed (research §6).
+  TraceWord words need is listed (research §6). *Proposed (§9.5):* the
+  spliced letter says its sound until she has met that letter's name,
+  then its name, in lines that mention a letter.
 
 Every line is a complete, correct sentence, with its verb and the right
 agreement ("litera" is feminine: "leag-o"), never a shortcut ("Bravo,
 m!"). She learns her language from it. The lines the agent was unsure of
 (research §9.2) were agreed by the human as drafted.
+
+## 9. Letter names (proposed, not yet agreed)
+
+*Proposed by agent `curriculum-research-names` on 2026-11-25, for the
+human to agree (names research §7). Every teaching claim is cited in the
+names research.*
+
+### 9.1 What the schools do
+
+- **Both systems teach the sound first and the name after:**
+  - Romanian lessons are "Sunetul și litera …", and the alphabet is a
+    lesson at the end of clasa I, with its order ("Spune vecinii
+    fiecăreia");
+  - Letters and Sounds teaches the names in Phase 3, with an alphabet song
+    sung daily while pointing to the frieze, "a few letters each day",
+    each name tied to its sound;
+  - the English national curriculum asks Year 1 to name the letters in
+    order;
+  - Read Write Inc. keeps names out of the first phonics lessons.
+  (Names research §2.)
+- **Names are needed for digraphs.** Once letters join into digraphs (sh,
+  ch, th), English phonics uses their names, "as letters do not stand for
+  their Phase Two sounds" there (names research §2.2). That is planet 7.
+- **The Romanian names** are the Academy's (DOOM 3). Each consonant has
+  several allowed names: m is "em / me / mî". DOOM 3 cites the sound with
+  î ("mî"). A vowel's name is the vowel itself (names research §2.1).
+
+### 9.2 When
+
+**After planet 6, at the Alphabet Station** ("Stația Alfabetului"), a stop
+on the map between planets 6 and 7 with no new letter:
+
+- by then she knows 22 letters' sounds, about the stage at which English
+  phonics teaches names;
+- it comes just before the digraphs that need them.
+
+Both languages are taught, Romanian first (D1). In planets 1–6, letters
+stay spoken of by their sound (v1).
+
+### 9.3 How
+
+**Six short names lessons per language,** one per planet's letters: a m t
+p · s i n · o d e · u r c l · b f g h · v z j k. Each lesson:
+
+1. **`SingAlong`:** the language's alphabet song, the letters lighting on a
+   frieze (the taught ones bright, the rest faint), tap a letter to hear its
+   name.
+2. **`MeetLetter`'s name round,** for each letter:
+   - the sound pill and the name pill of design screen 2;
+   - „Numele literei este {xname}. Sunetul ei este {xsound}.”;
+   - for a Romanian vowel, „La litera aceasta, numele și sunetul sunt la
+     fel.”
+3. **`ListenAndPick` with names as the cue:** „Atinge litera care se
+   numește {xname}.” The hints are the name again, then the name with its
+   sound, then the answer shown.
+
+**Each English names lesson starts with the names bridge:** `TwoSounds`
+with names (one letter on two planets, a name on each). The bridge
+letters are:
+
+- a (and the mirror me / em on m);
+- i;
+- e (and o);
+- u;
+- g;
+- j.
+
+**The station's party** (per language): the whole song, its "what comes
+next" round, and a mixed names review.
+
+**From planet 7 on,** a new letter's `MeetLetter` gives its name after its
+sound. `ListenAndPick` and `LetterHunt` in letter lessons keep the sound as
+their cue: reading needs sound to letter.
+
+**One new activity kind,** `SingAlong` (§4.2): an ordered song with "what
+comes next". It is domain-agnostic, for numbers and notes later. The other
+kinds are reused with a `cue=name` option.
+
+**The alphabet's order** is heard in the songs and practised lightly
+("what comes next"), never tested: both school systems make it a goal of
+the first school year.
+
+**The songs:**
+
+- English: the traditional alphabet song, British ("zed");
+- Romanian: the 31 names chanted on the `Syllables` drum, or a tune the
+  family knows (no song is printed in the manuals read).
+
+The music and the recording are for `sound-feel` and the family.
+
+### 9.4 The names, and the clashes
+
+**Romanian:** the DOOM 3 forms that start with the letter's sound:
+
+> a, ă, â din a, be, ce, de, e, fe, ge, haș, i, î din i, je, ca, le, me, ne,
+> o, pe, kü, re, se, șe, te, țe, u, ve, dublu ve, ics, i grec, ze
+
+- **Not em, el, en, es, ef, zet:** they are the English names, or close to
+  them.
+- **Not mî, bî:** that is how the sounds are cited.
+- **Open choices:** "ge" or "ghe"; "kü" or the older "chiu".
+
+**English** (British): ay, bee, see, dee, ee, ef, gee, aitch, eye, jay,
+kay, el, em, en, oh, pee, cue, ar, ess, tee, you, vee, double-you, ex, wye,
+zed.
+
+**The clashes** (all listed in names research §3.2):
+
+- **The vowels.** The English *name* of e ("ee") is the Romanian *sound*
+  of i. The English names of i, a and u sound like Romanian "ai", "ei" and
+  "iu". Each gets a names bridge.
+- **The mirror pairs** le/el, me/em, ne/en, se/ess, fe/ef. Romanian puts
+  the sound first, English last. The bridge shows this once, on m.
+- **The e/ee vowel** in be/bee, de/dee and the like. It is the e–i clash
+  again, shown by the e bridge.
+- **c and g.** Neither language's name starts with the hard sound she
+  learned first. The names come after planets 4–5, so the sounds are
+  known first.
+- **h and r.** The British names have no h or r sound in them.
+- **q, w, x, y** are for planet 8.
+
+**A name is shown as a name** by the speech-bubble icon (the sound has the
+speaker icon, as design screen 2). Its language is shown by colour and
+badge, as everything else.
+
+### 9.5 Spliced lines: from the sound to the name
+
+Each spliced letter is one of three kinds of slot:
+
+- **Sound slots** always say the sound: „Ascultă: {x}… {x}… {word}!”,
+  „Ce sunet auzi după {x}?”, the stretched and slow words.
+- **Cue slots** ask her to find a letter: „Atinge litera {x}.”, the hunt.
+  They follow the step's cue: the sound, unless it is a names step.
+- **Mention slots** refer to a letter: „Azi învățăm litera {x}.”, „Bravo,
+  ai scris litera {x}!”, „Bravo, ai făcut litera {x}! Acum leag-o de
+  litera {y} …”. They say **the sound until she has met that letter's name
+  in that language, and the name after**.
+
+So the handwriting line says „litera mmm” through planet 6, then „litera
+me”. In Romanian only the consonants change: a vowel's name is its sound.
+Every combination stays correct: a name is an invariable noun beside
+„litera” („litera be”, „litera dublu ve”), and „leag-o” still agrees
+with „litera”.
+
+### 9.6 Voice lines
+
+The draft is
+[`design/research/voice-lines-names-draft.csv`](../design/research/voice-lines-names-draft.csv)
+(names research §5):
+
+- the names still missing: 21 Romanian and 16 English;
+- 45 new lines: 23 Romanian, 22 English;
+- the two songs.
+
+Two new spliced parts are proposed: `{xname}` / `{yname}` (a letter's
+name clip) and `{xsound}` (its sound clip). The lines were checked against
+"Romanian, checked". The lines the agent is unsure of are in names research
+§5.4.
 
 ## Sources
 
@@ -379,6 +550,20 @@ The full list, with what was read and what could not be, is in research
   https://doi.org/10.1111/j.1467-9817.2010.01477.x
 - Bhalloo & Molnar (2023), *Perspectives of the ASHA SIGs* 8(5) —
   https://doi.org/10.1044/2023_PERSP-23-00041
+
+For §9 (proposed), the full list is in names research §1; the main ones:
+
+- Academia Română, *DOOM 3* (2021), the letters' entries, read on
+  dexonline — https://dexonline.ro/definitie-doom3/m
+- DfE, *The reading framework*, July 2023, pp. 48–49 —
+  https://assets.publishing.service.gov.uk/media/664f600c05e5fe28788fc437/The_reading_framework_.pdf
+- Ellefson, Treiman & Kessler (2009), *Journal of Experimental Child
+  Psychology* 102(3) — https://doi.org/10.1016/j.jecp.2008.05.008
+- Cardoso-Martins, Mesquita & Ehri (2011), *Journal of Experimental Child
+  Psychology* 109(1) — https://doi.org/10.1016/j.jecp.2010.12.006
+- Cárdenas-Hagan, Carlson & Pollard-Durodola (2007), *Language, Speech,
+  and Hearing Services in Schools* 38(3) —
+  https://doi.org/10.1044/0161-1461(2007/026)
 
 ## Changes from v0
 
@@ -422,3 +607,20 @@ The full list, with what was read and what could not be, is in research
     `curriculum-research-2` (the human's call). Letter names after planet 6.
 12. **Sources** for every claim about Romanian or English teaching, in the
     research note.
+
+## Changes proposed by `curriculum-research-names` (not yet agreed)
+
+1. **§9 Letter names:**
+   - an Alphabet Station after planet 6, with six names lessons per
+     language, Romanian first, and a party;
+   - the names bridge at the start of each English names lesson;
+   - from planet 7, the name in each new letter's `MeetLetter`.
+2. **The Romanian names:** DOOM 3's forms that start with the sound (be,
+   ce, me …); "ge" or "ghe", and "kü" or "chiu", for the human.
+3. **The spliced lines** (§8, §9.5): mention slots switch from the sound to
+   the name once she has met that letter's name; cue and sound slots keep
+   the sound.
+4. **One new activity kind,** `SingAlong` (§4.2); `MeetLetter`,
+   `ListenAndPick` and `TwoSounds` get a names cue.
+5. **The voice lines** for both whole alphabets' names, the new lines and
+   the two songs (§9.6).
