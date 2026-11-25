@@ -360,7 +360,7 @@ namespace Scolita.Editor.ContentImport
 
         private static void CheckRewardArt(RewardContent rewards, ContentProblems problems)
         {
-            foreach (Sticker sticker in rewards.Stickers.All.Where(sticker => !sticker.Retired))
+            foreach (Sticker sticker in rewards.Stickers.All)
             {
                 string art = ContentAssetPaths.StickerArt(sticker.Id.Value);
                 if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
@@ -370,7 +370,7 @@ namespace Scolita.Editor.ContentImport
                 }
             }
 
-            foreach (Trail trail in rewards.Trails.All.Where(trail => !trail.Retired))
+            foreach (Trail trail in rewards.Trails.All)
             {
                 string art = ContentAssetPaths.TrailArt(trail.Id.Value);
                 if (AssetDatabase.LoadAssetAtPath<Sprite>(art) == null)
