@@ -54,13 +54,13 @@ namespace Scolita.Game.Profiles
         public ProfileRules Rules => rules;
 
         /// <summary>
-        /// The app's store, in <see cref="Application.persistentDataPath"/>, offering <paramref name="avatarCatalog"/>'s
+        /// The app's store, in <see cref="SaveRoot.Path"/>, offering <paramref name="avatarCatalog"/>'s
         /// avatars that aren't retired, with <paramref name="learningRules"/>' numbers. Called by the scenes' composition
         /// roots.
         /// </summary>
         public static ProfileStore ForApp(AvatarCatalog avatarCatalog, LearningRulesAsset learningRules)
         {
-            string root = Application.persistentDataPath;
+            string root = SaveRoot.Path;
             return new ProfileStore(root, SaveStore.ForTablet(root), avatarCatalog.OfferedIds(), learningRules.ToProfileRules(),
                 new SystemClock());
         }

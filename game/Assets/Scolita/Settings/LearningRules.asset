@@ -44,3 +44,9 @@ MonoBehaviour:
   sessionLimitMinutes: 0a0000000f00000014000000
   mostChildProfiles: 6
   nameMostCharacters: 20
+  musicDuckedLevel: 0.3
+  musicDuckSeconds: 0.25
+  musicHoldSeconds: 0.6
+  musicRecoverSeconds: 1.2
+  effectsUnderVoice: 0.6
+  musicFadeInSeconds: 2

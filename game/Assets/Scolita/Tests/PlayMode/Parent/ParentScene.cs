@@ -94,15 +94,15 @@ namespace Scolita.Tests.PlayMode.Parent
         /// <summary>The tablet's settings as saved now; used by the parent tests.</summary>
         public static TabletSettingsData SavedTablet()
         {
-            return SaveStore.ForTablet(Application.persistentDataPath)
+            return SaveStore.ForTablet(SaveRoot.Path)
                 .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
         }
 
         /// <summary>Saves the tablet's settings with the app's words in <paramref name="language"/>; used by the parent tests.</summary>
         public static void SaveAppLanguage(Language language)
         {
-            Assert.That(SaveStore.ForTablet(Application.persistentDataPath).Save(TabletSettingsData.FileName,
-                new TabletSettingsData(true, true, 1f, true, language)), Is.True);
+            Assert.That(SaveStore.ForTablet(SaveRoot.Path).Save(TabletSettingsData.FileName,
+                new TabletSettingsData(1f, 1f, 1f, true, language)), Is.True);
         }
 
         /// <summary>Whether the profile file <paramref name="name"/> exists; used by the parent tests.</summary>
@@ -204,12 +204,12 @@ namespace Scolita.Tests.PlayMode.Parent
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+            return SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
         }
 
         private static string TabletFile()
         {
-            return Path.Combine(Application.persistentDataPath, TabletSettingsData.FileName + ".json");
+            return Path.Combine(SaveRoot.Path, TabletSettingsData.FileName + ".json");
         }
     }
 }

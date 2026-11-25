@@ -113,7 +113,7 @@ namespace Scolita.Tests.PlayMode.Map
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+            return SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
         }
     }
 }

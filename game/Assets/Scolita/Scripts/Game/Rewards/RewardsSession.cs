@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
@@ -7,6 +8,7 @@ using Scolita.Core.Map;
 using Scolita.Core.Randomness;
 using Scolita.Core.Rewards;
 using Scolita.Core.Voice;
+using Scolita.Game.Audio;
 using Scolita.Game.Lessons;
 using Scolita.Game.Saving;
 using UnityEngine;
@@ -17,7 +19,8 @@ namespace Scolita.Game.Rewards
     /// Her rewards in a scene: her <see cref="RewardBook"/> (read from the <c>rewards</c> save, saved after every
     /// change), Core's <see cref="RewardGiver"/> for a finished lesson, and the reward screens' taps
     /// (<see cref="IRewardsInput"/>): it opens the books, says their lines in the scene's language through the
-    /// scene's <see cref="LessonVoice"/>, and places, moves and takes off stickers. Made once by each scene's
+    /// scene's <see cref="LessonVoice"/>, places, moves and takes off stickers, and plays the rewards' sounds (a book
+    /// opening, a star landing, the gift opening, a sticker placed, with a tick) through <see cref="ISoundEffects"/>. Made once by each scene's
     /// composition root (<c>LessonRunner</c>, <c>MapRunner</c>); no learning rule lives here.
     /// </summary>
     public sealed class RewardsSession : IRewardsInput
@@ -27,6 +30,7 @@ namespace Scolita.Game.Rewards
         private readonly LessonOrder order;
         private readonly LessonVoice voice;
         private readonly RewardsView view;
+        private readonly ISoundEffects sounds;
         private readonly RewardGiver giver;
         private readonly RewardBook book;
         private readonly Curriculum curriculum;
@@ -47,12 +51,13 @@ namespace Scolita.Game.Rewards
         /// <summary>
         /// Reads her rewards from <paramref name="profileFiles"/> (a profile from before rewards gets the stars of what
         /// <paramref name="doneBefore"/> says she finished), makes the rewards' lines in <paramref name="language"/>
-        /// for <paramref name="voice"/>, and binds <paramref name="view"/>. Called by <c>LessonRunner</c> and
+        /// for <paramref name="voice"/>, plays its sounds through <paramref name="sounds"/>, and binds <paramref name="view"/>. Called by <c>LessonRunner</c> and
         /// <c>MapRunner</c> when their scene starts (before a lesson is recorded as done), and by the tests.
         /// </summary>
         public RewardsSession(RewardSources sources, SaveStore profileFiles, LessonOrder order, IDoneLessons doneBefore,
-            Curriculum curriculum, LessonVoice voice, Language language, RewardsView view, IRandom random)
+            Curriculum curriculum, LessonVoice voice, Language language, RewardsView view, ISoundEffects sounds, IRandom random)
         {
+            this.sounds = sounds;
             this.sources = sources;
             this.profileFiles = profileFiles;
             this.order = order;
@@ -85,7 +90,7 @@ namespace Scolita.Game.Rewards
         /// <summary>Her rewards.</summary>
         public RewardBook Book => book;
 
-        /// <summary>The rules that give them; <c>sound-feel</c> listens to its <see cref="RewardGiver.RewardEarned"/>.</summary>
+        /// <summary>The rules that give them (their <see cref="RewardGiver.RewardEarned"/> is raised for each reward).</summary>
         public RewardGiver Giver => giver;
 
         /// <summary>The lines the rewards can say here, whose clips the scene loads.</summary>
@@ -130,6 +135,7 @@ namespace Scolita.Game.Rewards
             openSky = SkyChart.Of(sources.Content, order, book, sources.Rules);
             bookOpen = true;
             view.ShowSkyBook(openSky);
+            sounds.Play(SoundCue.BookOpens);
             voice.Say(skyBookLine, null);
         }
 
@@ -138,6 +144,7 @@ namespace Scolita.Game.Rewards
         {
             bookOpen = true;
             view.ShowStickerBook(StickerShelf.Of(book, sources.Sprites, sources.Rules));
+            sounds.Play(SoundCue.BookOpens);
             voice.Say(stickerBookLine, null);
         }
 
@@ -150,6 +157,7 @@ namespace Scolita.Game.Rewards
                 .ToArray();
             bookOpen = true;
             view.ShowTrails(choices, book.ChosenTrail);
+            sounds.Play(SoundCue.BookOpens);
             voice.Say(trailPickerLine, null);
         }
 
@@ -184,6 +192,8 @@ namespace Scolita.Game.Rewards
             }
 
             RewardsFile.Save(profileFiles, book);
+            sounds.Play(SoundCue.StickerPlaced);
+            sounds.Vibrate(Haptic.Tick);
             return true;
         }
 
@@ -221,8 +231,21 @@ namespace Scolita.Game.Rewards
             }
 
             RewardsFile.Save(profileFiles, book);
+            sounds.Play(SoundCue.Sparkle);
             view.ShowRocketTrail(sources.Sprites.Trail(trail));
             view.CloseBooks();
+        }
+
+        /// <inheritdoc/>
+        public void StarLanded()
+        {
+            sounds.Play(SoundCue.StarLands);
+        }
+
+        /// <inheritdoc/>
+        public void GiftOpened()
+        {
+            sounds.Play(SoundCue.GiftOpens);
         }
 
         private bool IsPlaced(int index)

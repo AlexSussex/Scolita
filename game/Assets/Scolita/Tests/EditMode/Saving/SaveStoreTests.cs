@@ -26,16 +26,16 @@ namespace Scolita.Tests.EditMode.Saving
             try
             {
                 SaveStore store = SaveStore.ForTablet(root);
-                TabletSettingsData saved = new TabletSettingsData(false, true, 0.25f, false, Language.English);
+                TabletSettingsData saved = new TabletSettingsData(0f, 1f, 0.25f, false, Language.English);
 
                 bool written = store.Save(TabletSettingsData.FileName, saved);
                 SaveLoadResult<TabletSettingsData> loaded = store.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
                 Assert.That(written, Is.True);
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.Loaded));
-                Assert.That(loaded.Data.Version, Is.EqualTo(1));
-                Assert.That(loaded.Data.MusicOn, Is.False);
-                Assert.That(loaded.Data.SoundsOn, Is.True);
+                Assert.That(loaded.Data.Version, Is.EqualTo(2));
+                Assert.That(loaded.Data.MusicVolume, Is.EqualTo(0f));
+                Assert.That(loaded.Data.SoundsVolume, Is.EqualTo(1f));
                 Assert.That(loaded.Data.VoiceVolume, Is.EqualTo(0.25f).Within(0.0001f));
                 Assert.That(loaded.Data.VibrationOn, Is.False);
                 Assert.That(loaded.Data.AppLanguage, Is.EqualTo(Language.English));
@@ -111,10 +111,10 @@ namespace Scolita.Tests.EditMode.Saving
                 SaveStore store = SaveStore.ForTablet(root);
                 store.Save(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
-                store.Save(TabletSettingsData.FileName, new TabletSettingsData(false, false, 0.5f, false, Language.English));
+                store.Save(TabletSettingsData.FileName, new TabletSettingsData(0f, 0f, 0.5f, false, Language.English));
                 SaveLoadResult<TabletSettingsData> loaded = store.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
-                Assert.That(loaded.Data.MusicOn, Is.False);
+                Assert.That(loaded.Data.MusicVolume, Is.EqualTo(0f));
                 Assert.That(loaded.Data.AppLanguage, Is.EqualTo(Language.English));
                 Assert.That(Directory.GetFiles(root), Has.Length.EqualTo(1));
             }
@@ -275,7 +275,7 @@ namespace Scolita.Tests.EditMode.Saving
                     SaveStore.ForTablet(root).Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.SetAside));
-                Assert.That(loaded.Data.MusicOn, Is.True);
+                Assert.That(loaded.Data.MusicVolume, Is.EqualTo(1f));
             }
             finally
             {
@@ -294,7 +294,7 @@ namespace Scolita.Tests.EditMode.Saving
             try
             {
                 string path = Path.Combine(root, "settings.json");
-                const string newer = "{\"version\":2,\"musicOn\":false}";
+                const string newer = "{\"version\":3,\"musicVolume\":0.0}";
                 File.WriteAllText(path, newer);
                 SaveStore store = SaveStore.ForTablet(root);
                 LogAssert.Expect(LogType.Error, new Regex("a newer version of the app wrote it"));
@@ -304,7 +304,7 @@ namespace Scolita.Tests.EditMode.Saving
                 bool written = store.Save(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
 
                 Assert.That(loaded.Outcome, Is.EqualTo(SaveLoadOutcome.Unreadable));
-                Assert.That(loaded.Data.MusicOn, Is.True);
+                Assert.That(loaded.Data.MusicVolume, Is.EqualTo(1f));
                 Assert.That(written, Is.False);
                 Assert.That(File.ReadAllText(path), Is.EqualTo(newer));
                 Assert.That(Directory.GetFiles(root), Has.Length.EqualTo(1));
@@ -327,7 +327,7 @@ namespace Scolita.Tests.EditMode.Saving
             {
                 string path = Path.Combine(root, "settings.json");
                 SaveStore store = SaveStore.ForTablet(root);
-                store.Save(TabletSettingsData.FileName, new TabletSettingsData(false, false, 0.5f, false, Language.English));
+                store.Save(TabletSettingsData.FileName, new TabletSettingsData(0f, 0f, 0.5f, false, Language.English));
                 SaveLoadResult<TabletSettingsData> loaded;
                 bool written;
                 LogAssert.Expect(LogType.Error, new Regex("it could not be opened"));
@@ -345,7 +345,7 @@ namespace Scolita.Tests.EditMode.Saving
                 Assert.That(written, Is.False);
                 Assert.That(BrokenCopies(root, "settings"), Is.Empty);
                 Assert.That(afterUnlock.Outcome, Is.EqualTo(SaveLoadOutcome.Loaded));
-                Assert.That(afterUnlock.Data.MusicOn, Is.False);
+                Assert.That(afterUnlock.Data.MusicVolume, Is.EqualTo(0f));
                 Assert.That(store.Save(TabletSettingsData.FileName, afterUnlock.Data), Is.True);
             }
             finally

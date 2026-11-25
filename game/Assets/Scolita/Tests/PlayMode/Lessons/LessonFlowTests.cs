@@ -184,7 +184,7 @@ namespace Scolita.Tests.PlayMode.Lessons
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+            return SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
         }
 
         private static ChoiceTile[] Tiles(LessonRunner runner)

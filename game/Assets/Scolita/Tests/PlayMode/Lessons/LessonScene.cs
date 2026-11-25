@@ -38,10 +38,15 @@ namespace Scolita.Tests.PlayMode.Lessons
         {
             if (kept == null)
             {
-                File.Delete(FilePath(name));
+                if (File.Exists(FilePath(name)))
+                {
+                    File.Delete(FilePath(name));
+                }
+
                 return;
             }
 
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath(name)));
             File.WriteAllText(FilePath(name), kept);
         }
 
@@ -114,7 +119,7 @@ namespace Scolita.Tests.PlayMode.Lessons
                 yield return WaitFor(() => runner.Run.State == LessonRunState.Playing || runner.Run.State == LessonRunState.Finished);
                 if (runner.Run.State == LessonRunState.Playing)
                 {
-                    AnswerRight(runner);
+                    AnswerTheStepRight(runner);
                 }
             }
 
@@ -134,7 +139,13 @@ namespace Scolita.Tests.PlayMode.Lessons
             return data.TryGetLessonId(out ContentId id) ? id.ToString() : string.Empty;
         }
 
-        private static void AnswerRight(LessonRunner runner)
+        /// <summary>Answers the step being played right, through the composition root as its view would; used by the lesson tests.</summary>
+        public static void AnswerRight(LessonRunner runner)
+        {
+            AnswerTheStepRight(runner);
+        }
+
+        private static void AnswerTheStepRight(LessonRunner runner)
         {
             ActivityRound round = runner.Run.Current.Round;
             switch (runner.Run.Current.Kind)
@@ -256,7 +267,7 @@ namespace Scolita.Tests.PlayMode.Lessons
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
+            return SaveStore.ForProfile(SaveRoot.Path, ProfileList.FirstChildId);
         }
 
         private static string FilePath(string name)

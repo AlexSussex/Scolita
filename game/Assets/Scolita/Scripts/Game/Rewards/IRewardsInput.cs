@@ -42,5 +42,11 @@ namespace Scolita.Game.Rewards
 
         /// <summary>She tapped the trail <paramref name="trail"/>: the rocket wears it. Called by the trail picker.</summary>
         void ChooseTrail(ContentId trail);
+
+        /// <summary>A star of the lesson's end landed in its constellation: its sound. Called by the lesson's end.</summary>
+        void StarLanded();
+
+        /// <summary>The gift box of the lesson's end opens on its sticker: its sound. Called by the lesson's end.</summary>
+        void GiftOpened();
     }
 }

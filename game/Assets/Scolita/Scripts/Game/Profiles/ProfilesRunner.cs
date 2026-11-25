@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Content;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Parent;
 using Scolita.Core.Profiles;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
+using Scolita.Game.Audio;
 using Scolita.Game.Lessons;
 using Scolita.Game.Parent;
 using Scolita.Game.Rewards;
@@ -23,7 +25,8 @@ namespace Scolita.Game.Profiles
     /// together"): a card per child (never the tester), the mascot saying „Cine se joacă? Atinge poza ta.”; a tapped
     /// card opens that child's saves (<see cref="ProfileList.Play"/>), greets her by her name in her map's language
     /// (<see cref="ProfileLines.Hello"/>) and, once the greeting is said, opens her map. The parent button and gate open
-    /// the Parent scene, as on the map. Android Back does nothing: this is where the app starts.
+    /// the Parent scene, as on the map. Android Back does nothing: this is where the app starts. The space theme plays
+    /// under it, and a tapped card chimes (<see cref="SoundPlayer"/>).
     /// </summary>
     public sealed class ProfilesRunner : MonoBehaviour, IProfilesInput
     {
@@ -36,6 +39,7 @@ namespace Scolita.Game.Profiles
         [SerializeField] private AvatarCatalog avatars;
         [SerializeField] private LearningRulesAsset learningRules;
         [SerializeField] private VoiceHost voice;
+        [SerializeField] private SoundPlayer sounds;
         [SerializeField] private ProfilesScreenView screen;
 
         private readonly Dictionary<ProfileId, VoiceSequence> greetings = new Dictionary<ProfileId, VoiceSequence>();
@@ -74,6 +78,7 @@ namespace Scolita.Game.Profiles
             }
 
             chosen = true;
+            sounds.Play(SoundCue.CardTapped);
             screen.ShowChosen(child);
             pickerVoice.Say(greetings[child], null);
         }
@@ -91,10 +96,12 @@ namespace Scolita.Game.Profiles
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
-            TabletSettingsData tablet = SaveStore.ForTablet(Application.persistentDataPath)
+            TabletSettingsData tablet = SaveStore.ForTablet(SaveRoot.Path)
                 .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
             Language appLanguage = tablet.AppLanguage;
             voice.SetVolume(tablet.VoiceVolume);
+            sounds.Begin(learningRules.ToSoundRules(), tablet, MusicPiece.Space);
+            sounds.FollowVoice(voice.Voice);
             AppLocale.Select(appLanguage);
             profiles = ProfileStore.ForApp(avatars, learningRules);
             list = profiles.Load();

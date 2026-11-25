@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scolita.Content;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
@@ -9,6 +10,7 @@ using Scolita.Core.Parent;
 using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Timing;
+using Scolita.Game.Audio;
 using Scolita.Game.Lessons;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
@@ -45,6 +47,7 @@ namespace Scolita.Game.Parent
         [SerializeField] private ParentAreaView screen;
         [SerializeField] private ParentProfilesView profilesPage;
         [SerializeField] private AvatarCatalog avatars;
+        [SerializeField] private SoundPlayer sounds;
 
         private Curriculum curriculum;
         private ParentRules rules;
@@ -114,8 +117,34 @@ namespace Scolita.Game.Parent
         /// <inheritdoc/>
         public void SetVoiceVolume(float volume)
         {
-            SaveTablet(new TabletSettingsData(tablet.MusicOn, tablet.SoundsOn, volume, tablet.VibrationOn,
+            SaveTablet(new TabletSettingsData(tablet.MusicVolume, tablet.SoundsVolume, volume, tablet.VibrationOn,
                 tablet.AppLanguage));
+            Redraw();
+        }
+
+        /// <inheritdoc/>
+        public void SetMusicVolume(float volume)
+        {
+            SaveTablet(new TabletSettingsData(volume, tablet.SoundsVolume, tablet.VoiceVolume, tablet.VibrationOn,
+                tablet.AppLanguage));
+            Redraw();
+        }
+
+        /// <inheritdoc/>
+        public void SetSoundsVolume(float volume)
+        {
+            SaveTablet(new TabletSettingsData(tablet.MusicVolume, volume, tablet.VoiceVolume, tablet.VibrationOn,
+                tablet.AppLanguage));
+            sounds.Play(SoundCue.Tap);
+            Redraw();
+        }
+
+        /// <inheritdoc/>
+        public void SetVibration(bool on)
+        {
+            SaveTablet(new TabletSettingsData(tablet.MusicVolume, tablet.SoundsVolume, tablet.VoiceVolume, on,
+                tablet.AppLanguage));
+            sounds.Vibrate(Haptic.Tick);
             Redraw();
         }
 
@@ -123,7 +152,7 @@ namespace Scolita.Game.Parent
         public void SetMenusInEnglish(bool english)
         {
             Language language = english ? Language.English : Language.Romanian;
-            SaveTablet(new TabletSettingsData(tablet.MusicOn, tablet.SoundsOn, tablet.VoiceVolume, tablet.VibrationOn,
+            SaveTablet(new TabletSettingsData(tablet.MusicVolume, tablet.SoundsVolume, tablet.VoiceVolume, tablet.VibrationOn,
                 language));
             AppLocale.Select(tablet.AppLanguage);
             Redraw();
@@ -367,10 +396,11 @@ namespace Scolita.Game.Parent
             curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             rules = learningRules.ToParentRules();
             clock = new SystemClock();
-            string saveRoot = Application.persistentDataPath;
+            string saveRoot = SaveRoot.Path;
             tabletFiles = SaveStore.ForTablet(saveRoot);
             tablet = tabletFiles.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
             AppLocale.Select(tablet.AppLanguage);
+            sounds.Begin(learningRules.ToSoundRules(), tablet, MusicPiece.Space);
             profiles = ProfileStore.ForApp(avatars, learningRules);
             list = profiles.Load();
             if (list.Playing.IsSet)
@@ -531,6 +561,7 @@ namespace Scolita.Game.Parent
             if (tabletFiles.Save(TabletSettingsData.FileName, changed))
             {
                 tablet = changed;
+                sounds.UseSettings(tablet.MusicVolume, tablet.SoundsVolume, tablet.VibrationOn);
                 return;
             }
 
@@ -548,7 +579,8 @@ namespace Scolita.Game.Parent
             LearnerProgress progress = ProgressFile.Load(profileFiles, curriculum, OrderFor(learning.LanguageMix));
             Report = ReportOf(progress, learning.LanguageMix);
             ParentSettingsShown settings = new ParentSettingsShown(learning.LanguageMix, learning.SessionLimitBy(rules),
-                rules.SessionLimitMinutes, tablet.VoiceVolume, tablet.AppLanguage);
+                rules.SessionLimitMinutes, tablet.VoiceVolume, tablet.MusicVolume, tablet.SoundsVolume, tablet.VibrationOn,
+                tablet.AppLanguage);
             screen.Show(Report, settings, Application.version);
             screen.ShowChosen(avatars.SpriteOf(chosen.Avatar), chosen.Kind == ProfileKind.Tester, chosen.Name.Text);
         }

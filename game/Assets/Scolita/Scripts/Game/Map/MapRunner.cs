@@ -1,4 +1,5 @@
 using Scolita.Content;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
@@ -8,6 +9,7 @@ using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
+using Scolita.Game.Audio;
 using Scolita.Game.Lessons;
 using Scolita.Game.Parent;
 using Scolita.Game.Profiles;
@@ -32,7 +34,8 @@ namespace Scolita.Game.Map
     /// it (so a lesson left half-way resumes at its step). It also counts her play time for the daily limit
     /// (<see cref="PlayClock"/>): at the limit the rocket rests and no lesson opens; and it runs the parent gate
     /// (<see cref="ParentGateFlow"/>), which opens the Parent scene; the avatar button opens "Who's playing?" (two or more
-    /// children, or the tester), and the tester's strip shows "TEST". Android Back closes the gate or an open book.
+    /// children, or the tester), and the tester's strip shows "TEST". Android Back closes the gate or an open book. Its
+    /// <see cref="SoundPlayer"/> plays the space theme under the map, the taps, the trip and the take-off.
     /// </summary>
     public sealed class MapRunner : MonoBehaviour, IMapInput
     {
@@ -44,6 +47,7 @@ namespace Scolita.Game.Map
         [SerializeField] private LetterShapeCatalog shapes;
         [SerializeField] private ActivityRegistry registry;
         [SerializeField] private VoiceHost voice;
+        [SerializeField] private SoundPlayer sounds;
         [SerializeField] private MapScreenView screen;
         [SerializeField] private StickerCatalog stickers;
         [SerializeField] private ConstellationCatalog constellations;
@@ -121,6 +125,7 @@ namespace Scolita.Game.Map
             }
 
             screen.Wobble(stop);
+            sounds.Play(SoundCue.NotYet);
             mapVoice.Say(route.Planets[stop.PlanetIndex].IsAsleep ? lines.PlanetAsleep : lines.StopAhead, null);
         }
 
@@ -134,11 +139,13 @@ namespace Scolita.Game.Map
 
             if (!planet.IsAsleep)
             {
+                sounds.Play(SoundCue.Tap);
                 mapVoice.Say(lines.Greeting, null);
                 return;
             }
 
             screen.Wobble(planet);
+            sounds.Play(SoundCue.NotYet);
             mapVoice.Say(lines.PlanetAsleep, null);
         }
 
@@ -157,6 +164,7 @@ namespace Scolita.Game.Map
             }
 
             RocketArrived();
+            sounds.Play(SoundCue.Landing);
             mapVoice.Say(resting ? lines.Resting : lines.Landed, null);
         }
 
@@ -177,11 +185,13 @@ namespace Scolita.Game.Map
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
-            string saveRoot = Application.persistentDataPath;
+            string saveRoot = SaveRoot.Path;
             TabletSettingsData tablet = SaveStore.ForTablet(saveRoot)
                 .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
             Language appLanguage = tablet.AppLanguage;
             voice.SetVolume(tablet.VoiceVolume);
+            sounds.Begin(learningRules.ToSoundRules(), tablet, MusicPiece.Space);
+            sounds.FollowVoice(voice.Voice);
             AppLocale.Select(appLanguage);
             ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
             ProfileList list = profiles.Load();
@@ -290,7 +300,7 @@ namespace Scolita.Game.Map
         {
             RewardSources sources = RewardSources.Build(stickers, constellations, trails, rewardRules);
             rewards = new RewardsSession(sources, profileFiles, order, progress, curriculum, mapVoice, lines.Language,
-                screen.Rewards, new SeededRandom((ulong)System.DateTime.UtcNow.Ticks));
+                screen.Rewards, sounds, new SeededRandom((ulong)System.DateTime.UtcNow.Ticks));
             voice.LoadLines(rewards.SpokenLines);
             rewards.ShowOnMap();
         }
@@ -300,6 +310,7 @@ namespace Scolita.Game.Map
             screen.MoveRocket(move);
             if (move.Kind == RocketMoveKind.Trip)
             {
+                sounds.Play(SoundCue.Whoosh);
                 return;
             }
 
@@ -336,6 +347,9 @@ namespace Scolita.Game.Map
             }
 
             opening = true;
+            sounds.PlayAcrossScenes(SoundCue.TakeOff);
+            Debug.Log("Map: " + lesson.Id + " opens, " + Mathf.RoundToInt(Time.realtimeSinceStartup * 1000f)
+                + " ms after the app started.");
             SceneNavigator.Load(AppScene.Lesson);
         }
 

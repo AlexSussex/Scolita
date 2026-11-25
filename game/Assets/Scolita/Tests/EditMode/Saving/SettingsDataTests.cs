@@ -16,25 +16,76 @@ namespace Scolita.Tests.EditMode.Saving
         {
             TabletSettingsData defaults = TabletSettingsData.CreateDefaults();
 
-            Assert.That(defaults.Version, Is.EqualTo(1));
-            Assert.That(defaults.MusicOn, Is.True);
-            Assert.That(defaults.SoundsOn, Is.True);
+            Assert.That(defaults.Version, Is.EqualTo(2));
+            Assert.That(defaults.MusicVolume, Is.EqualTo(1f));
+            Assert.That(defaults.SoundsVolume, Is.EqualTo(1f));
             Assert.That(defaults.VoiceVolume, Is.EqualTo(1f));
             Assert.That(defaults.VibrationOn, Is.True);
             Assert.That(defaults.AppLanguage, Is.EqualTo(Language.Romanian));
         }
 
-        /// <summary>Tests that the <see cref="TabletSettingsData"/> constructor clamps the voice volume to 0–1, and a non-number to 1.</summary>
+        /// <summary>Tests that the <see cref="TabletSettingsData"/> constructor clamps every volume to 0–1, and a non-number to 1.</summary>
         [TestCase(-0.5f, 0f)]
         [TestCase(0.4f, 0.4f)]
         [TestCase(3f, 1f)]
         [TestCase(float.NaN, 1f)]
         [TestCase(float.PositiveInfinity, 1f)]
-        public void TestTabletSettingsData_ClampsVoiceVolume(float volume, float expected)
+        public void TestTabletSettingsData_ClampsVolumes(float volume, float expected)
         {
-            TabletSettingsData settings = new TabletSettingsData(true, true, volume, true, Language.English);
+            TabletSettingsData settings = new TabletSettingsData(volume, volume, volume, true, Language.English);
 
             Assert.That(settings.VoiceVolume, Is.EqualTo(expected).Within(0.0001f));
+            Assert.That(settings.MusicVolume, Is.EqualTo(expected).Within(0.0001f));
+            Assert.That(settings.SoundsVolume, Is.EqualTo(expected).Within(0.0001f));
+        }
+
+        /// <summary>Tests that <see cref="TabletSettingsData.Upgraded"/> turns a version 1 file's music and sounds on or off into volumes of 1 or 0.</summary>
+        [Test]
+        public void TestUpgraded_TabletVersion1OnAndOffBecomeVolumes()
+        {
+            TabletSettingsData musicOff = JsonUtility.FromJson<TabletSettingsData>(
+                "{\"version\":1,\"musicOn\":false,\"soundsOn\":true,\"voiceVolume\":0.6,\"vibrationOn\":false,\"appLanguage\":\"en\"}");
+            TabletSettingsData soundsOff = JsonUtility.FromJson<TabletSettingsData>(
+                "{\"version\":1,\"musicOn\":true,\"soundsOn\":false,\"voiceVolume\":1.0,\"vibrationOn\":true,\"appLanguage\":\"ro\"}");
+
+            TabletSettingsData first = musicOff.Upgraded();
+            TabletSettingsData second = soundsOff.Upgraded();
+
+            Assert.That(first.Version, Is.EqualTo(2));
+            Assert.That(first.MusicVolume, Is.EqualTo(0f));
+            Assert.That(first.SoundsVolume, Is.EqualTo(1f));
+            Assert.That(first.VoiceVolume, Is.EqualTo(0.6f).Within(0.0001f));
+            Assert.That(first.VibrationOn, Is.False);
+            Assert.That(first.AppLanguage, Is.EqualTo(Language.English));
+            Assert.That(second.MusicVolume, Is.EqualTo(1f));
+            Assert.That(second.SoundsVolume, Is.EqualTo(0f));
+            Assert.That(second.VibrationOn, Is.True);
+        }
+
+        /// <summary>Tests that <see cref="TabletSettingsData.Upgraded"/> keeps a version 2 file's volumes (clamped), whatever its on and off say.</summary>
+        [Test]
+        public void TestUpgraded_TabletVersion2KeepsItsVolumes()
+        {
+            TabletSettingsData read = JsonUtility.FromJson<TabletSettingsData>(
+                "{\"version\":2,\"musicOn\":false,\"soundsOn\":false,\"musicVolume\":0.3,\"soundsVolume\":4.0,\"voiceVolume\":0.5}");
+
+            TabletSettingsData upgraded = read.Upgraded();
+
+            Assert.That(upgraded.MusicVolume, Is.EqualTo(0.3f).Within(0.0001f));
+            Assert.That(upgraded.SoundsVolume, Is.EqualTo(1f));
+        }
+
+        /// <summary>Tests that <see cref="TabletSettingsData"/> writes version 2 with its volumes, and its on and off as "volume above 0".</summary>
+        [Test]
+        public void TestTabletSettingsData_WritesVolumesAndOnOff()
+        {
+            string json = JsonUtility.ToJson(new TabletSettingsData(0f, 0.5f, 1f, true, Language.Romanian));
+
+            Assert.That(json, Does.Contain("\"version\":2"));
+            Assert.That(json, Does.Contain("\"musicOn\":false"));
+            Assert.That(json, Does.Contain("\"soundsOn\":true"));
+            Assert.That(json, Does.Contain("\"musicVolume\":0.0"));
+            Assert.That(json, Does.Contain("\"soundsVolume\":0.5"));
         }
 
         /// <summary>Tests that <see cref="TabletSettingsData.Upgraded"/> reads an unknown language code as Romanian.</summary>

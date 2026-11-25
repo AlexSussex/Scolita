@@ -32,7 +32,7 @@ namespace Scolita.Game.Boot
             bool picker = false;
             try
             {
-                string saveRoot = Application.persistentDataPath;
+                string saveRoot = SaveRoot.Path;
                 SaveStore tabletFiles = SaveStore.ForTablet(saveRoot);
                 EnsureFile(tabletFiles, TabletSettingsData.FileName, TabletSettingsData.CreateDefaults());
                 AppLocale.Select(tabletFiles.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.AppLanguage);

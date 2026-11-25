@@ -30,7 +30,7 @@ namespace Scolita.Tests.PlayMode.Profiles
         private static readonly string[] RootFiles = { ProfilesData.FileName + ".json", "settings.json" };
 
         /// <summary>The Editor's save root.</summary>
-        public static string Root => Application.persistentDataPath;
+        public static string Root => SaveRoot.Path;
 
         /// <summary>
         /// Copies the Editor's profile list, profile folders and tablet settings aside, then clears them, so a test starts

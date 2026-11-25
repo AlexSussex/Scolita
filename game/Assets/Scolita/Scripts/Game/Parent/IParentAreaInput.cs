@@ -17,6 +17,15 @@ namespace Scolita.Game.Parent
         /// <summary>The voice slider was let go at <paramref name="volume"/> (0 to 1). Called by the parent area screen.</summary>
         void SetVoiceVolume(float volume);
 
+        /// <summary>The music slider was let go at <paramref name="volume"/> (0 to 1; 0 is no music). Called by the parent area screen.</summary>
+        void SetMusicVolume(float volume);
+
+        /// <summary>The sounds slider was let go at <paramref name="volume"/> (0 to 1; 0 is no sound effects). Called by the parent area screen.</summary>
+        void SetSoundsVolume(float volume);
+
+        /// <summary>The "Vibrații" switch was turned to <paramref name="on"/>. Called by the parent area screen.</summary>
+        void SetVibration(bool on);
+
         /// <summary>The "Meniurile în engleză" switch was turned to <paramref name="english"/>. Called by the parent area screen.</summary>
         void SetMenusInEnglish(bool english);
 

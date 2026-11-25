@@ -1,3 +1,4 @@
+using Scolita.Core.Audio;
 using Scolita.Core.Lessons;
 using Scolita.Core.Parent;
 using Scolita.Core.Profiles;
@@ -50,6 +51,12 @@ namespace Scolita.Game.Lessons
         [SerializeField] private int[] sessionLimitMinutes = { 10, 15, 20 };
         [SerializeField, Range(2, 6)] private int mostChildProfiles = 6;
         [SerializeField, Range(20, 40)] private int nameMostCharacters = 20;
+        [SerializeField, Range(0f, 1f)] private float musicDuckedLevel = 0.3f;
+        [SerializeField, Min(0f)] private float musicDuckSeconds = 0.25f;
+        [SerializeField, Min(0f)] private float musicHoldSeconds = 0.6f;
+        [SerializeField, Min(0f)] private float musicRecoverSeconds = 1.2f;
+        [SerializeField, Range(0f, 1f)] private float effectsUnderVoice = 0.6f;
+        [SerializeField, Min(0f)] private float musicFadeInSeconds = 2f;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -95,6 +102,17 @@ namespace Scolita.Game.Lessons
         public ProfileRules ToProfileRules()
         {
             return new ProfileRules(mostChildProfiles, nameMostCharacters);
+        }
+
+        /// <summary>
+        /// The music's ducking under the voice, the effects under the voice and the music's fade-in, for Core; throws an
+        /// <see cref="System.ArgumentOutOfRangeException"/> for a number out of range. Called by the scenes' composition roots
+        /// when they begin their sound player, and the tests.
+        /// </summary>
+        public SoundRules ToSoundRules()
+        {
+            return new SoundRules(musicDuckedLevel, musicDuckSeconds, musicHoldSeconds, musicRecoverSeconds, effectsUnderVoice,
+                musicFadeInSeconds);
         }
     }
 }

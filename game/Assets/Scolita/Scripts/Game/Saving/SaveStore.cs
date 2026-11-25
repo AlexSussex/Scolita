@@ -17,7 +17,7 @@ namespace Scolita.Game.Saving
     /// <summary>
     /// Reads and writes the app's save files: one versioned JSON file per concern
     /// (<c>&lt;name&gt;.json</c>) in one folder. The tablet's own files sit in the save root
-    /// (<see cref="Application.persistentDataPath"/> in the app); every file about a learner sits in
+    /// (<see cref="SaveRoot.Path"/> in the app); every file about a learner sits in
     /// its profile's folder, <c>profiles/&lt;profileId&gt;/</c> (<see cref="ForProfile"/>), so one
     /// profile never touches another's files. A damaged file is set aside as
     /// <c>&lt;name&gt;.broken-&lt;date-time&gt;.json</c> (each damaged copy kept, so her progress can be

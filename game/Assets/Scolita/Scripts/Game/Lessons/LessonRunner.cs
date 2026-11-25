@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Scolita.Content;
 using Scolita.Core.Activities;
+using Scolita.Core.Audio;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
@@ -11,6 +12,7 @@ using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Timing;
 using Scolita.Core.Voice;
+using Scolita.Game.Audio;
 using Scolita.Game.Parent;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
@@ -33,7 +35,8 @@ namespace Scolita.Game.Lessons
     /// to Core and says what Core decides, saves where she is after each step and when the app goes to
     /// the background, puts her warm-ups before the lesson (<see cref="WarmUps"/>), records what she does
     /// in her progress (<see cref="LessonProgress"/>) and saves it after each step, and keeps the screen
-    /// awake while the lesson is open. It counts her play time for the daily limit (<see cref="Parent.PlayClock"/>)
+    /// awake while the lesson is open. It plays the lesson's music and each answer's sound and tick (Core's
+    /// <see cref="FeedbackEffects"/>) through the scene's <see cref="SoundPlayer"/>. It counts her play time for the daily limit (<see cref="Parent.PlayClock"/>)
     /// but never ends a lesson for it; Android Back goes home to the map (or closes the sticker book). For the tester's
     /// profile it shows the tester's strip (the ids, the voice line being said) and skips a step when asked.
     /// </summary>
@@ -46,6 +49,7 @@ namespace Scolita.Game.Lessons
         [SerializeField] private VoiceLineCatalog voiceLines;
         [SerializeField] private LetterShapeCatalog shapes;
         [SerializeField] private VoiceHost voice;
+        [SerializeField] private SoundPlayer sounds;
         [SerializeField] private LessonScreenView screen;
         [SerializeField] private ActivityRegistry registry;
         [SerializeField] private LearningRulesAsset learningRules;
@@ -95,8 +99,16 @@ namespace Scolita.Game.Lessons
                 return;
             }
 
+            ActivityKind kind = run.Current.Kind;
             StepFeedback feedback = run.Answer(answer);
             shownView.ShowFeedback(feedback);
+            FeedbackEffect effect = FeedbackEffects.Of(kind, answer, feedback.Outcome);
+            if (effect.HasSound)
+            {
+                sounds.Play(effect.Sound);
+            }
+
+            sounds.Vibrate(effect.Haptic);
             screen.ShowMood(feedback.Outcome == FeedbackOutcome.TryAgain || feedback.Outcome == FeedbackOutcome.ShowAnswer
                 ? GuideMood.Thinking
                 : GuideMood.Happy);
@@ -147,8 +159,11 @@ namespace Scolita.Game.Lessons
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
             voice.Begin(curriculum);
-            voice.SetVolume(SaveStore.ForTablet(Application.persistentDataPath)
-                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.VoiceVolume);
+            TabletSettingsData tablet = SaveStore.ForTablet(SaveRoot.Path)
+                .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
+            voice.SetVolume(tablet.VoiceVolume);
+            sounds.Begin(learningRules.ToSoundRules(), tablet, MusicPiece.Lesson);
+            sounds.FollowVoice(voice.Voice);
             ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
             profile = profiles.Load().ProfileToOpen;
             profileFiles = profiles.FilesOf(profile);
@@ -182,6 +197,8 @@ namespace Scolita.Game.Lessons
             testerStrip.Show(profile.ShowsTestInfo, profile.CanSkipSteps);
             run.Start();
             ShowStep();
+            Debug.Log("Lesson: " + plan.Lesson.Id + " is ready, " + Mathf.RoundToInt(Time.realtimeSinceStartup * 1000f)
+                + " ms after the app started.");
         }
 
         private void Update()
@@ -325,7 +342,7 @@ namespace Scolita.Game.Lessons
         {
             RewardSources sources = RewardSources.Build(stickers, constellations, trails, rewardRules);
             rewards = new RewardsSession(sources, profileFiles, order, progress, curriculum,
-                lessonVoice, run.EndingLanguage, screen.Rewards, new SeededRandom((ulong)DateTime.UtcNow.Ticks + 1UL));
+                lessonVoice, run.EndingLanguage, screen.Rewards, sounds, new SeededRandom((ulong)DateTime.UtcNow.Ticks + 1UL));
             voice.LoadLines(rewards.SpokenLines);
         }
 
