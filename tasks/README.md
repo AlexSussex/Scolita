@@ -99,7 +99,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| galaxy-map | [galaxy-map](pending/galaxy-map.md) | New: `Scripts/Core/Map`, `Scripts/UI/Map`, `Scripts/Game/Map`, `Tests/EditMode/Map`, `Tests/PlayMode` (map tests), map prefabs under `Prefabs/Map/`, the `map-progress` save; changes: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `Scenes/Lesson.unity` (only if the return needs it), `content/voice-lines.csv` (new rows at the end) and its imported assets, `Localization/` (new keys at the end) | emulator-5602 | 2026-11-25 | Claimed; reading the brief and the done records |
+| galaxy-map | [galaxy-map](pending/galaxy-map.md) | New: `Scripts/Core/Map`, `Scripts/UI/Map`, `Scripts/Game/Map`, `Tests/EditMode/Map`, `Tests/PlayMode` (map tests), map prefabs under `Prefabs/Map/`, the `map-progress` save; changes: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `Scenes/Lesson.unity` (only if the return needs it), `content/voice-lines.csv` (new rows at the end) and its imported assets, `Localization/` (new keys at the end) | emulator-5602 | 2026-11-25 | Slices pushed (content, core, game, ui), reviewed by a second agent; close-out (0.10.0) next |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
