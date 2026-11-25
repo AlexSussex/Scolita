@@ -16,6 +16,12 @@ namespace Scolita.Core.Tracing
         LeftThePath,
 
         /// <summary>A tap, or a line that stopped before the end of the stroke.</summary>
-        TooShort
+        TooShort,
+
+        /// <summary>
+        /// She began where a handwritten letter's entry run ends (the letter's body) instead of on the line,
+        /// leaving out the entry stroke („Pornește de pe linie.”).
+        /// </summary>
+        SkippedEntry
     }
 }

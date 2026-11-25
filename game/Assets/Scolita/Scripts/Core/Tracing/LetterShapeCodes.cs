@@ -24,6 +24,12 @@ namespace Scolita.Core.Tracing
         /// <summary>The <c>TraceLetter</c> step option that names the form.</summary>
         public const string FormOption = "form";
 
+        /// <summary>
+        /// The tracing steps' option that plays only the first rounds (<c>rounds=1</c>: the English lessons' "one round
+        /// by hand"); without it, all <see cref="TracingTuning.Rounds"/>.
+        /// </summary>
+        public const string RoundsOption = "rounds";
+
         private static readonly IReadOnlyList<KeyValuePair<string, LetterCase>> Cases = new[]
         {
             new KeyValuePair<string, LetterCase>("lower", LetterCase.Lower),
@@ -173,6 +179,16 @@ namespace Scolita.Core.Tracing
             letterCase = LetterCase.Lower;
             return step.TryGetOption(CaseOption, out string caseCode) && TryParse(Cases, caseCode, out letterCase)
                 && step.TryGetOption(FormOption, out string formCode) && TryParse(Forms, formCode, out form);
+        }
+
+        /// <summary>
+        /// Whether <paramref name="shape"/>'s line ends with an exit run, so the next letter of a word can join it.
+        /// Called by the rules factory and the shape rules.
+        /// </summary>
+        public static bool HasExit(LetterShape shape)
+        {
+            Stroke line = shape.Strokes[TraceFigure.LineEndOf(shape)];
+            return line.Runs[line.Runs.Count - 1].Kind == StrokeRunKind.Exit;
         }
 
         private static bool TryParse<T>(IReadOnlyList<KeyValuePair<string, T>> codes, string code, out T value)

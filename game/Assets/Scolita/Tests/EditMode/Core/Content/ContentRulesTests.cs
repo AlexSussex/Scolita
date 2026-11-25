@@ -39,7 +39,7 @@ namespace Scolita.Tests.EditMode.Core.Content
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,TraceWord,,,ro-mama,,");
-            ContentCsvs.AddRow(csvs, ContentFileNames.VoiceLines, "ro-line-word-write,ro,line,Scrie cuv\u00E2ntul de m\u00E2n\u0103.,,,");
+            ContentCsvs.AddTraceWordNeeds(csvs);
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 

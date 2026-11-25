@@ -18,5 +18,8 @@ namespace Scolita.Core.Content
 
         /// <summary>The most strokes of a letter shape (the writing board's start dots).</summary>
         public const int MostStrokes = 4;
+
+        /// <summary>The most letters of a <see cref="ActivityKind.TraceWord"/> word (joined on the writing board).</summary>
+        public const int MostTracedLetters = 5;
     }
 }

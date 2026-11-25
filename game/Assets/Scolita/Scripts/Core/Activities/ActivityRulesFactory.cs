@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
@@ -19,7 +20,7 @@ namespace Scolita.Core.Activities
         {
             ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
             ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
-            ActivityKind.WordTwins, ActivityKind.TraceLetter
+            ActivityKind.WordTwins, ActivityKind.TraceLetter, ActivityKind.TraceWord
         };
 
         /// <summary>The kinds that have rules.</summary>
@@ -41,7 +42,15 @@ namespace Scolita.Core.Activities
         /// </summary>
         public static bool CanCreate(Step step, Curriculum curriculum)
         {
-            return HasRules(step.Kind) && (step.Kind != ActivityKind.TraceLetter || TryGetShape(step, curriculum, out _, out _));
+            switch (step.Kind)
+            {
+                case ActivityKind.TraceLetter:
+                    return TryGetShape(step, curriculum, out _, out _);
+                case ActivityKind.TraceWord:
+                    return TryGetWordShapes(step, curriculum, out _, out _, out _);
+                default:
+                    return HasRules(step.Kind);
+            }
         }
 
         /// <summary>
@@ -56,8 +65,7 @@ namespace Scolita.Core.Activities
             switch (step.Kind)
             {
                 case ActivityKind.MeetLetter:
-                    return new MeetLetterRules(curriculum.Letters.Get(step.Letters[0]), curriculum.Words.Get(step.Words[0]),
-                        LanguageOf(step));
+                    return MeetLetter(step, curriculum);
                 case ActivityKind.ListenAndPick:
                     return step.Letters.Count > 0
                         ? ListenAndPickRules.OfLetters(LettersOf(step, curriculum), LanguageOf(step))
@@ -80,6 +88,8 @@ namespace Scolita.Core.Activities
                         LessonLanguageOf(step, curriculum));
                 case ActivityKind.TraceLetter:
                     return TraceLetter(step, curriculum, rules);
+                case ActivityKind.TraceWord:
+                    return TraceWord(step, curriculum, rules);
                 default:
                     throw new ArgumentException("The kind " + step.Kind + " has no rules yet.", nameof(step));
             }
@@ -93,7 +103,59 @@ namespace Scolita.Core.Activities
                     + " has no shape for its letter, case and form.");
             }
 
-            return new TraceLetterRules(letter, shape, LanguageOf(step), rules.Tracing);
+            return new TraceLetterRules(letter, shape, LanguageOf(step), rules.Tracing, RoundsOf(step));
+        }
+
+        private static TraceWordRules TraceWord(Step step, Curriculum curriculum, LearningRules rules)
+        {
+            if (!TryGetWordShapes(step, curriculum, out Word word, out Letter[] letters, out LetterShape[] shapes))
+            {
+                throw new KeyNotFoundException("The TraceWord step " + step.Number + " of " + step.LessonId
+                    + " has no handwritten shape for every letter of its word, or a letter before the last without an exit.");
+            }
+
+            return new TraceWordRules(word, letters, shapes, LanguageOf(step), rules.Tracing, RoundsOf(step));
+        }
+
+        private static bool TryGetWordShapes(Step step, Curriculum curriculum, out Word word, out Letter[] letters,
+            out LetterShape[] shapes)
+        {
+            letters = null;
+            shapes = null;
+            if (step.Words.Count != 1 || !curriculum.Words.TryGet(step.Words[0], out word))
+            {
+                word = null;
+                return false;
+            }
+
+            letters = new Letter[word.Letters.Count];
+            shapes = new LetterShape[word.Letters.Count];
+            for (int index = 0; index < letters.Length; index++)
+            {
+                if (!curriculum.Letters.TryGet(word.Letters[index], out letters[index])
+                    || !curriculum.TryGetShape(letters[index], LetterCase.Lower, LetterForm.Handwritten, out shapes[index])
+                    || (index + 1 < letters.Length && !LetterShapeCodes.HasExit(shapes[index])))
+                {
+                    return false;
+                }
+            }
+
+            return letters.Length > 0 && letters.Length <= ActivityLimits.MostTracedLetters;
+        }
+
+        private static MeetLetterRules MeetLetter(Step step, Curriculum curriculum)
+        {
+            Letter letter = curriculum.Letters.Get(step.Letters[0]);
+            curriculum.TryGetShape(letter, LetterCase.Lower, LetterForm.Handwritten, out LetterShape handwritten);
+            return new MeetLetterRules(letter, curriculum.Words.Get(step.Words[0]), LanguageOf(step), handwritten);
+        }
+
+        private static int RoundsOf(Step step)
+        {
+            return step.TryGetOption(LetterShapeCodes.RoundsOption, out string value)
+                && int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out int rounds)
+                ? rounds
+                : TracingTuning.Rounds;
         }
 
         private static bool TryGetShape(Step step, Curriculum curriculum, out Letter letter, out LetterShape shape)

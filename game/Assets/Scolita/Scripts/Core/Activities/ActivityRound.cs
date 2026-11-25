@@ -98,9 +98,16 @@ namespace Scolita.Core.Activities
         public int PlacesFilled { get; private set; }
 
         /// <summary>
-        /// Where a <c>TraceLetter</c> step is (the shape, the round, the stroke); null for the other kinds.
+        /// Where a tracing step is (<c>TraceLetter</c>, <c>TraceWord</c>: the figure, the round, the stroke); null for
+        /// the other kinds.
         /// </summary>
         public TraceState Trace { get; private set; }
+
+        /// <summary>
+        /// The letter by hand, for a view to write it (<c>MeetLetter</c>'s "de mână" button); null when the round shows
+        /// no handwritten form.
+        /// </summary>
+        public TraceFigure Handwriting { get; private set; }
 
         /// <summary>
         /// Where the choice <paramref name="choice"/> stands; throws an <see cref="ArgumentOutOfRangeException"/>
@@ -195,6 +202,12 @@ namespace Scolita.Core.Activities
         internal void Attach(TraceState trace)
         {
             Trace = trace;
+        }
+
+        /// <summary>Gives the round the letter by hand to show; called by <c>MeetLetterRules</c>.</summary>
+        internal void ShowHandwriting(TraceFigure handwriting)
+        {
+            Handwriting = handwriting;
         }
 
         /// <summary>Sets how many places the round has to fill; called by the activities' rules when a lesson is built.</summary>

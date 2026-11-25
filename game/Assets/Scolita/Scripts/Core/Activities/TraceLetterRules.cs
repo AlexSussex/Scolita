@@ -10,9 +10,12 @@ namespace Scolita.Core.Activities
 {
     /// <summary>
     /// The rules of <see cref="ActivityKind.TraceLetter"/> (<c>docs/curriculum.md</c> §4.2, design screen 3):
-    /// she traces the letter's strokes in order, from each start dot in its direction, in three rounds
-    /// (on dots, on a faint shadow, from the start dot only), each round more exacting
-    /// (<see cref="TracingTuning"/>). Each stroke is one part of the step: a good one is
+    /// she traces the letter's strokes in order, from each start dot in its direction, in print or by hand (the
+    /// handwritten form with its entry and exit, design screen 8), in up to three rounds (on dots, on a faint
+    /// shadow, from the start dot only; the step's <c>rounds</c> option plays the first ones), each round more
+    /// exacting (<see cref="TracingTuning"/>). A line through strokes that continue each other does them all
+    /// (<see cref="LineCheck"/>); one that strays after a stroke it did keeps that stroke and is reminded to stay
+    /// on the line, without a miss. Each stroke is one part of the step: a good one is
     /// <see cref="AnswerVerdict.Right"/> (the last of the last round <see cref="AnswerVerdict.Done"/>), any
     /// other a miss, so the lesson run's one ladder gives the hint for what went wrong, then shows the
     /// answer (the stroke draws itself once). Its round's one choice is the letter; where the tracing is,
@@ -29,19 +32,21 @@ namespace Scolita.Core.Activities
         private readonly VoiceSequence hintArrow;
         private readonly VoiceSequence hintStay;
         private readonly VoiceSequence hintSlow;
+        private readonly VoiceSequence hintFromLine;
         private readonly VoiceSequence shown;
         private readonly VoiceSequence startPrompt;
 
         /// <summary>
         /// Creates the rules for tracing <paramref name="shape"/>, a shape of <paramref name="letter"/>, in
-        /// <paramref name="language"/>, with <paramref name="tuning"/>'s tolerances. Called by
-        /// <see cref="ActivityRulesFactory"/> and the tests.
+        /// <paramref name="language"/>, with <paramref name="tuning"/>'s tolerances, in <paramref name="rounds"/>
+        /// rounds. Called by <see cref="ActivityRulesFactory"/> and the tests.
         /// </summary>
-        public TraceLetterRules(Letter letter, LetterShape shape, Language language, TracingTuning tuning)
+        public TraceLetterRules(Letter letter, LetterShape shape, Language language, TracingTuning tuning, int rounds)
         {
             Language = language;
             this.tuning = tuning ?? throw new ArgumentNullException(nameof(tuning));
-            state = new TraceState(shape ?? throw new ArgumentNullException(nameof(shape)));
+            state = new TraceState(TraceFigure.OfLetter(shape ?? throw new ArgumentNullException(nameof(shape))), rounds);
+            bool byHand = shape.Form == LetterForm.Handwritten;
             ActivityChoice choice = shape.Case == LetterCase.Upper
                 ? ActivityChoice.OfCapital(letter, language)
                 : ActivityChoice.OfLetter(letter, language);
@@ -49,8 +54,14 @@ namespace Scolita.Core.Activities
             Round.Attach(state);
 
             VoiceFill sound = VoiceFill.OfLine(letter.SoundLine(language), choice.Text);
-            Instruction = VoiceSequence.Of(Line(shape.Form == LetterForm.Print ? "trace-print" : "trace-hand"))
-                .Then(Line("trace-start"));
+            Instruction = VoiceSequence.Of(Line(byHand ? "trace-hand" : "trace-print"));
+            if (byHand && state.Figure.StartsOnTheBaseline)
+            {
+                Instruction.Then(Line("trace-baseline"));
+            }
+
+            Instruction.Then(Line("trace-start"));
+            string done = byHand ? "trace-done-hand" : "trace-done";
             startPrompt = VoiceSequence.Of(Line("trace-start"));
             nextStroke = new VoiceSequence[shape.Strokes.Count];
             for (int stroke = 1; stroke < nextStroke.Length; stroke++)
@@ -58,29 +69,30 @@ namespace Scolita.Core.Activities
                 nextStroke[stroke] = VoiceSequence.Of(Line("trace-next-" + (stroke + 1)));
             }
 
-            roundDone = new VoiceSequence[TracingTuning.Rounds];
-            for (int round = 0; round + 1 < TracingTuning.Rounds; round++)
+            roundDone = new VoiceSequence[state.Rounds];
+            for (int round = 0; round + 1 < state.Rounds; round++)
             {
-                roundDone[round] = VoiceSequence.Of(Line("trace-done")).With(VoiceSlot.X, sound)
+                roundDone[round] = VoiceSequence.Of(Line(done)).With(VoiceSlot.X, sound)
                     .Then(Line("trace-round-" + (round + 2)));
             }
 
-            finished = VoiceSequence.Of(Line("trace-done")).With(VoiceSlot.X, sound);
+            finished = VoiceSequence.Of(Line(done)).With(VoiceSlot.X, sound);
             hintDot = VoiceSequence.Of(Line("trace-hint-dot"));
             hintArrow = VoiceSequence.Of(Line("trace-hint-arrow"));
             hintStay = VoiceSequence.Of(Line("trace-hint-stay"));
             hintSlow = VoiceSequence.Of(Line("trace-hint-slow"));
+            hintFromLine = VoiceSequence.Of(Line("trace-hint-from-line"));
             shown = VoiceSequence.Of(Line("trace-hint-watch"));
             List<VoiceSequence> lines = new List<VoiceSequence>
             {
-                Instruction, startPrompt, finished, hintDot, hintArrow, hintStay, hintSlow, shown
+                Instruction, startPrompt, finished, hintDot, hintArrow, hintStay, hintSlow, hintFromLine, shown
             };
             for (int stroke = 1; stroke < nextStroke.Length; stroke++)
             {
                 lines.Add(nextStroke[stroke]);
             }
 
-            for (int round = 0; round + 1 < TracingTuning.Rounds; round++)
+            for (int round = 0; round + 1 < state.Rounds; round++)
             {
                 lines.Add(roundDone[round]);
             }
@@ -127,14 +139,12 @@ namespace Scolita.Core.Activities
                 throw new ArgumentException("TraceLetter takes a drawn stroke, not a " + answer.Gesture + ".", nameof(answer));
             }
 
-            if (state.RoundsDone >= TracingTuning.Rounds)
+            if (state.IsDone)
             {
                 throw new InvalidOperationException("The letter is traced already.");
             }
 
-            StrokeTolerance tolerance = tuning.ForRound(state.AnswerShown ? 0 : state.Round);
-            StrokeResult result = StrokeCheck.Check(state.Shape.Strokes[state.Stroke].Path, answer.Points, tolerance);
-            state.Judged(result.Verdict);
+            LineResult result = TraceJudging.Judge(state, tuning, answer.Points);
             if (result.Verdict != StrokeVerdict.Good)
             {
                 Response = null;
@@ -142,14 +152,26 @@ namespace Scolita.Core.Activities
             }
 
             int roundBefore = state.RoundsDone;
-            state.StrokeDone();
-            if (state.RoundsDone == TracingTuning.Rounds)
+            state.StrokesDone(result.StrokesDone);
+            if (state.IsDone)
             {
                 Response = finished;
                 return AnswerVerdict.Done;
             }
 
-            Response = state.RoundsDone > roundBefore ? roundDone[roundBefore] : nextStroke[state.Stroke];
+            if (state.RoundsDone > roundBefore)
+            {
+                Response = roundDone[roundBefore];
+            }
+            else if (result.PointsKept < answer.Points.Count)
+            {
+                Response = state.Guide == TraceGuide.Dotted ? hintStay : hintSlow;
+            }
+            else
+            {
+                Response = nextStroke[state.Stroke];
+            }
+
             return AnswerVerdict.Right;
         }
 
@@ -182,6 +204,8 @@ namespace Scolita.Core.Activities
                     return hintArrow;
                 case StrokeVerdict.LeftThePath:
                     return state.Guide == TraceGuide.Dotted ? hintStay : hintSlow;
+                case StrokeVerdict.SkippedEntry:
+                    return hintFromLine;
                 default:
                     throw new InvalidOperationException("A hint follows a stroke that missed, not a " + verdict + " one.");
             }

@@ -59,13 +59,15 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             StrokeTolerance middle = new StrokeTolerance(28f, 30f, 0.85f);
             StrokeTolerance tight = new StrokeTolerance(24f, 28f, 0.9f);
 
-            TracingTuning tuning = new TracingTuning(wide, middle, tight);
+            TracingTuning tuning = new TracingTuning(wide, middle, tight, 44f);
 
             Assert.That(tuning.ForRound(0).Corridor, Is.EqualTo(32f).Within(0.001f));
             Assert.That(tuning.ForRound(1).StartRadius, Is.EqualTo(30f).Within(0.001f));
             Assert.That(tuning.ForRound(2).Coverage, Is.EqualTo(0.9f).Within(0.001f));
             Assert.That(() => tuning.ForRound(3), Throws.InstanceOf<ArgumentOutOfRangeException>());
-            Assert.That(() => new TracingTuning(tight, middle, wide), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(tight, middle, wide, 44f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(wide, middle, tight, 20f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(tuning.JoinRadius, Is.EqualTo(44f).Within(0.001f));
             Assert.That(() => new StrokeTolerance(0f, 30f, 0.8f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new StrokeTolerance(30f, 0f, 0.8f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new StrokeTolerance(30f, 30f, 1.2f), Throws.InstanceOf<ArgumentOutOfRangeException>());

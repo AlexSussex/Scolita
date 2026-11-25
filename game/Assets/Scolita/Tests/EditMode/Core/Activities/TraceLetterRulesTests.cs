@@ -65,7 +65,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
         {
             TraceLetterRules rules = PrintA();
             rules.Begin(new FixedRandom());
-            StrokePath round = rules.Round.Trace.Shape.Strokes[0].Path;
+            StrokePath round = rules.Round.Trace.Figure.Strokes[0].Path;
 
             Assert.That(HintAfter(rules, TestStrokes.Along(round, 1f, 0f, 4f, 0f)), Is.EqualTo(new[] { "ro-line-trace-hint-arrow" }));
             Assert.That(HintAfter(rules, TestStrokes.Drawn(54f, 108f)), Is.EqualTo(new[] { "ro-line-trace-hint-arrow" }));
@@ -119,9 +119,9 @@ namespace Scolita.Tests.EditMode.Core.Activities
 
             Assert.That(SequenceLines.Of(rules.Instruction), Is.EqualTo(new[] { "ro-line-trace-print", "ro-line-trace-start" }));
             Assert.That(SequenceLines.Of(rules.Prompt), Is.EqualTo(new[] { "ro-line-trace-start" }));
-            Assert.That(rules.Lines.Count, Is.EqualTo(11));
+            Assert.That(rules.Lines.Count, Is.EqualTo(12));
             Assert.That(rules.Round.Choices[0].Text, Is.EqualTo("a"));
-            Assert.That(rules.Round.Trace.Shape.Id.ToString(), Is.EqualTo("a-lower-print"));
+            Assert.That(rules.Round.Trace.Figure.Form, Is.EqualTo(LetterForm.Print));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
                 new PlayableSteps(new[] { ActivityKind.TraceLetter }, curriculum), new Step[0], 1);
             LessonRun run = new LessonRun(plan, curriculum, TestLearningRules.Default(), new FixedRandom());
             run.Start();
-            StrokePath round = run.Current.Round.Trace.Shape.Strokes[0].Path;
+            StrokePath round = run.Current.Round.Trace.Figure.Strokes[0].Path;
             TracePoints backwards = TestStrokes.Along(round, 1f, 0f, 4f, 0f);
 
             StepFeedback hint = run.Answer(ActivityAnswer.Traced(backwards));
@@ -158,13 +158,13 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Curriculum curriculum = ContentCsvs.Read(ContentCsvs.Valid());
             Letter a = curriculum.Letters.Get(ContentId.Create("a"));
             Assert.That(curriculum.TryGetShape(a, LetterCase.Lower, LetterForm.Print, out LetterShape shape), Is.True);
-            return new TraceLetterRules(a, shape, Language.Romanian, TestLearningRules.Tracing());
+            return new TraceLetterRules(a, shape, Language.Romanian, TestLearningRules.Tracing(), TracingTuning.Rounds);
         }
 
         private static ActivityAnswer Good(TraceLetterRules rules)
         {
             TraceState state = rules.Round.Trace;
-            return ActivityAnswer.Traced(TestStrokes.Along(state.Shape.Strokes[state.Stroke].Path, 0f, 1f, 4f, 0f));
+            return ActivityAnswer.Traced(TestStrokes.Along(state.Figure.Strokes[state.Stroke].Path, 0f, 1f, 4f, 0f));
         }
 
         private static string[] HintAfter(TraceLetterRules rules, TracePoints points)

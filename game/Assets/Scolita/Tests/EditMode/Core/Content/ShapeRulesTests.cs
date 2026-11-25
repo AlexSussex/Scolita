@@ -35,19 +35,19 @@ namespace Scolita.Tests.EditMode.Core.Content
         }
 
         /// <summary>
-        /// Tests that <see cref="ShapeRules.Check"/> only warns about a handwritten tracing step whose letter has no
-        /// shape yet (it is skipped until <c>handwriting</c> draws it).
+        /// Tests that <see cref="ShapeRules.Check"/> fails a handwritten tracing step whose letter has no handwritten shape.
         /// </summary>
         [Test]
-        public void TestCheck_AHandwrittenStepWithoutItsShapeIsAWarning()
+        public void TestCheck_AHandwrittenStepNeedsItsShape()
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             int row = ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-a,TraceLetter,,a,,form=handwritten;case=lower,");
 
             IReadOnlyList<ContentProblem> problems = ContentCsvs.Check(csvs);
 
-            Assert.That(problems.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
-            Assert.That(problems.Any(problem => problem.Source.Row == row && problem.Reason.Contains("is skipped until")), Is.True);
+            Assert.That(problems.Where(problem => problem.IsError).Select(problem => problem.ToString()),
+                Is.EqualTo(new[] { "steps.csv, row " + row + ": the letter a has no handwritten shape for this step: it needs "
+                    + "strokes/a-lower-handwritten.json." }));
         }
 
         /// <summary>Tests that <see cref="ShapeRules.Check"/> fails a shape no letter has, and warns about a draft.</summary>
@@ -77,6 +77,53 @@ namespace Scolita.Tests.EditMode.Core.Content
 
             Assert.That(errors.Any(error => error.Source.File == ContentFileNames.Steps && error.Reason.Contains("ro-line-trace-next-2")),
                 Is.True, string.Join("\n", errors.Select(error => error.ToString())));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ShapeRules.Check"/> takes the test set's handwritten a and m, and fails a print shape with
+        /// an exit run, an entry off the baseline, an exit that isn't the end of the line, and a line that lifts.
+        /// </summary>
+        [Test]
+        public void TestCheck_EntriesExitsAndLines()
+        {
+            Dictionary<string, string> valid = ContentCsvs.Valid();
+            ContentCsvs.AddTraceWordNeeds(valid);
+            Assert.That(ContentCsvs.Errors(valid).Select(error => error.ToString()), Is.Empty);
+
+            Assert.That(ErrorsWith("strokes/a-lower-print.json", ContentCsvs.Shape.Replace("\"kind\": \"body\", \"points\": [[70, 100]", "\"kind\": \"exit\", \"points\": [[70, 100]")),
+                Has.Some.Contains("a print shape has only \"body\" runs"));
+            Assert.That(ErrorsWith("strokes/a-lower-handwritten.json", ContentCsvs.HandwrittenA.Replace("[[0, 200], [22, 172]", "[[0, 150], [22, 172]")),
+                Has.Some.Contains("the entry starts on the baseline (y 200), not at y 150."));
+            Assert.That(ErrorsWith("strokes/m-lower-handwritten.json", ContentCsvs.HandwrittenM.Replace("[112, 197], [122, 184]", "[112, 197], [122, 260]")),
+                Has.Some.Contains("the exit ends between the middle line and the baseline, not at y 260."));
+            Assert.That(ErrorsWith("strokes/a-lower-handwritten.json", ContentCsvs.HandwrittenA.Replace("[[60, 100], [60, 185]]", "[[64, 100], [60, 185]]")),
+                Has.Some.Contains("stroke 3 doesn't begin where stroke 2 ends"));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="ShapeRules.Check"/> fails a <c>TraceWord</c> word whose letter before the last has no exit,
+        /// and one longer than the board joins.
+        /// </summary>
+        [Test]
+        public void TestCheck_AWordToTrace()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddTraceWordNeeds(csvs);
+            ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,TraceWord,,,ro-mama,,");
+            csvs["strokes/m-lower-handwritten.json"] = ContentCsvs.HandwrittenM.Replace("\"kind\": \"exit\"", "\"kind\": \"body\"");
+
+            ContentProblem[] errors = ContentCsvs.Errors(csvs);
+
+            Assert.That(errors.Select(error => error.Reason), Has.Some.Contains("the letter m of ro-mama has no exit run"));
+            Assert.That(ActivityLimits.MostTracedLetters, Is.EqualTo(5));
+        }
+
+        private static IEnumerable<string> ErrorsWith(string file, string text)
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddTraceWordNeeds(csvs);
+            csvs[file] = text;
+            return ContentCsvs.Errors(csvs).Select(error => error.Reason).ToArray();
         }
     }
 }

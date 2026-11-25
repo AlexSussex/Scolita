@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Activities;
@@ -28,7 +29,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             {
                 ActivityKind.MeetLetter, ActivityKind.ListenAndPick, ActivityKind.LetterHunt, ActivityKind.FirstSound,
                 ActivityKind.TwoSounds, ActivityKind.Syllables, ActivityKind.BuildWord, ActivityKind.ReadAndMatch,
-                ActivityKind.WordTwins, ActivityKind.TraceLetter
+                ActivityKind.WordTwins, ActivityKind.TraceLetter, ActivityKind.TraceWord
             }));
             foreach (Step step in steps)
             {
@@ -44,23 +45,21 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests that <see cref="ActivityRulesFactory.Create"/> refuses a kind with no rules yet, and that
-        /// <see cref="ActivityRulesFactory.CanCreate"/> refuses a handwritten tracing step whose shape isn't drawn yet.
+        /// Tests that <see cref="ActivityRulesFactory.CanCreate"/> refuses a <c>TraceWord</c> step whose letters have no
+        /// handwritten shape, and <see cref="ActivityRulesFactory.Create"/> throws for it.
         /// </summary>
         [Test]
-        public void TestCreate_AKindWithoutRules()
+        public void TestCanCreate_AWordWithoutItsShapes()
         {
-            Curriculum curriculum = RealContent.Read();
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            ContentCsvs.AddRow(csvs, ContentFileNames.Steps, "ro-m,TraceWord,,,ro-mama,,");
+            Curriculum curriculum = ContentCsvs.Read(csvs);
             Step word = curriculum.AllLessons.SelectMany(lesson => lesson.Steps).First(step => step.Kind == ActivityKind.TraceWord);
-            Step byHand = RealContent.Lesson(curriculum, "ro-a").Steps
-                .First(step => step.Kind == ActivityKind.TraceLetter && step.Options.Any(option => option.Value == "handwritten"));
 
-            Assert.That(ActivityRulesFactory.Has(ActivityKind.TraceWord), Is.False);
+            Assert.That(ActivityRulesFactory.Has(ActivityKind.TraceWord), Is.True);
             Assert.That(ActivityRulesFactory.CanCreate(word, curriculum), Is.False);
-            Assert.That(() => ActivityRulesFactory.Create(word, curriculum, TestLearningRules.Default()), Throws.ArgumentException);
-            Assert.That(ActivityRulesFactory.CanCreate(byHand, curriculum), Is.False);
-            Assert.That(() => ActivityRulesFactory.Create(byHand, curriculum, TestLearningRules.Default()),
-                Throws.InstanceOf<System.Collections.Generic.KeyNotFoundException>());
+            Assert.That(() => ActivityRulesFactory.Create(word, curriculum, TestLearningRules.Default()),
+                Throws.InstanceOf<KeyNotFoundException>());
         }
     }
 }

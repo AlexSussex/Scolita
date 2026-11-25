@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
+using Scolita.Core.Tracing;
 using Scolita.Core.Voice;
 using Scolita.Tests.EditMode.Fakes;
 
@@ -102,8 +103,8 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests that <see cref="MeetLetterRules.Round"/> shows the letter (both cases) and the picture,
-        /// in Romanian, with no single answer.
+        /// Tests that <see cref="MeetLetterRules.Round"/> shows the letter (both cases), the picture and the "de mână"
+        /// button, in Romanian, with no single answer.
         /// </summary>
         [Test]
         public void TestRound_TheLetterAndThePicture()
@@ -113,7 +114,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             ActivityRound round = rules.Round;
 
             Assert.That(round.Choices.Select(choice => choice.Look),
-                Is.EqualTo(new[] { ActivityChoiceLook.Letter, ActivityChoiceLook.Picture }));
+                Is.EqualTo(new[] { ActivityChoiceLook.Letter, ActivityChoiceLook.Picture, ActivityChoiceLook.Control }));
             Assert.That(round.Choices[0].Text, Is.EqualTo("a"));
             Assert.That(round.Choices[0].UpperText, Is.EqualTo("A"));
             Assert.That(round.Choices[1].Picture.ToString(), Is.EqualTo("plane"));
@@ -129,8 +130,25 @@ namespace Scolita.Tests.EditMode.Core.Activities
 
             Assert.That(() => rules.HintFor(1, ActivityAnswer.Tap(0)), Throws.InstanceOf<InvalidOperationException>());
             Assert.That(() => rules.AnswerShown(), Throws.InstanceOf<InvalidOperationException>());
-            Assert.That(() => rules.Judge(ActivityAnswer.Tap(2)), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => rules.Judge(ActivityAnswer.Tap(3)), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => rules.Judge(ActivityAnswer.Drop(MeetLetterRules.LetterChoice)), Throws.InstanceOf<ArgumentOutOfRangeException>());
+        }
+
+        /// <summary>
+        /// Tests that <see cref="MeetLetterRules.Judge"/> takes a tap on the "de mână" button as neutral, saying „Uite cum
+        /// se scrie litera de mână.”, with the handwritten a on the round.
+        /// </summary>
+        [Test]
+        public void TestJudge_TheByHandButton()
+        {
+            IActivityRules rules = RomanianA();
+            rules.Begin(new FixedRandom());
+
+            Assert.That(rules.Judge(ActivityAnswer.Tap(MeetLetterRules.ByHandChoice)), Is.EqualTo(AnswerVerdict.Neutral));
+            Assert.That(SequenceLines.Of(rules.Response), Is.EqualTo(new[] { "ro-line-meet-by-hand" }));
+            Assert.That(rules.Round.Handwriting.Form, Is.EqualTo(LetterForm.Handwritten));
+            Assert.That(rules.Round.Handwriting.Strokes.Count, Is.EqualTo(3));
+            Assert.That(rules.Judge(ActivityAnswer.Tap(MeetLetterRules.LetterChoice)), Is.EqualTo(AnswerVerdict.Right));
         }
 
         private static IActivityRules RomanianA()

@@ -44,7 +44,7 @@ namespace Scolita.Tests.EditMode.Fakes
         private static TracingTuning MakeTracing()
         {
             return new TracingTuning(new StrokeTolerance(32f, 34f, 0.8f), new StrokeTolerance(28f, 30f, 0.85f),
-                new StrokeTolerance(24f, 28f, 0.9f));
+                new StrokeTolerance(24f, 28f, 0.9f), 44f);
         }
     }
 }

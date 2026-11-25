@@ -14,11 +14,13 @@ namespace Scolita.Core.Content
         private static readonly IReadOnlyList<ActivityOption> NoOptions = new ActivityOption[0];
         private static readonly IReadOnlyList<string> NoLines = new string[0];
 
+        private static readonly ActivityOption RoundsOption = new ActivityOption("rounds", new[] { "1", "2", "3" }, false);
+
         private static readonly IReadOnlyList<ActivityKindRequirements> Table = new[]
         {
             Kind(ActivityKind.MeetLetter, Range(1, 1), Range(1, 1), Range(2, 2), ActivityItemRules.WordStartsWithALetter,
                 ActivityWordUse.Pictured, NoWordLines, false, false, NoOptions,
-                Lines("meet-new", "meet-listen", "meet-tap-letter", "meet-tap-picture"), NoLines),
+                Lines("meet-new", "meet-listen", "meet-tap-letter", "meet-tap-picture"), Lines("meet-by-hand")),
             Kind(ActivityKind.ListenAndPick, Range(0, 4), Range(0, 4), Range(2, 4), ActivityItemRules.LettersOrWords,
                 ActivityWordUse.Pictured, NoWordLines, false, true, NoOptions,
                 Lines("pick-letter", "pick-letter-x", "pick-picture"),
@@ -33,12 +35,18 @@ namespace Scolita.Core.Content
                 ActivityWordUse.Heard, NoWordLines, false, false, new[]
                 {
                     new ActivityOption("form", new[] { "print", "handwritten" }, true),
-                    new ActivityOption("case", new[] { "lower", "upper" }, true)
-                }, Lines("trace-print", "trace-hand", "trace-start"),
+                    new ActivityOption("case", new[] { "lower", "upper" }, true),
+                    RoundsOption
+                }, Lines("trace-print", "trace-hand", "trace-baseline", "trace-start"),
                 Lines("trace-hint-dot", "trace-hint-arrow", "trace-hint-stay", "trace-hint-slow", "trace-hint-watch",
-                    "trace-next-2", "trace-next-3", "trace-done", "trace-round-2", "trace-round-3")),
+                    "trace-hint-from-line", "trace-next-2", "trace-next-3", "trace-done", "trace-done-hand",
+                    "trace-round-2", "trace-round-3")),
             Kind(ActivityKind.TraceWord, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.None,
-                ActivityWordUse.Read, NoWordLines, false, false, NoOptions, Lines("word-write"), NoLines),
+                ActivityWordUse.Read, new[] { VoiceLineKind.Slow }, false, false, new[] { RoundsOption },
+                Lines("word-write"),
+                Lines("word-join", "word-done", "word-hint-from-line", "word-hint-back", "word-hint-join", "word-hint-watch",
+                    "trace-hint-dot", "trace-hint-arrow", "trace-hint-stay", "trace-hint-slow", "trace-round-2",
+                    "trace-round-3")),
             Kind(ActivityKind.Syllables, Range(0, 0), Range(1, 1), Range(1, 1), ActivityItemRules.CountsSyllables,
                 ActivityWordUse.Pictured, new[] { VoiceLineKind.Syllables }, false, false, NoOptions,
                 Lines("syll", "syll-tick"), Lines("syll-hint-listen", "syll-hint-count", "syll-hint-once")),

@@ -44,5 +44,14 @@ namespace Scolita.Core.Tracing
 
         /// <summary>The share of the stroke's length she must cover, in its direction.</summary>
         public float Coverage { get; }
+
+        /// <summary>
+        /// This tolerance with a start radius of at least <paramref name="startRadius"/> (a stroke begun at a join);
+        /// called by the tracing rules.
+        /// </summary>
+        public StrokeTolerance WithStartRadiusAtLeast(float startRadius)
+        {
+            return new StrokeTolerance(Corridor, Math.Max(StartRadius, startRadius), Coverage);
+        }
     }
 }

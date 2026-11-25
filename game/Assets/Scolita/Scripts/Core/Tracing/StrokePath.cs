@@ -7,7 +7,8 @@ namespace Scolita.Core.Tracing
     /// A stroke as she must draw it: its runs made into smooth curves (Catmull-Rom through their points,
     /// a corner between two runs), slanted, and sampled every <see cref="Spacing"/> units along it, with
     /// each sample's distance from the start. Made once when the content loads, so checking a stroke and
-    /// drawing it only read arrays. A stroke of one point is a dot.
+    /// drawing it only read arrays. A stroke of one point is a dot. A handwritten stroke that begins with an
+    /// entry run knows where along it the entry ends (<see cref="EntryLength"/>), so a skipped entry can be told.
     /// </summary>
     public sealed class StrokePath
     {
@@ -20,11 +21,12 @@ namespace Scolita.Core.Tracing
         private readonly float[] ys;
         private readonly float[] distances;
 
-        private StrokePath(float[] xs, float[] ys, float[] distances)
+        private StrokePath(float[] xs, float[] ys, float[] distances, float entryLength)
         {
             this.xs = xs;
             this.ys = ys;
             this.distances = distances;
+            EntryLength = entryLength;
         }
 
         /// <summary>How many samples it has (1 for a dot).</summary>
@@ -32,6 +34,12 @@ namespace Scolita.Core.Tracing
 
         /// <summary>Its length, in the shape's units (0 for a dot).</summary>
         public float Length => distances[distances.Length - 1];
+
+        /// <summary>
+        /// How far along it its entry run ends (where the letter's body begins), in the shape's units; 0 for a
+        /// stroke that doesn't begin with an entry run.
+        /// </summary>
+        public float EntryLength { get; }
 
         /// <summary>Whether it is a dot (one point).</summary>
         public bool IsDot => xs.Length == 1;
@@ -55,12 +63,41 @@ namespace Scolita.Core.Tracing
             }
 
             List<ShapePoint> dense = new List<ShapePoint>();
-            foreach (StrokeRun run in runs)
+            int entryEnd = -1;
+            for (int index = 0; index < runs.Count; index++)
             {
-                AddCurve(run.Points, slant, dense);
+                AddCurve(runs[index].Points, slant, dense);
+                if (runs[index].Kind == StrokeRunKind.Entry && index == 0)
+                {
+                    entryEnd = dense.Count - 1;
+                }
             }
 
-            return Resampled(dense);
+            return Resampled(dense, entryEnd < 0 ? 0f : LengthTo(dense, entryEnd));
+        }
+
+        /// <summary>
+        /// The path along <paramref name="paths"/> one after the other, each beginning where the one before ends
+        /// (strokes that continue each other, written in one line); its entry is the first path's. Throws an
+        /// <see cref="ArgumentException"/> for no path. Called by <see cref="TraceFigure"/> and the tests.
+        /// </summary>
+        public static StrokePath Chain(IReadOnlyList<StrokePath> paths)
+        {
+            if (paths == null || paths.Count == 0)
+            {
+                throw new ArgumentException("A chain has at least one path.", nameof(paths));
+            }
+
+            List<ShapePoint> dense = new List<ShapePoint>();
+            foreach (StrokePath path in paths)
+            {
+                for (int index = 0; index < path.Count; index++)
+                {
+                    Add(new ShapePoint(path.xs[index], path.ys[index]), dense);
+                }
+            }
+
+            return Resampled(dense, paths[0].EntryLength);
         }
 
         /// <summary>Sample <paramref name="index"/>'s x; called by <see cref="StrokeCheck"/> and the views.</summary>
@@ -143,11 +180,22 @@ namespace Scolita.Core.Tracing
             }
         }
 
-        private static StrokePath Resampled(List<ShapePoint> dense)
+        private static float LengthTo(List<ShapePoint> dense, int end)
+        {
+            float length = 0f;
+            for (int index = 1; index <= end; index++)
+            {
+                length += Distance(dense[index - 1], dense[index]);
+            }
+
+            return length;
+        }
+
+        private static StrokePath Resampled(List<ShapePoint> dense, float entryLength)
         {
             if (dense.Count == 1)
             {
-                return new StrokePath(new[] { dense[0].X }, new[] { dense[0].Y }, new[] { 0f });
+                return new StrokePath(new[] { dense[0].X }, new[] { dense[0].Y }, new[] { 0f }, 0f);
             }
 
             float total = 0f;
@@ -179,7 +227,7 @@ namespace Scolita.Core.Tracing
                 distances[sample] = wanted;
             }
 
-            return new StrokePath(xs, ys, distances);
+            return new StrokePath(xs, ys, distances, Math.Min(entryLength, total));
         }
 
         private static ShapePoint CatmullRom(ShapePoint before, ShapePoint from, ShapePoint to, ShapePoint after, float t)

@@ -76,6 +76,11 @@ namespace Scolita.Tests.EditMode.Fakes
             + "ro-line-trace-done,ro,line,\"Bravo, ai scris litera {x}!\",,,\n"
             + "ro-line-trace-round-2,ro,line,Acum scrie pe umbr\u0103.,,,\n"
             + "ro-line-trace-round-3,ro,line,\"Acum scrie f\u0103r\u0103 ajutor, de la punct.\",,,\n"
+            + "ro-line-trace-baseline,ro,line,Linia de jos: de aici porne\u0219ti.,,,\n"
+            + "ro-line-trace-hint-from-line,ro,line,Porne\u0219te de pe linie.,,,\n"
+            + "ro-line-trace-done-hand,ro,line,\"Bravo, ai scris litera {x} de m\u00E2n\u0103!\",,,\n"
+            + "ro-line-meet-by-hand,ro,line,Uite cum se scrie litera de m\u00E2n\u0103.,,,\n"
+            + "en-line-meet-by-hand,en,line,Watch how the letter is written by hand.,,,\n"
             + "ro-line-syll,ro,line,Ascult\u0103 cuv\u00E2ntul \u0219i bate toba pentru fiecare silab\u0103.,,,\n"
             + "ro-line-syll-tick,ro,line,\"C\u00E2nd ai terminat, atinge bifa verde.\",,,\n"
             + "ro-line-syll-hint-listen,ro,line,Ascult\u0103 cum spun cuv\u00E2ntul pe silabe.,,,\n"
@@ -159,6 +164,56 @@ namespace Scolita.Tests.EditMode.Fakes
             + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[70, 100], [70, 200]] } ] }\n"
             + "  ]\n"
             + "}\n";
+
+        /// <summary>A handwritten a for the tests: its entry, its round, its stem with the exit, all in one line.</summary>
+        public const string HandwrittenA =
+            "{\n"
+            + "  \"status\": \"checked\",\n"
+            + "  \"slant\": 0.2,\n"
+            + "  \"strokes\": [\n"
+            + "    { \"runs\": [ { \"kind\": \"entry\", \"points\": [[0, 200], [22, 172], [50, 112]] } ] },\n"
+            + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[50, 112], [38, 99], [12, 120], [8, 170], [30, 199], [55, 180], [60, 100]] } ] },\n"
+            + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[60, 100], [60, 185]] }, { \"kind\": \"exit\", \"points\": [[60, 185], [72, 198], [90, 184]] } ] }\n"
+            + "  ]\n"
+            + "}\n";
+
+        /// <summary>A handwritten m for the tests: its hook, three humps and its exit, in one stroke.</summary>
+        public const string HandwrittenM =
+            "{\n"
+            + "  \"status\": \"checked\",\n"
+            + "  \"slant\": 0.2,\n"
+            + "  \"strokes\": [\n"
+            + "    { \"runs\": [ { \"kind\": \"body\", \"points\": [[2, 122], [16, 100], [23, 140], [23, 200]] },"
+            + " { \"kind\": \"body\", \"points\": [[23, 200], [25, 125], [46, 100], [59, 135], [59, 200]] },"
+            + " { \"kind\": \"body\", \"points\": [[59, 200], [61, 125], [82, 100], [95, 135], [95, 182]] },"
+            + " { \"kind\": \"exit\", \"points\": [[95, 182], [112, 197], [122, 184]] } ] }\n"
+            + "  ]\n"
+            + "}\n";
+
+        /// <summary>
+        /// Adds to <paramref name="csvs"/> what a <c>TraceWord</c> step of <c>ro-mama</c> needs: the handwritten a and m
+        /// and the word's lines. Called by the content tests.
+        /// </summary>
+        public static void AddTraceWordNeeds(Dictionary<string, string> csvs)
+        {
+            csvs["strokes/a-lower-handwritten.json"] = HandwrittenA;
+            csvs["strokes/m-lower-handwritten.json"] = HandwrittenM;
+            string[] lines =
+            {
+                "ro-line-word-write,ro,line,\"Scrie cuv\u00E2ntul de m\u00E2n\u0103, f\u0103r\u0103 s\u0103 ridici degetul.\",,,",
+                "ro-slow-mama,ro,slow,m-a-m-a,,,",
+                "ro-line-word-join,ro,line,\"Bravo, ai f\u0103cut litera {x}! Acum leag-o de litera {y}, f\u0103r\u0103 s\u0103 ridici degetul.\",,,",
+                "ro-line-word-done,ro,line,\"Bravo, ai scris cuv\u00E2ntul {word}!\",,,",
+                "ro-line-word-hint-from-line,ro,line,Porne\u0219te de pe linie.,,,",
+                "ro-line-word-hint-back,ro,line,Nu-i nimic! Pune degetul \u00EEnapoi pe punct \u0219i continu\u0103.,,,",
+                "ro-line-word-hint-join,ro,line,Nu ridica degetul la leg\u0103tur\u0103.,,,",
+                "ro-line-word-hint-watch,ro,line,Uite cum se leag\u0103 literele.,,,"
+            };
+            foreach (string line in lines)
+            {
+                AddRow(csvs, ContentFileNames.VoiceLines, line);
+            }
+        }
 
         /// <summary>A fresh copy of the valid set, by file name; called by the content tests.</summary>
         public static Dictionary<string, string> Valid()

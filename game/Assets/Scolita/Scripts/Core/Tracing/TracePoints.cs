@@ -5,13 +5,14 @@ namespace Scolita.Core.Tracing
     /// <summary>
     /// The points of the stroke she is drawing, in the shape's units: one buffer, made once and reused
     /// for every stroke, so drawing allocates nothing. A point closer than <see cref="Closest"/> to the
-    /// last one is dropped, and once it is full later points are dropped too (a stroke of
-    /// <see cref="Capacity"/> points is far longer than any letter).
+    /// last one is dropped, and once it is full later points are dropped too (a line of
+    /// <see cref="Capacity"/> points, half a unit apart at the least, is longer than a joined word of
+    /// five letters written in one go).
     /// </summary>
     public sealed class TracePoints
     {
         /// <summary>How many points it holds.</summary>
-        public const int Capacity = 2048;
+        public const int Capacity = 8192;
 
         /// <summary>The smallest distance kept between two points, in the shape's units.</summary>
         public const float Closest = 0.5f;
@@ -39,7 +40,7 @@ namespace Scolita.Core.Tracing
 
         /// <summary>
         /// Adds the point (<paramref name="x"/>, <paramref name="y"/>); false when it was dropped (too close
-        /// to the last one, or the buffer full). Called by the tracing view (<c>TraceLetterView</c>) and the tests.
+        /// to the last one, or the buffer full). Called by the tracing view (<c>WritingBoardView</c>) and the tests.
         /// </summary>
         public bool Add(float x, float y)
         {
@@ -67,7 +68,7 @@ namespace Scolita.Core.Tracing
             return true;
         }
 
-        /// <summary>Forgets every point, for the next stroke; called by the tracing view (<c>TraceLetterView</c>) and the tests.</summary>
+        /// <summary>Forgets every point, for the next stroke; called by the tracing view (<c>WritingBoardView</c>) and the tests.</summary>
         public void Clear()
         {
             Count = 0;
