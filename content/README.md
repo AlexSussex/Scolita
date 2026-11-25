@@ -1,7 +1,8 @@
 # The content
 
 Școlița's lessons are data: these CSV files are the source of truth for
-every letter, word, picture, voice line, planet, lesson and step. The
+every letter, word, picture, voice line, planet, lesson and step, and of the rewards (stickers,
+constellations, trails). The
 importer (Unity: **Școlița → Import content**) turns them into the assets
 under `game/Assets/Scolita/Content/`, which are never edited by hand. The
 model and its rules are in `tasks/done/content-model.md` (Design note).
@@ -186,6 +187,64 @@ instruction lines such as `ro-line-pick-letter`) is in
   languages (`vowel-differs` or `sound-differs`) and 4 to 6 words of both
   languages, each starting with that letter and with that letter's sound in
   its language (the import can't hear that: check it).
+
+### `stickers.csv`: one row per sticker
+
+| Column | What it holds |
+| --- | --- |
+| `id` | Named by what it shows (`guitar`, `whale-rainbow`) |
+| `retired`, `notes` | See above (a retired sticker is no longer given; she keeps hers) |
+
+```
+id,retired,notes
+guitar,,an instrument
+```
+
+Its picture is `game/Assets/Scolita/Art/Stickers/sticker-<id>.png` (made by `look`'s tools,
+`design/README.md`); a sticker without one fails the import. A picture redrawn under the same name
+needs no change here. A sticker comes every second finished lesson and at every planet's end,
+never one she already has until she has them all (`Scripts/Core/Rewards`).
+
+### `constellations.csv`: one row per planet's constellation
+
+| Column | What it holds |
+| --- | --- |
+| `id` | Named by what it shows (`unicorn`, `whale`) |
+| `unit` | The unit (planet) whose lessons light it: one constellation per unit that has lessons |
+| `stars` | Its figure's stars as `x:y` in a 640 × 480 frame (x to the right, y down from the top left), separated by spaces: `470:56 418:150 356:146`; at least 3 |
+| `lines` | Its figure's lines, as two star numbers (from 1) joined by `-`, separated by spaces: `1-2 2-3 3-1` |
+| `retired`, `notes` | See above |
+
+```
+id,unit,stars,lines,retired,notes
+rocket,planet-2,320:50 262:168 378:168 262:318 378:318,1-2 1-3 2-4 3-5,,
+```
+
+It is drawn from these numbers (no picture). Each lesson of its planet lights 3 places of it:
+its stars first, then places along its lines, so a planet with more lessons fills the same figure
+more densely. It needs two lines in each language of its planet's lessons:
+`<lang>-line-stars-<id>` (said at a lesson's end: "Bravo! Ai aprins 3 stele în constelația
+Unicornului.") and `<lang>-line-constellation-<id>` (its name, said when she taps it in the sky
+book).
+
+### `trails.csv`: one row per trail for the rocket
+
+| Column | What it holds |
+| --- | --- |
+| `id` | Named by what it shows (`rainbow`, `stars`) |
+| `retired`, `notes` | See above |
+
+```
+id,retired,notes
+rainbow,,
+```
+
+The order of the rows is the order they are earned: each planet's end gives the next one. Its
+picture is `game/Assets/Scolita/Art/Map/trail-<id>.png`, a ribbon repeated behind the rocket; a
+trail without one fails the import.
+
+The rewards also need these lines in each language of the lessons: `sticker`, `trail`,
+`sky-book`, `sticker-book` and `trail-picker` (`ro-line-sticker`, …).
 
 ### `strokes/<strokes-id>-<case>-<form>.json`: how a letter is written
 

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Scolita.Content;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Rules;
+using Scolita.Core.Rewards;
 using Scolita.Core.Tracing;
 using Scolita.Editor.ContentImport;
 using UnityEditor;
@@ -64,6 +65,28 @@ namespace Scolita.Tests.EditMode.Content
                 .Where(problem => problem.Source.File != ContentFileNames.Pictures && problem.Source.File != ContentFileNames.VoiceLines)
                 .Where(problem => !LetterShapeCodes.IsShapeFile(problem.Source.File) || problem.IsError)
                 .Where(problem => !problem.Reason.Contains("the step is skipped until it has one"))
+                .Select(problem => problem.ToString()), Is.Empty);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="RewardContentRules.Check"/> finds no problem in the repository's rewards
+        /// (<c>stickers.csv</c>, <c>constellations.csv</c>, <c>trails.csv</c>) against its curriculum.
+        /// </summary>
+        [Test]
+        public void TestCheck_TheRewardCsvsHaveNoProblem()
+        {
+            ContentFolder folder = ContentImporter.RepositoryContent();
+            ContentProblems problems = new ContentProblems();
+            Dictionary<string, string> texts = folder.ReadTexts(problems);
+
+            Curriculum curriculum = ContentTables.Read(texts, problems);
+            RewardContent rewards = RewardTables.Read(texts, problems);
+            RewardContentRules.Check(rewards, curriculum, problems);
+
+            string[] rewardFiles = { ContentFileNames.Stickers, ContentFileNames.Constellations, ContentFileNames.Trails };
+            Assert.That(problems.All.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
+            Assert.That(problems.All
+                .Where(problem => rewardFiles.Contains(problem.Source.File))
                 .Select(problem => problem.ToString()), Is.Empty);
         }
 

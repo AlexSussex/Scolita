@@ -94,6 +94,20 @@ ro-line-stars-whale,ro,line,Bravo! Ai aprins 3 stele în constelația Balenei.,,
 en-line-stars-whale,en,line,Well done! You lit 3 stars in the Whale constellation.,,,,
 ro-line-sticker,ro,line,Ai câștigat un abțibild!,,,,
 en-line-sticker,en,line,You got a sticker!,,,,
+ro-line-trail,ro,line,Ai câștigat o dâră nouă pentru rachetă!,,,,a planet's end
+en-line-trail,en,line,You got a new trail for the rocket!,,,,a planet's end
+ro-line-constellation-unicorn,ro,line,Aceasta este constelația Unicornului.,,,,the sky book
+en-line-constellation-unicorn,en,line,This is the Unicorn constellation.,,,,the sky book
+ro-line-constellation-rocket,ro,line,Aceasta este constelația Rachetei.,,,,
+en-line-constellation-rocket,en,line,This is the Rocket constellation.,,,,
+ro-line-constellation-whale,ro,line,Aceasta este constelația Balenei.,,,,
+en-line-constellation-whale,en,line,This is the Whale constellation.,,,,
+ro-line-sky-book,ro,line,Acestea sunt constelațiile tale. Atinge una și îți spun cum se numește.,,,,
+en-line-sky-book,en,line,These are your constellations. Tap one and I'll tell you its name.,,,,
+ro-line-sticker-book,ro,line,Trage abțibildurile pe Pământ. Cu două degete le faci mai mari sau mai mici.,,,,
+en-line-sticker-book,en,line,"Drag your stickers onto the Earth. With two fingers, you can make them bigger or smaller.",,,,
+ro-line-trail-picker,ro,line,Alege dâra rachetei.,,,,
+en-line-trail-picker,en,line,Choose the rocket's trail.,,,,
 ro-line-lesson-done,ro,line,Ai terminat lecția. Bravo!,,,,
 en-line-lesson-done,en,line,You finished the lesson. Well done!,,,,
 ro-line-praise-1,ro,line,"Bravo, ai reușit!",,,,
