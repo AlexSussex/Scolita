@@ -1,3 +1,4 @@
+using Scolita.Game.Rewards;
 using Scolita.Game.Voice;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ namespace Scolita.Game.Lessons
         /// <summary>The mascot's bubble, which shows every line said, in its words.</summary>
         public abstract SpeechBubbleView Bubble { get; }
 
+        /// <summary>The reward screens over the lesson (its sticker book, opened from the end).</summary>
+        public abstract RewardsView Rewards { get; }
+
         /// <summary>Sends the screen's taps to <paramref name="input"/>; called once by <see cref="LessonRunner"/>.</summary>
         public abstract void Bind(ILessonScreenInput input);
 
@@ -31,7 +35,10 @@ namespace Scolita.Game.Lessons
         /// <summary>Moves the mascot's mouth while it speaks; called every frame by <see cref="LessonRunner"/>.</summary>
         public abstract void SetTalking(bool talking);
 
-        /// <summary>Shows the end of the lesson, with its "Mai departe"; called by <see cref="LessonRunner"/>.</summary>
-        public abstract void ShowEnd();
+        /// <summary>
+        /// Shows the end of the lesson (design screen 6) with <paramref name="end"/>'s stars, sticker and trail, its
+        /// "Mai departe", and "În cartea mea" going to <paramref name="rewardsInput"/>; called by <see cref="LessonRunner"/>.
+        /// </summary>
+        public abstract void ShowEnd(LessonEnd end, IRewardsInput rewardsInput);
     }
 }

@@ -4,10 +4,12 @@ using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
 using Scolita.Core.Progress;
+using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
 using Scolita.Game.Lessons;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
+using Scolita.Game.Rewards;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -35,12 +37,17 @@ namespace Scolita.Game.Map
         [SerializeField] private ActivityRegistry registry;
         [SerializeField] private VoiceHost voice;
         [SerializeField] private MapScreenView screen;
+        [SerializeField] private StickerCatalog stickers;
+        [SerializeField] private ConstellationCatalog constellations;
+        [SerializeField] private TrailCatalog trails;
+        [SerializeField] private RewardRulesAsset rewardRules;
 
         private SaveStore profileFiles;
         private LearnerProgress progress;
         private MapRoute route;
         private MapLines lines;
         private LessonVoice mapVoice;
+        private RewardsSession rewards;
         private bool opening;
 
         /// <summary>The map as drawn; null before it is built, or when the content has no domain.</summary>
@@ -51,6 +58,9 @@ namespace Scolita.Game.Map
 
         /// <summary>The map's voice; null before it is built.</summary>
         public LessonVoice MapVoice => mapVoice;
+
+        /// <summary>Her rewards on the map (the bottom bar and its books); null before it is built.</summary>
+        public RewardsSession Rewards => rewards;
 
         /// <inheritdoc/>
         public void Go()
@@ -146,6 +156,7 @@ namespace Scolita.Game.Map
             voice.PartStarted += OnPartStarted;
             screen.Bind(this);
             screen.Show(route, appLanguage);
+            ShowRewards(curriculum, order);
             Arrive(RocketMove.Between(route, progress.Lessons.RocketStop));
         }
 
@@ -183,6 +194,15 @@ namespace Scolita.Game.Map
             {
                 voice.PartStarted -= OnPartStarted;
             }
+        }
+
+        private void ShowRewards(Curriculum curriculum, LessonOrder order)
+        {
+            RewardSources sources = RewardSources.Build(stickers, constellations, trails, rewardRules);
+            rewards = new RewardsSession(sources, profileFiles, order, progress, curriculum, mapVoice, lines.Language,
+                screen.Rewards, new SeededRandom((ulong)System.DateTime.UtcNow.Ticks));
+            voice.LoadLines(rewards.SpokenLines);
+            rewards.ShowOnMap();
         }
 
         private void Arrive(RocketMove move)

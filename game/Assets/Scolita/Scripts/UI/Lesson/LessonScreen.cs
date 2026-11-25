@@ -1,4 +1,5 @@
 using Scolita.Game.Lessons;
+using Scolita.Game.Rewards;
 using Scolita.Game.Voice;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,8 @@ namespace Scolita.UI.Lesson
     /// <summary>
     /// The lesson screen around the activity (<c>Prefabs/Lesson/LessonScreen.prefab</c>): the step dots
     /// at the top centre, the mascot top right with its bubble, the area where the step's view goes,
-    /// and the end of the lesson with its big yellow "Mai departe" (until <c>rewards</c> builds design
-    /// screen 6). The home button is the <c>LessonHud</c>'s, top left.
+    /// and the end of the lesson (design screen 6, <c>LessonEnd.prefab</c>) with its big yellow "Mai departe", and the
+    /// sticker book over it. The home button is the <c>LessonHud</c>'s, top left.
     /// </summary>
     public sealed class LessonScreen : LessonScreenView
     {
@@ -17,7 +18,8 @@ namespace Scolita.UI.Lesson
         [SerializeField] private SpeechBubbleView bubble;
         [SerializeField] private StepDots dots;
         [SerializeField] private GuideFigure guide;
-        [SerializeField] private GameObject endPanel;
+        [SerializeField] private LessonEndView end;
+        [SerializeField] private RewardsView rewards;
         [SerializeField] private Button continueButton;
 
         private ILessonScreenInput input;
@@ -27,6 +29,12 @@ namespace Scolita.UI.Lesson
 
         /// <inheritdoc/>
         public override SpeechBubbleView Bubble => bubble;
+
+        /// <inheritdoc/>
+        public override RewardsView Rewards => rewards;
+
+        /// <summary>The end of the lesson.</summary>
+        public LessonEndView End => end;
 
         /// <summary>The step dots.</summary>
         public StepDots Dots => dots;
@@ -38,7 +46,7 @@ namespace Scolita.UI.Lesson
         public Button ContinueButton => continueButton;
 
         /// <summary>Whether the end of the lesson is shown.</summary>
-        public bool IsEndShown => endPanel.activeSelf;
+        public bool IsEndShown => end.IsShown;
 
         /// <inheritdoc/>
         public override void Bind(ILessonScreenInput screenInput)
@@ -66,14 +74,14 @@ namespace Scolita.UI.Lesson
         }
 
         /// <inheritdoc/>
-        public override void ShowEnd()
+        public override void ShowEnd(LessonEnd lessonEnd, IRewardsInput rewardsInput)
         {
-            endPanel.SetActive(true);
+            end.Show(lessonEnd, rewardsInput);
         }
 
         private void Awake()
         {
-            endPanel.SetActive(false);
+            end.Hide();
             continueButton.onClick.AddListener(OnContinue);
         }
 

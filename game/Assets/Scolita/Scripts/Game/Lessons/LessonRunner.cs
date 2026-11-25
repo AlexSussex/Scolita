@@ -12,6 +12,7 @@ using Scolita.Core.Timing;
 using Scolita.Core.Voice;
 using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
+using Scolita.Game.Rewards;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -44,6 +45,10 @@ namespace Scolita.Game.Lessons
         [SerializeField] private ActivityRegistry registry;
         [SerializeField] private LearningRulesAsset learningRules;
         [SerializeField] private Sprite missingPicture;
+        [SerializeField] private StickerCatalog stickers;
+        [SerializeField] private ConstellationCatalog constellations;
+        [SerializeField] private TrailCatalog trails;
+        [SerializeField] private RewardRulesAsset rewardRules;
         [SerializeField] private float secondsAfterAStep = 0.6f;
 
         private readonly Dictionary<ActivityKind, ActivityView> views = new Dictionary<ActivityKind, ActivityView>();
@@ -55,6 +60,7 @@ namespace Scolita.Game.Lessons
         private ActivityViewContext context;
         private SaveStore profileFiles;
         private ActivityView shownView;
+        private RewardsSession rewards;
         private string lessonSignature;
         private int stepsDoneBefore;
         private bool movingOn;
@@ -68,6 +74,9 @@ namespace Scolita.Game.Lessons
 
         /// <summary>The lesson's voice; null before it is built.</summary>
         public LessonVoice LessonVoice => lessonVoice;
+
+        /// <summary>Her rewards in this lesson; null before the lesson is built.</summary>
+        public RewardsSession Rewards => rewards;
 
         /// <inheritdoc/>
         public void Answer(ActivityAnswer answer)
@@ -137,6 +146,7 @@ namespace Scolita.Game.Lessons
             }
 
             Build(curriculum, plan, random);
+            BuildRewards(curriculum);
             recorder = new LessonProgress(run, progress, curriculum, progressRules, clock);
             recorder.Recorded += SaveProgress;
             progress.ItemMastered += OnItemMastered;
@@ -273,6 +283,14 @@ namespace Scolita.Game.Lessons
             screen.Bind(this);
         }
 
+        private void BuildRewards(Curriculum curriculum)
+        {
+            RewardSources sources = RewardSources.Build(stickers, constellations, trails, rewardRules);
+            rewards = new RewardsSession(sources, profileFiles, order, progress, curriculum,
+                lessonVoice, run.EndingLanguage, screen.Rewards, new SeededRandom((ulong)DateTime.UtcNow.Ticks + 1UL));
+            voice.LoadLines(rewards.SpokenLines);
+        }
+
         private void ShowStep()
         {
             ActivityView view = views[run.Current.Kind];
@@ -308,8 +326,9 @@ namespace Scolita.Game.Lessons
             }
             screen.ShowProgress(stepsDoneBefore + run.StepCount, stepsDoneBefore + run.StepCount);
             screen.ShowMood(GuideMood.Cheering);
-            screen.ShowEnd();
-            lessonVoice.Say(run.Ending, null);
+            LessonEnd end = rewards.FinishLesson(run.Plan.Lesson);
+            screen.ShowEnd(end, rewards);
+            lessonVoice.Say(end.Line ?? run.Ending, end.Then);
         }
 
         private void OnPartStarted(VoiceUtterance part)

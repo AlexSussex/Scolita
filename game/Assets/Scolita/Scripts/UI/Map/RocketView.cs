@@ -6,7 +6,8 @@ namespace Scolita.UI.Map
     /// <summary>
     /// The rocket on the galaxy map, standing over the next stop (design/screens.md, screen 1; <c>look</c>'s
     /// <c>Art/Trip/rocket-standing</c>), floating slowly; it flies (<c>rocket-flying</c>, its flame lit) along the
-    /// path to a later stop on the same planet. Moved in <c>Update</c> from cached values, allocating nothing.
+    /// path to a later stop on the same planet. The trail she chose (rewards) streams behind it. Moved in <c>Update</c>
+    /// from cached values, allocating nothing.
     /// </summary>
     public sealed class RocketView : MonoBehaviour
     {
@@ -14,6 +15,7 @@ namespace Scolita.UI.Map
         [SerializeField] private Image picture;
         [SerializeField] private Sprite standing;
         [SerializeField] private Sprite flying;
+        [SerializeField] private Image trail;
         [SerializeField] private Vector2 aboveStop = new Vector2(0f, 70f);
         [SerializeField] private float floatPixels = 5f;
         [SerializeField] private float floatsPerSecond = 0.6f;
@@ -27,6 +29,16 @@ namespace Scolita.UI.Map
 
         /// <summary>Whether it is hopping along the path.</summary>
         public bool IsHopping => hopping;
+
+        /// <summary>The trail it wears; null when it wears none.</summary>
+        public Sprite Trail => trail.enabled ? trail.sprite : null;
+
+        /// <summary>Puts <paramref name="sprite"/> behind it as its trail (null for none); called by the map's reward screens.</summary>
+        public void ShowTrail(Sprite sprite)
+        {
+            trail.sprite = sprite;
+            trail.enabled = sprite != null;
+        }
 
         /// <summary>Puts it over the stop at <paramref name="stop"/> at once; called by <see cref="MapScreen"/>.</summary>
         public void PlaceAt(Vector2 stop)

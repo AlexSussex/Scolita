@@ -1,5 +1,6 @@
 using Scolita.Core.Languages;
 using Scolita.Core.Map;
+using Scolita.Game.Rewards;
 using Scolita.Game.Voice;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ namespace Scolita.Game.Map
     {
         /// <summary>The mascot's bubble, which shows every line said, in its words.</summary>
         public abstract SpeechBubbleView Bubble { get; }
+
+        /// <summary>The reward screens: the bottom bar, the books, the rocket's trail.</summary>
+        public abstract RewardsView Rewards { get; }
 
         /// <summary>Whether the trip is playing.</summary>
         public abstract bool IsTripPlaying { get; }

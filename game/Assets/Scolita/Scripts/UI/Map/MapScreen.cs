@@ -3,6 +3,7 @@ using System.Linq;
 using Scolita.Core.Languages;
 using Scolita.Core.Map;
 using Scolita.Game.Map;
+using Scolita.Game.Rewards;
 using Scolita.Game.Voice;
 using Scolita.UI.Lesson;
 using TMPro;
@@ -37,6 +38,7 @@ namespace Scolita.UI.Map
         [SerializeField] private string romanianGo = "Hai!";
         [SerializeField] private string englishGo = "Go!";
         [SerializeField] private TripView trip;
+        [SerializeField] private RewardsView rewards;
 
         private readonly List<PlanetView> planets = new List<PlanetView>();
         private readonly List<StopView> stops = new List<StopView>();
@@ -45,6 +47,9 @@ namespace Scolita.UI.Map
 
         /// <inheritdoc/>
         public override SpeechBubbleView Bubble => bubble;
+
+        /// <inheritdoc/>
+        public override RewardsView Rewards => rewards;
 
         /// <inheritdoc/>
         public override bool IsTripPlaying => trip.IsPlaying;

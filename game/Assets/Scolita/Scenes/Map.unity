@@ -414,6 +414,10 @@ MonoBehaviour:
   registry: {fileID: 11400000, guid: 3c33836cc753a7e4e91534dc88f65993, type: 2}
   voice: {fileID: 515233217}
   screen: {fileID: 1821936927}
+  stickers: {fileID: 11400000, guid: 0aa5dd9aabdf5cb42a344671dfee7efc, type: 2}
+  constellations: {fileID: 11400000, guid: b204ac1640cf4364ea5e1bd65d223c2d, type: 2}
+  trails: {fileID: 11400000, guid: 4632eda073db2af41b137d09a5c90e3d, type: 2}
+  rewardRules: {fileID: 11400000, guid: 4c425ba33dacd904c9a0b63e225d2619, type: 2}
 --- !u!4 &1299258642
 Transform:
   m_ObjectHideFlags: 0
