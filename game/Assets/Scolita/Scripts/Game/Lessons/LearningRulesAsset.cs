@@ -27,6 +27,7 @@ namespace Scolita.Game.Lessons
         [SerializeField, Min(1f)] private float traceStartDotCorridor = 24f;
         [SerializeField, Min(1f)] private float traceStartDotStartRadius = 28f;
         [SerializeField, Range(0.1f, 1f)] private float traceStartDotCoverage = 0.9f;
+        [SerializeField, Min(1f)] private float traceJoinRadius = 44f;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -38,7 +39,8 @@ namespace Scolita.Game.Lessons
                 new LetterHuntTuning(huntStars, huntRightStars, huntFastestSpeed),
                 new TracingTuning(new StrokeTolerance(traceDottedCorridor, traceDottedStartRadius, traceDottedCoverage),
                     new StrokeTolerance(traceFaintCorridor, traceFaintStartRadius, traceFaintCoverage),
-                    new StrokeTolerance(traceStartDotCorridor, traceStartDotStartRadius, traceStartDotCoverage)));
+                    new StrokeTolerance(traceStartDotCorridor, traceStartDotStartRadius, traceStartDotCoverage),
+                    traceJoinRadius));
         }
     }
 }

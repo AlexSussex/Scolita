@@ -26,3 +26,4 @@ MonoBehaviour:
   traceStartDotCorridor: 24
   traceStartDotStartRadius: 28
   traceStartDotCoverage: 0.9
+  traceJoinRadius: 44

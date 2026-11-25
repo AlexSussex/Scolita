@@ -67,10 +67,21 @@ namespace Scolita.Tests.PlayMode.Lessons
         /// </summary>
         public static IEnumerator OpenAtStep(string lessonId, ActivityKind kind)
         {
+            yield return OpenAtStep(lessonId, kind, string.Empty);
+        }
+
+        /// <summary>
+        /// Opens the Lesson scene on the first step of <paramref name="kind"/> in <paramref name="lessonId"/> that has the
+        /// option value <paramref name="optionValue"/> (any step of the kind for none: <c>handwritten</c> for a
+        /// <c>TraceLetter</c> by hand); used by the lesson tests.
+        /// </summary>
+        public static IEnumerator OpenAtStep(string lessonId, ActivityKind kind, string optionValue)
+        {
             SaveLesson(lessonId, 1, string.Empty);
             yield return OpenScene();
             Lesson lesson = SceneSearch.FindInActiveScene<LessonRunner>().Run.Plan.Lesson;
-            Step step = lesson.Steps.First(candidate => candidate.Kind == kind);
+            Step step = lesson.Steps.First(candidate => candidate.Kind == kind
+                && (optionValue.Length == 0 || candidate.Options.Any(option => option.Value == optionValue)));
             SaveLesson(lessonId, step.Number, LessonSignature.Of(lesson));
             yield return OpenScene();
             LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
@@ -180,10 +191,11 @@ namespace Scolita.Tests.PlayMode.Lessons
 
                     break;
                 case ActivityKind.TraceLetter:
-                    while (runner.Run.State == LessonRunState.Playing && runner.Run.Current.Kind == ActivityKind.TraceLetter)
+                case ActivityKind.TraceWord:
+                    while (runner.Run.State == LessonRunState.Playing && runner.Run.Current.Round == round)
                     {
                         TraceState trace = round.Trace;
-                        runner.Answer(ActivityAnswer.Traced(Along(trace.Shape.Strokes[trace.Stroke].Path)));
+                        runner.Answer(ActivityAnswer.Traced(Along(trace.Figure.Strokes[trace.Stroke].Path)));
                     }
 
                     break;
