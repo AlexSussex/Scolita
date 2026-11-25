@@ -137,6 +137,38 @@ namespace Scolita.Tests.EditMode.Core.Parent
             Assert.Throws<InvalidOperationException>(() => gate.Choose(gate.Number));
         }
 
+        /// <summary>Tests that after a wrong number <see cref="ParentGate"/> rests: no hold fills until the rest has passed.</summary>
+        [Test]
+        public void TestChoose_AWrongNumberRestsTheGate()
+        {
+            ParentGate gate = new ParentGate(TestParentRules.Default(), new FixedRandom());
+            gate.Hold(3f);
+            gate.Choose(gate.Choices[0]);
+
+            bool asksResting = gate.Hold(5f);
+            gate.Pass(29f);
+            bool stillResting = gate.IsResting;
+            gate.Pass(1f);
+            bool asksAfter = gate.Hold(3f);
+
+            Assert.That(asksResting, Is.False);
+            Assert.That(stillResting, Is.True);
+            Assert.That(gate.IsResting, Is.False);
+            Assert.That(asksAfter, Is.True);
+        }
+
+        /// <summary>Tests that <see cref="ParentGate.Shut"/> (the close button) doesn't rest the gate.</summary>
+        [Test]
+        public void TestShut_DoesNotRest()
+        {
+            ParentGate gate = new ParentGate(TestParentRules.Default(), new FixedRandom());
+            gate.Hold(3f);
+
+            gate.Shut();
+
+            Assert.That(gate.IsResting, Is.False);
+        }
+
         /// <summary>Tests that <see cref="ParentGate.Choose"/> throws while the gate isn't asking.</summary>
         [Test]
         public void TestChoose_NotAskingThrows()

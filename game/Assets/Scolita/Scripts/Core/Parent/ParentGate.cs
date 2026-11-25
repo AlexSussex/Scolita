@@ -7,8 +7,8 @@ namespace Scolita.Core.Parent
     /// <summary>
     /// The parent gate (AGENTS.md → "Security and privacy"): the parent button held for the whole
     /// <see cref="ParentRules.GateHoldSeconds"/>, then the number said chosen among the numbers shown. A tap
-    /// never opens it: letting go empties the hold, a wrong number shuts the gate, and a shut gate must be
-    /// held again. Made by the map's gate flow (<c>ParentGateFlow</c>) and the tests; allocates nothing
+    /// never opens it: letting go empties the hold, a wrong number shuts the gate and rests it (the hold doesn't fill
+    /// for <see cref="ParentRules.GateRestSeconds"/>), and a shut gate must be held again. Made by the map's gate flow (<c>ParentGateFlow</c>) and the tests; allocates nothing
     /// after it is made.
     /// </summary>
     public sealed class ParentGate
@@ -18,6 +18,7 @@ namespace Scolita.Core.Parent
         private readonly int[] choices;
         private readonly int[] others;
         private float heldSeconds;
+        private float restSeconds;
 
         /// <summary>A shut gate with <paramref name="rules"/>' numbers, picking with <paramref name="random"/>. Called by the gate flow and the tests.</summary>
         public ParentGate(ParentRules rules, IRandom random)
@@ -35,6 +36,9 @@ namespace Scolita.Core.Parent
         public float HoldProgress => Stage == GateStage.Asking || Stage == GateStage.Open
             ? 1f
             : Math.Min(1f, heldSeconds / rules.GateHoldSeconds);
+
+        /// <summary>Whether the gate rests after a wrong number: the hold doesn't fill.</summary>
+        public bool IsResting => restSeconds > 0f;
 
         /// <summary>The number said, while <see cref="Stage"/> is <see cref="GateStage.Asking"/> (or open).</summary>
         public int Number { get; private set; }
@@ -55,7 +59,7 @@ namespace Scolita.Core.Parent
                 throw new ArgumentOutOfRangeException(nameof(seconds), seconds, "A hold lasts 0 seconds or more.");
             }
 
-            if (Stage != GateStage.Shut && Stage != GateStage.Holding)
+            if ((Stage != GateStage.Shut && Stage != GateStage.Holding) || IsResting)
             {
                 return false;
             }
@@ -95,11 +99,24 @@ namespace Scolita.Core.Parent
             if (number != Number)
             {
                 ShutGate();
+                restSeconds = rules.GateRestSeconds;
                 return false;
             }
 
             Stage = GateStage.Open;
             return true;
+        }
+
+        /// <summary>
+        /// <paramref name="seconds"/> of time passed (this frame's), held or not: a rest after a wrong number runs out.
+        /// Called every frame by the gate flow, and the tests.
+        /// </summary>
+        public void Pass(float seconds)
+        {
+            if (seconds > 0f)
+            {
+                restSeconds = Math.Max(0f, restSeconds - seconds);
+            }
         }
 
         /// <summary>The question was closed without an answer (its close button, Android Back): the gate shuts. Called by the gate flow and the tests.</summary>

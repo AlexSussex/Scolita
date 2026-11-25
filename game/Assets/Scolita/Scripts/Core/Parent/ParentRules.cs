@@ -6,8 +6,9 @@ namespace Scolita.Core.Parent
 {
     /// <summary>
     /// The numbers of the parent gate and the daily limit (filled from the learning rules asset, beside
-    /// <c>LearningRules</c>): how long the parent button is held, the range of the number said and how
-    /// many numbers are offered, and the daily limit's choices in minutes (off is always a choice too).
+    /// <c>LearningRules</c>): how long the parent button is held, the range of the number said, how many numbers are
+    /// offered and how long the gate rests after a wrong one, and the daily limit's choices in minutes (off is always a
+    /// choice too).
     /// </summary>
     public sealed class ParentRules
     {
@@ -22,12 +23,12 @@ namespace Scolita.Core.Parent
         /// <summary>
         /// Creates the numbers; throws an <see cref="ArgumentOutOfRangeException"/> for one out of its range (a
         /// hold longer than 0 seconds, numbers from 0, room in the range for every choice,
-        /// <see cref="FewestGateChoices"/> to <see cref="MostGateChoices"/> choices, at least one limit, each of at
-        /// least a minute, rising) and an <see cref="ArgumentNullException"/> for no limits. Called by the learning
+        /// <see cref="FewestGateChoices"/> to <see cref="MostGateChoices"/> choices, a rest of 0 seconds or more, at least
+        /// one limit, each of at least a minute, rising) and an <see cref="ArgumentNullException"/> for no limits. Called by the learning
         /// rules asset and the tests.
         /// </summary>
         public ParentRules(float gateHoldSeconds, int gateLowestNumber, int gateHighestNumber, int gateChoices,
-            IReadOnlyList<int> sessionLimitMinutes)
+            float gateRestSeconds, IReadOnlyList<int> sessionLimitMinutes)
         {
             if (!(gateHoldSeconds > 0f))
             {
@@ -53,6 +54,12 @@ namespace Scolita.Core.Parent
                     "The gate's range has room for its " + gateChoices + " different numbers.");
             }
 
+            if (!(gateRestSeconds >= 0f))
+            {
+                throw new ArgumentOutOfRangeException(nameof(gateRestSeconds), gateRestSeconds,
+                    "The gate rests for 0 seconds or more after a wrong number.");
+            }
+
             if (sessionLimitMinutes == null)
             {
                 throw new ArgumentNullException(nameof(sessionLimitMinutes));
@@ -68,6 +75,7 @@ namespace Scolita.Core.Parent
             GateLowestNumber = gateLowestNumber;
             GateHighestNumber = gateHighestNumber;
             GateChoices = gateChoices;
+            GateRestSeconds = gateRestSeconds;
             this.sessionLimitMinutes = sessionLimitMinutes.ToArray();
         }
 
@@ -82,6 +90,12 @@ namespace Scolita.Core.Parent
 
         /// <summary>How many numbers the gate offers, the one said among them (3).</summary>
         public int GateChoices { get; }
+
+        /// <summary>
+        /// How long the gate rests after a wrong number (30 seconds): the hold doesn't fill meanwhile, so guessing one
+        /// number in three again and again takes long (the fresh-eyes review).
+        /// </summary>
+        public float GateRestSeconds { get; }
 
         /// <summary>The daily limit's choices beside off, in minutes, rising (10, 15, 20).</summary>
         public IReadOnlyList<int> SessionLimitMinutes => sessionLimitMinutes;
