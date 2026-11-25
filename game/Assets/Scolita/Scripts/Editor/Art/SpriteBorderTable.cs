@@ -21,7 +21,8 @@ namespace Scolita.Editor.Art
 
         /// <summary>
         /// Reads the table from disk (an empty table if the file isn't there yet); throws an
-        /// <see cref="InvalidDataException"/> if the file can't be read as the table. Called from
+        /// <see cref="InvalidDataException"/> if the file can't be read as the table, or lists a
+        /// path twice or a border with no path. Called from
         /// <see cref="ArtTextureImporter"/>.
         /// </summary>
         public static SpriteBorderTable Load(string path)
@@ -40,7 +41,15 @@ namespace Scolita.Editor.Art
 
             foreach (BorderEntry entry in file.Borders)
             {
-                borders[entry.Path] = entry.Border;
+                if (string.IsNullOrEmpty(entry.Path))
+                {
+                    throw new InvalidDataException(path + " has a border with no \"path\".");
+                }
+
+                if (!borders.TryAdd(entry.Path, entry.Border))
+                {
+                    throw new InvalidDataException(path + " lists " + entry.Path + " twice.");
+                }
             }
 
             return new SpriteBorderTable(borders);

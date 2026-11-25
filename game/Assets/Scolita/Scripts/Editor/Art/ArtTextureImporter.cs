@@ -21,7 +21,7 @@ namespace Scolita.Editor.Art
         /// </summary>
         public override uint GetVersion()
         {
-            return 1;
+            return 2;
         }
 
         private void OnPreprocessTexture()
@@ -38,6 +38,7 @@ namespace Scolita.Editor.Art
                 return;
             }
 
+            context.DependsOnSourceAsset(ArtPaths.BordersFile);
             ApplySpriteSettings(importer, SpriteBorderTable.Load(ArtPaths.BordersFile).BorderFor(ArtPaths.ArtName(assetPath)));
         }
 

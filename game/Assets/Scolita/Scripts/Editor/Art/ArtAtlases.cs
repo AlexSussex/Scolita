@@ -13,8 +13,11 @@ namespace Scolita.Editor.Art
     /// </summary>
     public static class ArtAtlases
     {
-        private const int MaxAtlasSize = 2048;
-        private const int Padding = 4;
+        /// <summary>The largest atlas page, in pixels; read by the art tests to check each folder fits one page.</summary>
+        public const int MaxAtlasSize = 2048;
+
+        /// <summary>The padding round each packed sprite, in pixels; read by the art tests.</summary>
+        public const int Padding = 4;
 
         /// <summary>
         /// Rebuilds every atlas. Called from the Editor's menu (Școlița → Rebuild sprite atlases) and

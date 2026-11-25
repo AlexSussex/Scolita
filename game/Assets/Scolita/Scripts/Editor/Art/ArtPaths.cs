@@ -26,7 +26,8 @@ namespace Scolita.Editor.Art
         /// <summary>The sprite folders, each packed into its own atlas of the same name.</summary>
         public static readonly IReadOnlyList<string> AtlasFolders = new[]
         {
-            "Sky", "Map", "Effects", "Guides", "Badges", "Board", "UI", "Stickers", "Constellations", "Avatars"
+            "Sky", "Map", "Planets", "Trip", "Path", "Effects", "Guides", "Badges", "Board", "UI", "Stickers", "Constellations",
+            "Avatars"
         };
 
         /// <summary>

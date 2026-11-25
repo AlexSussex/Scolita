@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using Scolita.Editor.Art;
 using UnityEditor;
@@ -8,18 +9,22 @@ using UnityEditor.Android;
 using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.U2D;
-using UnityEngine.UI;
 
 namespace Scolita.Tests.EditMode.Art
 {
     /// <summary>
     /// Tests the app's art as imported by <see cref="ArtTextureImporter"/> and packed by
-    /// <see cref="ArtAtlases"/>: every sprite is in exactly one atlas, the stretchable pieces have
-    /// their 9-slice borders, every sprite a prefab shows resolves, and the launcher icon is set.
+    /// <see cref="ArtAtlases"/>: every sprite is in exactly one atlas, the
+    /// stretchable pieces have their 9-slice borders, every asset reference in the project
+    /// resolves, and the launcher icon is set.
     /// </summary>
     public sealed class ArtTests
     {
-        private const string PrefabFolder = "Assets/Scolita/Prefabs";
+        private static readonly string[] ReferringFolders =
+        {
+            "Assets/Scolita/Prefabs", "Assets/Scolita/Scenes", "Assets/Scolita/Content", ArtPaths.Root
+        };
+        private static readonly Regex GuidReference = new Regex("guid: ([0-9a-f]{32})", RegexOptions.Compiled);
 
         /// <summary>
         /// Tests that <see cref="ArtTextureImporter"/> makes every PNG under <see cref="ArtPaths.Root"/>
@@ -28,7 +33,7 @@ namespace Scolita.Tests.EditMode.Art
         [Test]
         public void TestOnPreprocessTexture_EveryArtPngIsASprite()
         {
-            List<string> paths = ArtPngPaths().Where(p => !ArtPaths.IsIcon(p)).ToList();
+            List<string> paths = SpritePaths().ToList();
 
             Assert.That(paths, Is.Not.Empty);
             foreach (string path in paths)
@@ -41,18 +46,37 @@ namespace Scolita.Tests.EditMode.Art
         }
 
         /// <summary>
+        /// Tests that every art folder holding sprites has its atlas from <see cref="ArtAtlases.RebuildAll"/>,
+        /// and is one of <see cref="ArtPaths.AtlasFolders"/>, so a rebuild keeps it.
+        /// </summary>
+        [Test]
+        public void TestRebuildAll_EachArtFolderHasItsAtlas()
+        {
+            List<string> folders = SpriteFolders().ToList();
+
+            Assert.That(folders, Is.Not.Empty);
+            foreach (string folder in folders)
+            {
+                Assert.That(ArtPaths.AtlasFolders, Does.Contain(folder), folder + " must be listed in ArtPaths.AtlasFolders.");
+                Assert.That(AssetDatabase.LoadAssetAtPath<SpriteAtlas>(ArtPaths.AtlasPath(folder)), Is.Not.Null,
+                    folder + " has no atlas; run Școlița → Rebuild sprite atlases.");
+            }
+        }
+
+        /// <summary>
         /// Tests that the atlases built by <see cref="ArtAtlases.RebuildAll"/> hold every sprite exactly
         /// once (<see cref="SpriteAtlas.CanBindTo"/>), so nothing draws outside an atlas.
         /// </summary>
         [Test]
         public void TestRebuildAll_EverySpriteIsInExactlyOneAtlas()
         {
-            List<SpriteAtlas> atlases = ArtPaths.AtlasFolders
-                .Select(folder => AssetDatabase.LoadAssetAtPath<SpriteAtlas>(ArtPaths.AtlasPath(folder)))
+            List<SpriteAtlas> atlases = AssetDatabase.FindAssets("t:SpriteAtlas", new[] { ArtPaths.AtlasFolder })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<SpriteAtlas>)
                 .ToList();
 
-            Assert.That(atlases, Has.None.Null, "Every art folder has its atlas; run Școlița → Rebuild sprite atlases.");
-            foreach (string path in ArtPngPaths().Where(p => !ArtPaths.IsIcon(p)))
+            Assert.That(atlases, Is.Not.Empty);
+            foreach (string path in SpritePaths())
             {
                 Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                 int count = atlases.Count(atlas => atlas.CanBindTo(sprite));
@@ -79,27 +103,30 @@ namespace Scolita.Tests.EditMode.Art
         }
 
         /// <summary>
-        /// Tests that every <see cref="Image"/> and <see cref="SpriteRenderer"/> in the app's prefabs
-        /// refers to a sprite that exists (none missing).
+        /// Tests that every asset the scenes, prefabs, content assets and atlases refer to by GUID
+        /// still exists (<see cref="AssetDatabase.GUIDToAssetPath(string)"/>), so removing a sprite
+        /// that something still shows fails here, not on the tablet.
         /// </summary>
         [Test]
-        public void TestPrefabs_EverySpriteReferenceResolves()
+        public void TestGUIDToAssetPath_EveryReferenceResolves()
         {
-            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { PrefabFolder });
+            string[] files = ReferringFolders
+                .SelectMany(folder => Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                .Where(f => f.EndsWith(".prefab") || f.EndsWith(".unity") || f.EndsWith(".asset") || f.EndsWith(".spriteatlasv2"))
+                .ToArray();
 
-            Assert.That(guids, Is.Not.Empty);
-            foreach (string guid in guids)
+            Assert.That(files, Is.Not.Empty);
+            foreach (string file in files)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                foreach (Component component in prefab.GetComponentsInChildren<Component>(true))
+                foreach (Match match in GuidReference.Matches(File.ReadAllText(file)))
                 {
-                    if (component is Image || component is SpriteRenderer)
+                    string guid = match.Groups[1].Value;
+                    if (guid.StartsWith("0000000000000000"))
                     {
-                        SerializedProperty sprite = new SerializedObject(component).FindProperty("m_Sprite");
-                        bool missing = sprite.objectReferenceValue == null && sprite.objectReferenceInstanceIDValue != 0;
-                        Assert.That(missing, Is.False, path + ": " + component.name + " shows a missing sprite.");
+                        continue;
                     }
+
+                    Assert.That(AssetDatabase.GUIDToAssetPath(guid), Is.Not.Empty, file + " refers to a missing asset " + guid + ".");
                 }
             }
         }
@@ -126,11 +153,25 @@ namespace Scolita.Tests.EditMode.Art
             }
         }
 
-        private static IEnumerable<string> ArtPngPaths()
+        private static IEnumerable<string> SpritePaths()
         {
             return Directory.GetFiles(ArtPaths.Root, "*.png", SearchOption.AllDirectories)
                 .Select(p => p.Replace('\\', '/'))
+                .Where(p => !ArtPaths.IsIcon(p))
                 .OrderBy(p => p, System.StringComparer.Ordinal);
+        }
+
+        private static IEnumerable<string> SpriteFolders()
+        {
+            return SpritePaths()
+                .Select(FolderOf)
+                .Distinct();
+        }
+
+        private static string FolderOf(string spritePath)
+        {
+            string relative = spritePath.Substring(ArtPaths.Root.Length);
+            return relative.Substring(0, relative.IndexOf('/'));
         }
     }
 }
