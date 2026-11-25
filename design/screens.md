@@ -326,3 +326,35 @@ order, with stable ids:
 - **A cream card per trail she has** (300 × 200, the trail on a strip of sky), the one the
   rocket wears ringed in yellow; tapping one gives it to the rocket (it streams under the
   rocket on the map) and closes the picker. Said: "Alege dâra rachetei."
+
+## 15. Who's playing?, as built by `profiles` (0.14.0) — `Prefabs/Profiles/ProfilesScreen.prefab`, `Scenes/Profiles.unity`
+
+- **Shown** at start with two or more children (never with one), and from the map's avatar button.
+- **The purple sky;** the mascot (130 px) top centre with its bubble to its right: „Cine se joacă? Atinge poza ta.” in
+  the app's language; the parent button top right (hold 3 s, then the gate, as on the map).
+- **The cards:** cream, one to three in a row (300 × 400), four to six in two rows of three (210 × 270): the avatar
+  (two thirds of the card), the name (44 px, smaller for a long one; none for a profile without a name), a gold star and
+  the stars count; the child who played last has a yellow ring. The tester never has a card.
+- **A tap:** that card lifts, the others dim, the greeting is said (and shown) in her own map's language („Bună,
+  Ana! Hai să zburăm!”, or „Bună! Hai să zburăm!” without a name), then her map opens.
+- **The map's avatar button:** 64 px, the avatar on a white disc, beside "Școlița" (`AvatarPlace`); shown with two or
+  more children, and for the tester.
+
+## 16. The parent area's profiles, as built by `profiles` (0.14.0) — `Prefabs/Parent/ParentProfiles.prefab`
+
+- **Opened by** the chosen profile's button at the top of the parent area (its avatar, its name or "Fără nume", a TEST
+  badge for the tester, and "Profiluri"); the area's grid, settings and reset are that profile's.
+- **The page** (lilac, over the area): the back button and **Profiluri** top left, "Numele și pozele rămân doar pe
+  tabletă." top right. **Cine are profil** (left, 46 %): a row per profile (80 px: the avatar, the name, "Copil" or
+  "Tester, nu apare la copii", the letters learned per language and the last day played, "Schimbă"), the chosen one
+  outlined in violet; the tester's **Joacă ca tester** and **Șterge progresul de test** (or **Fă un profil de test**);
+  **+ Adaugă un copil** (hidden at six children). **Schimbă profilul / Un copil nou** (right): the name field (20
+  characters), the 14 avatars (7 × 2, 64 px; another child's dimmed), the lessons' languages, **Șterge profilul…**
+  (a child, not the only one; asks twice) and **Salvează / Adaugă**; the tester's editor shows only the avatars.
+
+## 17. The tester's strip, as built by `profiles` (0.14.0) — `Prefabs/Profiles/TesterStrip.prefab`
+
+- Only for the tester's profile: a dark band (76 px) along the bottom (above the map's bottom bar), a yellow **TEST**
+  badge, a line of test information (on the map: the version, "toate lecțiile se deschid"; in a lesson: the version,
+  the lesson id, the step's number and kind, and the line being said with how: a recording, the tablet's voice or the
+  bubble only) and, in a lesson, **Sari peste pas** (240 × 64, yellow).

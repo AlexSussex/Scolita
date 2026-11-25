@@ -261,3 +261,120 @@ picker and the map (random taps never open the area or delete anything). Emulato
 
 **Another domain.** Profiles know nothing of letters: a numbers or music domain's progress and rewards are in the
 same folders; only the row's summary reads the letters' report (a later domain adds its own line there).
+
+### Built
+
+- **Core** (`Scripts/Core/Profiles`): `ProfileName` (letters with one space or hyphen between parts, the cedilla made
+  comma-below, none; `ReadSaved` without today's limit), `ProfileNameProblem`, `ProfileKind`, `Profile` (the tester's
+  `OpensEveryLesson`, `CanSkipSteps`, `ShowsTestInfo`), `ProfileList` (children and the tester, ids never reused and kept
+  above every folder, one avatar per child, playing and last child, `FromFolders`), `ProfileRules` (6 children, names of
+  20 characters, in the learning rules asset), `ProfileAvatar` (read from `avatars.csv` with the rewards' tables),
+  `ProfileLines` ("Who's playing?" and the greeting); `ProfileId.IsSet`; `Core/Parent/ProfileSummary`;
+  `MapRoute(…, everyStopOpen)` and `MapStop.OpensAhead`; `LessonRun.Skip()`.
+- **Content and build:** `content/avatars.csv` (the 14 avatars of design screen 11, in its order), `AvatarAsset` and
+  `AvatarCatalog` (`OfferedIds`, `SpriteOf`), imported into `Content/Avatars/` and `Content/AvatarCatalog.asset`; the
+  ledger of released ids counts `avatars.csv`.
+- **Game:** `Scripts/Game/Profiles` (`ProfilesData` and `ProfileData`: `profiles.json`; `ProfileStore`: the list, the
+  migration, a dated copy before a list with a part that can't be read is saved over, a deleted profile's folder;
+  `ProfilesRunner`, "Who's playing?"'s root; `ProfilesScreenView`, `IProfilesInput`, `ProfileCard`; `TesterStripView`,
+  `ITesterInput`); `SaveStore.DeleteProfileFolder` and `KeepDatedCopy`; `ParentRunner` (the chosen profile, the profiles
+  page: `ParentProfilesView`, `IParentProfilesInput`, `ParentProfileRow`, `AvatarChoice`, `ProfileEditorShown`,
+  `ProfilesMessage`); `BootLoader` (the picker with two or more children, else the only child; never the tester),
+  `MapRunner` (the profile to open, every stop open for the tester, the avatar button, the strip), `LessonRunner` (the
+  profile to open, the strip, skip); `AppScene.Profiles`; `SpeechBubbleView.Words`; `BuiltInProfiles` removed
+  (`ProfileList.FirstChildId`).
+- **UI:** `Scripts/UI/Profiles` (`ProfilesScreen`, `ProfileCardView`, `TesterStrip`), `Scripts/UI/Parent`
+  (`ParentProfilesScreen`, `ProfileRowView`, `AvatarChoiceView`; the header's chosen profile in `ParentAreaScreen`),
+  `MapScreen`'s avatar button; `Prefabs/Profiles/ProfilesScreen.prefab` and `TesterStrip.prefab`,
+  `Prefabs/Parent/ParentProfiles.prefab`, `MapScreen.prefab`'s `AvatarPlace`, `ParentArea.prefab`'s header button;
+  `Scenes/Profiles.unity` (in the build, after Parent); the strip in `Map.unity` and `Lesson.unity`, the page in
+  `Parent.unity`; 45 keys in the `App` table, both languages.
+
+### How each screen meets "Usability"
+
+- **"Who's playing?"** (for the child): the cards are 300 × 400 (one to three) or 210 × 270 (four to six), far above
+  96 px; each child is found by her picture (one picture per child, enforced), the name under it; the mascot says what
+  to do and the greeting is spoken; no text is needed to choose. The parent button is the map's (a hold of 3 s and the
+  gate). Android Back does nothing (it is the start, nothing to go back to).
+- **The avatar button** on the map: 64 px, top left in the safe area beside the title, shown only when it is useful (two
+  or more children, or the tester).
+- **The profiles page** (for adults): text 16 to 36 px on the 1280 × 800 canvas (the row's summary line is 16 px, the
+  rest 18 and up), every target 64 px or more (the avatars 64 px, rows 80 px), a back button and Android Back; the
+  names and pictures stay on the tablet, as it says top right.
+- **The tester's strip:** only for the tester; it never covers the map's bottom bar.
+
+### Fresh-eyes review (a second agent; the saves, the list's format, the tester's isolation)
+
+Findings and what was done:
+
+1. *If `profiles.json` can't be read (a newer version wrote it, or an IO error), the list is made from the folders each
+   time and never saved, so a card tapped would open `child-1`'s map, another child's progress.* Fixed: when the chosen
+   child can't be saved, "Who's playing?" doesn't open any map (it says its line again and logs an error).
+2. *A child's entry that can't be read is dropped and its folder orphaned; a corrupt `nextChild` could give a new child
+   an old folder.* Fixed: the next child's number is always above every `child-<n>` folder on the tablet
+   (`ProfileList.KeepIdsAbove`), so no new child ever gets an old folder. A dropped entry is not adopted back (a
+   folder left after a failed deletion would come back as a profile the parent deleted); its file is kept as a dated
+   copy (3), for rescue by hand.
+3. *A list that loads but has no usable child, or drops an entry, is saved over without a copy.* Fixed: a dated copy,
+   `profiles.broken-<date-time>.json` (watched by the copies' ledger like every damaged save), is made first; if it
+   can't be made, the file isn't saved over.
+4. *`nextChild` has no upper bound: `child-1000000` couldn't be read back.* Fixed: a number above `child-999999` reads as
+   the highest child's plus one; `AddChild` refuses to go past it.
+5. *If Boot can't save that nobody plays the tester any more, the map would reopen as the tester.* Boot and the area's
+   Back now log an error when the list can't be saved. Left as it is otherwise (a full disk at the moment of a
+   restart, after the tester played); noted for the human.
+6. *The page's actions didn't check an open deletion question.* Fixed: choosing, adding, making or opening the tester do
+   nothing while it is asked.
+7. *"cel mult 20 de litere" wrote the rules' number by hand.* Fixed: the label and the message take the number from the
+   rules (`{0} de caractere`), and the rules keep the limit between 20 and 40 so "de" is always right.
+8. *Romanian:* the tester's row says "Nu se arată copiilor"; the unused note line was removed.
+9. *A saved name was read against today's limit.* Fixed: `ProfileName.ReadSaved` (letters checked, no length limit).
+10. *Style:* the save results are checked and logged; `TryGet`'s doc says its callers.
+
+Sound, as the review found: deleting a profile (the list saved first, then exactly `profiles/<id>`, never a listed
+profile, a link unlinked, not followed); the migration from 0.13.0; the ids; the tester's isolation (no card, every
+unlock asked of the profile, its reset touching only its folder, Boot never opening it); the Back paths; the Romanian
+lines; the repo's conventions.
+
+### Decisions
+
+- **"Who's playing?" is its own scene** (`Profiles.unity`), so the map stays one profile's map; the picker has the parent
+  button too (design screen 9), so the area can be reached before anyone plays.
+- **Who plays is in `profiles.json`** (`playing`), not in a static: the Map, Lesson and Parent scenes read it; Boot
+  resets it every start (nobody with two children, else the only child), so the tester never survives a restart.
+- **A profile can have no name** (the first profile, made by the app; or a parent who leaves it empty): the card shows
+  only the picture and the greeting has no name. The brief said 1–20 letters; empty is allowed because the app's own
+  first profile has no typed name, and a child finds her card by its picture.
+- **One picture per child** (not in the brief): two children with the same picture couldn't tell their cards apart. The
+  tester may share one.
+- **The tester is never deleted** (its progress is reset in one tap); **the last child can't be deleted** (reset it
+  instead).
+- **The avatars are read with the rewards' tables** (`RewardTables`, `RewardContent.Avatars`): the same pipeline (an id, a
+  picture per id, the ledger); the app reads them from `AvatarCatalog`.
+- **Commits:** the Game side's view contracts for the new screens went into the `ui:` commit with the UI that implements
+  them (changing an existing abstract view needs both sides at once to compile).
+
+### Pushed
+
+- `86ce5cd` `content:` the 14 avatars; `8bd5b0f` `core:` profiles, the list, the tester's unlocks; `5ba3b1c` `build:`
+  the avatars imported; `162a1fa` `game:` every scene opens the chosen profile, `profiles.json` and the migration;
+  `3bddcea` `core:` ids above every folder, saved names whole (the review); `02b022a` `game:` a dated copy of a list
+  with a part that can't be read (the review); `61948f4` `core:` the picker's lines; `87764a3` `ui:` "Who's playing?",
+  the profiles page, the tester's strip; with this Progress.
+
+### Test results so far
+
+- The first four (before the rebase onto `49317dc`, docs only): EditMode and `BuildAndroidDebug` each on its own (752, 793, 793, 799
+  passed; builds fine; no `warning CS`); the `game:` tree also PlayMode 49/49.
+- The `ui:` tree before its last fixes: EditMode 810/810, PlayMode 57/59 (the tester row's words changed by the
+  review, and the Editor's `child-1` left with a 10-minute limit by an earlier failed run of the monkey test, fixed by
+  `ProfilesScene.Isolated`; both fixed in the commit), `BuildAndroidDebug` fine, no `warning CS`.
+
+### Still to test
+
+(AGENTS.md → "Testing fits the change": the full run comes once, after the last rebase, before the close-out.)
+
+- The review's two commits and the picker's lines: EditMode and the build on their own (were running when the rule changed).
+- Everything together: EditMode, PlayMode, `BuildAndroidDebug`, after the last rebase.
+- The emulator: 0.13.0 with progress, then this over it (the migration); "Who's playing?", the avatar button, the
+  profiles page, the tester's strip and skip, deleting a child; every new screen at every size in AGENTS.md's table.
