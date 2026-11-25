@@ -26,18 +26,43 @@ screen, what to tap, and what you should see **and hear**.
 
 ## The basics
 
-Filled in by `parent-area` (release 0.12.0 or near it), when the whole loop
-first exists on the tablet. Until then, each release's section below is the
-test.
+Filled in by `parent-area` (0.13.0): the whole loop, from the galaxy map through one lesson and back, the
+parent gate and a setting changed. Run it after every install.
 
 | # | Screen | Do this | You should see and hear | Tested on |
 | --- | --- | --- | --- | --- |
 | B1 | Home screen of the tablet | Tap the Școlița icon | The app opens on the galaxy map within 5 seconds | |
+| B2 | The map | Tap **Hai!** | The next lesson opens within 2 seconds; the mascot says its first instruction | |
+| B3 | A lesson | Play it to the end (a wrong answer once, to hear the hint) | Each step says what to do; the wrong answer gets a soft hint, never a buzzer; at the end "Bravo!", the stars and **Mai departe** | |
+| B4 | The end of the lesson | Tap **Mai departe** | The map comes back with the rocket on the next stop, and the mascot greets the next lesson | |
+| B5 | A lesson | Start a lesson, tap the home button (top left) | The map comes back at once; Go opens the same lesson again where it was left | |
+| B6 | The map | Press and hold the lock (top right) for 3 seconds | A yellow ring fills, then "Pentru părinți" with three numbers written as words; a number is said (or shown in digits if the tablet has no voice for it) | |
+| B7 | The parent gate | Tap the number said | The parent area opens: what she has learned (left) and the settings (right) | |
+| B8 | The parent area | Tap **Doar engleză**, then the back arrow | The map shows only the English lessons; set **Amândouă** again afterwards | |
+| B9 | Android | Press the tablet's Back on the parent area, on the gate and in a lesson | Each goes back as its on-screen back button does; on the map itself Back does nothing | |
 
 ## Releases
 
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
+
+### 0.13.0 (2026-11-25): the parent area
+
+On the tablet, with the 0.13.0 APK (`local/apks/Scolita-0.13.0-debug.apk`), installed over 0.12.0 without
+clearing its data. Run "The basics" first (B6 to B9 are new). The gate's number is said by the tablet's voice (no
+clips yet); with no voice for the language it shows in digits.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.13.0-1 | The map | Tap the lock (top right) quickly, several times; then hold it about a second and let go | Nothing opens; the yellow ring empties when you let go | |
+| 0.13.0-2 | The parent gate | Hold the lock 3 seconds; tap a word that isn't the number said; hold again at once | The page closes quietly; for 30 seconds holding the lock opens nothing, then it asks again | |
+| 0.13.0-3 | The parent gate | Listen to „Atinge numărul …” (or "Tap the number …" with the menus in English) | The number said is the one written among the three; the words are spelled right (unsprezece … nouăsprezece) | |
+| 0.13.0-4 | Ce a învățat | Look at the rows after she has played | Her letters: learned (dark), being learned (half), new (outlined), in Romanian and in English; today green in the days; the next three lessons; "Vocile înregistrate" with the counts | |
+| 0.13.0-5 | Setări | Tap **10 min**, go back and let her play past 10 minutes (or a lesson that ends after them) | The lesson she is in finishes; then the map sleeps: the guide asleep, „Racheta se odihnește. Ne vedem mâine!”, Hai! opens nothing. Passing the gate wakes it; set **Fără** again | |
+| 0.13.0-6 | Setări | Turn **Meniurile în engleză** on, go back to the map, then turn it off | The area's words in English at once; on the map "Go!", "My sky", "Stickers", "Trails"; a lesson's end "Keep going" | |
+| 0.13.0-7 | Setări | Move **Vocea** lower and let go; play a lesson | The voice is quieter (the slider never goes fully silent) | |
+| 0.13.0-8 | Șterge progresul… | Tap it, then "Nu, păstrează-l"; tap it again, "Da, șterge", "Șterge tot" (only on a test install, or when you mean it) | It asks twice, saying what is lost; after the second yes "Progresul a fost șters.", every letter new, the map back at the start, the stars and stickers gone; the settings stay | |
+| 0.13.0-9 | The words | Read every line of the area and the gate, in both languages | Correct Romanian and English (the human checks the new words) | |
 
 ### 0.12.0 (2026-11-25): stars, stickers and trails
 

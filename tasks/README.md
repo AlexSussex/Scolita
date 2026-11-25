@@ -65,7 +65,7 @@ Each brief file therefore reads, top to bottom:
 | 10 | `feature/galaxy-map` | Done 2026-11-25, released as 0.10.0 | [done/galaxy-map.md](done/galaxy-map.md) |
 | 11 | `feature/progress-review` | Done 2026-11-25, released as 0.11.0 | [done/progress-review.md](done/progress-review.md) |
 | 12 | `feature/rewards` | Done 2026-11-25, released as 0.12.0 | [done/rewards.md](done/rewards.md) |
-| 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
+| 13 | `feature/parent-area` | Done 2026-11-25, released as 0.13.0 | [done/parent-area.md](done/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
 | 16 | `feature/look` | Done 2026-11-25 (0.9.0; the chosen art; the guide's full body is a ChatGPT round for the human) | [done/look.md](done/look.md) |
@@ -99,12 +99,11 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| parent-area | [parent-area](pending/parent-area.md) | New: `Scripts/Core/Parent`, `Scripts/Game/Parent`, `Scripts/UI/Parent`, `Prefabs/Parent/`, `Scenes/Parent.unity`, `Assets/Scolita/Localization/` (the first string tables), `Assets/AddressableAssetsData/` (made by Localization); changes: `Prefabs/UI/MapScreen.prefab` (the lock, the gate, Go's and the bar's words), `Prefabs/Rewards/LessonEnd.prefab` (its words), `Scenes/Map.unity` (the runner's rules field), `MapRunner`, `MapScreen`, `LessonRunner`, `LessonEndScreen`, `RewardsSession` (an open book), `LessonVoice`, `GuideFigure` (sleepy), `VoiceHost` (the voice's volume), `BootLoader`, `SaveStore` (delete a file), `LearningSettingsData` (version 2), `LearningRulesAsset` (+ asset), `AppScene`, `ProjectSettings/EditorBuildSettings.asset` (the Parent scene, Localization's settings), `content/voice-lines.csv` (new rows at the end) | emulator-5600 | 2026-11-25 | Slices pushed (reviewed by a second agent); the close-out next |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `rewards` (stars, stickers and trails, release 0.12.0)._
+_Last updated 2026-11-25 by agent `parent-area` (the parent area, release 0.13.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -203,18 +202,30 @@ _Update this section whenever a slice is pushed or a brief is finished._
   planet (`trails.csv`); the map's bar (sky book, sticker book with the Earth scene, trail picker);
   `rewards.json` per profile (caught up from her progress for an older tablet).
 
+- **Done 2026-11-25:** `parent-area`, release 0.13.0. The lock on the map (hold 3 s, then the
+  number said among three written as words; digits when the tablet has no voice; a wrong one rests the gate 30 s);
+  the parent area (`Parent.unity`): the letters by language and state, the days played, the next lessons, the
+  recorded voices; the language mix, a daily limit (the lesson always ends, then the map sleeps until the next day or
+  the gate), the voice's volume, the menus in English; reset asked twice. The first string tables (`App`, `ro` and
+  `en-GB`; Localization's local Addressables); Android Back on every screen.
+
 ### Open follow-ups across briefs
 
+- **From `parent-area`** (full list in its completion record):
+  - `profiles`: the area shows the chosen profile; the profile list and the tester in the area.
+  - `sound-feel`: the music and sounds sliders and the vibration switch in the area's settings.
+  - The human: the gate's number range, capitals first, waking the rocket on every visit.
+
 - **From `rewards`** (full list in its completion record):
-  - `parent-area`: the bar's words, "În cartea mea", "Bravo!"/"Well done!" into the string tables;
-    reset deletes `rewards.json`.
+  - ~~`parent-area`: the bar's words, "În cartea mea", "Bravo!"/"Well done!" into the string tables;
+    reset deletes `rewards.json`~~: done in 0.13.0.
   - `profiles`: the star count on "Who's playing?" from `RewardBook.StarsEarned`.
   - `sound-feel`: the stars landing, the gift box, a sticker placed (`RewardsSession.Giver.RewardEarned`).
   - `look` (a chore): `Art/Constellations/constellation-*.png` unused; the constellations' figures.
 
 - **From `progress-review`** (full list in its completion record):
-  - `parent-area`: the grid reads `LearnerProgress` (`StateOf`, `DaysPlayed`); reset deletes
-    `progress.json` with `map-progress.json` and `lesson-run.json`.
+  - ~~`parent-area`: the grid reads `LearnerProgress` (`StateOf`, `DaysPlayed`); reset deletes
+    `progress.json` with `map-progress.json` and `lesson-run.json`~~: done in 0.13.0.
   - Later: word reviews (the untraced TraceWord words), letter names as items, a last good
     `progress.json` to restore counts after damage.
 
@@ -224,8 +235,8 @@ _Update this section whenever a slice is pushed or a brief is finished._
     the dated broken copies~~: done in 0.11.0.
   - ~~`rewards`: the bottom bar's band and buttons go in `SkyBookPlace` and
     `StickerBookPlace`; the rocket's trail along the path~~: done in 0.12.0.
-  - `parent-area`: the parent button in `ParentPlace`; "Hai!" / "Go!" into a
-    string table. `profiles`: the avatar in `AvatarPlace`.
+  - ~~`parent-area`: the parent button in `ParentPlace`; "Hai!" / "Go!" into a
+    string table~~: done in 0.13.0. `profiles`: the avatar in `AvatarPlace`.
   - `look` (a chore): delete the old planet parts and rocket in `Art/Map/`.
 
 - **From `content-letters-1`** (full list in its completion record):

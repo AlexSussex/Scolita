@@ -18,6 +18,50 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.13.0 (2026-11-25)
+
+The parent area. Behind a gate a child can't open by tapping around: what she has learned, the days she
+played, the next lessons and the recorded voices; the languages of her lessons, a daily time limit, the
+voice's volume and the menus' language; and deleting her progress (asked twice). The app's own words now come
+from string tables, in Romanian or English.
+
+- **For the child:**
+  - Nothing new to do; the menus' words can be in English when the parent chooses it.
+  - **The daily limit** (off unless a parent sets it): when today's time is reached, the lesson she is in
+    always plays to its end; then the map sleeps, the mascot yawns and says „Racheta se odihnește. Ne vedem
+    mâine!” / "The rocket needs a rest. See you tomorrow!", and no lesson opens until the next day, or until a
+    parent passes the gate.
+  - **Android Back** on the tablet does what the screen's back button does (a lesson goes home; on the map it
+    closes an open book).
+- **For the parent:**
+  - **The lock** at the top right of the map: press and hold it 3 seconds (a yellow ring fills), then tap the
+    number said, among three written as words. If the tablet has no voice for the language, the number is shown
+    in digits instead. A wrong number closes it quietly.
+  - **Ce a învățat:** each letter in Romanian and in English (new, being learned, learned), the days played in
+    the last two weeks, the next three lessons, how many voice lines are recorded.
+  - **Setări:** the lessons' languages (both, Romanian only, English only), the daily limit (none, 10, 15, 20
+    minutes), the voice's volume, "Meniurile în engleză", the version.
+  - **Șterge progresul…:** asks twice, says what is lost (letters, lessons, place on the map, stars and
+    stickers) and keeps the settings.
+
+### Technical notes
+
+- **Saves:** `learning-settings.json` version 2 adds `sessionLimitMinutes` (a version 1 file reads as no limit,
+  D8); new per profile `play-time.json` (today's seconds; damaged or missing reads as nothing played). Reset
+  deletes `progress.json`, `map-progress.json`, `lesson-run.json` and `rewards.json`; `SaveStore.Delete`.
+- **The first string tables** (Unity Localization, already installed): locales `ro` and `en-GB`, table `App`
+  under `Assets/Scolita/Localization/`, its Addressables groups local only, built with the APK (no new package;
+  the APK still asks for no internet). "Hai!"/"Go!", the bar's words, "Mai departe", "În cartea mea" and
+  "Bravo!"/"Well done!" moved in.
+- **The gate rests 30 s after a wrong number** (the fresh-eyes review); the voice slider stops at 0.2, so the gate's
+  number is always heard.
+- **Build:** `BuildScript` switches the Editor to the Android target first (the tables' Addressables are built for
+  the active target).
+- **Content:** 20 voice lines (the gate's numbers 11–19 and the rocket's rest, both languages; no clips yet).
+- **Not built (the human decides):** the "Literele mici întâi" switch (capitals first would change the
+  curriculum's order); the music and sounds sliders and the vibration switch come with `sound-feel`.
+- Brief: [tasks/done/parent-area.md](tasks/done/parent-area.md).
+
 ## 0.12.0 (2026-11-25)
 
 Rewards: stars, stickers and rocket trails. Every lesson she finishes lights three stars in her

@@ -1,6 +1,6 @@
 # Task: feature/parent-area
 
-> **Status: In progress (parent-area).**
+> **Status: Done 2026-11-25, released as 0.13.0.**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Security and privacy" → the parent
 gate, "Fresh-eyes review"), and the completion records in `tasks/done/`.
@@ -366,3 +366,75 @@ ones: EditMode `Core/Parent/*` (the gate, the limit, the report, the voice statu
     area fit, nothing under the safe area's edges.
 
 **Cleanup:** `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `parent-area`; released as 0.13.0 (tag `v0.13.0`)._
+
+### What was built
+
+- **Pushed:** `1a85b41` `docs:` (Design note), `e0acc94` `core:`, `b54d91f` `core:` (the gate's rest), `c20e0d3`
+  `content:`, `5250ba1` `core:` (the map's rest line), `7b5a9c3` `build:`, `c24c8e8` `game:`, `bc60eaa` `ui:`,
+  `14447d4` `docs:` (Progress), then this close-out (tagged).
+- **Core** (`Scripts/Core/Parent`): `ParentGate`, `GateStage`, `ParentRules`, `DailyPlay`, `SessionLimit`,
+  `ParentReport` (`LetterRow`, `LetterCell`, `NextLesson`), `VoiceStatus` (`LanguageVoiceStatus`); `MapLines.Resting`.
+- **Game:** `Scripts/Game/Parent` (`ParentRunner`, `ParentGateFlow`, `ParentGateView`, `IParentGateInput`,
+  `ParentAreaView`, `IParentAreaInput`, `ParentSettingsShown`, `ResetQuestion`, `PlayClock`, `PlayTimeData`,
+  `ProgressReset`); `SaveStore.Delete`; `LearningSettingsData` version 2; `Settings/AppLocale`; `Scenes/AndroidBack`,
+  `AppScene.Parent`; `VoiceHost.SetVolume`; `LessonVoice.Silence`; `RewardsSession.IsBookOpen`; `GuideMood.Sleepy`;
+  `MapRunner` (the gate, play time, resting, Back), `LessonRunner` (play time, the voice's volume, Back),
+  `BootLoader` (the app's language); the rules asset's gate and limit numbers.
+- **UI:** `Scripts/UI/Parent` (`ParentAreaScreen`, `ParentGatePanel`, `ParentHoldButton`, `PillButton`,
+  `LetterCellView`, `SliderRelease`); `Prefabs/Parent/ParentArea.prefab`, `ParentButton.prefab` (in `MapScreen.prefab`'s
+  `ParentPlace`; the gate's panel on its own canvas, sorting 40, over the map); `Scenes/Parent.unity` (in the build);
+  `MapScreen` (the gate, `ShowResting`, Go from the tables), `LessonEndScreen` ("Bravo!" in the lesson's language),
+  `GuideFigure` (sleepy frames).
+- **Localization** (the first string tables): `Assets/Scolita/Localization/` (settings, locales `ro` and `en-GB`,
+  table `App`, 58 keys, preloaded) and `Assets/AddressableAssetsData/` (local groups, built with the player, no remote
+  catalog, catalog updates off); `BuildScript` switches to the Android target before building.
+- **Content:** 20 voice lines (`<lang>-line-gate-11` … `-19`, `<lang>-line-rocket-rests`).
+- **Tests:** EditMode `ParentGateTests`, `ParentRulesTests`, `DailyPlayTests`, `SessionLimitTests`,
+  `ParentReportTests`, `VoiceStatusTests`, `PlayTimeDataTests`, `ProgressResetTests`, `PlayClockTests`,
+  `AppStringTableTests`, new cases in `SettingsDataTests`, `LearningRulesAssetTests`, `MapLinesTests`; PlayMode
+  `Parent/ParentGateTests` (7, the monkey a minute long), `ParentAreaTests` (7), `SessionLimitTests` (4).
+
+### Conventions for later briefs
+
+- **The app's own words are in the string table `App`** (`Assets/Scolita/Localization/Tables/`): a fixed label gets a
+  Localize String Event (its `OnUpdateString` set to the text's `text`); words built in code use `AppLocale.Text(key)`
+  or `AppLocale.Text(key, args)` (`{0}` formats); words that belong to a lesson's language use
+  `AppLocale.TextIn(language, key)`. Add keys in the Editor's Localization Tables window, both languages, new rows at
+  the end; `AppStringTableTests` fails on a key missing a language, and the cedilla test reads every table.
+- **The app's language** is `settings.json`'s `appLanguage`, selected by `AppLocale.Select` at boot, on the map and in
+  the parent area.
+- **A scene that counts play time** owns a `PlayClock` (ticked every frame, saved on a step, a pause and its close);
+  the map alone decides when the rocket rests. Only the parent area wakes it.
+- **Reset** deletes `ProgressReset.FileNames`: a new file that progress or rewards are rebuilt from goes in that list.
+- **A new parent setting** goes in `LearningSettingsData` (per profile) or `TabletSettingsData` (the tablet) with a
+  version raise and its `Upgraded` step, and in `ParentSettingsShown`.
+- **PlayMode tests that change play time or the limit** leave their scene before restoring the Editor's files
+  (`ParentScene.LeaveTheOpenScene`): a map or lesson left open saves its play time when the next test loads a scene.
+- **Android Back:** a scene reads `AndroidBack.WasPressed()` once a frame and does what its back button does.
+
+### Decisions and deviations
+
+In Progress → "Design note", "Fresh-eyes review" and "Decisions". Deviations from the brief: **"Literele mici întâi"
+is not built** (capitals first would change the curriculum's order; asked of the human); **the music and sounds
+sliders and the vibration switch wait for `sound-feel`** (nothing plays music or effects or vibrates yet); the gate
+**rests 30 s after a wrong number** (the review); the voice slider stops at 0.2 (a silent voice would lock a parent out
+of the gate). "The basics" are filled in `docs/manual-testing.md`.
+
+### Follow-ups
+
+- **`profiles`:** the parent area shows the chosen profile (`ParentRunner` and `MapRunner` still open
+  `BuiltInProfiles.FirstChild`); add the profile list and the tester profile to the area (design screen 10); reset
+  the tester's own progress with `ProgressReset`; play time and the limit are per profile already.
+- **`sound-feel`:** the "Muzica" and "Sunetele" sliders and the "Vibrații" switch in `ParentArea.prefab`'s settings
+  card (with `settings.json`'s `musicOn` / `soundsOn` becoming volumes in a version 2, migrated); the hold's ring and
+  the gate could get a soft sound (never on a wrong number: it closes quietly).
+- **The string tables:** the activities' "Ascultă" labels (in the step's language, `TextIn`); the remaining prefab
+  words as they come.
+- **The human:** the number range (11–19 mostly start with different letters, which she learns; 21–29 would need
+  new lines); whether opening the area should always wake the rocket; capitals first; hear the 20 lines.
+- **Later:** a map left open past midnight keeps the old day until it is reopened; the Device Simulator, the Profiler
+  window and a cut-out profile were not run.

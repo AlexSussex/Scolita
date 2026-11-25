@@ -779,3 +779,25 @@ constellations.csv whale
 trails.csv rainbow
 trails.csv stars
 trails.csv bubbles
+
+# 0.13.0
+voice-lines.csv ro-line-gate-11
+voice-lines.csv en-line-gate-11
+voice-lines.csv ro-line-gate-12
+voice-lines.csv en-line-gate-12
+voice-lines.csv ro-line-gate-13
+voice-lines.csv en-line-gate-13
+voice-lines.csv ro-line-gate-14
+voice-lines.csv en-line-gate-14
+voice-lines.csv ro-line-gate-15
+voice-lines.csv en-line-gate-15
+voice-lines.csv ro-line-gate-16
+voice-lines.csv en-line-gate-16
+voice-lines.csv ro-line-gate-17
+voice-lines.csv en-line-gate-17
+voice-lines.csv ro-line-gate-18
+voice-lines.csv en-line-gate-18
+voice-lines.csv ro-line-gate-19
+voice-lines.csv en-line-gate-19
+voice-lines.csv ro-line-rocket-rests
+voice-lines.csv en-line-rocket-rests
