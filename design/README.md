@@ -83,6 +83,14 @@ just one colour among many:
 - **More guides later:** the guide is data (its poses and moods as art), so
   more characters for her to choose from are art only (`feature/guides`,
   after the MVP).
+- **Chosen with her, 2026-11-25:**
+  - **The guide:** ChatGPT's unicorn astronaut (the "take D" sheet), with a full
+    astronaut body like the agent's take B.
+  - **The co-pilot:** ChatGPT's purple cat in a glass helmet, sitting beside the unicorn.
+  - **The same design on every screen.**
+  - **Until the full-body art arrives** (a ChatGPT round for the human, in
+    `local/art-prompts/look-guide-body.md`), the app shows the agent's round unicorn
+    (take C) as a stand-in, beside ChatGPT's cat.
 
 ## The language badges (decision D6, agreed 2026-11-24)
 
@@ -97,6 +105,11 @@ shape, never by colour alone:
 Badges are 48–64 px on cards, 30–40 px in bubbles and the parent grid.
 Text on them is decoration: a child who can't read still tells a star from
 a planet. No flags (D6).
+
+**For now (2026-11-25):** none of the takes was loved, and the badges aren't important yet. The
+agent's take A, the clearest in grey, stays. What is wanted later is a pair she can tell apart
+without reading letters and without being told; picture-based ideas are in the follow-ups of
+`tasks/done/look.md`.
 
 ## Rules of the look
 
@@ -165,52 +178,67 @@ a planet. No flags (D6).
 All text on its background at WCAG AA (4.5:1) or better; the badges are
 told apart by shape first.
 
-## The art (`feature/look`, 2026-11-24)
+## The art (`feature/look`, 2026-11-24 and 2026-11-25)
 
-The app's art is **drawn in code** by agents (decision D7) in the soft-shaded 2D style above,
-and rendered to PNGs with the PC's Chrome. No art pack, no third-party licence. Drafts made
-with ChatGPT (the prompts are in `local/art-prompts/`) are cut out and cleaned by the same tools
-and can replace any drawing.
+The app's art comes from two sources, listed one by one in `game/Assets/Scolita/Art/SOURCE.md`:
 
-- **Sources:** `design/art/draw/*.mjs`, one module per group: `world.mjs` (the sky, the
-  rainbow path, the planets and their faces, the rocket, its flame and trails, the moon, the
-  Earth, the stops), `guides.mjs` (the unicorn astronaut in three takes and the cat co-pilot,
-  each with the same nine frames), `badges.mjs`, `avatars.mjs` (screen 11's 14, shaded),
-  `stickers.mjs` (30 stickers, the three constellations), `ui.mjs` (the writing board,
-  buttons, cards, the bubble, the home button, icons, the launcher icon). Shared helpers (the
-  top-left light, gloss, soft shadows, eyes) are in `design/art/lib/svg.mjs`.
-- **Redraw:** `node design/art/build.mjs` (or with a folder prefix: `node design/art/build.mjs
-  Map/`) writes `game/Assets/Scolita/Art/<Folder>/<name>.png` and `sprite-borders.json`
-  (the 9-slice borders). Same code, same PNGs. Needs Node 18+ and Chrome (or Edge;
-  `SCOLITA_CHROME` names another).
-- **Cut a drawing made elsewhere:** `node design/art/cut-sheet.mjs <sheet.png> <folder>
-  --grid 4x2 --align bottom --names happy,talk,...` keys out the flat green (`--key magenta`
-  for magenta) with a soft edge and no green fringe, and draws every part at one scale onto a
-  square of `--size` pixels. Raw sheets stay in `local/art-inbox/`; only the cleaned parts are
-  committed.
-- **The choosing page:** `node design/art/choose.mjs <local folder> --inbox <list.json>`
-  shows every take side by side (the agent's and ChatGPT's) for the human and her.
-- **In Unity:** every PNG under `Assets/Scolita/Art/` is imported by
-  `Scolita.Editor.Art.ArtTextureImporter` (a full-rect sprite, no mipmaps, its 9-slice border)
-  and packed by its folder's sprite atlas (`Art/Atlases/<Folder>.spriteatlasv2`, built by
-  Școlița → Rebuild sprite atlases): Sky, Map, Effects, Guides, Badges, Board, UI, Stickers,
-  Constellations, Avatars. A new sprite in one of these folders is packed with no other
-  change. `Art/Icon/` holds the adaptive launcher icon's two layers (minimum API 26, so every
-  launcher uses the adaptive icon).
-- **Sizes:** sprites are drawn at about 1.6× the 1280 × 800 reference size, so they stay
-  sharp on the Tab A7's 2000 × 1200. A 9-sliced piece is shown with the Image's "Pixels Per
-  Unit Multiplier" at 1.6.
+- **ChatGPT's, chosen by the human and her (2026-11-25).** The human made sprite sheets with
+  ChatGPT from the prompts in `local/art-prompts/`. Chosen from them: the sky, the planets
+  and their faces, the rocket, the moon and the Earth, the cat co-pilot, 13 avatars, the 18
+  stickers, the app icon's unicorn and the word pictures. The raw sheets stay in
+  `local/art-inbox/`.
+  - `design/art/drafts.json` says which part of which sheet becomes which sprite.
+  - `node design/art/import-drafts.mjs` cuts them all into `game/Assets/Scolita/Art/`, and the
+    word pictures into `content/pictures/`. `cut-sheet.mjs` does the cutting: it removes the flat
+    green (or magenta) with a soft edge and no green fringe, finds the parts, and scales every
+    part of a sheet alike.
+  - When a sheet is replaced in the inbox, run the script again.
+- **Drawn by agents in code** (decision D7), for everything else. That is the guide's stand-in,
+  Pisicuța, the badges, the writing board, the UI kit, the rainbow path, the stops, the trails,
+  the particles, the constellations and the icon's background.
+  - The sources are `design/art/draw/*.mjs`, with shared helpers (the top-left light, gloss,
+    soft shadows, eyes) in `design/art/lib/svg.mjs`.
+  - `node design/art/build.mjs` (or with a folder prefix: `node design/art/build.mjs Map/`)
+    renders them with the PC's Chrome into `game/Assets/Scolita/Art/<Folder>/<name>.png`. It
+    also writes `sprite-borders.json` (the 9-slice borders).
+  - The same code and the same Chrome give the same PNGs (the version is printed). It needs
+    Node 18+ and Chrome or Edge
+    (`SCOLITA_CHROME` names another).
+
+**In Unity:**
+
+- **Import rules:** every PNG under `Assets/Scolita/Art/` is imported by
+  `Scolita.Editor.Art.ArtTextureImporter` as a full-rect sprite, with no mipmaps and its 9-slice
+  border.
+- **Atlases:** each folder is packed by its own sprite atlas
+  (`Art/Atlases/<Folder>.spriteatlasv2`, built by Școlița → Rebuild sprite atlases): Sky, Map,
+  Planets, Trip, Path, Effects, Guides, Badges, Board, UI, Stickers, Constellations, Avatars.
+  Each fits one 2048 page (`ArtTests` checks it), so a folder that grows too big is split. A new sprite in one of
+  these folders is packed with no other change.
+- **The launcher icon:** `Art/Icon/` holds the adaptive icon's two layers (minimum API 26, so
+  every launcher uses the adaptive icon).
+- **Sizes:** sprites are about 1.6× the 1280 × 800 reference size. A 9-sliced piece is shown with
+  the Image's "Pixels Per Unit Multiplier" at 1.6.
 - **The guide is data:** `Art/Guides/<guide-id>/<frame>.png`, with the same nine frames for
   every guide: `happy-idle`, `happy-blink`, `happy-talk`, `cheering-0`, `cheering-1`,
   `thinking-idle`, `thinking-talk`, `sleepy-0`, `sleepy-1`. `guide-unicorn` is the guide (its
   name is hers to choose) and `guide-cat` the co-pilot. A new guide is a new folder of the same
   frames (`feature/guides`).
-- **The planets** are put together from parts: the body (`planet-<colour>`), the face on top
-  (`planet-<colour>-face-<beaming|awake|sleepy>`, at 0.64 of the body's size, on its centre),
-  the ring's back half behind the body and its front half in front of it, the shadow under
-  it, and "z z z" by a sleepy one.
-- **Until she chooses** (the choosing page), the app uses take A of the guide (as on the
-  canvas) and take A of the badges.
+- **The planets are whole pictures,** one per colour and mood:
+  `Planets/planet-<gold|pink|green|purple|blue>-<beaming|awake|sleepy>`.
+  - The face, the ring (awake), the sparkle (beaming), the "z z" (sleepy) and the soft shadow
+    are drawn in.
+  - The ball is about 60% of the picture's width, its centre about 5% above the middle (so a
+    view sizes the picture from the ball it wants).
+  - A sleepy planet ahead on the map is also drawn at 55% opacity.
+  - `blue` is the purple planet recoloured, for English in `TwoSounds`.
+- **The rocket's six pictures:** `Trip/rocket-<standing|flying|flying-fast|landing|friends|asleep>`,
+  with `Trip/comet` and `Trip/moon-crescent`; the moon and the Earth are `Map/moon` and `Map/earth`.
+- **The old parts** (`Map/planet-<colour>`, `-face-<mood>`, `-ring-back/front`, `planet-shadow`,
+  `planet-sleepy-z`, `rocket`, `rocket-flame-*`) stay until `galaxy-map` has switched, then go.
+- **The rainbow wave** is `Path/rainbow-wave` (its own atlas, as it is a third of a page).
+  "Friends" has the unicorn and the cat in its window.
+- **The rocket's trails** (`trail-*`), the stops and the rainbow path stay the agent's.
 
 ## The screens
 
