@@ -82,7 +82,18 @@ _Kept by `look` while the brief is in flight._
 - **Claimed** in `61ed045` (worktree `C:\Projects\scolita-look`, emulator `emulator-5604`).
 - **Slice 1 (the art, its pipeline, the atlases, the placeholder prefabs, the launcher
   icon):** see "Slice 1" below for its commits and tests.
-- **Waiting for the human and her** (the choosing page,
+- **The human chose, 2026-11-25** (`local/look/answers.txt`):
+  - ChatGPT's art for the planets, avatars, stickers, rocket, moon and Earth,
+    sky and icon.
+  - The guide is ChatGPT's unicorn (D) with a full astronaut body, and the cat
+    is ChatGPT's (D, in a helmet).
+  - Keep one badge pair for now.
+  - The word pictures are applied, each to its own word.
+
+  Slice 2 is in progress. `MapScreen.prefab`, `LessonHud.prefab` and
+  `ProjectSettings.asset` are released for `galaxy-map`: the chosen art replaces
+  the PNGs under the same GUIDs, so they need no change.
+- ~~Waiting for the human and her~~ (the choosing page,
   `C:\Projects\Scolita\local\look\choose.html`): the guide's take (A, B or C by the
   agent, D by ChatGPT), whether the cat sits beside it, the cat (the agent's or ChatGPT's),
   the badges (A or B), and for the rocket, planets, moon, Earth and sky the agent's or

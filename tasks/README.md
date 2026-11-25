@@ -99,7 +99,7 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| look | [look](pending/look.md) | New: `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`; changes: `Prefabs/UI/MapScreen.prefab`, `Prefabs/UI/LessonHud.prefab`, `ProjectSettings/ProjectSettings.asset` (the app icon only), `design/README.md`, `design/canvas/` | emulator-5604 | 2026-11-24 | Slice 1 pushed (the art, atlases, icon, placeholder prefabs); **waiting for the human and her** to choose on `local/look/choose.html` (step 5 in `local/for-human-next-steps.md`); the guide catalog's C# type waits for `content`'s Design note |
+| look | [look](pending/look.md) | `Assets/Scolita/Art/` (sprites, atlases), `Scripts/Editor/Art/`, `design/art/`, `design/README.md`; for the word pictures: `content/pictures.csv` and the picture assets under `Assets/Scolita/Content/Pictures/` (released: `MapScreen.prefab`, `LessonHud.prefab`, `ProjectSettings.asset`) | emulator-5604 | 2026-11-24 | The human chose (2026-11-25, `local/look/answers.txt`); slice 2 in progress: the chosen art (ChatGPT's), the word pictures, the guide's stand-in |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
