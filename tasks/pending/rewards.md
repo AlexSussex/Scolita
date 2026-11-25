@@ -1,6 +1,6 @@
 # Task: feature/rewards
 
-> **Status: Ready after `galaxy-map`.**
+> **Status: In progress (rewards).**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Usability" → no pressure and no
 tricks), and the completion records in `tasks/done/`.

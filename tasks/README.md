@@ -64,7 +64,7 @@ Each brief file therefore reads, top to bottom:
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Done 2026-11-25, released as 0.10.0 | [done/galaxy-map.md](done/galaxy-map.md) |
 | 11 | `feature/progress-review` | In progress (progress-review) | [pending/progress-review.md](pending/progress-review.md) |
-| 12 | `feature/rewards` | Ready after 10 | [pending/rewards.md](pending/rewards.md) |
+| 12 | `feature/rewards` | In progress (rewards) | [pending/rewards.md](pending/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
@@ -100,6 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | progress-review | [progress-review](pending/progress-review.md) | `Scripts/Core/Progress` (new), `Scripts/Core/Lessons` (`LessonRun`, `LessonPlan`: warm-ups), `Scripts/Game/Saving` (`SaveStore`: the broken copies' cleanup), `Scripts/Game/Progress` (new: the `progress` save), the map's progress source (`MapRunner`, `MapProgressFile`; not `MapScreen.prefab`), `LessonRunner`, `LearningRules.asset`, `content/voice-lines.csv` (one line, both languages) | emulator-5600 | 2026-11-25 | Design note first |
+| rewards | [rewards](pending/rewards.md) | New: `Scripts/Core/Rewards`, `Scripts/Game/Rewards`, `Scripts/UI/Rewards`, `Prefabs/Rewards/`, `content/stickers.csv`, `content/constellations.csv`, `content/trails.csv`, `Content/Rewards/` (imported), the `rewards` save; changes: the importer and `Scripts/Content` (three catalogs), `ContentFileNames`, `ReleasedIdLedger`, `content/voice-lines.csv` (new rows at the end), `Prefabs/UI/MapScreen.prefab`, `Prefabs/Lesson/LessonScreen.prefab` (the end), `Scenes/Map.unity` and `Scenes/Lesson.unity` (the runners' reward fields), small hunks in `MapRunner` and `LessonRunner` (the rewards at a lesson's end), `UI/Map/RocketView` (the trail), `design/art/draw/constellations.mjs` | emulator-5602 | 2026-11-25 | Design note first |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
