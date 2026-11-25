@@ -1,6 +1,6 @@
 # Task: feature/progress-review
 
-> **Status: In progress (progress-review).** Decision D1
+> **Status: Done 2026-11-25, released as 0.11.0.** Decision D1
 > (the language mix) is read from the settings. The human, 2026-11-24 (Q1):
 > each damaged save is kept, dated (`<name>.broken-<date-time>.json`), never
 > replaced by the next, and removed by themselves once a newer version has
@@ -382,3 +382,79 @@ and follow its log with `"$ADB" -s $EMU logcat -s Unity` (the lines below start 
 
 Cleanup: `"$ADB" -s $EMU shell pm clear com.softshack.scolita`; set the date back
 (`settings put global auto_time 1`).
+
+## Completion record
+
+_Finished 2026-11-25 by `progress-review`; released as 0.11.0 (tag `v0.11.0`)._
+
+### What was built
+
+- **Pushed:** `c8a2499` `core:`, `459e46d` `game:`, `53c4489` `docs:` (Progress), then this close-out
+  (tagged).
+- **Core** (`Scripts/Core/Progress`): `LearnerProgress` (items, the lessons done and the rocket's stop
+  as `MapProgress`, the days played; the map's `IDoneLessons`; raises `ItemMastered`), `ItemProgress`,
+  `LearningItem` / `ItemKind` / `ItemState` / `KindCount`, `Mastery`, `ReviewSchedule`, `ProgressRules`,
+  `PractisedItems`, `LessonProgress` (records a `LessonRun`), `WarmUps` (behind `Lessons.IWarmUps`),
+  `ProgressRebuild`, `ProgressCodes`. `Scripts/Core/Saving`: `DamagedCopies`, `DamagedCopyWatch`.
+  Also `LessonRun.CurrentInstruction`, `LessonResume.WithWarmUps`, `LessonVoiceLines.OfWarmUps`,
+  `LessonLines.LetsRemember` (checked by the validator), `CalendarDay.TryParse`.
+- **Game:** `Scripts/Game/Progress` (`ProgressData`, `ProgressItemData`, `ProgressCountData`,
+  `ProgressFile`); `SaveStore`'s ledger (`DamagedCopiesData`, `DamagedCopyData`,
+  `RemoveSettledCopies`, `ProfilesIn`, clock and version overloads for tests); `BootLoader` removes
+  settled copies (its `learningRules` field set in `Boot.unity`); `LessonRunner` (progress, warm-ups,
+  saving after each step) and `MapRunner` (the progress file); `LearningRulesAsset.ToProgressRules`
+  and the asset's new numbers. `MapProgressFile` is gone; `MapProgressData` only reads 0.10.0's file.
+- **Tests:** EditMode `MasteryTests`, `ReviewScheduleTests`, `LearnerProgressTests`,
+  `ItemProgressTests`, `PractisedItemsTests`, `LessonProgressTests`, `WarmUpsTests`,
+  `ProgressRebuildTests`, `ProgressRulesTests`, `DamagedCopiesTests`, `ProgressDataTests`,
+  `ProgressFileTests`, `SaveStoreCopiesTests`, and new cases in the lesson, voice, content and asset
+  tests; PlayMode `LessonFlowTests.TestLessonRunner_StartsWithAWarmUp`; the lesson PlayMode tests keep
+  and clear the Editor's `progress.json` (no warm-up from the Editor's own play).
+
+### Conventions for later briefs
+
+- **Her progress is `LearnerProgress`, read and saved by `ProgressFile` only.** Ask "is this lesson
+  done?" through `IDoneLessons`, an item's state through `StateOf` / `TryGet`; the map's rocket stop is
+  `progress.Lessons.RocketStop`.
+- **A new activity kind** adds its line in `PractisedItems` (which items it practises); a new item kind
+  (a letter's name, a number) is an `ItemKind`, its code in `ProgressCodes`, and a raise of
+  `ProgressData`'s version.
+- **The numbers** of learned, reviews and warm-ups are in `LearningRules.asset`
+  (`ToProgressRules()`); English has its own number of right answers.
+- **Warm-ups** come from `WarmUps.For(lesson)`, through `LessonResume.WithWarmUps`; the first one's
+  instruction starts with "Hai să ne amintim!" (`LessonRun.CurrentInstruction`: say that, not
+  `Current.Instruction`, when a step begins).
+- **A save file that should have its damaged copies cleaned** must be read and then saved by the app
+  (a fine day counts only then); `SaveStore` does the rest.
+- **PlayMode tests that open a lesson** keep and delete the Editor's `progress.json` first
+  (`LessonScene.RestoreFile(ProgressData.FileName, null)`).
+
+### Decisions and deviations
+
+In Progress → "Decisions" and "Fresh-eyes review": a damaged `progress.json` keeps her place instead of
+starting from the first lesson (the acceptance criterion's wording); steps, not taps, count; only
+warm-ups move the schedule; words are counted but not reviewed; copies found without a ledger entry go
+only after a later release; `map-progress.json` is never written again. The ledger of released ids for
+0.11.0 also holds `rewards`' 38 content ids (its stickers, constellations, trails and lines, on `main`
+before this close-out and so in this release's APK).
+
+### Follow-ups
+
+- **`parent-area`:** the grid reads `LearnerProgress.Items` / `StateOf` (new, learning, learned per
+  letter and language) and `DaysPlayed` (the last two weeks); the language mix switch changes
+  `learning-settings.json` (the map and warm-ups follow it, the other language's progress is kept);
+  "reset progress" deletes `progress.json` (and `map-progress.json` and `lesson-run.json`, or the
+  progress is made again from them).
+- **`profiles`:** `progress.json` and `broken-copies.json` are per profile already; `BootLoader`
+  cleans every folder under `profiles/`; `LessonRunner` and `MapRunner` still open
+  `BuiltInProfiles.FirstChild`.
+- **`rewards`:** `ItemMastered` is raised by `LearnerProgress` (a learned letter could earn a sticker
+  later); its 38 ids were recorded in 0.11.0's ledger.
+- **Later:** word reviews (TraceWord words never traced in a lesson: `content-letters-1`'s question),
+  the letter names as their own items once `curriculum-research-names` is agreed, keeping the last good
+  `progress.json` (`progress.previous.json`) to restore her counts after damage (review finding 3), a
+  mix changed from one language to both before a damaged `progress.json` may mark the other language's
+  earlier lessons done.
+- **The human:** hear "Hai să ne amintim!" / "Let's remember!"; the 0.11.0 rows of
+  `docs/manual-testing.md` (rows 3 to 5 need her to play on a few different days); whether 6 right
+  answers on 2 days feels right for her, and whether English needs more.

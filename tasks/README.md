@@ -63,7 +63,7 @@ Each brief file therefore reads, top to bottom:
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
 | 10 | `feature/galaxy-map` | Done 2026-11-25, released as 0.10.0 | [done/galaxy-map.md](done/galaxy-map.md) |
-| 11 | `feature/progress-review` | In progress (progress-review) | [pending/progress-review.md](pending/progress-review.md) |
+| 11 | `feature/progress-review` | Done 2026-11-25, released as 0.11.0 | [done/progress-review.md](done/progress-review.md) |
 | 12 | `feature/rewards` | In progress (rewards) | [pending/rewards.md](pending/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
 | 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
@@ -99,13 +99,12 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| progress-review | [progress-review](pending/progress-review.md) | `Scripts/Core/Progress` (new), `Scripts/Core/Lessons` (`LessonRun`, `LessonPlan`: warm-ups), `Scripts/Game/Saving` (`SaveStore`: the broken copies' cleanup), `Scripts/Game/Progress` (new: the `progress` save), the map's progress source (`MapRunner`, `MapProgressFile`; not `MapScreen.prefab`), `LessonRunner`, `LearningRules.asset`, `content/voice-lines.csv` (one line, both languages) | emulator-5600 | 2026-11-25 | Core and game pushed, reviewed; closing out |
 | rewards | [rewards](pending/rewards.md) | New: `Scripts/Core/Rewards`, `Scripts/Game/Rewards`, `Scripts/UI/Rewards`, `Prefabs/Rewards/`, `content/stickers.csv`, `content/constellations.csv`, `content/trails.csv`, `Content/Rewards/` (imported), the `rewards` save; changes: the importer and `Scripts/Content` (three catalogs), `ContentFileNames`, `ReleasedIdLedger`, `content/voice-lines.csv` (new rows at the end), `Prefabs/UI/MapScreen.prefab`, `Prefabs/Lesson/LessonScreen.prefab` (the end), `Scenes/Map.unity` and `Scenes/Lesson.unity` (the runners' reward fields), small hunks in `MapRunner` and `LessonRunner` (the rewards at a lesson's end), `UI/Map/RocketView` (the trail), `design/art/draw/constellations.mjs` | emulator-5602 | 2026-11-25 | Design note first |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `galaxy-map` (the galaxy map, release 0.10.0)._
+_Last updated 2026-11-25 by agent `progress-review` (her progress and the warm-ups, release 0.11.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -193,13 +192,24 @@ _Update this section whenever a slice is pushed or a brief is finished._
   or a stop ahead. `map-progress.json` per profile (a profile from before the
   map keeps its place); every damaged save is kept, dated. The map now uses
   `Art/Planets/` and `Art/Trip/`: the old parts in `Art/Map/` can go.
+- **Done 2026-11-25:** `progress-review`, release 0.11.0. Her progress per letter (and word) and
+  language in `progress.json` (made from 0.10.0's `map-progress.json`, which it replaces): learned
+  after 6 right answers in 2 kinds on 2 days; warm-ups at a lesson's start after 1, 3, 7, 14 and 30
+  days („Hai să ne amintim!”); the language mix hides the other language and keeps its progress; a
+  damaged save's dated copies go once a newer version read and saved the file fine on 3 days.
 
 ### Open follow-ups across briefs
 
+- **From `progress-review`** (full list in its completion record):
+  - `parent-area`: the grid reads `LearnerProgress` (`StateOf`, `DaysPlayed`); reset deletes
+    `progress.json` with `map-progress.json` and `lesson-run.json`.
+  - Later: word reviews (the untraced TraceWord words), letter names as items, a last good
+    `progress.json` to restore counts after damage.
+
 - **From `galaxy-map`** (full list in its completion record):
-  - `progress-review`: put `LearnerProgress` behind `IDoneLessons`, migrate
+  - ~~`progress-review`: put `LearnerProgress` behind `IDoneLessons`, migrate
     `map-progress.json` (keep `rocketStop`'s role: it decides the trip), clean up
-    the dated broken copies.
+    the dated broken copies~~: done in 0.11.0.
   - `rewards`: the bottom bar's band and buttons go in `SkyBookPlace` and
     `StickerBookPlace`; the rocket's trail along the path.
   - `parent-area`: the parent button in `ParentPlace`; "Hai!" / "Go!" into a

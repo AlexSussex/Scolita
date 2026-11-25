@@ -39,6 +39,22 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.11.0 (2026-11-25): her progress and the warm-ups
+
+On the tablet, with the 0.11.0 APK (`local/apks/Scolita-0.11.0-debug.apk`), installed over 0.10.0
+without clearing its data. A warm-up only comes once a letter is learned (6 right answers, in 2 kinds
+of game, on 2 different days) and due again (the next day, then 3, then 7 days later), so rows 3 and 4
+need her to play on a few different days.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.11.0-1 | The map, after the update | Open the app | The lessons she finished are still ticked and the rocket stands where it was, with no trip | |
+| 0.11.0-2 | A lesson | Play a lesson to its end, close the app and open it again | The map shows it ticked as before; nothing is lost | |
+| 0.11.0-3 | A Romanian lesson, a day after a letter was learned | Tap **Hai!** | The lesson starts with „Hai să ne amintim!” and a quick game on a letter she knows (hear it and tap it, or tap the letter a picture's word starts with), among letters she has met; the dots count it; then the lesson's own first game | |
+| 0.11.0-4 | The warm-up | Tap a wrong letter once, then the right one | The usual soft hint, then the lesson goes on; nothing is taken away (that letter just comes back sooner) | |
+| 0.11.0-5 | An English lesson with a learned English letter due | Tap **Hai!** | "Let's remember!" and the warm-up in English, with the blue English badge | |
+| 0.11.0-6 | The words | Read and hear the line | „Hai să ne amintim!” / "Let's remember!": right and natural as the start of a quick review? | |
+
 ### 0.10.0 (2026-11-25): the galaxy map
 
 On the tablet, with the 0.10.0 APK (the debug one is `local/apks/Scolita-0.10.0-debug.apk`). The lines are

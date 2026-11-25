@@ -18,6 +18,41 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.11.0 (2026-11-25)
+
+Her progress and reviews. The app now keeps, for each letter in each language, how often she got it
+right, in which games and on which days. A letter answered right 6 times, in at least 2 kinds of game,
+on at least 2 different days, is learned; a learned letter comes back as a short warm-up at the start
+of a lesson the next day, then 3 days later, then 7, 14 and 30.
+
+- **For the child:**
+  - **Warm-ups:** a lesson may start with up to two quick games on letters she has learned that are
+    due for review, after „Hai să ne amintim!” / "Let's remember!": hear a letter and tap it, or see a
+    picture and tap the letter its word starts with, among letters she already knows. They count among
+    the lesson's dots; a miss brings that letter back sooner, never takes anything away.
+  - Nothing else changes on screen: the map, the lessons and her place on the map are as before.
+- **For the parent:** nothing to set yet (the parent area, next, will show which letters are new,
+  being learned or learned). Her place on the map is kept through the update. Switching the language
+  mix (later, in the parent area) hides the other language's lessons and keeps their progress.
+
+### Technical notes
+
+- **A save-format change:** `profiles/<id>/progress.json` (version 1) replaces `map-progress.json`:
+  the lessons done, the rocket's stop, the days played, and each letter's and word's progress (rights
+  by kind, practice, the days right, learned, the review step and the next review). It is made from
+  0.10.0's `map-progress.json` (or, from 0.9.0 and earlier, from `lesson-run.json`) the first time;
+  `map-progress.json` is left as it is and no longer written. A damaged `progress.json` is set aside,
+  dated, and her place is made again from those files (the letters' counts are only in the copy).
+- **The damaged copies go by themselves** (the human's rule, Q1): each save folder has
+  `broken-copies.json`; a file's dated copies are removed at start once a newer version of the app
+  has read and saved that file fine on 3 different days (`LearningRules.asset`).
+- **The learning rules asset** holds the numbers of `docs/curriculum.md` §5: 6 right answers (each
+  language its own number), 2 kinds, 2 days; reviews after 1, 3, 7, 14 and 30 days; a miss one step
+  back; 2 warm-ups of 3 letters.
+- **Content:** none new; the warm-ups say the existing „Hai să ne amintim!” / "Let's remember!"
+  (`ro-`/`en-line-lets-remember`), not recorded yet.
+- The brief: [`tasks/done/progress-review.md`](tasks/done/progress-review.md).
+
 ## 0.10.0 (2026-11-25)
 
 The galaxy map. The app opens on the purple sky with the rainbow path and the planets of the
