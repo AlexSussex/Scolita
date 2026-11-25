@@ -733,3 +733,9 @@ lessons.csv ro-words-3
 lessons.csv en-words-3
 lessons.csv capitals-3
 lessons.csv party-3
+
+# 0.10.0
+voice-lines.csv ro-line-stop-ahead
+voice-lines.csv en-line-stop-ahead
+voice-lines.csv ro-line-all-planets
+voice-lines.csv en-line-all-planets

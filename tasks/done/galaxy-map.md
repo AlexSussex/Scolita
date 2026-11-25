@@ -1,7 +1,6 @@
 # Task: feature/galaxy-map
 
-> **Status: In progress (galaxy-map)** (since 2026-11-25). Decision D5 (the
-> mascot) is not needed: a placeholder mascot until `look`.
+> **Status: Done 2026-11-25, released as 0.10.0.**
 
 Read `AGENTS.md` first, then `design/README.md` and `design/screens.md` (build the screens as designed there) (especially "Usability" → one tap to continue,
 "Performance"), `design/README.md`, and the completion records in
@@ -231,7 +230,7 @@ Findings and how they were resolved:
 - `15a82d8` `game:` each damaged save file kept, dated;
 - `df79d86` `game:` the map's runner and her `map-progress` save;
 - `058f2ca` `ui:` the galaxy map, its stops, the rocket and the trip;
-- this `docs:` commit. Next: the close-out (0.10.0).
+- `007b2b4` `docs:` this Progress; then the close-out (0.10.0).
 
 ### Test results
 
@@ -268,7 +267,7 @@ Prerequisites: the worktree's Unity project (`game/`), `UNITY` set to
 ### Core slice
 
 1. `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
-   Expected: every test passes, among them `MapRouteTests` (11), `RocketMoveTests` (6),
+   Expected: every test passes, among them `MapRouteTests` (12), `RocketMoveTests` (6),
    `MapLinesTests` (9), `MapProgressTests` (5).
 2. What they prove: the next stop is the first lesson not done; planets beam, wake and
    sleep; a letter is met, current or ahead; only her languages' lessons are stops; the trip
@@ -334,3 +333,79 @@ Prerequisites: the worktree's Unity project (`game/`), `UNITY` set to
 12. **Pause:** press Home during a line and come back: the line is said again.
 
 Cleanup: `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `galaxy-map`; released as 0.10.0 (tag `v0.10.0`)._
+
+### What was built
+
+- **Pushed:** `ef62757` `content:`, `38a9758` `core:`, `15a82d8` `game:` (dated broken copies), `df79d86` `game:` (the runner and the save), `058f2ca` `ui:` (the map, the prefab and the scene), `007b2b4` `docs:` (Progress), then this close-out (tagged).
+- **Core** (`Scripts/Core/Map`): `MapRoute` (a planet per unit with something to play, its stops in
+  teaching order, the next stop = the first not done, else the first stop again; planet states
+  sleepy / awake / beaming; letter states met / current / ahead), `MapProgress` (the lessons done,
+  the stop last shown, and `Before` for a profile from before the map) behind `IDoneLessons`,
+  `RocketMove` (placed, a hop, or the trip, decided from the stop last shown), `MapLines` (the
+  greeting in the next lesson's language, the landing, the two "not yet"s, all done).
+- **Game:** `MapRunner` (the Map scene's composition root), `MapScreenView`, `IMapInput`
+  (`IGuideInput` split out of `ILessonScreenInput`, so the guide works on any screen),
+  `MapProgressData` / `MapProgressFile` (`map-progress.json`), `LessonRunner` records a finished
+  lesson, `ActivityRegistry.PlayableKinds` (one rule for the map and the lesson), `SaveStore` keeps
+  each damaged copy dated.
+- **UI** (`Scripts/UI/Map`): `MapScreen`, `MapLayout` (+ `MapLayoutSettings` on the prefab),
+  `PlanetView` (`look`'s whole pictures), `LetterTile`, `StopView`, `RocketView`, `TripView`,
+  `RainbowPath` (one mesh from the Map atlas), `TapArea`, `Wobble`; `MapScreen.prefab` and the
+  `Map` scene (with its `MapRunner` and the Voice prefab).
+- **Content:** 4 voice lines (stop-ahead, all-planets, both languages).
+- **Tests:** EditMode `MapRouteTests`, `RocketMoveTests`, `MapLinesTests`, `MapProgressTests`,
+  `MapProgressDataTests`, `SaveStoreTests` (dated copies); PlayMode `MapFlowTests` (6) and the scene
+  flow and lesson tests keeping the Editor's `map-progress.json`.
+
+### Conventions for later briefs
+
+- **Ask the map's progress through `IDoneLessons`.** `progress-review` puts `LearnerProgress` behind
+  it and migrates `map-progress.json` (version 1: `doneLessons`, `rocketStop`) into its `progress`
+  file; keep `rocketStop` (or its equivalent), it is what decides the trip.
+- **The map opens a lesson by writing `lesson-run.json`** (unless it already names that lesson), so
+  the Lesson scene needs no other hand-off; no static state between scenes.
+- **What can be played** is `ActivityRegistry.PlayableKinds()` for both scenes.
+- **A screen with the guide** binds `GuideFigure` to an `IGuideInput` and speaks through a
+  `LessonVoice` (one line at a time, its bubble, said again on a tap).
+- **Places kept on the map:** `SafeArea/AvatarPlace` (`profiles`), `SafeArea/ParentPlace`
+  (`parent-area`), `SafeArea/BottomBarPlace/SkyBookPlace` and `StickerBookPlace` (`rewards`): put the
+  buttons there; the band itself isn't drawn yet.
+- **A planet's look** is a `PlanetLook` (sleepy, awake, beaming pictures) in `MapScreen`'s list; a new
+  colour is a new entry. Its ball is 60% of the picture, 5% above its middle.
+- **The PlayMode tests keep and restore** the Editor's `map-progress.json` as they do
+  `lesson-run.json` (`MapScene.KeepFiles`).
+
+### Decisions and deviations
+
+In Progress → "Decisions" and "Fresh-eyes review": the parent button and the bottom bar are empty
+places, not buttons that do nothing (`AGENTS.md`: nothing leads nowhere); Go's word is two
+serialized strings, not a Localization table yet; the map speaks the next lesson's language; the
+stops are at least 64 dp apart, so the map scrolls more than the design's one screen; a planet leads
+its stops so the rocket never hides a letter; `look`'s whole pictures replace the parts (the lead,
+2026-11-25); a damaged or missing `map-progress` keeps her place from `lesson-run.json`; the dated
+broken copies are built here (the lead), their cleanup is `progress-review`'s.
+
+### Follow-ups
+
+- **`progress-review`:** replace `MapProgress` behind `IDoneLessons`, migrate `map-progress.json`
+  (keep its dated broken copies' rule; build their cleanup); the map's stops follow the mix it reads;
+  the known limits in Progress (a migration from an unreadable `lesson-run.json`; Go wrapping to the
+  first lesson before the map).
+- **`rewards`:** the bottom bar's band and buttons in its places (sky book with the star count,
+  sticker book; the design's third, trails), the stars of a finished lesson flying to the map, the
+  rocket's trail along the path (`RocketView`).
+- **`parent-area`:** the parent button in `ParentPlace`; move "Hai!" / "Go!" into a string table
+  with the app's language switch.
+- **`profiles`:** the avatar in `AvatarPlace`; `MapRunner` and `LessonRunner` still open
+  `BuiltInProfiles.FirstChild`.
+- **`sound-feel`:** the rocket's take-off and the trip's whoosh; music ducking on the map.
+- **`look` (a chore):** delete the old planet parts and rocket in `Art/Map/` (`planet-<colour>`,
+  `-face-*`, `-ring-*`, `planet-shadow`, `planet-sleepy-z`, `rocket`, `rocket-flame-*`) and their
+  drawing code: the map no longer uses them. The Earth's picture shows a faint square edge on the
+  trip.
+- **The phone size:** Go covers the path's middle on 2400 × 1080 (it works; a later layout pass).
+- **The human:** hear the new lines; the 0.10.0 rows in `docs/manual-testing.md`.

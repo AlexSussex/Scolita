@@ -62,7 +62,7 @@ Each brief file therefore reads, top to bottom:
 | 7 | `feature/handwriting` | Done 2026-11-25, released as 0.8.0 | [done/handwriting.md](done/handwriting.md) |
 | 8 | `feature/activities-letters` | Done 2026-11-24, released as 0.5.0 | [done/activities-letters.md](done/activities-letters.md) |
 | 9 | `feature/activities-words` | Done 2026-11-24, released as 0.6.0 | [done/activities-words.md](done/activities-words.md) |
-| 10 | `feature/galaxy-map` | In progress (galaxy-map) | [pending/galaxy-map.md](pending/galaxy-map.md) |
+| 10 | `feature/galaxy-map` | Done 2026-11-25, released as 0.10.0 | [done/galaxy-map.md](done/galaxy-map.md) |
 | 11 | `feature/progress-review` | Ready after 7, 9 and 10 | [pending/progress-review.md](pending/progress-review.md) |
 | 12 | `feature/rewards` | Ready after 10 | [pending/rewards.md](pending/rewards.md) |
 | 13 | `feature/parent-area` | Ready after 11 (decision D8) | [pending/parent-area.md](pending/parent-area.md) |
@@ -99,12 +99,11 @@ progress visible"). Empty when nobody is at work.
 
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
-| galaxy-map | [galaxy-map](pending/galaxy-map.md) | New: `Scripts/Core/Map`, `Scripts/UI/Map`, `Scripts/Game/Map`, `Tests/EditMode/Map`, `Tests/PlayMode` (map tests), map prefabs under `Prefabs/Map/`, the `map-progress` save; changes: `Prefabs/UI/MapScreen.prefab`, `Scenes/Map.unity`, `Scenes/Lesson.unity` (only if the return needs it), `content/voice-lines.csv` (new rows at the end) and its imported assets, `Localization/` (new keys at the end) | emulator-5602 | 2026-11-25 | Slices pushed (content, core, game, ui), reviewed by a second agent; close-out (0.10.0) next |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `look` (the look, release 0.9.0)._
+_Last updated 2026-11-25 by agent `galaxy-map` (the galaxy map, release 0.10.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -184,8 +183,26 @@ _Update this section whenever a slice is pushed or a brief is finished._
   guide's full body is a ChatGPT round for the human; `galaxy-map` switches to
   `Planets/` and `Trip/`, then the old parts in `Map/` go
   (`tasks/done/look.md`, follow-ups).
+- **Done 2026-11-25:** `galaxy-map`, release 0.10.0. The app opens on the
+  map: a planet per unit (sleepy, awake, beaming; its letters on tiles), a stop
+  per lesson on the rainbow path, the rocket on the next one and **Hai!**;
+  finishing a planet plays the trip past the moon and the Earth (a tap skips
+  it); the guide greets in the next lesson's language; "not yet" for a planet
+  or a stop ahead. `map-progress.json` per profile (a profile from before the
+  map keeps its place); every damaged save is kept, dated. The map now uses
+  `Art/Planets/` and `Art/Trip/`: the old parts in `Art/Map/` can go.
 
 ### Open follow-ups across briefs
+
+- **From `galaxy-map`** (full list in its completion record):
+  - `progress-review`: put `LearnerProgress` behind `IDoneLessons`, migrate
+    `map-progress.json` (keep `rocketStop`'s role: it decides the trip), clean up
+    the dated broken copies.
+  - `rewards`: the bottom bar's band and buttons go in `SkyBookPlace` and
+    `StickerBookPlace`; the rocket's trail along the path.
+  - `parent-area`: the parent button in `ParentPlace`; "Hai!" / "Go!" into a
+    string table. `profiles`: the avatar in `AvatarPlace`.
+  - `look` (a chore): delete the old planet parts and rocket in `Art/Map/`.
 
 - **From `content-letters-1`** (full list in its completion record):
   - The human: tick the review table (the 24 shapes, every word, picture and line, and its questions); record

@@ -18,6 +18,47 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.10.0 (2026-11-25)
+
+The galaxy map. The app opens on the purple sky with the rainbow path and the planets of the
+lessons: the planet she is on is awake with its letters below it, the ones she has finished beam,
+the ones ahead sleep. The rocket stands on her next lesson and the big **Hai!** opens it. When she
+finishes a planet, the rocket flies to the next one past the moon and the Earth.
+
+- **For the child:**
+  - **The map:** a planet per group of letters (planets 1–3 now), each with its letters on tiles
+    (the letter being learned ringed in yellow, those to come faint), and a stop on the path for
+    every lesson: a green tick when done, the big yellow dot under the rocket, faint ones ahead.
+    The map slides sideways with a finger.
+  - **Hai!** opens the lesson the rocket stands on (the one she left half-way resumes where she
+    was); finishing it brings her back with the rocket one stop further.
+  - **The trip:** after a planet's last lesson the rocket flies past the moon and the Earth to the
+    next planet (4 seconds; a tap skips it), and the unicorn says „Am aterizat pe o planetă
+    nouă!”.
+  - **The unicorn greets her** with the next lesson's letter, in that lesson's language: „Bună!
+    Azi învățăm litera m.” or "Hello! Today we are learning the letter m." Tapping it says the
+    line again.
+  - **Not yet, kindly:** a sleeping planet or a stop ahead wobbles and says it isn't time yet;
+    it never opens. A finished stop opens again to play it once more.
+- **For the parent:** nothing to set. Where she is on the map is kept per profile; a tablet that
+  played an earlier version starts the map where she was.
+
+### Technical notes
+
+- **A new save file:** `profiles/<id>/map-progress.json` (version 1): the lessons done and the stop
+  where the map last showed the rocket. With no file (an earlier version) or a damaged one, the
+  lessons before the one in `lesson-run.json` count as done. Unknown lesson ids are kept.
+- **Damaged saves are kept, dated** (the human's rule, Q1): `<name>.broken-<yyyyMMdd-HHmmss>.json`,
+  never replacing an older copy, for every save file. Removing old copies comes with
+  `progress-review`.
+- **Content:** 4 voice lines (`ro-`/`en-line-stop-ahead`, `ro-`/`en-line-all-planets`); the map also
+  says the existing `today-letter`, `hello`, `planet-landed` and `planet-asleep`. No clip yet: the
+  tablet's voice says them.
+- **Art:** `look`'s whole planet pictures (`Art/Planets/`) and rocket (`Art/Trip/`).
+- **Room kept, nothing to tap yet:** the avatar (`profiles`), the parent button (`parent-area`)
+  and the bottom bar's sky book and sticker book (`rewards`) have empty places on the map.
+- The brief: [`tasks/done/galaxy-map.md`](tasks/done/galaxy-map.md).
+
 ## 0.9.0 (2026-11-25)
 
 The look. The art her parents chose: ChatGPT's purple sky, planets with faces, the rocket, the

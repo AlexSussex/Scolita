@@ -39,6 +39,25 @@ test.
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.10.0 (2026-11-25): the galaxy map
+
+On the tablet, with the 0.10.0 APK (the debug one is `local/apks/Scolita-0.10.0-debug.apk`). The lines are
+the tablet's voice (or the bubble only) until they are recorded.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.10.0-1 | The map | Open the app | The purple sky, the rainbow path, the planet she is on awake (with its ring) and its letters on tiles below it (the letter being learned ringed in yellow), the rocket standing on the big yellow stop, **Hai!** at the bottom; the unicorn says „Bună! Azi învățăm litera …” with the letter's sound (or „Bună! Hai să zburăm!” before a words lesson) | |
+| 0.10.0-2 | The map | Slide the map left and right with a finger | It follows the finger and glides; the unicorn and **Hai!** stay put; the next planet sleeps (its eyes closed, "z z", dimmed) | |
+| 0.10.0-3 | The map | Tap **Hai!**, play the lesson to its end, tap **Mai departe** | The lesson the rocket stood on opens; back on the map its stop has a green tick and the rocket flies one stop along the path | |
+| 0.10.0-4 | The map, before an English lesson | Look and listen | "Hello! Today we are learning the letter …" in English, with the blue ringed-planet badge in the bubble | |
+| 0.10.0-5 | The map | Tap a sleeping planet, then a faint stop ahead of the rocket | Each wobbles; „Planeta aceasta încă doarme. Ajungem și acolo curând.” and „Aici ajungem mai târziu. Hai să mergem întâi la rachetă.”; nothing opens | |
+| 0.10.0-6 | The map | Tap a stop with a green tick | That lesson opens from its start | |
+| 0.10.0-7 | Planet 1's last lesson (the party) | Finish it and tap **Mai departe** | The trip: the rocket flies past the moon and the Earth to the pink planet (about 4 seconds); then planet 1 beams (happy face, sparkle), planet 2 is awake, and „Am aterizat pe o planetă nouă! Bună! Azi învățăm litera s.” | |
+| 0.10.0-8 | The trip | Tap anywhere during it | It stops at once and the rocket has landed on planet 2 | |
+| 0.10.0-9 | The map | Tap the unicorn | It says its line again | |
+| 0.10.0-10 | The map, after updating from 0.9.0 | Open the app (don't clear its data) | The lessons she played before are ticked and the rocket stands on her next one | |
+| 0.10.0-11 | The words | Read the new lines | „Aici ajungem mai târziu. Hai să mergem întâi la rachetă.” and „Bravo! Ai fost pe toate planetele. Hai să le vizităm din nou!” (when every planet is done): right and natural? | |
+
 ### 0.9.0 (2026-11-25): the look
 
 On the tablet, with the 0.9.0 APK (the debug one is `local/apks/Scolita-0.9.0-debug.apk`). The
