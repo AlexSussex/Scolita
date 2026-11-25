@@ -16,12 +16,12 @@ namespace Scolita.Core.Lessons
 
         /// <summary>
         /// Creates the playable steps of <paramref name="kindsWithViews"/> (the kinds the scene has a view for)
-        /// in <paramref name="curriculum"/>. Called by the Lesson scene's composition root and the tests.
+        /// in <paramref name="curriculum"/>; throws an <see cref="System.ArgumentNullException"/> for none. Called by the Lesson scene's composition root and the tests.
         /// </summary>
         public PlayableSteps(IEnumerable<ActivityKind> kindsWithViews, Curriculum curriculum)
         {
             kinds = new HashSet<ActivityKind>(kindsWithViews);
-            this.curriculum = curriculum;
+            this.curriculum = curriculum ?? throw new System.ArgumentNullException(nameof(curriculum));
         }
 
         /// <summary>Whether <paramref name="step"/> can be played; called by <see cref="LessonPlan"/> and the tests.</summary>

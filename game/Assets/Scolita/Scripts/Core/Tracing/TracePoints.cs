@@ -39,7 +39,7 @@ namespace Scolita.Core.Tracing
 
         /// <summary>
         /// Adds the point (<paramref name="x"/>, <paramref name="y"/>); false when it was dropped (too close
-        /// to the last one, or the buffer full). Called by the tracing view's finger and the tests.
+        /// to the last one, or the buffer full). Called by the tracing view (<c>TraceLetterView</c>) and the tests.
         /// </summary>
         public bool Add(float x, float y)
         {
@@ -67,7 +67,7 @@ namespace Scolita.Core.Tracing
             return true;
         }
 
-        /// <summary>Forgets every point, for the next stroke; called by the tracing view's finger and the tests.</summary>
+        /// <summary>Forgets every point, for the next stroke; called by the tracing view (<c>TraceLetterView</c>) and the tests.</summary>
         public void Clear()
         {
             Count = 0;

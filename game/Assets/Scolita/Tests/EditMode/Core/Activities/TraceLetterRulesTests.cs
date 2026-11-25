@@ -44,6 +44,7 @@ namespace Scolita.Tests.EditMode.Core.Activities
             Assert.That(rules.Judge(Good(rules)), Is.EqualTo(AnswerVerdict.Right));
             Assert.That(SequenceLines.Of(rules.Response), Is.EqualTo(new[] { "ro-line-trace-done", "ro-line-trace-round-3" }));
             Assert.That(state.Guide, Is.EqualTo(TraceGuide.StartDotOnly));
+            Assert.That(SequenceLines.Of(rules.Prompt), Is.EqualTo(new[] { "ro-line-trace-hint-dot" }));
             Assert.That(rules.Judge(Good(rules)), Is.EqualTo(AnswerVerdict.Right));
             Assert.That(rules.Judge(Good(rules)), Is.EqualTo(AnswerVerdict.Done));
             Assert.That(SequenceLines.Of(rules.Response), Is.EqualTo(new[] { "ro-line-trace-done" }));
@@ -124,11 +125,11 @@ namespace Scolita.Tests.EditMode.Core.Activities
         }
 
         /// <summary>
-        /// Tests the lesson run's one ladder on a <c>TraceLetter</c> step: a backwards stroke gets a hint, a
+        /// Tests <see cref="TraceLetterRules.Judge"/> with the lesson run's one ladder on a <c>TraceLetter</c> step: a backwards stroke gets a hint, a
         /// second miss shows the answer, and the stroke traced then is practice.
         /// </summary>
         [Test]
-        public void TestLessonRun_TheLadder()
+        public void TestJudge_TheLessonRunsLadder()
         {
             Curriculum curriculum = ContentCsvs.Read(ContentCsvs.Valid());
             Lesson lesson = RealContent.Lesson(curriculum, "ro-a");

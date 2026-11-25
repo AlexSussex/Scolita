@@ -71,7 +71,7 @@ namespace Scolita.Tests.EditMode.Core.Content
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "ro-line-trace-next-2,",
-                "ro-line-trace-next-2,ro,line,Foarte bine! Acum mergi la punctul cu numărul doi.,,,yes,");
+                "ro-line-trace-next-2,ro,line,Foarte bine! Acum mergi la punctul cu num\u0103rul doi.,,,yes,");
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 

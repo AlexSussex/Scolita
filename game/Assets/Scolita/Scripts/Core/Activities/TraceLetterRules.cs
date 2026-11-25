@@ -30,6 +30,7 @@ namespace Scolita.Core.Activities
         private readonly VoiceSequence hintStay;
         private readonly VoiceSequence hintSlow;
         private readonly VoiceSequence shown;
+        private readonly VoiceSequence startPrompt;
 
         /// <summary>
         /// Creates the rules for tracing <paramref name="shape"/>, a shape of <paramref name="letter"/>, in
@@ -50,7 +51,7 @@ namespace Scolita.Core.Activities
             VoiceFill sound = VoiceFill.OfLine(letter.SoundLine(language), choice.Text);
             Instruction = VoiceSequence.Of(Line(shape.Form == LetterForm.Print ? "trace-print" : "trace-hand"))
                 .Then(Line("trace-start"));
-            Prompt = VoiceSequence.Of(Line("trace-start"));
+            startPrompt = VoiceSequence.Of(Line("trace-start"));
             nextStroke = new VoiceSequence[shape.Strokes.Count];
             for (int stroke = 1; stroke < nextStroke.Length; stroke++)
             {
@@ -72,7 +73,7 @@ namespace Scolita.Core.Activities
             shown = VoiceSequence.Of(Line("trace-hint-watch"));
             List<VoiceSequence> lines = new List<VoiceSequence>
             {
-                Instruction, Prompt, finished, hintDot, hintArrow, hintStay, hintSlow, shown
+                Instruction, startPrompt, finished, hintDot, hintArrow, hintStay, hintSlow, shown
             };
             for (int stroke = 1; stroke < nextStroke.Length; stroke++)
             {
@@ -99,8 +100,11 @@ namespace Scolita.Core.Activities
         /// <inheritdoc/>
         public VoiceSequence Instruction { get; }
 
-        /// <inheritdoc/>
-        public VoiceSequence Prompt { get; }
+        /// <summary>
+        /// What is said again when she asks: "start at the dot and follow the arrow" while the arrow is shown (rounds
+        /// 1 and 2), "start at the green dot" in round 3, where only the dot is.
+        /// </summary>
+        public VoiceSequence Prompt => state.Guide == TraceGuide.StartDotOnly ? hintDot : startPrompt;
 
         /// <inheritdoc/>
         public VoiceSequence Response { get; private set; }

@@ -137,6 +137,28 @@ namespace Scolita.Tests.EditMode.Tracing
             Assert.That(StrokeCheck.Check(path, sloppy, tuning.ForRound(2)).Verdict, Is.Not.EqualTo(StrokeVerdict.Good));
         }
 
+        /// <summary>
+        /// Tests that <see cref="StrokeCheck.Check"/> counts only what she drew on a short bar: begun half-way along
+        /// (still within the start radius) it is <see cref="StrokeVerdict.TooShort"/>; drawn whole but lifted a little
+        /// before its end it is <see cref="StrokeVerdict.Good"/>, even in round 3; drawn from its end it is
+        /// <see cref="StrokeVerdict.WrongDirection"/>.
+        /// </summary>
+        [Test]
+        public void TestCheck_AShortBar()
+        {
+            StrokePath bar = TestStrokes.Path(0f, 100f, 50f, 100f);
+            StrokePath tick = TestStrokes.Path(0f, 100f, 20f, 100f);
+
+            Assert.That(StrokeCheck.Check(bar, TestStrokes.Along(bar, 0.5f, 1f, 4f, 0f), Tight()).Verdict,
+                Is.EqualTo(StrokeVerdict.TooShort));
+            Assert.That(StrokeCheck.Check(bar, TestStrokes.Along(bar, 0f, 0.8f, 4f, 0f), Tight()).Verdict,
+                Is.EqualTo(StrokeVerdict.Good));
+            Assert.That(StrokeCheck.Check(bar, TestStrokes.Along(bar, 1f, 0f, 4f, 0f), Tight()).Verdict,
+                Is.EqualTo(StrokeVerdict.WrongDirection));
+            Assert.That(StrokeCheck.Check(tick, TestStrokes.Along(tick, 1f, 0f, 2f, 0f), Wide()).Verdict,
+                Is.EqualTo(StrokeVerdict.WrongDirection));
+        }
+
         /// <summary>Tests that <see cref="StrokeCheck.Check"/> allocates nothing, so judging a stroke never makes garbage.</summary>
         [Test]
         public void TestCheck_AllocatesNothing()

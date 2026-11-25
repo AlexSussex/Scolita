@@ -91,7 +91,7 @@ namespace Scolita.Tests.EditMode.Tracing
         {
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             csvs[ContentCsvs.ShapeFileName] = csvs[ContentCsvs.ShapeFileName].Replace("\"status\": \"checked\",",
-                "\"status\": \"checked\", \"source\": \"ş\",");
+                "\"status\": \"checked\", \"source\": \"\u015F\",");
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 

@@ -20,7 +20,9 @@ namespace Scolita.Core.Tracing
         /// when touched near it; otherwise a tap is <see cref="StrokeVerdict.TooShort"/>; a line from the start
         /// dot, along the stroke, staying on it and covering enough of it is <see cref="StrokeVerdict.Good"/>;
         /// one begun at the stroke's end (for a round stroke, also its start) that covers enough of it backwards
-        /// is <see cref="StrokeVerdict.WrongDirection"/>; one
+        /// is <see cref="StrokeVerdict.WrongDirection"/>. "Enough" is the part she drew herself, from where her
+        /// first point reached the stroke, and it is the coverage share of the stroke or all of it but half the
+        /// start radius at its end, whichever is less (so a short bar isn't stricter than a long stroke). One
         /// begun away from the start dot is <see cref="StrokeVerdict.StartedElsewhere"/>; one that strays from
         /// the stroke for more than the corridor's width is <see cref="StrokeVerdict.LeftThePath"/>; and the
         /// rest (begun right, stayed on, stopped early) is <see cref="StrokeVerdict.TooShort"/>. Called by
@@ -46,16 +48,17 @@ namespace Scolita.Core.Tracing
                 return new StrokeResult(StrokeVerdict.TooShort, 0f);
             }
 
+            float enough = EnoughOf(path, tolerance);
             float forwards = Followed(path, points, tolerance.Corridor, true, out float offLength);
             bool stayedOn = offLength <= tolerance.Corridor;
-            if (forwards >= tolerance.Coverage && startedRight && stayedOn)
+            if (forwards >= enough && startedRight && stayedOn)
             {
                 return new StrokeResult(StrokeVerdict.Good, forwards);
             }
 
             bool startedAtTheEnd = DistanceSquared(points.X(0), points.Y(0), path.End) <= tolerance.StartRadius * tolerance.StartRadius;
             float backwards = startedAtTheEnd ? Followed(path, points, tolerance.Corridor, false, out _) : 0f;
-            if (backwards >= tolerance.Coverage && backwards > forwards)
+            if (backwards >= enough && backwards > forwards)
             {
                 return new StrokeResult(StrokeVerdict.WrongDirection, forwards);
             }
@@ -75,6 +78,7 @@ namespace Scolita.Core.Tracing
             float corridorSquared = corridor * corridor;
             int behind = (int)Math.Ceiling(2f * corridor / step);
             int reached = 0;
+            int firstReached = 0;
             offLength = 0f;
             for (int point = 0; point < points.Count; point++)
             {
@@ -88,14 +92,29 @@ namespace Scolita.Core.Tracing
                     reached = nearest;
                 }
 
+                if (point == 0)
+                {
+                    firstReached = reached;
+                }
+
                 if (nearest < 0 && Nearest(path, x, y, Math.Max(0, reached - behind), reached, forwards, corridorSquared) < 0)
                 {
                     offLength += moved;
                 }
             }
 
-            float distance = forwards ? path.DistanceAt(reached) : path.Length - path.DistanceAt(last - reached);
-            return distance / path.Length;
+            return (Along(path, reached, forwards) - Along(path, firstReached, forwards)) / path.Length;
+        }
+
+        private static float Along(StrokePath path, int reached, bool forwards)
+        {
+            return forwards ? path.DistanceAt(reached) : path.Length - path.DistanceAt(path.Count - 1 - reached);
+        }
+
+        private static float EnoughOf(StrokePath path, in StrokeTolerance tolerance)
+        {
+            float endAllowance = path.Length - tolerance.StartRadius * 0.5f;
+            return Math.Max(0.5f, Math.Min(tolerance.Coverage, endAllowance / path.Length));
         }
 
         private static int Nearest(StrokePath path, float x, float y, int from, int to, bool forwards, float corridorSquared)

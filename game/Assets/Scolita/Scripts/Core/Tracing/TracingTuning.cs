@@ -15,21 +15,23 @@ namespace Scolita.Core.Tracing
 
         /// <summary>
         /// Creates the numbers of the three rounds; throws an <see cref="ArgumentOutOfRangeException"/> when a
-        /// later round is more forgiving than an earlier one. Called by the learning rules asset and the tests.
+        /// later round is more forgiving than an earlier one (a wider corridor or start radius, a smaller coverage). Called by the learning rules asset and the tests.
         /// </summary>
         public TracingTuning(StrokeTolerance dotted, StrokeTolerance faint, StrokeTolerance startDotOnly)
         {
-            if (faint.Corridor > dotted.Corridor || startDotOnly.Corridor > faint.Corridor)
-            {
-                throw new ArgumentOutOfRangeException(nameof(faint), "A later round's corridor is never wider than an earlier one's.");
-            }
-
-            if (faint.Coverage < dotted.Coverage || startDotOnly.Coverage < faint.Coverage)
-            {
-                throw new ArgumentOutOfRangeException(nameof(faint), "A later round never asks for less of the stroke.");
-            }
+            CheckOrder(dotted, faint, nameof(faint));
+            CheckOrder(faint, startDotOnly, nameof(startDotOnly));
 
             byRound = new[] { dotted, faint, startDotOnly };
+        }
+
+        private static void CheckOrder(in StrokeTolerance earlier, in StrokeTolerance later, string name)
+        {
+            if (later.Corridor > earlier.Corridor || later.StartRadius > earlier.StartRadius || later.Coverage < earlier.Coverage)
+            {
+                throw new ArgumentOutOfRangeException(name,
+                    "A later round is never more forgiving than an earlier one (its corridor, start radius and coverage).");
+            }
         }
 
         /// <summary>

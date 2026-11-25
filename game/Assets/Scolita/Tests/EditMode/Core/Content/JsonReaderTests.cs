@@ -13,7 +13,7 @@ namespace Scolita.Tests.EditMode.Core.Content
         public void TestRead_EveryKindOfValue()
         {
             ContentProblems problems = new ContentProblems();
-            string text = "﻿{\n  \"a\": [1, -2.5, 3e2],\n  \"b\": \"x\\\"y\\u0103\",\n  \"c\": true,\n  \"d\": null\n}";
+            string text = "\uFEFF{\n  \"a\": [1, -2.5, 3e2],\n  \"b\": \"x\\\"y\\u0103\",\n  \"c\": true,\n  \"d\": null\n}";
 
             JsonValue root = JsonReader.Read("test.json", text, problems);
 
@@ -24,7 +24,7 @@ namespace Scolita.Tests.EditMode.Core.Content
             Assert.That(numbers.Line, Is.EqualTo(2));
             Assert.That(numbers.Items.Select(item => item.Number), Is.EqualTo(new[] { 1.0, -2.5, 300.0 }));
             Assert.That(root.TryGet("b", out JsonValue text2), Is.True);
-            Assert.That(text2.Text, Is.EqualTo("x\"yă"));
+            Assert.That(text2.Text, Is.EqualTo("x\"y\u0103"));
             Assert.That(root.TryGet("c", out JsonValue yes) && yes.Boolean, Is.True);
             Assert.That(root.TryGet("d", out JsonValue none) && none.Kind == JsonKind.Null, Is.True);
             Assert.That(root.TryGet("e", out _), Is.False);

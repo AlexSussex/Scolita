@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Scolita.Core.Content;
 using Scolita.Core.Content.Json;
@@ -97,8 +98,8 @@ namespace Scolita.Core.Tracing
 
             if (slant.Kind != JsonKind.Number || Math.Abs(slant.Number) > SteepestSlant)
             {
-                problems.Error(new ContentSource(fileName, slant.Line), "its \"slant\" is a number from -" + SteepestSlant
-                    + " to " + SteepestSlant + " (0 for print, 0.2 for handwritten letters).");
+                problems.Error(new ContentSource(fileName, slant.Line), "its \"slant\" is a number from -" + SteepestSlant.ToString(CultureInfo.InvariantCulture)
+                    + " to " + SteepestSlant.ToString(CultureInfo.InvariantCulture) + " (0 for print, 0.2 for handwritten letters).");
                 return 0f;
             }
 
@@ -214,7 +215,7 @@ namespace Scolita.Core.Tracing
 
                 if (IsFarOff(point))
                 {
-                    problems.Error(new ContentSource(fileName, pointValue.Line), "the point [" + point.X + ", " + point.Y
+                    problems.Error(new ContentSource(fileName, pointValue.Line), "the point [" + point.X.ToString(CultureInfo.InvariantCulture) + ", " + point.Y.ToString(CultureInfo.InvariantCulture)
                         + "] is far off the writing lines (the top line is y " + WritingLines.Top + ", the line below is y "
                         + WritingLines.Below + ").");
                     return null;

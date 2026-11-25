@@ -13,7 +13,7 @@ namespace Scolita.Core.Content.Json
     /// </summary>
     public sealed class JsonReader
     {
-        private const char ByteOrderMark = '﻿';
+        private const char ByteOrderMark = '\uFEFF';
         private const int DeepestNesting = 64;
 
         private readonly string text;
