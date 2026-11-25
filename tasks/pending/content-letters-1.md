@@ -1,9 +1,6 @@
 # Task: feature/content-letters-1
 
-> **Status: After `curriculum-research` (v1 agreed) and `content-model`,
-> in parallel with the code briefs** (decision D4: whose voices). Each
-> activity's lessons can only be played once its kind exists; the content
-> can be written before.
+> **Status: In progress (content-letters-1)**, since 2026-11-25.
 
 Read `AGENTS.md` first (especially "Learning", "Audio", "The human's next
 steps" → the child's name), `docs/curriculum.md` v1, and the completion
