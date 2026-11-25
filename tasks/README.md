@@ -20,9 +20,10 @@ straight to `main`, and several agents may work at once. The rules are in
 2. **Claim it** in "In flight" below with a `docs: claim <feature>` commit
    pushed to `main` (`AGENTS.md`, "Claiming work").
 3. **Build it** in your own worktree, Core commits first, then the Unity
-   side, then content, each tested before it's pushed to `main`
-   (`AGENTS.md`, "Testing before a push"). Keep the brief's `## Progress`
-   section current with every push.
+   side, then content, tested as each change calls for, and fully once
+   over everything before the close-out (`AGENTS.md`, "Testing fits the
+   change" and "Testing before a push"). Keep the brief's `## Progress`
+   section current with every push, its "Still to test" list included.
 4. **Write the test steps.** Append a `## How to test locally` section to
    the brief (one `###` subsection per slice). The full rule is in
    `AGENTS.md` under "Local test instructions".

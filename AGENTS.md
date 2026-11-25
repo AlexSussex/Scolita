@@ -159,13 +159,20 @@ There are no feature branches on GitHub.
 - **Core first, then the Unity side.** Push the `core:` commits (with their
   tests) before the `game:` / `ui:` commits that use them, so `main` always
   builds and works. Content follows the code that reads it.
-- **Every push to `main` is tested first by the agent pushing it**: the
-  automated tests, the Android build, and the brief's "How to test locally"
-  steps in the Editor and on the emulator (see "Testing before a push").
-  Nothing untested reaches `main`.
-- **`main` is always playable.** Each commit compiles, passes the tests and
-  starts the app. Don't push a planet, a button or a lesson that leads
-  nowhere; if a feature takes several commits, push its entry point last.
+- **Testing fits the change** (the human, 2026-11-25). Not every commit or
+  push needs its own test run. How much a change is tested, and when,
+  depends on what it does, its size and complexity, which screens or parts
+  of the app it affects, and whether it needs testing urgently (another
+  agent builds on it, or the human's tablet waits for it). Several commits
+  can be pushed before they are tested, as long as nothing is forgotten:
+  the brief's Progress keeps a **"Still to test"** list of what each
+  untested push affects, and before the close-out everything the brief's
+  commits affected is fully tested once, together (the full run in
+  "Testing before a push"), by the agent holding the brief.
+- **`main` stays usable.** Don't push a planet, a button or a lesson that
+  leads nowhere; if a feature takes several commits, push its entry point
+  last. While other agents work in parallel, prefer pushes that compile,
+  so their rebases keep building.
 - **Never force-push, and never rewrite `main`'s history.**
 - Never commit secrets, keystores, keystore passwords or `.env` files.
 
@@ -315,12 +322,16 @@ the range it is in:
   pointer in your "In flight" row: what is done and pushed (commit hashes),
   what is done but not pushed (worktree, uncommitted files), the exact next
   step, the commands to open, test and build, and any open question.
-- **Never leave `main` half-done:** an untested slice stays unpushed, and
-  the handoff says so.
+- **Never lose track of what is untested:** the handoff lists the pushed
+  commits still to test (the "Still to test" list) and what is not pushed.
 
 ## Testing before a push
 
-The agent pushing is the tester. Before each push of anything but docs:
+The agent pushing is the tester. The steps below are the **full test run**:
+every brief runs it once over everything its commits changed, after its
+last rebase and before its close-out. Before an earlier push, run the parts
+the change calls for (see "Testing fits the change" in "Workflow"), and add
+what you didn't run to the brief's "Still to test" list.
 
 1. **Automated, in batch mode** (close your Editor first), from the
    worktree root, with `UNITY` set to
@@ -544,7 +555,9 @@ working in their own worktrees edit it by its absolute path.
 - 0 B of GC allocation per frame while an activity runs, measured when the
   slice touches activity views, effects or the map.
 - Every new line the app says was heard in both languages.
-- Rebased onto the latest `main` and retested before the push.
+- Rebased onto the latest `main`; the full test run done once over
+  everything the brief's commits affected, after the last rebase, and the
+  "Still to test" list empty before the close-out.
 - The brief's Progress section and your "In flight" row are up to date.
 - Changed screens follow "Usability (a child is the player)"; changed
   lessons and activities follow "Learning (a child is the learner)".
@@ -577,7 +590,8 @@ working in their own worktrees edit it by its absolute path.
 - Change the curriculum's order or the teaching approach in
   `docs/curriculum.md` (the human agrees those).
 - Commit any secret, keystore or password.
-- Force-push, rewrite `main`'s history, or push without the full test run.
+- Force-push, rewrite `main`'s history, or close out a brief without the
+  full test run over everything it changed.
 - Push to a branch other than `main` on GitHub (the exception is a version
   tag on a close-out commit).
 - Upgrade Unity or a package version (that is a brief of its own, with the
