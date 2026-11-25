@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scolita/Scenes/Parent.unity
     guid: c5c835e2562198e499166d0b26edf09c
+  - enabled: 1
+    path: Assets/Scolita/Scenes/Profiles.unity
+    guid: ee0b4c214ee177b4ba386e593909f872
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 6cb21f19195777648a0b3588e58c333e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

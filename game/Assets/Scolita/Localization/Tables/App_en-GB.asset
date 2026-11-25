@@ -253,6 +253,189 @@ MonoBehaviour:
     m_Localized: The progress could not all be deleted. Try again.
     m_Metadata:
       m_Items: []
+  - m_Id: 38665817477120
+    m_Localized: Test profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860672
+    m_Localized: No name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860673
+    m_Localized: Child
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860674
+    m_Localized: Not shown to the children
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860675
+    m_Localized: 'Letters learned: Romanian {0}, English {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860676
+    m_Localized: Not played yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860677
+    m_Localized: Played today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860678
+    m_Localized: Played yesterday
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860679
+    m_Localized: Last played on {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860680
+    m_Localized: Profiles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860681
+    m_Localized: The names and pictures stay on the tablet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860682
+    m_Localized: Who has a profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860683
+    m_Localized: Add a child
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860684
+    m_Localized: Play as the tester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860685
+    m_Localized: Delete the test progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860686
+    m_Localized: Make a test profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860688
+    m_Localized: Change the profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860689
+    m_Localized: A new child
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860690
+    m_Localized: The name (at most {0} characters)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860691
+    m_Localized: Type the name here
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860692
+    m_Localized: A name has at most {0} characters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860693
+    m_Localized: A name has only letters, with one space or hyphen between its parts.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860694
+    m_Localized: The picture (the child chooses it)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860695
+    m_Localized: "Delete the profile\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860696
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860697
+    m_Localized: Add
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860698
+    m_Localized: The profile was saved.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860699
+    m_Localized: The profile could not be saved. Try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860700
+    m_Localized: The profile was deleted.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860701
+    m_Localized: The profile is off the list, but some of its files stayed on the
+      tablet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860702
+    m_Localized: The test progress was deleted.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860703
+    m_Localized: The test progress could not all be deleted. Try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860704
+    m_Localized: Delete the profile?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860705
+    m_Localized: This profile's letters learned, lessons done, place on the map,
+      stars, stickers and trails are lost. The other profiles stay as they are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860706
+    m_Localized: Are you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860707
+    m_Localized: The profile and everything in it are deleted from the tablet and
+      can't be brought back.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860708
+    m_Localized: Delete the profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860709
+    m_Localized: Change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860710
+    m_Localized: TEST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860711
+    m_Localized: Skip the step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860712
+    m_Localized: "{0} \xB7 every lesson opens"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860713
+    m_Localized: "{0} \xB7 {1} \xB7 step {2} ({3}) \xB7 {4}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860714
+    m_Localized: '{0}: recording'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860715
+    m_Localized: '{0}: the tablet''s voice'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860716
+    m_Localized: '{0}: the bubble only'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -255,6 +255,193 @@ MonoBehaviour:
       nou."
     m_Metadata:
       m_Items: []
+  - m_Id: 38665817477120
+    m_Localized: Profil de test
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860672
+    m_Localized: "F\u0103r\u0103 nume"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860673
+    m_Localized: Copil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860674
+    m_Localized: "Nu se arat\u0103 copiilor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860675
+    m_Localized: "Litere \xEEnv\u0103\u021Bate: rom\xE2n\u0103 {0}, englez\u0103
+      {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860676
+    m_Localized: "N-a jucat \xEEnc\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860677
+    m_Localized: A jucat azi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860678
+    m_Localized: A jucat ieri
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860679
+    m_Localized: "A jucat ultima dat\u0103 pe {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860680
+    m_Localized: Profiluri
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860681
+    m_Localized: "Numele \u0219i pozele r\u0103m\xE2n doar pe tablet\u0103."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860682
+    m_Localized: Cine are profil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860683
+    m_Localized: "Adaug\u0103 un copil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860684
+    m_Localized: "Joac\u0103 ca tester"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860685
+    m_Localized: "\u0218terge progresul de test"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860686
+    m_Localized: "F\u0103 un profil de test"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860688
+    m_Localized: "Schimb\u0103 profilul"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860689
+    m_Localized: Un copil nou
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860690
+    m_Localized: Numele (cel mult {0} de caractere)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860691
+    m_Localized: Scrie numele aici
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860692
+    m_Localized: Numele are cel mult {0} de caractere.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860693
+    m_Localized: "Numele are doar litere, cu un spa\u021Biu sau o cratim\u0103 \xEEntre
+      p\u0103r\u021Bi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860694
+    m_Localized: Poza (o alege copilul)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860695
+    m_Localized: "\u0218terge profilul\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860696
+    m_Localized: "Salveaz\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860697
+    m_Localized: "Adaug\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860698
+    m_Localized: Profilul a fost salvat.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860699
+    m_Localized: "Profilul nu a putut fi salvat. \xCEncearc\u0103 din nou."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860700
+    m_Localized: "Profilul a fost \u0219ters."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860701
+    m_Localized: "Profilul a fost scos din list\u0103, dar unele fi\u0219iere au
+      r\u0103mas pe tablet\u0103."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860702
+    m_Localized: "Progresul de test a fost \u0219ters."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860703
+    m_Localized: "Progresul de test nu a putut fi \u0219ters de tot. \xCEncearc\u0103
+      din nou."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860704
+    m_Localized: "\u0218tergi profilul?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860705
+    m_Localized: "Se pierd literele \xEEnv\u0103\u021Bate, lec\u021Biile f\u0103cute,
+      locul pe hart\u0103, stelele, ab\u021Bibildurile \u0219i d\xE2rele acestui
+      profil. Celelalte profiluri r\u0103m\xE2n a\u0219a cum sunt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860706
+    m_Localized: Sigur?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860707
+    m_Localized: "Profilul \u0219i tot ce are se \u0219terg de pe tablet\u0103 \u0219i
+      nu mai pot fi aduse \xEEnapoi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860708
+    m_Localized: "\u0218terge profilul"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860709
+    m_Localized: "Schimb\u0103"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860710
+    m_Localized: TEST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860711
+    m_Localized: Sari peste pas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860712
+    m_Localized: "{0} \xB7 toate lec\u021Biile se deschid"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860713
+    m_Localized: "{0} \xB7 {1} \xB7 pasul {2} ({3}) \xB7 {4}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860714
+    m_Localized: "{0}: \xEEnregistrare"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860715
+    m_Localized: '{0}: vocea tabletei'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860716
+    m_Localized: '{0}: doar balonul'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

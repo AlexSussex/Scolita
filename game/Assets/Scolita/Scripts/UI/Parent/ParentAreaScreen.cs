@@ -47,6 +47,10 @@ namespace Scolita.UI.Parent
         [SerializeField] private Button noButton;
         [SerializeField] private Button yesButton;
         [SerializeField] private TMP_Text yesLabel;
+        [SerializeField] private Button chosenButton;
+        [SerializeField] private Image chosenAvatar;
+        [SerializeField] private TMP_Text chosenName;
+        [SerializeField] private GameObject chosenTestBadge;
 
         private readonly List<LetterCellView> cells = new List<LetterCellView>();
         private readonly List<PillButton> limits = new List<PillButton>();
@@ -105,6 +109,12 @@ namespace Scolita.UI.Parent
         /// <summary>The reset question's words, its title then its body.</summary>
         public string QuestionText => questionTitle.text + " " + questionBody.text;
 
+        /// <summary>The chosen profile's button in the header (opens the profiles page).</summary>
+        public Button ChosenButton => chosenButton;
+
+        /// <summary>The chosen profile's name as the header shows it.</summary>
+        public string ChosenNameText => chosenName.text;
+
         /// <summary>Whether "the progress has been deleted" is shown.</summary>
         public bool IsResetDoneShown => resetDone.gameObject.activeSelf;
 
@@ -136,6 +146,15 @@ namespace Scolita.UI.Parent
             voiceSlider.SetValueWithoutNotify(settings.VoiceVolume);
             menusInEnglish.SetIsOnWithoutNotify(settings.AppLanguage == Language.English);
             drawing = false;
+        }
+
+        /// <inheritdoc/>
+        public override void ShowChosen(Sprite avatar, bool isTester, string name)
+        {
+            chosenAvatar.sprite = avatar;
+            chosenName.SetText(isTester ? AppLocale.Text("profile-tester-name")
+                : name.Length == 0 ? AppLocale.Text("profile-no-name") : name);
+            chosenTestBadge.SetActive(isTester);
         }
 
         /// <inheritdoc/>
@@ -176,6 +195,7 @@ namespace Scolita.UI.Parent
             resetButton.onClick.AddListener(() => input?.AskReset());
             noButton.onClick.AddListener(() => input?.AnswerReset(false));
             yesButton.onClick.AddListener(() => input?.AnswerReset(true));
+            chosenButton.onClick.AddListener(() => input?.OpenProfiles());
         }
 
         private void OnDestroy()

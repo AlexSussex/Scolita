@@ -16,7 +16,7 @@ namespace Scolita.UI.Map
     /// <summary>
     /// The galaxy map (design/screens.md, screen 1), drawn from Core's <see cref="MapRoute"/>: the rainbow path
     /// across a map that scrolls sideways by drag, a planet per unit with its letters, the stops on the path,
-    /// the rocket on the next stop, the mascot and its bubble, the big "Hai!" / "Go!" (its word from the string tables), and the parent button;
+    /// the rocket on the next stop, the mascot and its bubble, the big "Hai!" / "Go!" (its word from the string tables), the avatar button (to "Who's playing?") and the parent button;
     /// the trip plays over it. Its taps go to <see cref="IMapInput"/> (the Map scene's <c>MapRunner</c>). Everything is placed once
     /// when the map opens; nothing allocates per frame.
     /// </summary>
@@ -39,6 +39,8 @@ namespace Scolita.UI.Map
         [SerializeField] private TripView trip;
         [SerializeField] private RewardsView rewards;
         [SerializeField] private ParentGateView parentGate;
+        [SerializeField] private Button avatarButton;
+        [SerializeField] private Image avatarImage;
 
         private readonly List<PlanetView> planets = new List<PlanetView>();
         private readonly List<StopView> stops = new List<StopView>();
@@ -81,11 +83,21 @@ namespace Scolita.UI.Map
         /// <summary>The map's scrolling.</summary>
         public ScrollRect Scroll => scroll;
 
+        /// <summary>The avatar button beside "Școlița".</summary>
+        public Button AvatarButton => avatarButton;
+
         /// <inheritdoc/>
         public override void Bind(IMapInput mapInput)
         {
             input = mapInput;
             guide.Bind(mapInput);
+        }
+
+        /// <inheritdoc/>
+        public override void ShowProfile(Sprite avatar, bool shown)
+        {
+            avatarImage.sprite = avatar;
+            avatarButton.gameObject.SetActive(shown);
         }
 
         /// <inheritdoc/>
@@ -185,16 +197,24 @@ namespace Scolita.UI.Map
         private void Awake()
         {
             goButton.gameObject.SetActive(false);
+            avatarButton.gameObject.SetActive(false);
+        }
+
+        private void OnAvatarClicked()
+        {
+            input?.SwitchProfile();
         }
 
         private void OnEnable()
         {
             goButton.onClick.AddListener(OnGoClicked);
+            avatarButton.onClick.AddListener(OnAvatarClicked);
         }
 
         private void OnDisable()
         {
             goButton.onClick.RemoveListener(OnGoClicked);
+            avatarButton.onClick.RemoveListener(OnAvatarClicked);
         }
 
         private void OnGoClicked()

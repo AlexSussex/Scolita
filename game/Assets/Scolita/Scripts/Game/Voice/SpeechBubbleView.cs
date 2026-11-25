@@ -18,6 +18,9 @@ namespace Scolita.Game.Voice
         [SerializeField] private Sprite romanianBadge;
         [SerializeField] private Sprite englishBadge;
 
+        /// <summary>The words shown in the bubble now (the last line shown).</summary>
+        public string Words => label.text;
+
         /// <inheritdoc/>
         public void Show(string text, Language language)
         {

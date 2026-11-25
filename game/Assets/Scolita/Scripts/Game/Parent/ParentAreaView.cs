@@ -19,6 +19,12 @@ namespace Scolita.Game.Parent
         /// </summary>
         public abstract void Show(ParentReport report, ParentSettingsShown settings, string version);
 
+        /// <summary>
+        /// Shows, in the area's header, the chosen profile: <paramref name="avatar"/> and <paramref name="name"/> (empty for
+        /// none; "TEST" for the tester, <paramref name="isTester"/>). Called by <see cref="ParentRunner"/> with every redraw.
+        /// </summary>
+        public abstract void ShowChosen(Sprite avatar, bool isTester, string name);
+
         /// <summary>Shows <paramref name="question"/>, or hides the questions for <see cref="ResetQuestion.None"/>; called by <see cref="ParentRunner"/>.</summary>
         public abstract void AskReset(ResetQuestion question);
 

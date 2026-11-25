@@ -31,7 +31,8 @@ namespace Scolita.Game.Map
     /// or a stop she taps, written into <c>lesson-run.json</c> for the Lesson scene unless that already names
     /// it (so a lesson left half-way resumes at its step). It also counts her play time for the daily limit
     /// (<see cref="PlayClock"/>): at the limit the rocket rests and no lesson opens; and it runs the parent gate
-    /// (<see cref="ParentGateFlow"/>), which opens the Parent scene. Android Back closes the gate or an open book.
+    /// (<see cref="ParentGateFlow"/>), which opens the Parent scene; the avatar button opens "Who's playing?" (two or more
+    /// children, or the tester), and the tester's strip shows "TEST". Android Back closes the gate or an open book.
     /// </summary>
     public sealed class MapRunner : MonoBehaviour, IMapInput
     {
@@ -50,6 +51,7 @@ namespace Scolita.Game.Map
         [SerializeField] private RewardRulesAsset rewardRules;
         [SerializeField] private LearningRulesAsset learningRules;
         [SerializeField] private AvatarCatalog avatars;
+        [SerializeField] private TesterStripView testerStrip;
 
         private SaveStore profileFiles;
         private LearnerProgress progress;
@@ -158,6 +160,19 @@ namespace Scolita.Game.Map
             mapVoice.Say(resting ? lines.Resting : lines.Landed, null);
         }
 
+        /// <inheritdoc/>
+        public void SwitchProfile()
+        {
+            if (route == null || opening || screen.IsTripPlaying)
+            {
+                return;
+            }
+
+            opening = true;
+            playClock.Save();
+            SceneNavigator.Load(AppScene.Profiles);
+        }
+
         private void Start()
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
@@ -169,7 +184,8 @@ namespace Scolita.Game.Map
             voice.SetVolume(tablet.VoiceVolume);
             AppLocale.Select(appLanguage);
             ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
-            Profile profile = profiles.Load().ProfileToOpen;
+            ProfileList list = profiles.Load();
+            Profile profile = list.ProfileToOpen;
             profileFiles = profiles.FilesOf(profile);
             LearningSettingsData learning = profileFiles.Load(LearningSettingsData.FileName,
                 LearningSettingsData.CreateDefaults()).Data;
@@ -200,6 +216,9 @@ namespace Scolita.Game.Map
             voice.PartStarted += OnPartStarted;
             screen.Bind(this);
             screen.Show(route);
+            screen.ShowProfile(avatars.SpriteOf(profile.Avatar), list.StartsWithPicker || profile.ShowsTestInfo);
+            testerStrip.Show(profile.ShowsTestInfo, false);
+            testerStrip.ShowInfo(AppLocale.Text("tester-map", Application.version));
             gate = new ParentGateFlow(new ParentGate(parentRules, new SeededRandom((ulong)System.DateTime.UtcNow.Ticks)),
                 voice.Voice, screen.ParentGate, appLanguage, mapVoice.Silence, OpenParentArea);
             screen.ParentGate.Bind(gate);

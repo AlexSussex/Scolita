@@ -34,9 +34,10 @@ namespace Scolita.Game.Lessons
     /// the background, puts her warm-ups before the lesson (<see cref="WarmUps"/>), records what she does
     /// in her progress (<see cref="LessonProgress"/>) and saves it after each step, and keeps the screen
     /// awake while the lesson is open. It counts her play time for the daily limit (<see cref="Parent.PlayClock"/>)
-    /// but never ends a lesson for it; Android Back goes home to the map (or closes the sticker book).
+    /// but never ends a lesson for it; Android Back goes home to the map (or closes the sticker book). For the tester's
+    /// profile it shows the tester's strip (the ids, the voice line being said) and skips a step when asked.
     /// </summary>
-    public sealed class LessonRunner : MonoBehaviour, IActivityInput, ILessonScreenInput
+    public sealed class LessonRunner : MonoBehaviour, IActivityInput, ILessonScreenInput, ITesterInput
     {
         [SerializeField] private DomainCatalog domains;
         [SerializeField] private LetterCatalog letters;
@@ -54,6 +55,7 @@ namespace Scolita.Game.Lessons
         [SerializeField] private TrailCatalog trails;
         [SerializeField] private RewardRulesAsset rewardRules;
         [SerializeField] private AvatarCatalog avatars;
+        [SerializeField] private TesterStripView testerStrip;
         [SerializeField] private float secondsAfterAStep = 0.6f;
 
         private readonly Dictionary<ActivityKind, ActivityView> views = new Dictionary<ActivityKind, ActivityView>();
@@ -65,6 +67,7 @@ namespace Scolita.Game.Lessons
         private LessonVoice lessonVoice;
         private ActivityViewContext context;
         private SaveStore profileFiles;
+        private Profile profile;
         private ActivityView shownView;
         private RewardsSession rewards;
         private string lessonSignature;
@@ -126,6 +129,20 @@ namespace Scolita.Game.Lessons
             LeaveForTheMap();
         }
 
+        /// <inheritdoc/>
+        public void SkipStep()
+        {
+            if (profile == null || !profile.CanSkipSteps || !WaitsForAnswer() || movingOn)
+            {
+                return;
+            }
+
+            lessonVoice.Silence();
+            run.Skip();
+            movingOn = true;
+            stepDoneAt = Time.unscaledTime - secondsAfterAStep;
+        }
+
         private void Start()
         {
             Curriculum curriculum = CurriculumAssets.Build(domains, letters, words, pictures, voiceLines, shapes);
@@ -133,7 +150,8 @@ namespace Scolita.Game.Lessons
             voice.SetVolume(SaveStore.ForTablet(Application.persistentDataPath)
                 .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.VoiceVolume);
             ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
-            profileFiles = profiles.FilesOf(profiles.Load().ProfileToOpen);
+            profile = profiles.Load().ProfileToOpen;
+            profileFiles = profiles.FilesOf(profile);
             LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
             IReadOnlyCollection<ActivityKind> playable = PlayableKinds();
             if (curriculum.Domains.Count == 0)
@@ -160,6 +178,8 @@ namespace Scolita.Game.Lessons
             recorder = new LessonProgress(run, progress, curriculum, progressRules, clock);
             recorder.Recorded += SaveProgress;
             progress.ItemMastered += OnItemMastered;
+            testerStrip.Bind(this);
+            testerStrip.Show(profile.ShowsTestInfo, profile.CanSkipSteps);
             run.Start();
             ShowStep();
         }
@@ -322,6 +342,7 @@ namespace Scolita.Game.Lessons
             screen.ShowProgress(stepsDoneBefore + run.StepIndex, stepsDoneBefore + run.StepCount);
             screen.ShowMood(GuideMood.Happy);
             lessonVoice.Say(run.CurrentInstruction, null);
+            ShowTestInfo("-");
             SaveWhereSheIs();
         }
 
@@ -369,6 +390,35 @@ namespace Scolita.Game.Lessons
         private void OnPartStarted(VoiceUtterance part)
         {
             lessonVoice.PartStarted();
+            if (profile.ShowsTestInfo && part.Route != VoiceRoute.Pause)
+            {
+                ShowTestInfo(AppLocale.Text(RouteKey(part.Route), voice.Voice.Current));
+            }
+        }
+
+        private static string RouteKey(VoiceRoute route)
+        {
+            switch (route)
+            {
+                case VoiceRoute.Clip:
+                    return "tester-voice-clip";
+                case VoiceRoute.System:
+                    return "tester-voice-system";
+                default:
+                    return "tester-voice-bubble";
+            }
+        }
+
+        private void ShowTestInfo(string voiceLine)
+        {
+            if (!profile.ShowsTestInfo || run.State == LessonRunState.Finished)
+            {
+                return;
+            }
+
+            Step step = run.CurrentStep.Step;
+            testerStrip.ShowInfo(AppLocale.Text("tester-lesson", Application.version, run.Plan.Lesson.Id, step.Number, step.Kind,
+                voiceLine));
         }
 
         private void SaveProgress()

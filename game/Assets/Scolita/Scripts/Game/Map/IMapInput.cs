@@ -17,5 +17,8 @@ namespace Scolita.Game.Map
 
         /// <summary>The trip ended or she skipped it: the rocket has landed. Called by the map screen.</summary>
         void TripEnded();
+
+        /// <summary>She tapped her avatar: "Who's playing?" opens, so another child can play. Called by the map screen.</summary>
+        void SwitchProfile();
     }
 }

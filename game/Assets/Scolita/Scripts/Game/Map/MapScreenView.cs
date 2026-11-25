@@ -53,6 +53,12 @@ namespace Scolita.Game.Map
         /// </summary>
         public abstract void ShowResting();
 
+        /// <summary>
+        /// Shows the avatar button (beside "Școlița") with <paramref name="avatar"/> when <paramref name="shown"/> (two or
+        /// more children, or the tester), else hides it. Called once by <see cref="MapRunner"/>.
+        /// </summary>
+        public abstract void ShowProfile(Sprite avatar, bool shown);
+
         /// <summary>Moves the mascot's mouth while it speaks; called every frame by <see cref="MapRunner"/>.</summary>
         public abstract void SetTalking(bool talking);
     }

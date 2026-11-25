@@ -25,5 +25,8 @@ namespace Scolita.Game.Parent
 
         /// <summary>A reset question was answered: <paramref name="yes"/> goes on, no closes it. Called by the parent area screen.</summary>
         void AnswerReset(bool yes);
+
+        /// <summary>The chosen profile's button in the header was tapped: the profiles page opens. Called by the parent area screen.</summary>
+        void OpenProfiles();
     }
 }

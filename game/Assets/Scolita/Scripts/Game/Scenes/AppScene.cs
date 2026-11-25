@@ -9,6 +9,7 @@ namespace Scolita.Game.Scenes
         Boot,
         Map,
         Lesson,
-        Parent
+        Parent,
+        Profiles
     }
 }

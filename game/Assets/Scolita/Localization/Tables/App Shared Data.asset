@@ -247,6 +247,186 @@ MonoBehaviour:
     m_Key: reset-failed
     m_Metadata:
       m_Items: []
+  - m_Id: 38665817477120
+    m_Key: profile-tester-name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860672
+    m_Key: profile-no-name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860673
+    m_Key: profile-kind-child
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860674
+    m_Key: profile-kind-tester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860675
+    m_Key: profile-learned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860676
+    m_Key: profile-never-played
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860677
+    m_Key: profile-played-today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860678
+    m_Key: profile-played-yesterday
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860679
+    m_Key: profile-played-on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860680
+    m_Key: profiles-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860681
+    m_Key: profiles-private
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860682
+    m_Key: profiles-list-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860683
+    m_Key: profile-add-child
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860684
+    m_Key: profile-play-tester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860685
+    m_Key: profile-reset-tester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860686
+    m_Key: profile-make-tester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860688
+    m_Key: profile-edit-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860689
+    m_Key: profile-new-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860690
+    m_Key: profile-name-label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860691
+    m_Key: profile-name-hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860692
+    m_Key: profile-name-too-long
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860693
+    m_Key: profile-name-letters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860694
+    m_Key: profile-avatar-label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860695
+    m_Key: profile-delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860696
+    m_Key: profile-save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860697
+    m_Key: profile-add
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860698
+    m_Key: profile-saved
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860699
+    m_Key: profile-not-saved
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860700
+    m_Key: profile-deleted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860701
+    m_Key: profile-files-left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860702
+    m_Key: profile-tester-reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860703
+    m_Key: profile-tester-not-reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860704
+    m_Key: profile-delete-first-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860705
+    m_Key: profile-delete-first-body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860706
+    m_Key: profile-delete-second-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860707
+    m_Key: profile-delete-second-body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860708
+    m_Key: profile-delete-second-yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860709
+    m_Key: profile-change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860710
+    m_Key: profile-test-badge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860711
+    m_Key: tester-skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860712
+    m_Key: tester-map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860713
+    m_Key: tester-lesson
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860714
+    m_Key: tester-voice-clip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860715
+    m_Key: tester-voice-system
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38665976860716
+    m_Key: tester-voice-bubble
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

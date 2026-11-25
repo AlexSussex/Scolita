@@ -247,6 +247,114 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2607d6cc4756cf429f52d4857f26829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scolita.UI::Scolita.UI.Parent.ParentAreaScreen
+--- !u!1001 &394983844
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3086094767196634675, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_Name
+      value: ParentProfiles
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539027623717433488, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+--- !u!114 &394983845 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4869656790446578062, guid: 2ceaf2cbc8c68334288b133b8ddec0f9, type: 3}
+  m_PrefabInstance: {fileID: 394983844}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda35a86309ac5c438f2e13aaff86b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scolita.UI::Scolita.UI.Parent.ParentProfilesScreen
 --- !u!1001 &476535800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -342,6 +450,7 @@ MonoBehaviour:
   registry: {fileID: 11400000, guid: 3c33836cc753a7e4e91534dc88f65993, type: 2}
   learningRules: {fileID: 11400000, guid: 310c5ea080032ca40bfef6001167e970, type: 2}
   screen: {fileID: 273833580}
+  profilesPage: {fileID: 394983845}
   avatars: {fileID: 11400000, guid: d5be484ff89efa04b92ef86ce8d989a8, type: 2}
 --- !u!4 &1352828039
 Transform:
@@ -449,3 +558,4 @@ SceneRoots:
   - {fileID: 476535800}
   - {fileID: 273833579}
   - {fileID: 1352828039}
+  - {fileID: 394983844}
