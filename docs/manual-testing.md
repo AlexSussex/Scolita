@@ -27,7 +27,7 @@ screen, what to tap, and what you should see **and hear**.
 ## The basics
 
 Filled in by `parent-area` (0.13.0): the whole loop, from the galaxy map through one lesson and back, the
-parent gate and a setting changed. Run it after every install.
+parent gate and a setting changed; `profiles` (0.14.0) added choosing a profile (B10, B11). Run it after every install.
 
 | # | Screen | Do this | You should see and hear | Tested on |
 | --- | --- | --- | --- | --- |
@@ -40,11 +40,35 @@ parent gate and a setting changed. Run it after every install.
 | B7 | The parent gate | Tap the number said | The parent area opens: what she has learned (left) and the settings (right) | |
 | B8 | The parent area | Tap **Doar engleză**, then the back arrow | The map shows only the English lessons; set **Amândouă** again afterwards | |
 | B9 | Android | Press the tablet's Back on the parent area, on the gate and in a lesson | Each goes back as its on-screen back button does; on the map itself Back does nothing | |
+| B10 | "Cine se joacă?" (with two or more children) | Close the app and open it; tap her picture | The cards with the pictures and names; her name is said („Bună, …! Hai să zburăm!”) and her own map opens | |
+| B11 | The map (two or more children) | Tap her picture beside "Școlița" | "Cine se joacă?" again, without the gate | |
 
 ## Releases
 
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
+
+### 0.14.0 (2026-11-25): profiles
+
+On the tablet, with the 0.14.0 APK (`local/apks/Scolita-0.14.0-debug.apk`), installed over 0.13.0 without clearing its
+data. Run "The basics" first (B10 and B11 are new). Use made-up names while trying, then her own.
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.14.0-1 | Home screen of the tablet | Open the app after installing over 0.13.0 | The map opens as before, her rocket where it was, her stars in **Cerul meu**; no picture beside "Școlița" (one child) | |
+| 0.14.0-2 | The parent area | Tap the button at the top (a picture and "Fără nume") | **Profiluri**: one row "Fără nume, Copil" with her letters learned; on the right "Schimbă profilul", the name field, the 14 pictures, the lessons' languages | |
+| 0.14.0-3 | Profiluri | Type her name, choose her picture with her, tap **Salvează** | "Profilul a fost salvat."; her name in the row and at the top of the area | |
+| 0.14.0-4 | Profiluri | Type a name with a digit or a sign (`Ana1`) | "Numele are doar litere, cu un spațiu sau o cratimă între părți." and **Salvează** greyed | |
+| 0.14.0-5 | Profiluri | **+ Adaugă un copil**: a made-up name with ș or ț (`Ștefan`), a picture, **Doar engleză**, **Adaugă** | A second row; her picture is dimmed for him (one picture per child) | |
+| 0.14.0-6 | "Cine se joacă?" | Close the app and open it again | Two big cards with the pictures, names and stars; the mascot says „Cine se joacă? Atinge poza ta.”; the child who played last has a yellow ring | |
+| 0.14.0-7 | "Cine se joacă?" | Tap her card | „Bună, …! Hai să zburăm!” with her name, said by the tablet's voice and shown in the bubble; then her map with her picture beside "Școlița". The name sounds right? | |
+| 0.14.0-8 | The map | Tap her picture beside "Școlița", then the other card | "Cine se joacă?" again (no gate); "Hi, Ștefan! Let's fly!" (his lessons are English only), his own map with his own rocket and no stars yet | |
+| 0.14.0-9 | Profiluri | **Fă un profil de test**, then **Joacă ca tester** | A row "Profil de test" with TEST; then the map with a TEST strip at the bottom; every stop opens, even on planet 3 | |
+| 0.14.0-10 | A lesson as the tester | Look at the strip; tap **Sari peste pas** | The strip shows the version, the lesson, the step and the line being said; the step is skipped | |
+| 0.14.0-11 | "Cine se joacă?" | Tap the picture on the tester's map; then restart the app | The tester has no card; after a restart the app never opens as the tester | |
+| 0.14.0-12 | Profiluri | **Șterge progresul de test** | "Progresul de test a fost șters." at once; her progress is untouched | |
+| 0.14.0-13 | Profiluri | The made-up child's row → **Șterge profilul…** → **Nu, păstrează-l**; again → **Da, șterge** → **Șterge profilul** | Two questions saying what is lost and that the other profiles stay; then "Profilul a fost șters." and his row is gone; with one child left the app opens on her map again | |
+| 0.14.0-14 | Profiluri, menus in English | Turn on **Meniurile în engleză** and open Profiluri | Every word in English ("Profiles", "Add a child", …) | |
 
 ### 0.13.0 (2026-11-25): the parent area
 

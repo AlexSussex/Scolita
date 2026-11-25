@@ -1,9 +1,6 @@
 # Task: feature/profiles
 
-> **Status: In progress (profiles)** (claimed 2026-11-25). Was: ready after `parent-area`
-> (the human, 2026-11-24: "a Profile section so that potentially multiple kids, or I as a tester,
-> would have their own profile and progress details"; moved from after the MVP into it). D9 is
-> answered: the 14 avatars, greeting (a) with the tablet's voice.
+> **Status: Done 2026-11-26, released as 0.14.0** (see the completion record).
 
 Read `AGENTS.md` first (especially "The five seams" → 5, "Security and
 privacy", "Usability", "Fresh-eyes review"), then `design/README.md` and
@@ -360,21 +357,172 @@ lines; the repo's conventions.
   the avatars imported; `162a1fa` `game:` every scene opens the chosen profile, `profiles.json` and the migration;
   `3bddcea` `core:` ids above every folder, saved names whole (the review); `02b022a` `game:` a dated copy of a list
   with a part that can't be read (the review); `61948f4` `core:` the picker's lines; `87764a3` `ui:` "Who's playing?",
-  the profiles page, the tester's strip; with this Progress.
+  the profiles page, the tester's strip; `bf0d6da` `docs:` Progress; `036be0b` `ui:` the page's rows kept short, the
+  map's strip moved off Go, the strip's voice line shown (found on the emulator); then this close-out.
 
-### Test results so far
+### Test results
 
-- The first four (before the rebase onto `49317dc`, docs only): EditMode and `BuildAndroidDebug` each on its own (752, 793, 793, 799
-  passed; builds fine; no `warning CS`); the `game:` tree also PlayMode 49/49.
-- The `ui:` tree before its last fixes: EditMode 810/810, PlayMode 57/59 (the tester row's words changed by the
-  review, and the Editor's `child-1` left with a 10-minute limit by an earlier failed run of the monkey test, fixed by
-  `ProfilesScene.Isolated`; both fixed in the commit), `BuildAndroidDebug` fine, no `warning CS`.
+- **Per commit, before the testing rule changed** (AGENTS.md → "Testing fits the change", 2026-11-25): the content,
+  core, build and game commits and the review's two commits and the picker's lines each had EditMode and
+  `BuildAndroidDebug` on their own (752, 793, 793, 799, 801, 803 and 810 passed; every build fine; no `warning CS`).
+- **The full run after the last rebase** (on `036be0b`): EditMode 810/810, PlayMode 59/59 (the parent gate's
+  monkey a minute, the profiles' monkey half a minute), `BuildAndroidDebug` fine (the APK asks for no INTERNET), no
+  `warning CS` and no error in any log.
+- **Emulator** (`emulator-5600`, Pixel Tablet, Android 16, `-feature -Vulkan`):
+  - **The migration:** 0.13.0 installed fresh, `ro-a` played to its second step and left; this release installed over
+    it: the map opened at once (one child, no avatar button), `profiles.json` made with `child-1` alone (avatar
+    `kitty`, playing `child-1`), Go opened `ro-a` at its second step (the tracing), `progress.json` kept the a as
+    "learning".
+  - **The profiles page:** the header button ("Fără nume", then "Ana"), naming the first child, adding "Matei" (Ana's
+    picture dimmed for him, **Doar engleză**), "Profilul a fost salvat.", the tester's row with TEST, deleting Matei
+    (two questions, then "Profilul a fost șters." and `profiles/child-2` gone, `child-1` and `tester` kept).
+  - **"Who's playing?":** two cards with the pictures, names and stars, the last child ringed; a tap lifts the card,
+    dims the other and shows „Bună, Ana! Hai să zburăm!” (the emulator has no tablet voice: the bubble), then her map
+    with her picture beside "Școlița"; the gate from the picker (digits) opens the area.
+  - **The tester:** "Joacă ca tester" → the map with the TEST strip at the top ("0.13.0 · toate lecțiile se deschid";
+    the version was still 0.13.0 before the close-out), a stop on planet 1's party (ahead) opened; in the lesson the
+    strip showed "ro-a · pasul 1 (MeetLetter) · ro-line-meet-new: doar balonul" and **Sari peste pas** moved to step 2;
+    a restart opened the only child's map, never the tester (`playing` back to `child-1`).
+  - **Sizes:** "Who's playing?" at 2000 × 1200, 1280 × 800, 2048 × 1536 and 2400 × 1080; the profiles page and the area
+    at 2000 × 1200 and 2400 × 1080 (the tightest); the map's avatar button and the strips at 2000 × 1200 and
+    2400 × 1080. Enough because every new screen is on a 1280 × 800 canvas matched half by width and half by height,
+    as the parent area, and the phone is the narrowest height; 2560 × 1600 is the same shape as 2000 × 1200.
+    Screenshots in the agent's scratch folder.
+  - **Found and fixed on the emulator:** the page's rows and buttons stretched tall; the map's strip covered Go (now at
+    the top); the strip's voice line was overwritten by "-" (now set before the line is said).
+- **Not run:** the Device Simulator and the Profiler window (batch mode and the emulator only; the picker and the page
+  are menus, the strip changes its text only when a line or a step starts); a display cut-out profile; listening by ear
+  (no tablet voice on the emulator: every line was read in the bubble); six children on the picker (two rows: covered
+  by the layout's numbers, not seen); the tablet's keyboard typing ș (`adb input text` can't; the PlayMode test types
+  „Ștefan”).
+- At phone size the lesson's tester strip covers the bottom of the activity's cards (the tester only).
 
-### Still to test
+## How to test locally
 
-(AGENTS.md → "Testing fits the change": the full run comes once, after the last rebase, before the close-out.)
+### Core, content, build and game slices (the profile list, the avatars, the migration, every scene opening the chosen profile)
 
-- The review's two commits and the picker's lines: EditMode and the build on their own (were running when the rule changed).
-- Everything together: EditMode, PlayMode, `BuildAndroidDebug`, after the last rebase.
-- The emulator: 0.13.0 with progress, then this over it (the migration); "Who's playing?", the avatar button, the
-  profiles page, the tester's strip and skip, deleting a child; every new screen at every size in AGENTS.md's table.
+**Prerequisites.** Unity 6000.3.29f1; the worktree's `game/` folder; an emulator (here `emulator-5600`, AVD
+`Scolita_Tablet_tracing`, Pixel Tablet, Android 16, x86_64, started with `-feature -Vulkan`). In Git Bash:
+
+```bash
+UNITY="/c/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"
+export MSYS_NO_PATHCONV=1 ADB_LOCAL_TRANSPORT_MAX_PORT=5699
+ADB="$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe"; EMU=emulator-5600; S=<your scratch folder>
+F=/storage/emulated/0/Android/data/com.softshack.scolita/files
+"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log
+```
+
+**Automated tests.** EditMode (`-testPlatform EditMode`) and PlayMode (`-testPlatform PlayMode`, about five minutes;
+the parent gate's monkey takes a minute and the profiles' monkey half a minute), results in `$S/editmode.xml` and
+`$S/playmode.xml`. The profile ones: EditMode `Core/Profiles/ProfileNameTests`, `ProfileListTests`, `ProfileLinesTests`,
+`Core/Parent/ProfileSummaryTests`, `Saving/ProfilesDataTests`, `Saving/ProfileStoreTests` (the migration from a 0.13.0
+folder, a damaged list, deleting one folder), `MapRouteTests.TestEveryStopOpen_…`, `LessonRunTests.TestSkip_…`,
+`RewardTablesTests` and `ContentImporterTests` (the avatars); PlayMode `Profiles/ProfilesFlowTests` and
+`Profiles/ParentProfilesTests`. Each profile PlayMode test copies the Editor's own save root aside, runs on an empty one
+and puts it back, even when it fails.
+
+**Steps.**
+
+1. **An older tablet keeps her progress.** Uninstall, install `C:\Projects\Scolita\local\apks\Scolita-0.13.0-debug.apk`,
+   start it, tap **Hai!**, answer the first step (tap the letter, then the picture), go home. `"$ADB" -s $EMU shell ls $F`
+   shows `profiles/child-1` and no `profiles.json`. Install this release over it (`install -r`) and start it: the map opens
+   straight away (one child), the rocket where it was; **Hai!** opens `ro-a` at its second step (the tracing);
+   `"$ADB" -s $EMU shell cat $F/profiles.json` lists `child-1` alone (no name, avatar `kitty`, playing `child-1`), and
+   `$F/profiles/child-1/progress.json` still has the letter a as "learning".
+2. **One child: no picker, no avatar button.** As after step 1: no avatar button beside "Școlița", no strip at the bottom.
+3. **Cleanup:** `"$ADB" -s $EMU shell pm clear com.softshack.scolita` (every profile and the list go).
+
+### UI slice ("Who's playing?", the avatar button, the parent area's profiles, the tester)
+
+**Prerequisites** as above, with this release's debug APK installed and the app started:
+`"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`.
+Open the parent area: hold the lock (top right) 3 s (`input swipe x y x y 3500`), then tap the number shown in digits
+(the emulator has no tablet voice).
+
+1. **The chosen profile in the area.** The header shows a button with the profile's avatar and "Fără nume" (or its name)
+   and "Profiluri". Tap it: "Profiluri", "Numele și pozele rămân doar pe tabletă.", left "Cine are profil" (one row:
+   the avatar, "Fără nume", "Copil · Litere învățate: română 0, engleză 0 · A jucat azi" (or "N-a jucat încă")), "Fă un profil de test",
+   "+ Adaugă un copil"; right "Schimbă profilul" (the name field, the 14 avatars in two rows, the chosen one ringed,
+   "Limbile lecțiilor", "Salvează"; no "Șterge profilul…" for the only child).
+2. **Name the first child.** Type `Ana` (the tablet's keyboard), tap **Salvează**: "Profilul a fost salvat.", the row
+   says Ana. Type `Ana1`: "Numele are doar litere, cu un spațiu sau o cratimă între părți." and **Salvează** is greyed;
+   type 21 characters: the field stops at 20 ("Numele (cel mult 20 de caractere)").
+3. **Add a child.** **+ Adaugă un copil**: "Un copil nou", an empty name, the first avatar no child has ringed, Ana's
+   avatar dimmed (it can't be tapped). Type `Ștefan`, choose an avatar, **Doar engleză**, **Adaugă**: a second row,
+   chosen (outlined in violet); "Adaugă un copil" stays while there are fewer than 6 children.
+4. **"Who's playing?"** Back to the map, then restart the app: "Who's playing?" opens on the purple sky, the mascot says
+   (shows) „Cine se joacă? Atinge poza ta.”, two big cards with the avatars, the names and the stars, the last child
+   ringed in yellow. Tap Ștefan's card: it lifts, the others dim, "Hi, Ștefan! Let's fly!" (his map is English only), then his map opens with his avatar beside "Școlița". Tap the avatar: "Who's playing?" again;
+   tap Ana's card: „Bună, Ana! Hai să zburăm!”, then her map, her rocket where she left it. Android Back on the picker
+   does nothing.
+5. **Each keeps her own.** Play a lesson as Ana, then pick Ștefan: his map, stars and rocket are his own; the area's
+   grid shows the chosen profile's letters (tap a row on the profiles page to change it).
+6. **The tester.** In the area, Profiluri → **Fă un profil de test**: a row "Profil de test" with a TEST badge
+   ("Nu se arată copiilor · …"), and **Joacă ca tester** / **Șterge progresul de test**. Tap **Joacă ca tester**:
+   the map opens with the TEST strip at the top ("TEST 0.14.0 · toate lecțiile se deschid"), the avatar button,
+   and every stop opens (tap a faint stop on planet 3: its lesson opens). In the lesson the strip (at the bottom) shows the version, the
+   lesson and step ids, the kind and the line being said ("…: doar balonul" on the emulator), and **Sari peste pas**
+   skips the step. "Who's playing?" (the avatar button) never shows the tester; a restart opens "Who's playing?" (or the
+   only child's map), never the tester. **Șterge progresul de test** deletes the tester's progress at once ("Progresul de
+   test a fost șters."), the children's untouched.
+7. **Delete a child.** Profiluri → Ștefan's row → **Șterge profilul…**: „Ștergi profilul?” saying what is lost and that
+   the other profiles stay; **Nu, păstrează-l** closes it; again, **Da, șterge**, „Sigur?”, **Șterge profilul**:
+   "Profilul a fost șters.", his row gone; `"$ADB" -s $EMU shell ls $F/profiles` no longer lists `child-2`, the
+   others are there. With one child left, the app opens straight on her map again.
+8. **Android Back** in the area: a question says no, then the page closes, then the area goes back (to the map of the
+   one playing, or to "Who's playing?" when nobody is and there are two children).
+9. **Sizes.** `wm size` 2000x1200, 1280x800, 2560x1600, 2048x1536, 2400x1080: "Who's playing?" (2 and 6 cards), the
+   map's avatar button and strip, the profiles page fit, nothing under the safe area's edges.
+
+**Cleanup:** `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
+
+## Completion record
+
+_Finished 2026-11-25 by `profiles`; released as 0.14.0 (tag `v0.14.0`)._
+
+### What was built
+
+In Progress → "Built" (with paths) and "Pushed" (the commits). In short: Core's profiles (`Scripts/Core/Profiles`), the
+avatars as content (`content/avatars.csv`, `AvatarCatalog`), `profiles.json` with the migration from `child-1`
+(`Scripts/Game/Profiles`), every scene opening the chosen profile, "Who's playing?" (`Profiles.unity`), the map's avatar
+button, the parent area's profiles page, and the tester's profile with its strip.
+
+### Conventions for later briefs
+
+- **Whose saves to open:** a scene's composition root loads the list with `ProfileStore.ForApp(avatars, learningRules)`
+  and opens `ProfileList.ProfileToOpen` with `ProfileStore.FilesOf(profile)`; nothing names `child-1` (only
+  `ProfileList.FirstChildId`, for the migration and the tests). A new scene needs the `AvatarCatalog` field.
+- **Per profile or per tablet:** a learner's file goes in its profile's folder; only `settings.json` and `profiles.json`
+  sit in the root (a PlayMode test checks it). A new per-profile file that progress is rebuilt from goes in
+  `ProgressReset.FileNames` (the tester's one-tap reset uses it too).
+- **What the tester adds** is asked of the `Profile` (`OpensEveryLesson`, `CanSkipSteps`, `ShowsTestInfo`), never a
+  flag elsewhere; a new tester tool shows in the tester's strip (`TesterStripView`).
+- **Profile PlayMode tests** run inside `ProfilesScene.Isolated(...)`: the Editor's save root is copied aside, the test
+  runs on an empty one, its scene is left and the root put back even when it fails (a failed test that leaves its scene
+  open can save into the restored root and break later tests: it happened once here).
+- **A list file with a part that can't be read** is kept as a dated copy before it is saved over
+  (`SaveStore.KeepDatedCopy`), like a damaged file.
+- **Avatars** are content: a new one is a row of `avatars.csv` and `Art/Avatars/avatar-<id>.png`, then Import content.
+
+### Decisions and deviations
+
+In Progress → "Design note", "Fresh-eyes review" and "Decisions". Deviations from the brief: **a name may be empty**
+(the app's own first profile has no typed name; the card shows its picture); **one picture per child** (added);
+**the tester can't be deleted, nor the last child** (their progress is reset instead); "Literele mici întâi" is still not
+built (parent-area's deviation, with the human); the Game side's contracts for the new screens went into the `ui:`
+commit with the UI that implements them.
+
+### Follow-ups
+
+- **`sound-feel`:** a soft sound when a card is tapped on "Who's playing?"; the music can start under the picker.
+- **The human:** whether the tablet says her name well in „Bună, …! Hai să zburăm!” (else D9 (b), a recorded clip of
+  her name, kept in `local/`); whether 6 children and 20 characters are right; whether a deleted child's files that
+  could not all be deleted ("FilesLeft", very rare) should be retried at the next start.
+- **Later:** a child's entry that can't be read is dropped from the list (its folder kept, the list kept as a dated
+  copy): a parent could re-add it by hand; a "restore" in the parent area could adopt such a folder. If Boot can't save
+  `playing` after the tester played (a full disk at that moment), the map would reopen as the tester until a save
+  works (logged).
+- The Device Simulator, the Profiler window and a cut-out profile were not run (batch mode and the emulator only).
+- **`look`:** at phone size the lesson's tester strip covers the bottom of the activity's cards (the tester only); the
+  map's strip sits at the top. The dev build's own subtitle overlay (`VoiceHost`) shows beside the bubble on the
+  emulator, as on every screen.

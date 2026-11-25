@@ -67,7 +67,7 @@ Each brief file therefore reads, top to bottom:
 | 11 | `feature/progress-review` | Done 2026-11-25, released as 0.11.0 | [done/progress-review.md](done/progress-review.md) |
 | 12 | `feature/rewards` | Done 2026-11-25, released as 0.12.0 | [done/rewards.md](done/rewards.md) |
 | 13 | `feature/parent-area` | Done 2026-11-25, released as 0.13.0 | [done/parent-area.md](done/parent-area.md) |
-| 14 | `feature/profiles` | In progress (profiles) | [pending/profiles.md](pending/profiles.md) |
+| 14 | `feature/profiles` | Done 2026-11-26, released as 0.14.0 | [done/profiles.md](done/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
 | 16 | `feature/look` | Done 2026-11-25 (0.9.0; the chosen art; the guide's full body is a ChatGPT round for the human) | [done/look.md](done/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
@@ -101,11 +101,10 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
-| profiles | [profiles](pending/profiles.md) | `Scripts/Core/Profiles`, `Scripts/Game/Profiles`, `Scripts/Game/Saving`, `Scripts/UI/Profiles`, the runners (Boot, Map, Lesson, Parent), `Scenes/Profiles.unity` (new), `Boot.unity`, `Map.unity`, `Lesson.unity`, `Parent.unity`, `MapScreen.prefab`, `LessonScreen.prefab`, `ParentArea.prefab`, `Prefabs/Profiles/` (new), `content/avatars.csv` (new) and `AvatarCatalog`, the importer, `voice-lines.csv`, the `App` string tables, `EditorBuildSettings` | emulator-5600 | 2026-11-25 | Code pushed (8 commits, see the brief's Progress); the full test run, the emulator and the close-out next |
 
 ## Where we are
 
-_Last updated 2026-11-25 by agent `parent-area` (the parent area, release 0.13.0)._
+_Last updated 2026-11-26 by agent `profiles` (profiles, release 0.14.0)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -211,17 +210,28 @@ _Update this section whenever a slice is pushed or a brief is finished._
   the gate), the voice's volume, the menus in English; reset asked twice. The first string tables (`App`, `ro` and
   `en-GB`; Localization's local Addressables); Android Back on every screen.
 
+- **Done 2026-11-26:** `profiles`, release 0.14.0. Each child has her own profile (`profiles.json`; her
+  `child-1` from 0.13.0 kept as the first child): "Who's playing?" with two or more children (a card per child, her
+  name said), her picture on the map to switch, **Profiluri** in the parent area (add, change, delete after two
+  questions; one picture per child), and the tester's profile (every lesson open, a TEST strip, skip a step, a one-tap
+  reset; never shown to the children, never opened at start). The avatars are content (`avatars.csv`).
+
 ### Open follow-ups across briefs
 
+- **From `profiles`** (full list in its completion record):
+  - `sound-feel`: a soft sound when a card is tapped on "Who's playing?".
+  - The human: her name said by the tablet's voice (else a recorded clip, D9 (b)); 6 children and 20 characters.
+  - Later: a "restore" for a profile entry a damaged list dropped (its folder is kept).
+
 - **From `parent-area`** (full list in its completion record):
-  - `profiles`: the area shows the chosen profile; the profile list and the tester in the area.
+  - ~~`profiles`: the area shows the chosen profile; the profile list and the tester in the area~~: done in 0.14.0.
   - `sound-feel`: the music and sounds sliders and the vibration switch in the area's settings.
   - The human: the gate's number range, capitals first, waking the rocket on every visit.
 
 - **From `rewards`** (full list in its completion record):
   - ~~`parent-area`: the bar's words, "În cartea mea", "Bravo!"/"Well done!" into the string tables;
     reset deletes `rewards.json`~~: done in 0.13.0.
-  - `profiles`: the star count on "Who's playing?" from `RewardBook.StarsEarned`.
+  - ~~`profiles`: the star count on "Who's playing?" from `RewardBook.StarsEarned`~~: done in 0.14.0.
   - `sound-feel`: the stars landing, the gift box, a sticker placed (`RewardsSession.Giver.RewardEarned`).
   - `look` (a chore): `Art/Constellations/constellation-*.png` unused; the constellations' figures.
 

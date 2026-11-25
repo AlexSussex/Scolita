@@ -18,6 +18,43 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.14.0 (2026-11-25)
+
+Profiles. Each child on the tablet has her own profile, with her own map, stars, stickers, letters and settings,
+and the parent has a tester profile. With two or more children the app opens on "Who's playing?": each child finds
+her card by its picture, and the mascot greets her by name. With one child it opens on her map, as before.
+
+- **For the child:**
+  - **"Cine se joacă?" / "Who's playing?"** (only with two or more children): a big card per child with her picture,
+    her name and her stars; the mascot says „Cine se joacă? Atinge poza ta.”; a tap greets her („Bună, Ana! Hai să
+    zburăm!”, said by the tablet's voice) and opens her map.
+  - **Her picture on the map,** beside "Școlița" (with two or more children): a tap goes back to "Who's playing?", so a
+    brother or sister can play.
+  - Playing as one child never changes another's map, stars, stickers, letters or settings.
+- **For the parent:**
+  - **Profiluri** in the parent area (the button at the top shows the profile chosen; the grid, the settings and
+    reset are that profile's): add a child (a name of up to 20 letters, a picture from the 14, the lessons'
+    languages), change a name or picture, delete a child (asked twice; only that child's files go).
+  - **The tester profile:** "Fă un profil de test", then **Joacă ca tester**: every lesson open, a "TEST" strip with
+    the version, the lesson and step and the line being said, **Sari peste pas** in lessons; **Șterge progresul de test**
+    in one tap. It never shows on "Who's playing?" and never changes a child's files.
+  - A tablet that already has her progress keeps it as the first child's profile after the update.
+
+### Technical notes
+
+- **Save format:** a new `profiles.json` in the tablet's folder (version 1: the profiles with their id, name, avatar,
+  kind and day; the last child; who is playing; the next child's number). Every profile's files stay in
+  `profiles/<id>/`. A tablet without the list (0.13.0 and earlier) or with a damaged one gets it made from the profile
+  folders (`child-1` first), nothing lost. A child's id (`child-<n>`) is never reused; the tester's is `tester`.
+- **Content:** `content/avatars.csv` (14 avatars, design screen 11's ids; read with the rewards' files, imported into
+  `AvatarCatalog`); no new voice lines (`who-plays`, `hello-name` and `hello` were already there). New words in the `App`
+  string tables (the profiles page, the tester's strip).
+- **New:** the `Profiles` scene; `Prefabs/Profiles/` (the picker, the tester's strip); `Prefabs/Parent/ParentProfiles.prefab`;
+  the learning rules asset's `mostChildProfiles` (6) and `nameMostCharacters` (20).
+- **The human:** make the tester profile and a profile for her (`local/for-human-next-steps.md`, step 1). Hear the
+  greeting with her name on the tablet (it needs the tablet's Romanian voice).
+- Brief: [tasks/done/profiles.md](tasks/done/profiles.md).
+
 ## 0.13.0 (2026-11-25)
 
 The parent area. Behind a gate a child can't open by tapping around: what she has learned, the days she

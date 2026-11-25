@@ -801,3 +801,19 @@ voice-lines.csv ro-line-gate-19
 voice-lines.csv en-line-gate-19
 voice-lines.csv ro-line-rocket-rests
 voice-lines.csv en-line-rocket-rests
+
+# 0.14.0
+avatars.csv kitty
+avatars.csv cat
+avatars.csv unicorn
+avatars.csv rocket
+avatars.csv star
+avatars.csv moon
+avatars.csv planet
+avatars.csv whale
+avatars.csv guitar
+avatars.csv bicycle
+avatars.csv rainbow
+avatars.csv fox
+avatars.csv owl
+avatars.csv dog
