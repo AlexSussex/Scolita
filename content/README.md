@@ -235,8 +235,8 @@ shape's id. A digit (numbers, later) has one case: `7-lower-print.json`.
   error); a handwritten step without its shape is a warning, and the app
   skips it until the shape is drawn.
 - Shapes are not in the ledger of released ids: her progress names letters,
-  never a shape, so a shape can be redrawn or replaced. A file removed while
-  its imported asset is still there is refused, like a deleted row.
+  never a shape, so a shape can be redrawn or replaced. A shape file removed
+  (or renamed) has its imported asset removed at the next import.
 
 ## The ledger of released ids
 

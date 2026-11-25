@@ -16,7 +16,8 @@ namespace Scolita.Editor.ContentImport
     /// <summary>
     /// What importing the content would do: the content read from the CSVs and checked
     /// (<see cref="ContentTables"/>, <see cref="ContentRules"/>), every problem found, and, when there
-    /// is no error, the assets and images it would write. <see cref="Apply"/> writes them (an existing
+    /// is no error, the assets and images it would write (and the assets of shapes no longer in
+    /// <c>content/strokes/</c>, which it removes: a shape is replaced, never retired). <see cref="Apply"/> writes them (an existing
     /// asset is updated in place, so its GUID stays); <see cref="Differences"/> says what would change
     /// without writing (the freshness test).
     /// </summary>
@@ -114,6 +115,7 @@ namespace Scolita.Editor.ContentImport
 
             differences.AddRange(clips.Select(ClipDifference).Where(difference => difference != null));
             differences.AddRange(StaleClips().Select(stale => stale + " is no longer named in the voice lines."));
+            differences.AddRange(StaleShapes().Select(stale => stale + " is no longer in content/strokes/."));
             foreach (PlannedImage image in images)
             {
                 string difference = ImageDifference(image);
@@ -162,7 +164,7 @@ namespace Scolita.Editor.ContentImport
                 WriteImage(image);
             }
 
-            foreach (string stale in StaleClips())
+            foreach (string stale in StaleClips().Concat(StaleShapes()))
             {
                 AssetDatabase.DeleteAsset(stale);
             }
@@ -325,7 +327,7 @@ namespace Scolita.Editor.ContentImport
         private static void CheckNothingDeleted(Curriculum curriculum, ContentAssetPaths paths, ContentProblems problems)
         {
             HashSet<string> planned = new HashSet<string>(PlannedPaths(curriculum, paths));
-            foreach (string folder in paths.OwnedFolders)
+            foreach (string folder in paths.OwnedFolders.Where(folder => folder != paths.ShapeFolder))
             {
                 string fullFolder = FullPath(folder);
                 if (!Directory.Exists(fullFolder))
@@ -547,6 +549,21 @@ namespace Scolita.Editor.ContentImport
             return Directory.GetFiles(folder)
                 .Where(file => !file.EndsWith(".meta", StringComparison.Ordinal))
                 .Select(file => paths.VoiceClipFolder + "/" + Path.GetFileName(file))
+                .Where(file => !planned.Contains(file))
+                .ToArray();
+        }
+
+        private IEnumerable<string> StaleShapes()
+        {
+            string folder = FullPath(paths.ShapeFolder);
+            if (!Directory.Exists(folder))
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            HashSet<string> planned = new HashSet<string>(curriculum.Shapes.All.Select(shape => paths.Shape(shape.Id.Value)));
+            return Directory.GetFiles(folder, "*.asset")
+                .Select(file => paths.ShapeFolder + "/" + Path.GetFileName(file))
                 .Where(file => !planned.Contains(file))
                 .ToArray();
         }

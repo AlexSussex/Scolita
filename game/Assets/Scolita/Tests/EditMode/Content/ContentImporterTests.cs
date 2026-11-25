@@ -105,6 +105,35 @@ namespace Scolita.Tests.EditMode.Content
         }
 
         /// <summary>
+        /// Tests that <see cref="ContentImportPlan.Apply"/> keeps a re-imported shape's asset (its GUID), and removes the
+        /// asset of a shape whose file is gone (a shape is replaced, never retired).
+        /// </summary>
+        [Test]
+        public void TestApply_ShapesKeepTheirGuidAndGoWithTheirFile()
+        {
+            Dictionary<string, string> csvs = ContentCsvs.Valid();
+            RunInTemporaryFolders(csvs, (source, paths) =>
+            {
+                ContentImporter.Import(source, paths);
+                string shapePath = paths.Shape("a-lower-print");
+                string guid = AssetDatabase.AssetPathToGUID(shapePath);
+                ContentImporter.Import(source, paths);
+                Assert.That(AssetDatabase.AssetPathToGUID(shapePath), Is.EqualTo(guid));
+
+                File.Delete(Path.Combine(source.Root, "strokes", "a-lower-print.json"));
+                csvs.Remove(ContentCsvs.ShapeFileName);
+                csvs[ContentFileNames.Steps] = string.Join("\n", csvs[ContentFileNames.Steps].Split('\n')
+                    .Where(row => !row.StartsWith("ro-a,TraceLetter,", StringComparison.Ordinal)));
+                WriteCsvs(source.Root, csvs);
+                ContentImportPlan plan = ContentImporter.Import(source, paths);
+
+                Assert.That(plan.Problems.Where(problem => problem.IsError).Select(problem => problem.ToString()), Is.Empty);
+                Assert.That(AssetDatabase.LoadAssetAtPath<LetterShapeAsset>(shapePath), Is.Null);
+                Assert.That(plan.Differences(), Is.Empty);
+            });
+        }
+
+        /// <summary>
         /// Tests that <see cref="ContentImportPlan.Make"/> refuses a released id (in the ledger) whose row
         /// was deleted together with its asset, and writes nothing.
         /// </summary>

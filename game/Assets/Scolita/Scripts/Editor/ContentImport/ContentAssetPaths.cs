@@ -94,6 +94,12 @@ namespace Scolita.Editor.ContentImport
             return Under(Lessons) + "/" + id + ".asset";
         }
 
+        /// <summary>
+        /// The folder of the letter shapes' assets, whose stale assets the importer removes (a shape is replaced, never
+        /// retired); called by <see cref="ContentImportPlan"/>.
+        /// </summary>
+        public string ShapeFolder => Under(Strokes);
+
         /// <summary>A letter shape's asset; called by <see cref="ContentImportPlan"/>.</summary>
         public string Shape(string id)
         {
