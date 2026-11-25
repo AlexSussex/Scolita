@@ -246,6 +246,23 @@ trail without one fails the import.
 The rewards also need these lines in each language of the lessons: `sticker`, `trail`,
 `sky-book`, `sticker-book` and `trail-picker` (`ro-line-sticker`, …).
 
+### `avatars.csv`: one row per profile picture
+
+| Column | What it holds |
+| --- | --- |
+| `id` | Named by what it shows (`unicorn`, `dog`); a profile names its avatar by this id in `profiles.json` |
+| `retired`, `notes` | See above (a retired avatar is no longer offered; a profile that has it keeps it) |
+
+```
+id,retired,notes
+unicorn,,a white unicorn
+```
+
+The pictures a child chooses for her profile (design screen 11), in the order the parent area offers
+them; the first is the one the app gives its first profile. Its picture is
+`game/Assets/Scolita/Art/Avatars/avatar-<id>.png`; an avatar without one fails the import. Read with
+the rewards' files (`Scripts/Core/Rewards`, `RewardTables`), used by `Scripts/Core/Profiles`.
+
 ### `strokes/<strokes-id>-<case>-<form>.json`: how a letter is written
 
 One file per letter, case and form: `a-lower-print.json`, `a-upper-print.json`,
