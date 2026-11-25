@@ -1,10 +1,9 @@
 # Task: feature/profiles
 
-> **Status: Ready after `parent-area`** (the human, 2026-11-24: "a Profile
-> section so that potentially multiple kids, or I as a tester, would have
-> their own profile and progress details"; moved from after the MVP into
-> it). Decision D9 (the avatars, and greeting a child by name) is needed
-> for the art and the greeting; the rest can start.
+> **Status: In progress (profiles)** (claimed 2026-11-25). Was: ready after `parent-area`
+> (the human, 2026-11-24: "a Profile section so that potentially multiple kids, or I as a tester,
+> would have their own profile and progress details"; moved from after the MVP into it). D9 is
+> answered: the 14 avatars, greeting (a) with the tablet's voice.
 
 Read `AGENTS.md` first (especially "The five seams" → 5, "Security and
 privacy", "Usability", "Fresh-eyes review"), then `design/README.md` and

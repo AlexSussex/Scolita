@@ -66,7 +66,7 @@ Each brief file therefore reads, top to bottom:
 | 11 | `feature/progress-review` | Done 2026-11-25, released as 0.11.0 | [done/progress-review.md](done/progress-review.md) |
 | 12 | `feature/rewards` | Done 2026-11-25, released as 0.12.0 | [done/rewards.md](done/rewards.md) |
 | 13 | `feature/parent-area` | Done 2026-11-25, released as 0.13.0 | [done/parent-area.md](done/parent-area.md) |
-| 14 | `feature/profiles` | Ready after 13 (decision D9; moved into the MVP 2026-11-24) | [pending/profiles.md](pending/profiles.md) |
+| 14 | `feature/profiles` | In progress (profiles) | [pending/profiles.md](pending/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
 | 16 | `feature/look` | Done 2026-11-25 (0.9.0; the chosen art; the guide's full body is a ChatGPT round for the human) | [done/look.md](done/look.md) |
 | 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
@@ -100,6 +100,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
+| profiles | [profiles](pending/profiles.md) | `Scripts/Core/Profiles`, `Scripts/Game/Profiles`, `Scripts/Game/Saving`, `Scripts/UI/Profiles`, the runners (Boot, Map, Lesson, Parent), `Scenes/Profiles.unity` (new), `Boot.unity`, `Map.unity`, `Lesson.unity`, `Parent.unity`, `MapScreen.prefab`, `LessonScreen.prefab`, `ParentArea.prefab`, `Prefabs/Profiles/` (new), `content/avatars.csv` (new) and `AvatarCatalog`, the importer, `voice-lines.csv`, the `App` string tables, `EditorBuildSettings` | emulator-5600 | 2026-11-25 | Claimed; Design note next |
 
 ## Where we are
 
