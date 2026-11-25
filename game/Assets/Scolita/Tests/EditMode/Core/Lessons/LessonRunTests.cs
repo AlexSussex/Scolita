@@ -6,6 +6,7 @@ using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
+using Scolita.Core.Voice;
 using Scolita.Tests.EditMode.Fakes;
 
 namespace Scolita.Tests.EditMode.Core.Lessons
@@ -212,6 +213,37 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Assert.That(resumed.Current.Kind, Is.EqualTo(ActivityKind.ListenAndPick));
             Assert.That(reviewed.CurrentStep.IsReview, Is.True);
             Assert.That(duringReview, Is.EqualTo(1));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="LessonRun.CurrentInstruction"/> says "Hai să ne amintim!" then the step's instruction (its
+        /// fills kept) for the first warm-up, in its language, among the lines prepared, and only the instruction for any
+        /// other step.
+        /// </summary>
+        [Test]
+        public void TestCurrentInstruction_RememberBeforeTheFirstWarmUp()
+        {
+            Curriculum curriculum = RealContent.Read();
+            Lesson lesson = RealContent.Lesson(curriculum, "ro-t");
+            Step review = RealContent.FirstStep(curriculum, "ro-m", ActivityKind.ListenAndPick);
+            LessonRun reviewed = new LessonRun(LessonPlan.Of(lesson, LanguageMix.Both, new PlayableSteps(Built, curriculum),
+                new[] { review, review }, 1), curriculum, TestLearningRules.Default(), new FixedRandom());
+            LessonRun plain = RomanianT(TestLearningRules.Default());
+
+            reviewed.Start();
+            VoiceSequence first = reviewed.CurrentInstruction;
+            VoiceSequence own = reviewed.Current.Instruction;
+            reviewed.Answer(ActivityAnswer.Tap(reviewed.Current.Round.Answer));
+            reviewed.Next();
+            plain.Start();
+
+            Assert.That(first.Items.Select(item => item.Line.ToString()),
+                Is.EqualTo(new[] { "ro-line-lets-remember" }.Concat(own.Items.Select(item => item.Line.ToString()))));
+            Assert.That(first.Items[2].TryGetFill(VoiceSlot.X, out VoiceFill sound), Is.True);
+            Assert.That(sound.Text, Is.EqualTo("m"));
+            Assert.That(reviewed.Lines, Has.Member(first));
+            Assert.That(reviewed.CurrentInstruction, Is.SameAs(reviewed.Current.Instruction));
+            Assert.That(plain.CurrentInstruction, Is.SameAs(plain.Current.Instruction));
         }
 
         /// <summary>Tests that <see cref="LessonRun"/> refuses a plan with no step to play.</summary>

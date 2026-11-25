@@ -6,8 +6,8 @@ using Scolita.Core.Languages;
 namespace Scolita.Core.Lessons
 {
     /// <summary>
-    /// The steps a lesson run plays, in order: the review steps first (given by
-    /// <c>progress-review</c>; none until then), then the lesson's own steps from the one it resumes
+    /// The steps a lesson run plays, in order: the review steps first (the warm-ups, <see cref="IWarmUps"/>),
+    /// then the lesson's own steps from the one it resumes
     /// at, without the steps in a language she doesn't learn and those that can't be played yet (a kind
     /// with no rules or no view: the human, 2026-11-24; a letter shape not drawn yet: <see cref="PlayableSteps"/>).
     /// </summary>

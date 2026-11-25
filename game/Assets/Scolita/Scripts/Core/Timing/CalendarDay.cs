@@ -40,6 +40,18 @@ namespace Scolita.Core.Timing
         }
 
         /// <summary>
+        /// Reads a day written as <c>yyyy-MM-dd</c> (<see cref="ToString"/>); false for anything else. Called by the
+        /// save files' readers and by <c>CalendarDayTests</c>.
+        /// </summary>
+        public static bool TryParse(string text, out CalendarDay day)
+        {
+            bool read = DateTime.TryParseExact(text, IsoFormat, CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out DateTime parsed);
+            day = read ? FromDateTimeValue(parsed) : default;
+            return read;
+        }
+
+        /// <summary>
         /// The number of calendar days from <paramref name="earlier"/> to this day: 1 for the next
         /// day, negative when <paramref name="earlier"/> is later. Called by Core's review rules and
         /// by <c>CalendarDayTests</c>.

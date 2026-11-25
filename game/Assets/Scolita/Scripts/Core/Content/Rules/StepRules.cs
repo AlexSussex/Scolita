@@ -43,6 +43,7 @@ namespace Scolita.Core.Content.Rules
             {
                 VoiceLineRules.Line(curriculum, LessonLines.LessonDone(language.Key), language.Value, problems);
                 VoiceLineRules.Line(curriculum, LessonLines.PraiseLine(language.Key, 1), language.Value, problems);
+                VoiceLineRules.Line(curriculum, LessonLines.LetsRemember(language.Key), language.Value, problems);
             }
         }
 

@@ -15,7 +15,7 @@ namespace Scolita.Core.Lessons
         /// <summary>The step.</summary>
         public Step Step { get; }
 
-        /// <summary>Whether it is a review step (given by <c>progress-review</c>), not one of the lesson's own.</summary>
+        /// <summary>Whether it is a review step (a warm-up, <see cref="IWarmUps"/>), not one of the lesson's own.</summary>
         public bool IsReview { get; }
     }
 }

@@ -123,6 +123,8 @@ namespace Scolita.Tests.EditMode.Fakes
             + "en-line-show-answer,en,line,Here is the answer. Now you do it.,,,\n"
             + "ro-line-lesson-done,ro,line,Ai terminat lec\u021Bia. Bravo!,,,\n"
             + "en-line-lesson-done,en,line,You finished the lesson. Well done!,,,\n"
+            + "ro-line-lets-remember,ro,line,Hai s\u0103 ne amintim!,,,\n"
+            + "en-line-lets-remember,en,line,Let's remember!,,,\n"
             + "ro-line-praise-1,ro,line,\"Bravo, ai reu\u0219it!\",,,\n"
             + "en-line-praise-1,en,line,\"Well done, you did it!\",,,\n"
             + "ro-line-praise-2,ro,line,E\u0219ti o stea!,,,\n"

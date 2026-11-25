@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
@@ -73,6 +74,31 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Assert.That(unknown.Reason, Is.EqualTo(ResumeReason.NextLesson));
             Assert.That(notBuilt.Plan.Lesson.Id.ToString(), Is.EqualTo("party-1"));
             Assert.That(otherLanguage.Plan.Lesson.Id.ToString(), Is.EqualTo("ro-t"));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="LessonResume.WithWarmUps"/> puts the lesson's warm-ups before its steps, whether it starts or
+        /// resumes, keeping the steps done before.
+        /// </summary>
+        [Test]
+        public void TestWithWarmUps_BeforeTheLessonsSteps()
+        {
+            Curriculum curriculum = RealContent.Read();
+            LessonOrder order = Order(LanguageMix.Both);
+            order.TryFind(ContentId.Create("ro-t"), out Lesson lesson);
+            Step warmUp = RealContent.FirstStep(curriculum, "ro-m", ActivityKind.ListenAndPick);
+            FakeWarmUps warmUps = new FakeWarmUps(warmUp);
+
+            LessonPlan started = LessonResume.Choose(order, lesson.Id, 1, LessonSignature.Of(lesson)).WithWarmUps(warmUps);
+            LessonResume resume = LessonResume.Choose(order, lesson.Id, 2, LessonSignature.Of(lesson));
+            LessonPlan resumed = resume.WithWarmUps(warmUps);
+
+            Assert.That(started.Steps.Select(step => step.IsReview), Is.EqualTo(new[] { true, false, false }));
+            Assert.That(started.Steps[0].Step, Is.SameAs(warmUp));
+            Assert.That(resumed.Steps.Select(step => step.IsReview), Is.EqualTo(new[] { true, false }));
+            Assert.That(resumed.Steps[1].Step.Number, Is.EqualTo(2));
+            Assert.That(resume.StepsDoneBefore, Is.EqualTo(1));
+            Assert.That(warmUps.AskedFor.Select(asked => asked.Id.ToString()), Is.EqualTo(new[] { "ro-t", "ro-t" }));
         }
 
         /// <summary>Tests that <see cref="LessonResume.Choose"/> gives nothing when no kind can be played.</summary>

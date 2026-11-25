@@ -37,7 +37,32 @@ namespace Scolita.Core.Voice
                 found.Add(LessonLines.LessonDone(language));
             }
 
-            return found
+            return InContent(curriculum, found);
+        }
+
+        /// <summary>
+        /// The lines of the warm-ups <paramref name="warmUps"/> played before a lesson (their steps' lines, as
+        /// <see cref="Of"/> lists a lesson's, and "Hai să ne amintim!" in their languages), each once; none for
+        /// no warm-up. Called by the Lesson scene's composition root and <c>LessonVoiceLinesTests</c>.
+        /// </summary>
+        public static IReadOnlyList<VoiceLineId> OfWarmUps(Curriculum curriculum, IEnumerable<Step> warmUps)
+        {
+            List<VoiceLineId> found = new List<VoiceLineId>();
+            foreach (Step step in warmUps)
+            {
+                foreach (Language language in step.Languages.Languages())
+                {
+                    found.Add(LessonLines.LetsRemember(language));
+                    found.AddRange(StepLines(curriculum, step, language));
+                }
+            }
+
+            return InContent(curriculum, found);
+        }
+
+        private static IReadOnlyList<VoiceLineId> InContent(Curriculum curriculum, IEnumerable<VoiceLineId> lines)
+        {
+            return lines
                 .Distinct()
                 .Where(line => curriculum.VoiceLines.Contains(line.Id))
                 .ToArray();

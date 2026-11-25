@@ -6,12 +6,16 @@ namespace Scolita.Core.Content
     /// <summary>
     /// The lines every lesson says whatever its steps' kinds, in each of its steps' languages: the
     /// praise after a step (<c>&lt;language&gt;-line-praise-1</c>, <c>-2</c> … as many as the content
-    /// has, so a new one needs no code) and the line at its end (<c>lesson-done</c>).
+    /// has, so a new one needs no code), the line at its end (<c>lesson-done</c>) and the line before its
+    /// warm-ups (<c>lets-remember</c>).
     /// </summary>
     public static class LessonLines
     {
         /// <summary>The key of the line said when a lesson is finished.</summary>
         public const string LessonDoneKey = "lesson-done";
+
+        /// <summary>The key of the line said before a lesson's warm-ups.</summary>
+        public const string LetsRememberKey = "lets-remember";
 
         private const string PraiseKeyPrefix = "praise-";
 
@@ -22,6 +26,15 @@ namespace Scolita.Core.Content
         public static VoiceLineId LessonDone(Language language)
         {
             return VoiceLineIds.For(language, VoiceLineKind.Line, LessonDoneKey);
+        }
+
+        /// <summary>
+        /// The line said before a lesson's warm-ups, in <paramref name="language"/> ("Hai să ne amintim!"). Called by
+        /// the content rules, <c>LessonVoiceLines</c> and the lesson run.
+        /// </summary>
+        public static VoiceLineId LetsRemember(Language language)
+        {
+            return VoiceLineIds.For(language, VoiceLineKind.Line, LetsRememberKey);
         }
 
         /// <summary>

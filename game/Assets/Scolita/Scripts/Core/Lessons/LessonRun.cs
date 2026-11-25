@@ -23,6 +23,8 @@ namespace Scolita.Core.Lessons
         private readonly LearningRules learningRules;
         private readonly IRandom random;
         private readonly PraisePicker praise;
+        private readonly int firstReviewIndex;
+        private readonly VoiceSequence warmUpInstruction;
         private int missesInPart;
         private bool answerShownInStep;
 
@@ -55,6 +57,17 @@ namespace Scolita.Core.Lessons
             List<VoiceSequence> lines = new List<VoiceSequence>(rules.SelectMany(step => step.Lines));
             lines.AddRange(praise.Lines);
             lines.Add(Ending);
+            firstReviewIndex = FirstReviewIndex(plan);
+            if (firstReviewIndex >= 0)
+            {
+                VoiceLineId remember = LessonLines.LetsRemember(rules[firstReviewIndex].Language);
+                if (curriculum.VoiceLines.Contains(remember.Id))
+                {
+                    warmUpInstruction = Joined(remember, rules[firstReviewIndex].Instruction);
+                    lines.Add(warmUpInstruction);
+                }
+            }
+
             Lines = lines;
             State = LessonRunState.NotStarted;
         }
@@ -88,6 +101,13 @@ namespace Scolita.Core.Lessons
 
         /// <summary>The current step's rules (its round, its lines).</summary>
         public IActivityRules Current => rules[StepIndex];
+
+        /// <summary>
+        /// What the mascot says as the current step begins: its instruction, with "Hai să ne amintim!" /
+        /// "Let's remember!" (in its language) before it for the first warm-up, in one bubble.
+        /// </summary>
+        public VoiceSequence CurrentInstruction =>
+            StepIndex == firstReviewIndex && warmUpInstruction != null ? warmUpInstruction : rules[StepIndex].Instruction;
 
         /// <summary>What is said when the lesson is finished.</summary>
         public VoiceSequence Ending { get; }
@@ -195,6 +215,38 @@ namespace Scolita.Core.Lessons
         }
 
         private static ActivityHint NoHint => new ActivityHint(null, HintCue.None, -1);
+
+        private static VoiceSequence Joined(VoiceLineId first, VoiceSequence then)
+        {
+            VoiceSequence joined = VoiceSequence.Of(first);
+            VoiceSlot[] slots = (VoiceSlot[])Enum.GetValues(typeof(VoiceSlot));
+            foreach (VoiceSequenceItem item in then.Items)
+            {
+                joined.Then(item.Line);
+                foreach (VoiceSlot slot in slots)
+                {
+                    if (item.TryGetFill(slot, out VoiceFill fill))
+                    {
+                        joined.With(slot, fill);
+                    }
+                }
+            }
+
+            return joined;
+        }
+
+        private static int FirstReviewIndex(LessonPlan plan)
+        {
+            for (int index = 0; index < plan.Steps.Count; index++)
+            {
+                if (plan.Steps[index].IsReview)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
+        }
 
         private void BeginStep(int index)
         {

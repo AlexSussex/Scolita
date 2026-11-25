@@ -380,7 +380,7 @@ namespace Scolita.Tests.EditMode.Core.Content
 
         /// <summary>
         /// Tests that <see cref="ContentRules.Check"/> fails a language with steps but without the lines
-        /// every lesson says (its end, its first praise), at its first step.
+        /// every lesson says (its end, its first praise, the line before its warm-ups), at its first step.
         /// </summary>
         [Test]
         public void TestCheck_LessonLinesExist()
@@ -388,11 +388,13 @@ namespace Scolita.Tests.EditMode.Core.Content
             Dictionary<string, string> csvs = ContentCsvs.Valid();
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-lesson-done,", "en-line-unused,en,line,Unused.,,,");
             ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-praise-1,", "en-line-unused-2,en,line,Unused.,,,");
+            ContentCsvs.ReplaceRow(csvs, ContentFileNames.VoiceLines, "en-line-lets-remember,", "en-line-unused-3,en,line,Unused.,,,");
 
             ContentProblem[] errors = ContentCsvs.Errors(csvs);
 
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-lesson-done is not in voice-lines.csv");
             ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-praise-1 is not in voice-lines.csv");
+            ContentCsvs.AssertError(errors, ContentFileNames.Steps, 6, "en-line-lets-remember is not in voice-lines.csv");
         }
 
         /// <summary>

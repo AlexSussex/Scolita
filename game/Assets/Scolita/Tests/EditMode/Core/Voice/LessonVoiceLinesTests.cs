@@ -52,5 +52,26 @@ namespace Scolita.Tests.EditMode.Core.Voice
             Assert.That(ids, Does.Contain("ro-line-praise-1").And.Contain("ro-line-praise-10").And.Contain("ro-line-lesson-done"));
             Assert.That(ids, Does.Not.Contain("en-line-praise-1"));
         }
+
+        /// <summary>
+        /// Tests that <see cref="LessonVoiceLines.OfWarmUps"/> lists "Hai să ne amintim!" and the warm-up steps' lines in their
+        /// language, and nothing for no warm-up.
+        /// </summary>
+        [Test]
+        public void TestOfWarmUps_TheWarmUpsLines()
+        {
+            ContentFolder folder = ContentImporter.RepositoryContent();
+            ContentProblems problems = new ContentProblems();
+            Curriculum curriculum = ContentTables.Read(folder.ReadTexts(problems), problems);
+            curriculum.TryGetLesson(ContentId.Create("en-t"), out Lesson lesson);
+            Step warmUp = lesson.Steps.First(step => step.Kind == ActivityKind.FirstSound);
+
+            string[] ids = LessonVoiceLines.OfWarmUps(curriculum, new[] { warmUp }).Select(line => line.ToString()).ToArray();
+
+            Assert.That(ids, Does.Contain("en-line-lets-remember").And.Contain("en-sound-t").And.Contain("en-word-tiger"));
+            Assert.That(ids, Does.Contain("en-line-first-sound").And.Contain("en-stretched-tiger"));
+            Assert.That(ids.Where(id => !id.StartsWith("en-", System.StringComparison.Ordinal)), Is.Empty);
+            Assert.That(LessonVoiceLines.OfWarmUps(curriculum, new Step[0]), Is.Empty);
+        }
     }
 }

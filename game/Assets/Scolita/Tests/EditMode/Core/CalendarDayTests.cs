@@ -18,6 +18,21 @@ namespace Scolita.Tests.EditMode.Core
             Assert.That(morning, Is.EqualTo(CalendarDay.FromDate(2026, 11, 24)));
         }
 
+        /// <summary>Tests that <see cref="CalendarDay.TryParse"/> reads the ISO form <see cref="CalendarDay.ToString"/> writes, and nothing else.</summary>
+        [Test]
+        public void TestTryParse_TheIsoFormOnly()
+        {
+            bool read = CalendarDay.TryParse(CalendarDay.FromDate(2028, 2, 29).ToString(), out CalendarDay leapDay);
+
+            Assert.That(read, Is.True);
+            Assert.That(leapDay, Is.EqualTo(CalendarDay.FromDate(2028, 2, 29)));
+            Assert.That(CalendarDay.TryParse("2026-02-30", out _), Is.False);
+            Assert.That(CalendarDay.TryParse("25.11.2026", out _), Is.False);
+            Assert.That(CalendarDay.TryParse("", out _), Is.False);
+            Assert.That(CalendarDay.TryParse(null, out CalendarDay none), Is.False);
+            Assert.That(none, Is.EqualTo(default(CalendarDay)));
+        }
+
         /// <summary>Tests that <see cref="CalendarDay.DaysSince"/> counts one day across midnight, however few minutes pass.</summary>
         [Test]
         public void TestDaysSince_MidnightMakesTheNextDay()
