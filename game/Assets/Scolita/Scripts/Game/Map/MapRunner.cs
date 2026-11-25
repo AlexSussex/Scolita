@@ -4,6 +4,7 @@ using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
 using Scolita.Core.Parent;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Voice;
@@ -24,7 +25,8 @@ namespace Scolita.Game.Map
     /// <summary>
     /// The Map scene's composition root (AGENTS.md → "How the app is put together"), the only place the
     /// galaxy map is wired together. It builds the curriculum, the voice and Core's <see cref="MapRoute"/>
-    /// from her settings and her <c>progress</c> (<see cref="ProgressFile"/>), has the screen draw it and bring the rocket (the trip
+    /// from the settings and the <c>progress</c> (<see cref="ProgressFile"/>) of the profile to open
+    /// (<see cref="ProfileList.ProfileToOpen"/>; the tester's map opens every stop), has the screen draw it and bring the rocket (the trip
     /// after a finished planet), says the mascot's lines (<see cref="MapLines"/>), and opens a lesson: Go's,
     /// or a stop she taps, written into <c>lesson-run.json</c> for the Lesson scene unless that already names
     /// it (so a lesson left half-way resumes at its step). It also counts her play time for the daily limit
@@ -47,6 +49,7 @@ namespace Scolita.Game.Map
         [SerializeField] private TrailCatalog trails;
         [SerializeField] private RewardRulesAsset rewardRules;
         [SerializeField] private LearningRulesAsset learningRules;
+        [SerializeField] private AvatarCatalog avatars;
 
         private SaveStore profileFiles;
         private LearnerProgress progress;
@@ -165,7 +168,9 @@ namespace Scolita.Game.Map
             Language appLanguage = tablet.AppLanguage;
             voice.SetVolume(tablet.VoiceVolume);
             AppLocale.Select(appLanguage);
-            profileFiles = SaveStore.ForProfile(saveRoot, BuiltInProfiles.FirstChild);
+            ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
+            Profile profile = profiles.Load().ProfileToOpen;
+            profileFiles = profiles.FilesOf(profile);
             LearningSettingsData learning = profileFiles.Load(LearningSettingsData.FileName,
                 LearningSettingsData.CreateDefaults()).Data;
             LanguageMix mix = learning.LanguageMix;
@@ -182,7 +187,7 @@ namespace Scolita.Game.Map
             Domain domain = curriculum.Domains[0];
             LessonOrder order = new LessonOrder(domain, mix, new PlayableSteps(registry.PlayableKinds(), curriculum));
             progress = ProgressFile.Load(profileFiles, curriculum, order);
-            route = new MapRoute(curriculum, domain, order, progress);
+            route = new MapRoute(curriculum, domain, order, progress, profile.OpensEveryLesson);
             if (route.GoStop == null)
             {
                 Debug.LogError("Map: no lesson has a step that can be played yet.");

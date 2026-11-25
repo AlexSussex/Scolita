@@ -5,11 +5,11 @@ using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Timing;
 using Scolita.Game.Lessons;
 using Scolita.Game.Map;
-using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
@@ -184,7 +184,7 @@ namespace Scolita.Tests.PlayMode.Lessons
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
         }
 
         private static ChoiceTile[] Tiles(LessonRunner runner)

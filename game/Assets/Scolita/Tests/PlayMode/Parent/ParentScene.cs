@@ -6,9 +6,9 @@ using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Languages;
 using Scolita.Core.Parent;
+using Scolita.Core.Profiles;
 using Scolita.Core.Timing;
 using Scolita.Game.Parent;
-using Scolita.Game.Profiles;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -204,7 +204,7 @@ namespace Scolita.Tests.PlayMode.Parent
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
         }
 
         private static string TabletFile()

@@ -4,6 +4,7 @@ using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
 using Scolita.Core.Map;
 using Scolita.Core.Parent;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Timing;
 using Scolita.Game.Lessons;
@@ -19,7 +20,8 @@ namespace Scolita.Game.Parent
 {
     /// <summary>
     /// The Parent scene's composition root (AGENTS.md → "How the app is put together"), reached only through the
-    /// parent gate on the map: it wakes the rocket (today's play starts again), builds the report of her progress
+    /// parent gate on the map: it opens the profile to open (<see cref="ProfileList.ProfileToOpen"/>), wakes its rocket
+    /// (today's play starts again), builds the report of its progress
     /// (<see cref="ParentReport"/>) and shows it with the settings; every change is saved at once (the profile's
     /// learning settings, the tablet's settings; one that can't be saved stays as it was, and the screen shows it so)
     /// and the map reads it when it opens again. Reset asks twice, then deletes her progress (<see cref="ProgressReset"/>),
@@ -37,6 +39,7 @@ namespace Scolita.Game.Parent
         [SerializeField] private ActivityRegistry registry;
         [SerializeField] private LearningRulesAsset learningRules;
         [SerializeField] private ParentAreaView screen;
+        [SerializeField] private AvatarCatalog avatars;
 
         private Curriculum curriculum;
         private ParentRules rules;
@@ -139,7 +142,8 @@ namespace Scolita.Game.Parent
             string saveRoot = Application.persistentDataPath;
             tabletFiles = SaveStore.ForTablet(saveRoot);
             tablet = tabletFiles.Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data;
-            profileFiles = SaveStore.ForProfile(saveRoot, BuiltInProfiles.FirstChild);
+            ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
+            profileFiles = profiles.FilesOf(profiles.Load().ProfileToOpen);
             learning = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data;
             AppLocale.Select(tablet.AppLanguage);
             new PlayClock(profileFiles, clock).Wake();

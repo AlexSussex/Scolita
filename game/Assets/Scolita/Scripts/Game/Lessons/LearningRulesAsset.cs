@@ -1,5 +1,6 @@
 using Scolita.Core.Lessons;
 using Scolita.Core.Parent;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Tracing;
 using UnityEngine;
@@ -11,7 +12,8 @@ namespace Scolita.Game.Lessons
     /// how she learns, in one place, read into Core's <see cref="LearningRules"/>. The tracing numbers are in a
     /// letter shape's units (a small letter is 100 high). <c>docs/curriculum.md</c> §5's numbers (learned,
     /// the reviews, the warm-ups) and how long a damaged save's copies are kept are read into Core's
-    /// <see cref="ProgressRules"/>; the parent gate's and the daily limit's numbers into Core's <see cref="ParentRules"/>.
+    /// <see cref="ProgressRules"/>; the parent gate's and the daily limit's numbers into Core's <see cref="ParentRules"/>; the
+    /// most children and the longest name into Core's <see cref="ProfileRules"/>.
     /// </summary>
     [CreateAssetMenu(fileName = "LearningRules", menuName = "Scolita/Learning rules")]
     public sealed class LearningRulesAsset : ScriptableObject
@@ -46,6 +48,8 @@ namespace Scolita.Game.Lessons
         [SerializeField, Range(ParentRules.FewestGateChoices, ParentRules.MostGateChoices)] private int gateChoices = 3;
         [SerializeField, Min(0f)] private float gateRestSeconds = 30f;
         [SerializeField] private int[] sessionLimitMinutes = { 10, 15, 20 };
+        [SerializeField, Range(2, 6)] private int mostChildProfiles = 6;
+        [SerializeField, Min(2)] private int nameMostCharacters = 20;
 
         /// <summary>
         /// The rules, for Core; throws an <see cref="System.ArgumentOutOfRangeException"/> for a number
@@ -81,6 +85,16 @@ namespace Scolita.Game.Lessons
         {
             return new ParentRules(gateHoldSeconds, gateLowestNumber, gateHighestNumber, gateChoices, gateRestSeconds,
                 sessionLimitMinutes);
+        }
+
+        /// <summary>
+        /// The most children's profiles and the longest name, for Core; throws an
+        /// <see cref="System.ArgumentOutOfRangeException"/> for a number out of range. Called by the profile store and the
+        /// tests.
+        /// </summary>
+        public ProfileRules ToProfileRules()
+        {
+            return new ProfileRules(mostChildProfiles, nameMostCharacters);
         }
     }
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using Scolita.Core.Content;
+using Scolita.Core.Profiles;
 using Scolita.Core.Rewards;
 using Scolita.Game.Lessons;
 using Scolita.Game.Map;
-using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Rewards;
 using Scolita.Game.Saving;
@@ -222,7 +222,7 @@ namespace Scolita.Tests.PlayMode.Rewards
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
         }
     }
 }

@@ -6,6 +6,7 @@ using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Lessons;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Randomness;
 using Scolita.Core.Timing;
@@ -25,7 +26,8 @@ namespace Scolita.Game.Lessons
 {
     /// <summary>
     /// The Lesson scene's composition root (AGENTS.md → "How the app is put together"), the only place
-    /// a lesson is wired together. It builds the curriculum and the voice, picks the lesson Go opens
+    /// a lesson is wired together. It opens the saves of the profile to open (<see cref="ProfileList.ProfileToOpen"/>),
+    /// builds the curriculum and the voice, picks the lesson Go opens
     /// (the one in progress at its step, else the next one: the human, 2026-11-24), builds Core's
     /// <see cref="LessonRun"/> and each kind's view from <see cref="ActivityRegistry"/>, passes her taps
     /// to Core and says what Core decides, saves where she is after each step and when the app goes to
@@ -51,6 +53,7 @@ namespace Scolita.Game.Lessons
         [SerializeField] private ConstellationCatalog constellations;
         [SerializeField] private TrailCatalog trails;
         [SerializeField] private RewardRulesAsset rewardRules;
+        [SerializeField] private AvatarCatalog avatars;
         [SerializeField] private float secondsAfterAStep = 0.6f;
 
         private readonly Dictionary<ActivityKind, ActivityView> views = new Dictionary<ActivityKind, ActivityView>();
@@ -129,7 +132,8 @@ namespace Scolita.Game.Lessons
             voice.Begin(curriculum);
             voice.SetVolume(SaveStore.ForTablet(Application.persistentDataPath)
                 .Load(TabletSettingsData.FileName, TabletSettingsData.CreateDefaults()).Data.VoiceVolume);
-            profileFiles = SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            ProfileStore profiles = ProfileStore.ForApp(avatars, learningRules);
+            profileFiles = profiles.FilesOf(profiles.Load().ProfileToOpen);
             LanguageMix mix = profileFiles.Load(LearningSettingsData.FileName, LearningSettingsData.CreateDefaults()).Data.LanguageMix;
             IReadOnlyCollection<ActivityKind> playable = PlayableKinds();
             if (curriculum.Domains.Count == 0)

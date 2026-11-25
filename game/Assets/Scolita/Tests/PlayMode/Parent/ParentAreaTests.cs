@@ -5,11 +5,11 @@ using NUnit.Framework;
 using Scolita.Core.Content;
 using Scolita.Core.Languages;
 using Scolita.Core.Map;
+using Scolita.Core.Profiles;
 using Scolita.Core.Progress;
 using Scolita.Core.Timing;
 using Scolita.Game.Lessons;
 using Scolita.Game.Parent;
-using Scolita.Game.Profiles;
 using Scolita.Game.Progress;
 using Scolita.Game.Rewards;
 using Scolita.Game.Saving;
@@ -37,7 +37,7 @@ namespace Scolita.Tests.PlayMode.Parent
             KeptFiles kept = ParentScene.Keep();
             try
             {
-                SaveStore store = SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+                SaveStore store = SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
                 MapScene.SaveProgress("ro-a", "ro-a");
                 LearnerProgress progress = new LearnerProgress(new MapProgress(new[] { ContentId.Create("ro-a") }, default),
                     null, null);
@@ -250,7 +250,7 @@ namespace Scolita.Tests.PlayMode.Parent
 
         private static SaveStore ProfileStore()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
         }
     }
 }

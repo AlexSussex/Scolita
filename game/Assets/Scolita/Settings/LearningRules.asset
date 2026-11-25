@@ -42,3 +42,5 @@ MonoBehaviour:
   gateChoices: 3
   gateRestSeconds: 30
   sessionLimitMinutes: 0a0000000f00000014000000
+  mostChildProfiles: 6
+  nameMostCharacters: 20

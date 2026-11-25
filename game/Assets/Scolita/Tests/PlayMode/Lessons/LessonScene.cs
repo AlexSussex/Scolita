@@ -6,9 +6,9 @@ using NUnit.Framework;
 using Scolita.Core.Activities;
 using Scolita.Core.Content;
 using Scolita.Core.Lessons;
+using Scolita.Core.Profiles;
 using Scolita.Core.Tracing;
 using Scolita.Game.Lessons;
-using Scolita.Game.Profiles;
 using Scolita.Game.Saving;
 using Scolita.Game.Scenes;
 using Scolita.Game.Settings;
@@ -256,7 +256,7 @@ namespace Scolita.Tests.PlayMode.Lessons
 
         private static SaveStore Store()
         {
-            return SaveStore.ForProfile(Application.persistentDataPath, BuiltInProfiles.FirstChild);
+            return SaveStore.ForProfile(Application.persistentDataPath, ProfileList.FirstChildId);
         }
 
         private static string FilePath(string name)

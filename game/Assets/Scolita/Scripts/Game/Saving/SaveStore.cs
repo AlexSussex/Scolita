@@ -70,7 +70,7 @@ namespace Scolita.Game.Saving
         public string Folder => directory;
 
         /// <summary>
-        /// A store for the tablet's own files (its settings, later the profile list) directly in
+        /// A store for the tablet's own files (its settings, the profile list) directly in
         /// <paramref name="saveRoot"/>, which is created on the first save if it doesn't exist. A
         /// missing or relative folder makes every load give the defaults
         /// (<see cref="SaveLoadOutcome.Unreadable"/>) and every save fail, after logging an error.
@@ -142,6 +142,40 @@ namespace Scolita.Game.Saving
             {
                 Debug.LogWarning("Scolita: the profiles' folders could not be listed: " + exception.Message);
                 return new ProfileId[0];
+            }
+        }
+
+        /// <summary>
+        /// Deletes the folder of <paramref name="profile"/>, exactly <c>&lt;saveRoot&gt;/profiles/&lt;id&gt;</c>, and
+        /// everything in it (a folder that is a link elsewhere is unlinked, never followed). True when it is gone (or was
+        /// never there); false, after logging the error, when it could not be deleted or the root can't be used. Called
+        /// by the profile store once the list without the profile is saved, and the tests.
+        /// </summary>
+        public static bool DeleteProfileFolder(string saveRoot, ProfileId profile)
+        {
+            string folder = ProfileFolder(saveRoot, profile);
+            if (string.IsNullOrWhiteSpace(saveRoot) || !Path.IsPathRooted(saveRoot))
+            {
+                Debug.LogError("Scolita: the save folder '" + saveRoot + "' can't be used; the profile " + profile
+                    + " was not deleted.");
+                return false;
+            }
+
+            try
+            {
+                if (!Directory.Exists(folder))
+                {
+                    return true;
+                }
+
+                bool isLink = (File.GetAttributes(folder) & FileAttributes.ReparsePoint) != 0;
+                Directory.Delete(folder, !isLink);
+                return true;
+            }
+            catch (Exception exception) when (IsFileSystemError(exception))
+            {
+                Debug.LogError("Scolita: the folder of the profile " + profile + " could not be deleted: " + exception.Message);
+                return false;
             }
         }
 
