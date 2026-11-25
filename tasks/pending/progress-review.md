@@ -163,14 +163,15 @@ counts below 0 become 0; a learned item without a next review is due today.
   decides the trip);
 - **0.9.0 and earlier** (no `map-progress.json`): every lesson before the one in
   `lesson-run.json` is done (`MapProgress.Before`, as `galaxy-map` did);
-- both are joined (neither ever claims more than she did); the letters the done lessons
-  introduced become `Learning` (she met them; no right answers are invented);
+- the second only when there is no map progress (0.10.0's file was current, so it is taken
+  alone); the letters the done lessons introduced become `Learning` (she met them; no right
+  answers are invented);
 - saved at once as `progress.json` version 1; `map-progress.json` is left as it is, never
   read again while `progress.json` reads.
 
-A **damaged** `progress.json` is set aside dated (as every file) and rebuilt the same way,
-with a warning in the log: the map keeps her place from `map-progress.json` and
-`lesson-run.json` instead of starting from the first lesson (a deviation from the acceptance
+A **damaged** `progress.json` is set aside dated (as every file) and rebuilt from both
+(`map-progress.json` is stale by then), with a warning in the log: the map keeps the lessons done
+and the rocket's stop instead of starting from the first lesson (a deviation from the acceptance
 criterion's wording, following `galaxy-map`'s reviewed decision: her place is not thrown
 away). Her item counts from the damaged file are in its dated copy, for rescue by hand.
 
@@ -181,8 +182,9 @@ app version that set the last copy aside and the days it was read and saved fine
 
 - **"A newer version"**: `SaveStore` writes `Application.version` (from `VERSION`) into the
   ledger when it sets a copy aside; a day counts only when the version reading and saving the
-  file is newer (`System.Version` comparison). Copies from 0.10.0, made before the ledger,
-  are found at start and counted as set aside by an unknown, older version.
+  file is newer (`System.Version` comparison). Copies found with no entry (0.10.0's, made
+  before the ledger, or after a damaged ledger) are counted as set aside by the version running
+  then, so only a later release removes them (review finding 1).
 - **"Read and saved fine on a day"**: the store notes the calendar day (the tablet's local
   date) when a file it loaded without trouble in this session is saved without trouble, once
   per file per day. A new damaged copy of the same file starts the count again.
@@ -207,3 +209,176 @@ remember" line. Emulator: an upgrade from 0.10.0 keeps her place, a damaged
 **Another domain.** Items, mastery, the schedule and the save know nothing of letters except
 `PractisedItems` and `WarmUps`' choice of kinds: a numbers domain adds a `Number` item kind,
 its line in `PractisedItems` and its warm-up kinds.
+
+### Decisions
+
+- **A damaged `progress.json` keeps her place** (the lessons done and the rocket's stop, from
+  `map-progress.json` and the lessons before the one in `lesson-run.json`) rather than starting the
+  map from the first lesson, as `galaxy-map`'s review decided for its own file; her item counts and
+  learned letters are only in the dated copy (rescue by hand). A deviation from the acceptance
+  criterion's wording.
+- **An update from 0.10.0** takes `map-progress.json` alone (it was current); the lessons before
+  the one in `lesson-run.json` are added only when there is no map progress (0.9.0 and earlier) or
+  after damage.
+- **"Hai să ne amintim!" is one bubble with the warm-up's instruction**
+  (`LessonRun.CurrentInstruction`), so it is shown even where no voice speaks.
+- **Counting steps, not taps**, and only warm-ups move the review schedule (Design note).
+- **Words** are counted and get a state but no warm-ups (out of scope); `ItemMastered` is raised for
+  words too.
+- **The damaged copies' days** count only for a file the app reads and saves: the settings files are
+  now saved back at start (`BootLoader`), `progress`, `lesson-run` and the map's files as they are
+  played; `map-progress.json` is never written again, so copies of it made by 0.10.0 stay until
+  removed by hand (a known limit; none are expected).
+- **Copies found without a watch** (0.10.0's, or after a damaged ledger) count as set aside by the
+  version running: only a later release removes them (review finding 1).
+
+### Fresh-eyes review (2026-11-25, a second agent, before the push)
+
+1. Medium: a copy with no ledger entry counted as set aside by an unknown older version, so the
+   version that made it could remove it. **Fixed:** `DamagedCopies.Found` takes the running version
+   (`TestRemoveSettledCopies_CopiesFromBeforeTheLedger` proves the same version never removes them).
+2. Medium: a folder that can't be listed made the ledger forget everything. **Fixed:** nothing is
+   removed or written then.
+3. Medium: rebuilding a damaged `progress.json` drops her item counts, and the lessons before the
+   one in progress follow the current mix. **Partly fixed:** an update from 0.10.0 takes
+   `map-progress.json` alone; the Design note's wording is corrected. **Recorded:** after damage, a
+   mix changed from one language to both may mark the other language's lessons before the lesson
+   in progress done (as `galaxy-map`'s fallback did); keeping the last good file
+   (`progress.previous.json`) to restore from is a follow-up.
+4. Low: the settings files were never saved, so their copies never went. **Fixed:** `BootLoader`
+   saves them back after a fine read.
+5. Low: a warm-up that can't be played used a slot. **Fixed:** `WarmUps` takes the playable steps
+   (`TestFor_OnlyStepsThatCanBePlayed`).
+6. Low: a warm-up word could come from a later planet. **Fixed:** only words of lessons up to this
+   one.
+7. Low: rebase onto the rewards commits. **Done**, retested.
+8. Low: test names and missing cases. **Fixed:** `TestRecordRight_…`, `TestLessonProgress_…`,
+   `TestConstructor_…`, a direct `TestIsReached_NeedsRightsKindsAndDays`; added a newer-version
+   ledger test (nothing removed, never written over).
+
+### Pushed
+
+- `c8a2499` `core:` learner progress, mastery, the review schedule, warm-ups, the damaged copies'
+  rule (and `LessonRun.CurrentInstruction`, `LessonResume.WithWarmUps`, `CalendarDay.TryParse`);
+- `459e46d` `game:` the `progress` save (migrated from `map-progress`), `SaveStore`'s ledger and
+  `RemoveSettledCopies`, `BootLoader`'s cleanup, the runners, the rules asset's numbers;
+- this Progress; then the close-out (0.11.0).
+
+### Test results
+
+- **Batch mode, rebased on the rewards commits (`a256f28`):** the core commit alone: EditMode
+  676/676, PlayMode 26/26; the tip: EditMode 687/687, PlayMode 27/27, `BuildAndroidDebug` exit 0; no
+  `warning CS` and no error in any log.
+- **Emulator** (`emulator-5600`, AVD `Scolita_Tablet_tracing`, Android 16, 2000 × 1200 by `wm size`):
+  - **An update from 0.10.0:** 0.10.0 installed clean, `ro-a`'s first step played, then its map
+    progress set to `ro-a`, `en-a`, `ro-m` done with the rocket on `en-m` (pushed, then shown by 0.10.0);
+    this build installed over it: the same three stops ticked, the rocket on `en-m`, no trip; the log
+    "progress.json is made from the earlier saves (3 lessons done)"; `progress.json` holds the three
+    lessons, `rocketStop` `en-m`, a (ro), a (en) and m (ro) met; `map-progress.json` left as it was.
+  - **A warm-up on a later day:** a `progress.json` with m (ro) learned the day before (due today):
+    **Hai!** opened `ro-p` with "Lesson: ro-p starts with 1 warm-up(s): FirstSound m (ro)" (the picture
+    of mama among a, t, m; another start gave `ListenAndPick` with "Hai să ne amintim! Ascultă și atinge
+    litera potrivită. Atinge litera m." in one bubble); answered right: the step dots went on to `p`'s
+    `MeetLetter`, and m was saved with `reviewStep` 1, `nextReview` three days on, today in `rightDays`
+    and `daysPlayed`.
+  - **A damaged `progress.json`:** set aside as `progress.broken-20261125-184818.json` with the
+    warning, `broken-copies.json` written, the map kept six stops done and the rocket hopped to `ro-p`.
+  - **The copies' cleanup over days** (`adb root`, the emulator's date moved 26, 27, 28 November, the
+    ledger's `setAsideBy` edited to an older version): one fine day added per day, and at the start
+    after the third, "the damaged copies of progress.json were removed (1)"; the ledger empty.
+  - **Romanian only:** only the Romanian stops (three ticked, the rocket on `ro-p`); back to both: the
+    six stops ticked again (the English progress kept).
+  - **Reinstalling the APK over itself** after a force-stop: `progress.json` and the map unchanged.
+- **Not run:** the Device Simulator and the Profiler window (batch mode only; the slice adds no
+  per-frame work: progress is recorded at a step's end, saved with the step); listening by ear (no
+  installed voice on the emulator; the bubble showed the line); the warm-up by playing on two real
+  days (a pushed save stood in; the date steps were used for the cleanup). Screens: none new.
+
+## How to test locally
+
+Prerequisites: the worktree's Unity project (`game/`), `UNITY` set to
+`C:\Program Files\Unity\Hub\Editor\6000.3.29f1\Editor\Unity.exe`, `ADB` to the SDK's
+`platform-tools/adb.exe`, your emulator as `EMU` (a tablet AVD, landscape, started with
+`-feature -Vulkan`), a scratch folder as `S`, and
+`F=/storage/emulated/0/Android/data/com.softshack.scolita/files/profiles/child-1`.
+Start the app with
+`"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles`
+and follow its log with `"$ADB" -s $EMU logcat -s Unity` (the lines below start with `Progress:`,
+`Lesson:` or `Scolita:`).
+
+### Core slice
+
+1. `"$UNITY" -batchmode -nographics -projectPath game -runTests -testPlatform EditMode -testResults $S/editmode.xml -logFile $S/editmode.log`.
+   Expected: every test passes, among them `MasteryTests` (6), `ReviewScheduleTests` (4),
+   `LearnerProgressTests` (7), `ItemProgressTests` (3), `PractisedItemsTests` (4),
+   `LessonProgressTests` (4), `WarmUpsTests` (8), `ProgressRebuildTests` (2), `ProgressRulesTests` (2),
+   `DamagedCopiesTests` (4), and the new cases in `LessonRunTests`, `LessonResumeTests`,
+   `LessonVoiceLinesTests`, `CalendarDayTests` and `ContentRulesTests`.
+2. What they prove, with a fake clock: 6 right answers across 2 kinds on 2 days make a letter
+   learned (6 on one day, or of one kind, don't; English has its own number; practice never
+   counts); a learned letter comes back 1 day later, then 3, then 7, and a miss brings it back
+   sooner; at most 2 warm-ups, the most overdue first, only letters in the lesson's language and
+   her mix, taught before the lesson, with only taught letters as choices; a step done is a right
+   answer, a step done with the answer shown is practice; a damaged save's copies go only after a
+   newer version read and saved the file fine on 3 different days.
+
+### Game slice
+
+1. The same EditMode run. Expected: `ProgressDataTests` (3: the shape, the round trip, unknown and
+   malformed values), `ProgressFileTests` (5: the migration from 0.10.0 and from 0.9.0, a damaged
+   file keeps her place, a newer file is never saved over, Romanian only keeps the English
+   progress), `SaveStoreCopiesTests` (6), `LearningRulesAssetTests` (2) pass.
+2. `"$UNITY" -batchmode -projectPath game -runTests -testPlatform PlayMode -testResults $S/playmode.xml -logFile $S/playmode.log`.
+   Expected: every test passes, among them `LessonFlowTests.TestLessonRunner_StartsWithAWarmUp`
+   (a lesson with m due starts with "Hai să ne amintim!" and a warm-up on m among a, m, t; once
+   answered, the lesson's own first step, m one step on in `progress.json`).
+3. Build and install: `"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log`,
+   then `"$ADB" -s $EMU install -r game/Builds/Android/Scolita-<version>-debug.apk`.
+4. **An update from 0.10.0 keeps her place.** `"$ADB" -s $EMU uninstall com.softshack.scolita`,
+   install `C:\Projects\Scolita\local\apks\Scolita-0.10.0-debug.apk`, start it, play `ro-a`
+   to its end (or push a `map-progress.json`:
+   `{"version":1,"doneLessons":["ro-a","en-a"],"rocketStop":"ro-m"}` to `$F`), then install
+   this build over it (`install -r`) and start it. Expected: the map shows the same stops done
+   and the rocket where it was, with no trip; the log says
+   `Progress: progress.json is made from the earlier saves (2 lessons done).`;
+   `"$ADB" -s $EMU shell ls $F` shows `progress.json` beside the untouched `map-progress.json`;
+   `"$ADB" -s $EMU shell cat $F/progress.json` lists the done lessons, `rocketStop` and the
+   letter a met in both languages (`"state": "learning"`, no rights).
+5. **Her answers are counted.** Play `ro-m` to its end. `cat $F/progress.json`: m in Romanian has
+   `rights` by kind (`ListenAndPick`, `LetterHunt`, `TraceLetter`, `FirstSound`, one each when
+   answered without the answer shown), today in `rightDays`, and today in `daysPlayed`; a step
+   finished after the answer was shown counts in `practised` instead.
+6. **A warm-up on a later day.** Push a `progress.json` where m in Romanian was learned yesterday
+   (due today): `{"version":1,"doneLessons":["ro-a","en-a","ro-m","en-m","ro-t","en-t"],"rocketStop":"ro-p","daysPlayed":[],"items":[{"kind":"letter","id":"m","language":"ro","state":"learned","rights":[{"activity":"ListenAndPick","count":3},{"activity":"FirstSound","count":3}],"practised":0,"rightDays":["<yesterday>","<today - 2>"],"learnedOn":"<yesterday>","reviewStep":0,"nextReview":"<today>"}]}`
+   (dates as `yyyy-MM-dd`), start the app and tap **Hai!**. Expected: `ro-p` opens with
+   "Hai să ne amintim!" in the bubble, then a warm-up on m (the m among a and t, or the picture of
+   mama with m, a, t); the step dots count it; the log says
+   `Lesson: ro-p starts with 1 warm-up(s): …`. Answer it right: the lesson goes on with `MeetLetter`
+   of p, and `progress.json` shows m with `"reviewStep": 1` and `nextReview` 3 days on.
+   **With the clock instead** (the brief's way): make m learned by playing (6 right answers in 2
+   kinds on 2 days: play `ro-m`, set the emulator's date a day on with `"$ADB" -s $EMU root` and
+   `"$ADB" -s $EMU shell date <MMDDhhmmYYYY.ss>` after `settings put global auto_time 0`, play it
+   again; the log says `Progress: letter m (ro) is learned`), move the date one more day on, and
+   open the next Romanian lesson: it starts with the warm-up.
+7. **A damaged progress file.** `"$ADB" -s $EMU shell "echo '{ not json' > $F/progress.json"`,
+   start the app. Expected: the map keeps her place (from `map-progress.json` and
+   `lesson-run.json`), the log has `progress.json could not be read … set aside as
+   progress.broken-<date-time>.json` and `Progress: progress.json was damaged and set aside`;
+   `ls $F` shows the dated copy and `broken-copies.json`, whose `files` list `progress` with the
+   version that set it aside (the map keeps the lessons done and the rocket's stop; her letters'
+   counts are only in the dated copy). Do it twice: two dated copies.
+8. **The copies go after three fine days of a newer version.** Edit `$F/broken-copies.json` so the
+   copy was set aside by an older version (`"setAsideBy": "0.10.0"`), start the app and play a
+   step on three different days (move the emulator's date as in step 6): each day adds one day to
+   `fineDays`; at the next start after the third, the log says `the damaged copies of
+   progress.json were removed (n)` and the copies are gone. Copies found with no entry (0.10.0's)
+   are watched as set aside by the version running, so only a later release removes them.
+9. **Romanian only keeps the English progress.** Push `learning-settings.json` with
+   `"languageMix": "ro"`, restart: the map shows only the Romanian stops (the planet parties' English
+   steps are left out); push it back to `both`: the English stops done before are still done, and
+   `progress.json` still holds the English letters.
+10. **Kill and reinstall.** After step 5, `"$ADB" -s $EMU shell am force-stop com.softshack.scolita`,
+    `install -r` the same APK again and start it: the map and `progress.json` are as before.
+
+Cleanup: `"$ADB" -s $EMU shell pm clear com.softshack.scolita`; set the date back
+(`settings put global auto_time 1`).
