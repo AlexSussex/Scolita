@@ -1,6 +1,6 @@
 # Task: feature/curriculum-research-names
 
-> **Status: Ready** (docs only; best done before planet 6's content, since
+> **Status: In progress (curriculum-research-names)** (docs only; best done before planet 6's content, since
 > v1 brings names in after planet 6; one curriculum research brief at a
 > time edits `docs/curriculum.md`). The human agreed on 2026-11-24 that
 > letters are met by their sound first and their names come later.
