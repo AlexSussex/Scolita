@@ -70,7 +70,7 @@ Each brief file therefore reads, top to bottom:
 | 14 | `feature/profiles` | Done 2026-11-26, released as 0.14.0 | [done/profiles.md](done/profiles.md) |
 | 15 | `feature/content-letters-1` | Done 2026-11-25, released as 0.8.1 (the human's ticks pending) | [done/content-letters-1.md](done/content-letters-1.md) |
 | 16 | `feature/look` | Done 2026-11-25 (0.9.0; the chosen art; the guide's full body is a ChatGPT round for the human) | [done/look.md](done/look.md) |
-| 17 | `feature/sound-feel` | After 12, 14, 15 and 16 | [pending/sound-feel.md](pending/sound-feel.md) |
+| 17 | `feature/sound-feel` | In progress (sound-feel) | [pending/sound-feel.md](pending/sound-feel.md) |
 | 18 | `feature/content-ledger` | Done 2026-11-24, released as 0.3.1 (a chore from `content-model`'s follow-ups) | [done/content-ledger.md](done/content-ledger.md) |
 
 ### After the MVP
@@ -101,6 +101,7 @@ progress visible"). Empty when nobody is at work.
 | Agent | Brief | Touches | Emulator | Since | Status |
 | --- | --- | --- | --- | --- | --- |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
+| sound-feel | [sound-feel](pending/sound-feel.md) | `Scripts/Core/Audio` (new), `Scripts/Game/Audio` (new), `Assets/Scolita/Audio`, `ThirdParty/`, `Plugins/Android` (VIBRATE), the tablet's `settings.json` (a new version), the parent area's settings card (`ParentArea.prefab`), prefabs and scenes that play sounds (Boot, Map, Lesson, Profiles; `MapScreen`, `LessonScreen`, the activity views, the rewards' prefabs), `ProjectSettings/AudioManager.asset` | emulator-5600 | 2026-11-26 | Design note next |
 
 ## Where we are
 

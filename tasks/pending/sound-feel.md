@@ -1,7 +1,6 @@
 # Task: feature/sound-feel
 
-> **Status: After `rewards`, `profiles`, `content-letters-1` and
-> `look`.** The last MVP brief.
+> **Status: In progress (sound-feel).** The last MVP brief.
 
 Read `AGENTS.md` first (especially "Audio", "Performance"), and the
 completion records in `tasks/done/`.
