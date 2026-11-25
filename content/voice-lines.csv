@@ -500,3 +500,23 @@ en-word-panda,en,word,panda,,,,listen only; word twin
 en-word-pony,en,word,pony,,,,listen only; word twin
 en-word-tennis,en,word,tennis,,,,listen only; word twin
 en-word-domino,en,word,domino,,,,listen only; word twin
+ro-line-gate-11,ro,line,Atinge numărul unsprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-11,en,line,Tap the number eleven.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-12,ro,line,Atinge numărul doisprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-12,en,line,Tap the number twelve.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-13,ro,line,Atinge numărul treisprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-13,en,line,Tap the number thirteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-14,ro,line,Atinge numărul paisprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-14,en,line,Tap the number fourteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-15,ro,line,Atinge numărul cincisprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-15,en,line,Tap the number fifteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-16,ro,line,Atinge numărul șaisprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-16,en,line,Tap the number sixteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-17,ro,line,Atinge numărul șaptesprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-17,en,line,Tap the number seventeen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-18,ro,line,Atinge numărul optsprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-18,en,line,Tap the number eighteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-gate-19,ro,line,Atinge numărul nouăsprezece.,,,,the parent gate (for the parent; never in a bubble)
+en-line-gate-19,en,line,Tap the number nineteen.,,,,the parent gate (for the parent; never in a bubble)
+ro-line-rocket-rests,ro,line,Racheta se odihnește. Ne vedem mâine!,,,,the map asleep: the daily limit reached
+en-line-rocket-rests,en,line,The rocket needs a rest. See you tomorrow!,,,,the map asleep: the daily limit reached
