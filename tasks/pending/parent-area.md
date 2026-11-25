@@ -199,3 +199,170 @@ it). Emulator: every screen at every size, in both app languages.
 **Another domain.** The gate and the limit know nothing of letters. The grid reads a track's
 items: a numbers domain's track gives its numbers the same way (an `ItemKind` each, as
 `progress-review` set out); the next lessons and the voice status are per lesson and per line.
+
+### Built
+
+- **Core** (`Scripts/Core/Parent`): `ParentGate` (+ `GateStage`, `ParentRules`: a 3 s hold, 11–19, three choices,
+  and a 30 s rest after a wrong number, added after the review), `DailyPlay`, `SessionLimit`, `ParentReport`
+  (`LetterRow`, `LetterCell`, `NextLesson`), `VoiceStatus` (`LanguageVoiceStatus`); `MapLines.Resting`.
+- **Game:** `Scripts/Game/Parent` (`ParentRunner`, the Parent scene's root; `ParentGateFlow` with `IParentGateInput`
+  and `ParentGateView`; `ParentAreaView`, `IParentAreaInput`, `ParentSettingsShown`, `ResetQuestion`;
+  `PlayClock` and `PlayTimeData`; `ProgressReset`), `SaveStore.Delete`, `LearningSettingsData` version 2,
+  `AppLocale` (the locale and the tables' words), `AndroidBack`, `AppScene.Parent`, `LessonVoice.Silence`,
+  `RewardsSession.IsBookOpen`, `VoiceHost.SetVolume` (clips and the tablet's voice), `GuideMood.Sleepy`; `MapRunner`
+  (the gate, play time, resting, Back) and `LessonRunner` (play time, the voice's volume, Back); `BootLoader` selects
+  the app's language.
+- **UI:** `Scripts/UI/Parent` (`ParentAreaScreen`, `ParentGatePanel`, `ParentHoldButton`, `PillButton`,
+  `LetterCellView`, `SliderRelease`); `Prefabs/Parent/ParentArea.prefab` and `ParentButton.prefab` (in
+  `MapScreen.prefab`'s `ParentPlace`, with the gate's panel at the top of the map's canvas); `Scenes/Parent.unity`;
+  the guide's sleepy frames; Go, the bar's words, "Mai departe", "În cartea mea" and "Bravo!" from the string tables.
+- **The string tables** (`Assets/Scolita/Localization/`): locales `ro` and `en-GB`, table `App` (58 keys), preloaded;
+  `Assets/AddressableAssetsData/` local groups only, built with the player, no remote catalog, catalog updates off.
+- **Content:** 20 voice lines at the end of `voice-lines.csv` (`<lang>-line-gate-11` … `-19`,
+  `<lang>-line-rocket-rests`), no clips.
+
+### How each screen meets "Usability"
+
+For adults (the brief): text 18 to 36 px on the 1280 × 800 canvas (the note under the limit is 18, the rest 20 and
+up), every target 64 px or more (pills, buttons, the switch's whole row, the slider's 64 px bar with a 44 px knob;
+the lock 88 px; the gate's words 104 px tall), a back button top left on the area and top right on the gate, and
+Android Back on every screen; the language rows show a badge with its shape and its name, not colour alone; the
+grid's states differ by fill (full, half, outline) and not only by colour. The child's side: the sleeping map's line
+is spoken and shown in the bubble, as every line is.
+
+### Fresh-eyes review (a second agent; the gate and the save formats)
+
+Findings and what was done:
+
+1. *A child who has seen the hold wins one time in three by guessing.* Fixed: a wrong number rests the gate for 30 s
+   (`ParentRules.GateRestSeconds`, in the rules asset); the hold doesn't fill meanwhile. The close button doesn't rest
+   it.
+2. *The numbers 11–19 mostly start with different letters, which the app teaches.* For the human (a range such as
+   21–29 whose words share a start needs new lines): in `local/for-human-next-steps.md`.
+3. *The hold could fill after a return from the background, or in one long frame.* Fixed: the map lets go of the
+   hold when the app goes to the background, and a frame counts as 0.1 s of hold at most (a PlayMode test).
+4. *A voice volume of 0 would lock the parent out* (the number said silently, so no digits). Fixed: the slider's
+   lowest value is 0.2.
+5. *A reset that fails is silent.* Fixed: "Progresul nu a putut fi șters de tot. Încearcă din nou."
+6. *A setting that can't be saved still looks saved.* Fixed: it stays as it was, with a warning.
+7. *Play time rounded to whole milliseconds per frame.* Fixed: counted in ticks.
+8. *A map left open past midnight stays on the old day until it is reopened.* Left as it is (noted): any reopening
+   (the next lesson, the app coming back) reads the new day.
+9. *Any pass through the gate wakes the rocket, even to look.* As the Design note says; for the human.
+10. *XML docs naming the lesson as a caller.* Fixed.
+11. *`AddressableAssetsData` must be committed.* It is, in the `build:` commit.
+12. *Romanian:* "Restul îl spune vocea tabletei." (restul is singular), and the reset's list now says "dârele" /
+    "the trails". The rest checked fine.
+
+Sound, as the review found: the gate opens only from asking; a finger sliding off or a second one lifting lets go;
+the number never shows where a child can use it (the bubble silenced, the panel opaque, digits only without a voice);
+no other way into the Parent scene; the save formats (version 1 read as no limit, unknown values kept, damaged
+files never lock anyone out); nothing allocates per frame.
+
+### Pushed
+
+- `e0acc94` `core:` the gate, the daily limit and the report; `b54d91f` `core:` the gate's rest after a wrong
+  number; `c20e0d3` `content:` the 20 lines; `5250ba1` `core:` the map's rest line; `7b5a9c3` `build:` Localization,
+  its local Addressables, the string tables, and `BuildScript` switching to Android; `c24c8e8` `game:` the runner,
+  play time, settings version 2, reset, the voice's volume, Back; `bc60eaa` `ui:` the gate, the parent area and the
+  sleeping map; then this Progress.
+
+### Test results
+
+- **Batch mode on the final tree:** EditMode 752/752, PlayMode 49/49 (the monkey test a full minute of real time),
+  `BuildAndroidDebug` exit 0 (the APK asks for no INTERNET: `BuildScript`'s check), no `warning CS` and no error in
+  any log. The commits before `bc60eaa` were not run one by one (each compiles by construction: the Game side's
+  contracts come before the UI that implements them); the Core commits' EditMode tests passed with them.
+- **A bug the emulator found:** the first APK showed a black map with Addressables errors: its bundles were built for
+  `StandaloneWindows64` (a fresh worktree opens on the desktop target), so `BuildScript` now switches the Editor to
+  Android first (`7b5a9c3`), and `AppLocale` logs and carries on if the tables can't load. Any clean checkout (the
+  human's release builds too) needed this.
+- **Emulator** (`emulator-5600`, Pixel Tablet, Android 16, `-feature -Vulkan`, `wm size`): the lock (a tap and a 1.2 s
+  hold do nothing; a 3.8 s hold opens the gate), the gate in digits ("Atinge numărul 18." — no tablet voice), a wrong
+  number closing quietly and the 30 s rest (a hold during it opens nothing, after it the gate asks again), the right
+  number opening the area, "Doar engleză" and Android Back (the map shows only English lessons), "Meniurile în
+  engleză" (the area, "Go!" and "My sky" in English), the sleeping map at 10 min (the guide asleep, „Racheta se
+  odihnește. Ne vedem mâine!” in the bubble, Go opening nothing), reset (two questions, then `progress.json` made
+  again empty, `rewards.json` and `lesson-run.json` gone, the settings kept, "Progresul a fost șters."), Android Back
+  in a lesson (home to the map). Sizes: the map at 2000 × 1200, 1280 × 800, 2048 × 1536, 2400 × 1080 and 2560 × 1600;
+  the gate and the area at 2000 × 1200 and 2400 × 1080 (the phone, the tightest: everything fits); screenshots in the
+  agent's scratch folder. Enough because both screens are anchored to a 1280 × 800 canvas matched half by width, half
+  by height, and the phone is the narrowest height.
+- **Not run:** the Device Simulator and the Profiler window (batch mode only; the gate and play clock allocate nothing
+  per frame by construction, reviewed), a display cut-out profile, listening by ear (no clip and no tablet voice on
+  the emulator: the lines were read in the bubble), two real fingers on the lock.
+
+### Decisions
+
+- **The parent area is its own scene** (`Parent.unity`), reached only from the gate on the map; the gate's panel is
+  on the map, so a wrong number closes quietly without reloading the map.
+- **Play time** counts while the map or a lesson is on screen and the app is in front; the parent area doesn't
+  count. A lesson never checks the limit; the map checks when it opens and every frame.
+- **Back on the map** closes the gate or an open book, else does nothing (the map has no back button).
+- **The lesson's "Ascultă" labels** on the activity views stay in the prefabs (they follow the step's language, a
+  later move into the tables with `TextIn`).
+
+## How to test locally
+
+### Game and UI slice (the gate, the parent area, the daily limit, the string tables)
+
+**Prerequisites.** Unity 6000.3.29f1; the worktree's `game/` folder; an emulator (here `emulator-5600`, AVD
+`Scolita_Tablet_tracing`, Pixel Tablet, Android 16, x86_64, `-feature -Vulkan`). In Git Bash:
+
+```bash
+UNITY="/c/Program Files/Unity/Hub/Editor/6000.3.29f1/Editor/Unity.exe"
+ADB="$LOCALAPPDATA/Android/Sdk/platform-tools/adb.exe"; EMU=emulator-5600; S=<your scratch folder>
+"$UNITY" -batchmode -nographics -quit -projectPath game -executeMethod Scolita.Editor.BuildScript.BuildAndroidDebug -logFile $S/build.log
+"$ADB" -s $EMU install -r game/Builds/Android/Scolita-<version>-debug.apk
+"$ADB" -s $EMU shell am start -S -n com.softshack.scolita/com.unity3d.player.UnityPlayerGameActivity -e unity -force-gles
+F=/storage/emulated/0/Android/data/com.softshack.scolita/files/profiles/child-1
+```
+
+**Automated tests.** EditMode (`-testPlatform EditMode`) and PlayMode (`-testPlatform PlayMode`, about four minutes:
+the monkey test alone takes a minute of real time), results in `$S/editmode.xml` and `$S/playmode.xml`. The parent
+ones: EditMode `Core/Parent/*` (the gate, the limit, the report, the voice status), `PlayTimeDataTests`,
+`ProgressResetTests`, `PlayClockTests`, `SettingsDataTests` (version 1 → 2), `AppStringTableTests`,
+`LearningRulesAssetTests`; PlayMode `Parent/ParentGateTests`, `ParentAreaTests`, `SessionLimitTests`.
+
+**Steps** (on the emulator at 2000 × 1200 unless said; `"$ADB" -s $EMU shell wm size 2000x1200`):
+
+1. **The parent button.** The map opens; top right, a small lock in a translucent circle. Tap it, and tap it again
+   quickly: nothing opens (the ring flickers at most). Press and hold it
+   (`"$ADB" -s $EMU shell input swipe <x> <y> <x> <y> 3500`, the lock's centre): a yellow ring fills around the lock in
+   3 seconds, then a lilac page covers the map: "Pentru părinți", "Atinge numărul pe care îl auzi.", "Ascultă din
+   nou" and three numbers written as words (e.g. „paisprezece”, „unsprezece”, „optsprezece”).
+2. **The number said.** With a tablet voice for Romanian, the number is said („Atinge numărul paisprezece.”); the
+   emulator has none, so the question shows the digits instead: "Atinge numărul 14." Never in the mascot's bubble.
+3. **Let go early.** Hold the lock 1 second (`input swipe x y x y 1000`): the ring empties, nothing opens.
+4. **A wrong number.** Hold again, tap a word that isn't the number: the page closes without a sound, the map is as
+   it was, and the lock must be held again.
+5. **Close.** Hold again, tap the back arrow top right (or Android Back, `input keyevent KEYCODE_BACK`): it closes.
+6. **The right number** opens the parent area: "Pentru părinți", "Versiunea …" top right; left, "Ce a învățat"
+   (the legend, Română and Engleză with their badges and their letters, the 14 days with today green after a lesson,
+   "Urmează" with the next three lessons, "Vocile înregistrate" with the counts); right, "Setări".
+7. **The language mix.** Tap "Doar engleză", then Back: the map shows only the English lessons and „both” parties
+   (the rocket on `en-a` for a new profile). Back in the area, "Amândouă" brings the Romanian ones back.
+8. **The daily limit.** Tap "10 min". To try it without waiting ten minutes, write today's play:
+   `"$ADB" -s $EMU shell "echo '{\"version\":1,\"day\":\"$(date +%F)\",\"seconds\":600}' > $F/play-time.json"`, then
+   restart the app: the mascot sleeps (its sleepy pose) and says „Racheta se odihnește. Ne vedem mâine!”; Go and the
+   stops say it again and open nothing. The lock still works: passing the gate wakes the rocket (back on the map, Go
+   opens a lesson). With 590 seconds written, start a lesson: it plays to its end; "Mai departe" brings the map back
+   asleep.
+9. **The voice.** Drag "Vocea" to the left and let go; the next lines are quieter (clips and the tablet's voice).
+10. **Meniurile în engleză.** Turn it on: every word of the area turns English at once ("For parents", "Settings",
+    "Version …"); Back: Go says "Go!", the bar "My sky", "Stickers", "Trails"; a lesson's end "Keep going" and "In my
+    book" (its "Bravo!" / "Well done!" follows the lesson's language, not the menus). Turn it off again.
+11. **Reset.** "Șterge progresul…" asks „Ștergi progresul?” saying what is lost and that the settings stay; "Nu,
+    păstrează-l" closes it; "Da, șterge" asks „Sigur?”; "Șterge tot" deletes it: "Progresul a fost șters.", every
+    letter new, the next lesson `ro-a`; `"$ADB" -s $EMU shell ls $F` shows no `progress.json`, `lesson-run.json` or
+    `rewards.json`, and `learning-settings.json` keeps the mix and the limit. Android Back at a question says no.
+12. **Android Back** on every screen: in the area it goes back to the map; on the map it closes the gate or an open
+    book (sky, stickers, trails) and otherwise does nothing; in a lesson it goes home to the map (or closes the sticker
+    book opened from the end).
+13. **A damaged save.** `"$ADB" -s $EMU shell "echo nonsense > $F/play-time.json"` and restart: the map is awake, the
+    file is set aside as `play-time.broken-<date-time>.json`. `learning-settings.json` from 0.12.0
+    (`{"version":1,"languageMix":"en"}`) reads as English only with no limit, and is saved back as version 2.
+14. **Sizes.** `wm size` 2000x1200, 1280x800, 2560x1600, 2048x1536, 2400x1080: the lock, the gate's page and the parent
+    area fit, nothing under the safe area's edges.
+
+**Cleanup:** `"$ADB" -s $EMU shell pm clear com.softshack.scolita`, `"$ADB" -s $EMU shell wm size reset`.
