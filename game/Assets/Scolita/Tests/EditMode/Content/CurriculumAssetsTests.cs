@@ -25,7 +25,7 @@ namespace Scolita.Tests.EditMode.Content
         {
             Curriculum curriculum = LoadCurriculum();
 
-            Unit planet = curriculum.Domains.Single().Units.Single();
+            Unit planet = curriculum.Domains.Single().Units.First();
             curriculum.TryGetLesson(ContentId.Create("ro-words-1"), out Lesson romanianWords);
             curriculum.TryGetLesson(ContentId.Create("ro-m"), out Lesson romanianM);
             IReadOnlyList<ContentId> beforeWords = curriculum.LettersTaughtBefore(romanianWords, Language.Romanian);

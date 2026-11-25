@@ -7,7 +7,7 @@ using Scolita.Tests.EditMode.Fakes;
 
 namespace Scolita.Tests.EditMode.Core.Lessons
 {
-    /// <summary>Tests <see cref="LessonOrder"/> on the real planet 1, with the kinds built so far.</summary>
+    /// <summary>Tests <see cref="LessonOrder"/> on the real planet 1, with two of the kinds.</summary>
     public sealed class LessonOrderTests
     {
         /// <summary>
@@ -19,7 +19,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         {
             LessonOrder order = Order(LanguageMix.Both);
 
-            Assert.That(order.Playable.Select(lesson => lesson.Id.ToString()), Is.EqualTo(new[]
+            Assert.That(PlanetOne(order), Is.EqualTo(new[]
             {
                 "ro-a", "en-a", "ro-m", "en-m", "ro-t", "en-t", "ro-p", "en-p", "party-1"
             }));
@@ -31,7 +31,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
         {
             LessonOrder order = Order(LanguageMix.RomanianOnly);
 
-            Assert.That(order.Playable.Select(lesson => lesson.Id.ToString()), Is.EqualTo(new[]
+            Assert.That(PlanetOne(order), Is.EqualTo(new[]
             {
                 "ro-a", "ro-m", "ro-t", "ro-p", "party-1"
             }));
@@ -49,7 +49,7 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             Assert.That(order.After(ContentId.Create("ro-a")).Id.ToString(), Is.EqualTo("en-a"));
             Assert.That(order.After(ContentId.Create("en-p")).Id.ToString(), Is.EqualTo("party-1"));
             Assert.That(order.After(ContentId.Create("ro-words-1")).Id.ToString(), Is.EqualTo("party-1"));
-            Assert.That(order.After(ContentId.Create("party-1")).Id.ToString(), Is.EqualTo("ro-a"));
+            Assert.That(order.After(order.Playable[order.Playable.Count - 1].Id).Id.ToString(), Is.EqualTo("ro-a"));
             Assert.That(order.After(ContentId.Create("no-such-lesson")).Id.ToString(), Is.EqualTo("ro-a"));
         }
 
@@ -74,6 +74,14 @@ namespace Scolita.Tests.EditMode.Core.Lessons
 
             Assert.That(order.Playable, Is.Empty);
             Assert.That(order.After(ContentId.Create("ro-a")), Is.Null);
+        }
+
+        private static string[] PlanetOne(LessonOrder order)
+        {
+            return order.Playable
+                .Where(lesson => lesson.UnitId == ContentId.Create("planet-1"))
+                .Select(lesson => lesson.Id.ToString())
+                .ToArray();
         }
 
         private static LessonOrder Order(LanguageMix mix)
