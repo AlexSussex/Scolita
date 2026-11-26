@@ -13,8 +13,11 @@ namespace Scolita.UI.Tracing
     /// <summary>
     /// The writing board, the view of <c>TraceLetter</c> and <c>TraceWord</c> (design screens 3 and 8,
     /// <c>Prefabs/Lesson/TraceLetterView.prefab</c> and <c>TraceWordView.prefab</c>): the board with its lines (for a
-    /// handwritten figure the "tip I" lines and faint slant guides), the figure's guide for the round (dotted, a faint
-    /// shadow, or the start dot only), the start dots numbered within their letter, the yellow arrow, her rainbow trail
+    /// handwritten figure the "tip I" lines and faint slant guides), the figure's guide for the round (dots on a pale
+    /// road, a faint shadow, or the start dot only; the road and the shadow as wide as what is accepted,
+    /// <see cref="TraceState.GuideHalfWidth"/>), the start dots numbered within their letter, the yellow arrow, the
+    /// dotted hop through the air from where a stroke ends to the next start dot when she lifts her finger between
+    /// them (never a line to trace), her rainbow trail
     /// with stardust under the finger drawing (<see cref="TraceFinger"/>: one finger, palms ignored), what she wrote
     /// kept in ink, the stroke (or, in a word, the rest of the letter) drawing itself when the answer is shown, the
     /// figure's bounce when a round is done, the round's stars, and for a word the word in print. It draws the round's
@@ -26,6 +29,9 @@ namespace Scolita.UI.Tracing
         private const float LinesMiddle = FigureFit.LinesMiddle;
         private const float ArrowStep = 4f;
         private const float SlantGuideSpacing = 40f;
+        private const float HopStep = 6f;
+        private const float HopLift = 0.35f;
+        private const float HopEnd = 0.85f;
 
         private static readonly string[] Numbers = { "1", "2", "3", "4" };
 
@@ -50,6 +56,8 @@ namespace Scolita.UI.Tracing
         [SerializeField] private StrokeLineGraphic drawing;
         [SerializeField] private StrokeLineGraphic arrow;
         [SerializeField] private RectTransform arrowHead;
+        [SerializeField] private StrokeLineGraphic hop;
+        [SerializeField] private RectTransform hopHead;
         [SerializeField] private StartDot[] dots = new StartDot[0];
         [SerializeField] private Stardust stardust;
         [SerializeField] private Graphic fingerGlow;
@@ -84,6 +92,15 @@ namespace Scolita.UI.Tracing
 
         /// <summary>The finger reader of the board; used by the PlayMode tests to draw a stroke.</summary>
         public TraceFinger Finger => finger;
+
+        /// <summary>The guide's pale road and faint shadow, one line per stroke; read by the PlayMode tests.</summary>
+        public StrokeLineGraphic GuideRoad => guideShadow;
+
+        /// <summary>The dotted hop from a stroke's end to the next start dot; read by the PlayMode tests.</summary>
+        public StrokeLineGraphic Hop => hop;
+
+        /// <summary>Whether the hop's arrowhead shows; read by the PlayMode tests.</summary>
+        public bool ShowsHop => hopHead.gameObject.activeSelf;
 
         /// <inheritdoc/>
         public override void Show(ActivityRound round, ActivityViewContext context)
@@ -320,17 +337,21 @@ namespace Scolita.UI.Tracing
         {
             guideDots.Clear();
             guideShadow.Clear();
+            guideShadow.SetWidth(2f * state.GuideHalfWidth * fit.Scale);
+            Vector2 offset = new Vector2(-fit.CentreX * fit.Scale, 0f);
             int answerEnd = AnswerEnd();
             for (int stroke = 0; stroke < state.Figure.Strokes.Count; stroke++)
             {
                 bool shownForAnswer = state.AnswerShown && stroke >= state.Stroke && stroke <= answerEnd;
+                StrokePath path = state.Figure.Strokes[stroke].Path;
                 if (state.Guide == TraceGuide.Dotted || shownForAnswer)
                 {
-                    AddPath(guideDots, state.Figure.Strokes[stroke].Path, fit.Scale, new Vector2(-fit.CentreX * fit.Scale, 0f));
+                    AddPath(guideDots, path, fit.Scale, offset);
+                    AddPath(guideShadow, path, fit.Scale, offset);
                 }
                 else if (state.Guide == TraceGuide.Faint)
                 {
-                    AddPath(guideShadow, state.Figure.Strokes[stroke].Path, fit.Scale, new Vector2(-fit.CentreX * fit.Scale, 0f));
+                    AddPath(guideShadow, path, fit.Scale, offset);
                 }
             }
         }
@@ -351,7 +372,9 @@ namespace Scolita.UI.Tracing
 
             arrow.Clear();
             StrokePath path = figure.Strokes[state.Stroke].Path;
-            bool showArrow = (arrowAlways || state.Guide != TraceGuide.StartDotOnly) && !path.IsDot;
+            bool guided = arrowAlways || state.Guide != TraceGuide.StartDotOnly;
+            ShowHop(guided);
+            bool showArrow = guided && !path.IsDot;
             arrowHead.gameObject.SetActive(showArrow);
             if (!showArrow)
             {
@@ -371,6 +394,48 @@ namespace Scolita.UI.Tracing
             arrow.Add(tip);
             arrowHead.anchoredPosition = tip;
             arrowHead.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(tip.y - behind.y, tip.x - behind.x) * Mathf.Rad2Deg);
+        }
+
+        private void ShowHop(bool guided)
+        {
+            hop.Clear();
+            int stroke = state.Stroke;
+            bool lifted = stroke > 0 && !state.Figure.Continues(stroke);
+            hopHead.gameObject.SetActive(guided && lifted);
+            if (!guided || !lifted)
+            {
+                return;
+            }
+
+            Vector2 from = Local(state.Figure.Strokes[stroke - 1].Path.End);
+            Vector2 to = Local(state.Figure.Strokes[stroke].Path.Start);
+            Vector2 across = to - from;
+            float length = across.magnitude;
+            Vector2 lift = new Vector2(-across.y, across.x) * HopLift;
+            if (lift.y < 0f)
+            {
+                lift = -lift;
+            }
+
+            Vector2 control = (from + to) * 0.5f + lift;
+            int steps = Mathf.Max(2, Mathf.CeilToInt(length / (HopStep * fit.Scale)));
+            hop.BeginLine();
+            Vector2 tip = from;
+            for (int step = 0; step <= steps; step++)
+            {
+                tip = HopPoint(from, control, to, HopEnd * step / steps);
+                hop.Add(tip);
+            }
+
+            Vector2 behind = HopPoint(from, control, to, HopEnd * (steps - 1) / steps);
+            hopHead.anchoredPosition = tip;
+            hopHead.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(tip.y - behind.y, tip.x - behind.x) * Mathf.Rad2Deg);
+        }
+
+        private static Vector2 HopPoint(Vector2 from, Vector2 control, Vector2 to, float share)
+        {
+            float rest = 1f - share;
+            return rest * rest * from + 2f * rest * share * control + share * share * to;
         }
 
         private void ShowDot(int stroke, bool current)
@@ -409,6 +474,8 @@ namespace Scolita.UI.Tracing
                 bounceLeft = bounceSeconds;
                 arrow.Clear();
                 arrowHead.gameObject.SetActive(false);
+                hop.Clear();
+                hopHead.gameObject.SetActive(false);
                 foreach (StartDot dot in dots)
                 {
                     dot.Hide();

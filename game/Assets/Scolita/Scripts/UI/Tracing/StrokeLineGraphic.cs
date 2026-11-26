@@ -33,6 +33,7 @@ namespace Scolita.UI.Tracing
         private int[] lineEnds;
         private int count;
         private int lines;
+        private bool full;
 
         /// <summary>How many points it holds.</summary>
         public int Count => count;
@@ -49,6 +50,9 @@ namespace Scolita.UI.Tracing
         /// <summary>The line width, in the board's pixels.</summary>
         public float Width => width;
 
+        /// <summary>How many separate lines it holds; read by the PlayMode tests (strokes never joined to each other).</summary>
+        public int LineCount => lines;
+
         /// <inheritdoc/>
         public override Texture mainTexture => brush != null ? brush.texture : base.mainTexture;
 
@@ -58,21 +62,46 @@ namespace Scolita.UI.Tracing
             EnsureBuffers();
             count = 0;
             lines = 0;
+            full = false;
             SetVerticesDirty();
         }
 
         /// <summary>
-        /// Starts a new line (the next points no longer join the last one); dropped once it holds as many lines
-        /// as it can. Called by the tracing view.
+        /// Sets the line width to <paramref name="pixels"/> (at least 1), in the board's pixels; called by the tracing view
+        /// to draw the guide as wide as what is accepted.
+        /// </summary>
+        public void SetWidth(float pixels)
+        {
+            float wanted = Mathf.Max(1f, pixels);
+            if (!Mathf.Approximately(wanted, width))
+            {
+                width = wanted;
+                SetVerticesDirty();
+            }
+        }
+
+        /// <summary>
+        /// Starts a new line (the next points no longer join the last one, so two strokes are never drawn joined); a line
+        /// begun while the last one is still empty is that one. Once it holds as many lines as it can, the next lines'
+        /// points are dropped until it is cleared. Called by the tracing view.
         /// </summary>
         public void BeginLine()
         {
             EnsureBuffers();
-            if (lines < lineEnds.Length && (lines == 0 || lineEnds[lines - 1] < count))
+            int lastStart = lines > 1 ? lineEnds[lines - 2] : 0;
+            if (lines > 0 && lineEnds[lines - 1] == lastStart)
             {
-                lines++;
-                lineEnds[lines - 1] = count;
+                return;
             }
+
+            if (lines == lineEnds.Length)
+            {
+                full = true;
+                return;
+            }
+
+            lines++;
+            lineEnds[lines - 1] = count;
         }
 
         /// <summary>
@@ -82,7 +111,7 @@ namespace Scolita.UI.Tracing
         public void Add(Vector2 point)
         {
             EnsureBuffers();
-            if (lines == 0 || count == points.Length)
+            if (lines == 0 || full || count == points.Length)
             {
                 return;
             }
