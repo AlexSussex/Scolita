@@ -12,14 +12,17 @@ namespace Scolita.Game.Voice
     /// <see cref="AndroidJavaObject"/>, with no plugin and no permission, in <c>ro-RO</c> and
     /// <c>en-GB</c> (decision D4). It speaks only with a voice installed on the tablet, never a
     /// network voice, so nothing it says (a profile's name included) leaves the tablet and it works
-    /// offline; a language with no installed voice is not spoken (the bubble shows the line). It
-    /// checks the voices when the engine is ready and again when the app comes back, logging what it
-    /// found. Android calls back on its own threads, so the callbacks only set numbers that the Unity
-    /// thread reads. Made by <see cref="VoiceHost"/> on Android only.
+    /// offline; a language with no installed voice is not spoken (the bubble shows the line). The
+    /// engine gets ready a moment after it is made (<see cref="IsStarting"/>, while lines wait for it);
+    /// it checks the voices when the engine is ready and again when the app comes back, logging what it
+    /// found, and starts the engine again when Android has let it go while the app was away (no voices
+    /// to list, or a line refused). Android calls back on its own threads, so the callbacks only set
+    /// numbers that the Unity thread reads. Made by <see cref="VoiceHost"/> on Android only.
     /// </summary>
     public sealed class AndroidTextToSpeechVoice : ISystemVoice, IDisposable
     {
         private const int Success = 0;
+        private const int MostRestartsInARow = 2;
         private const int QueueFlush = 0;
         private const int InitPending = int.MinValue;
         private const float SecondsBeforeGivingUp = 4f;
@@ -27,11 +30,13 @@ namespace Scolita.Game.Voice
         private const string NotInstalledFeature = "notInstalled";
         private const string VolumeParameter = "volume";
 
-        private readonly AndroidJavaObject engine;
         private readonly AndroidJavaObject speakParameters;
+        private AndroidJavaObject engine;
         private AndroidJavaObject romanianVoice;
         private AndroidJavaObject englishVoice;
         private int initStatus = InitPending;
+        private int engineNumber;
+        private int restartsInARow;
         private int completedUtterance;
         private int currentUtterance;
         private bool voicesChecked;
@@ -44,14 +49,12 @@ namespace Scolita.Game.Voice
         /// <summary>Starts the engine (it gets ready a moment later); called by <see cref="VoiceHost"/> on Android.</summary>
         public AndroidTextToSpeechVoice()
         {
-            using (AndroidJavaClass player = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            using (AndroidJavaObject activity = player.GetStatic<AndroidJavaObject>("currentActivity"))
-            {
-                engine = new AndroidJavaObject("android.speech.tts.TextToSpeech", activity, new TextToSpeechInitListener(OnInit));
-            }
-
+            StartEngine();
             speakParameters = new AndroidJavaObject("android.os.Bundle");
         }
+
+        /// <inheritdoc/>
+        public bool IsStarting => Volatile.Read(ref initStatus) == InitPending;
 
         /// <inheritdoc/>
         public bool IsSaying
@@ -93,9 +96,11 @@ namespace Scolita.Game.Voice
             if (result != Success)
             {
                 Debug.LogWarning("Voice: the system voice refused to speak (" + result + ").");
+                RestartEngine();
                 return false;
             }
 
+            restartsInARow = 0;
             currentUtterance = utterance;
             giveUpAt = Time.unscaledTime + SecondsBeforeGivingUp + text.Length * SecondsPerCharacterBeforeGivingUp;
             return true;
@@ -123,18 +128,19 @@ namespace Scolita.Game.Voice
 
         /// <summary>
         /// Looks for the installed voices again at the next line (a voice may have been installed while
-        /// the app was away); called by <see cref="VoiceHost"/> when the app comes back.
+        /// the app was away, or Android may have let the engine go, which starts it again); called by
+        /// <see cref="VoiceHost"/> when the app comes back.
         /// </summary>
         public void CheckVoicesAgain()
         {
             voicesChecked = false;
+            restartsInARow = 0;
         }
 
         /// <summary>Shuts the engine down; called by <see cref="VoiceHost"/> when its scene closes.</summary>
         public void Dispose()
         {
-            engine.Call("shutdown");
-            engine.Dispose();
+            StopEngine();
             speakParameters.Dispose();
             romanianVoice?.Dispose();
             englishVoice?.Dispose();
@@ -159,7 +165,7 @@ namespace Scolita.Game.Voice
                 CheckVoices();
             }
 
-            return true;
+            return Volatile.Read(ref initStatus) == Success;
         }
 
         private AndroidJavaObject VoiceFor(Language language)
@@ -167,10 +173,52 @@ namespace Scolita.Game.Voice
             return language == Language.Romanian ? romanianVoice : englishVoice;
         }
 
+        private void StartEngine()
+        {
+            int number = ++engineNumber;
+            Volatile.Write(ref initStatus, InitPending);
+            voicesChecked = false;
+            failureLogged = false;
+            listening = false;
+            hasVoiceSet = false;
+            using (AndroidJavaClass player = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (AndroidJavaObject activity = player.GetStatic<AndroidJavaObject>("currentActivity"))
+            {
+                engine = new AndroidJavaObject("android.speech.tts.TextToSpeech", activity,
+                    new TextToSpeechInitListener(status => OnInit(number, status)));
+            }
+        }
+
+        private void StopEngine()
+        {
+            engine.Call("shutdown");
+            engine.Dispose();
+        }
+
+        private void RestartEngine()
+        {
+            if (restartsInARow >= MostRestartsInARow)
+            {
+                return;
+            }
+
+            restartsInARow++;
+            Debug.LogWarning("Voice: the system voice has let go of its engine; starting it again.");
+            Volatile.Write(ref completedUtterance, currentUtterance);
+            StopEngine();
+            StartEngine();
+        }
+
         private void CheckVoices()
         {
             voicesChecked = true;
             hasVoiceSet = false;
+            if (!HasVoiceList())
+            {
+                RestartEngine();
+                return;
+            }
+
             romanianVoice?.Dispose();
             englishVoice?.Dispose();
             romanianVoice = InstalledVoice("ro", "RO");
@@ -262,9 +310,20 @@ namespace Scolita.Game.Voice
             return true;
         }
 
-        private void OnInit(int status)
+        private bool HasVoiceList()
         {
-            Volatile.Write(ref initStatus, status);
+            using (AndroidJavaObject voices = engine.Call<AndroidJavaObject>("getVoices"))
+            {
+                return voices != null;
+            }
+        }
+
+        private void OnInit(int number, int status)
+        {
+            if (number == Volatile.Read(ref engineNumber))
+            {
+                Volatile.Write(ref initStatus, status);
+            }
         }
 
         private void OnUtteranceCompleted(string utterance)

@@ -23,6 +23,7 @@ namespace Scolita.Game.Voice
         [SerializeField] private float pauseSeconds = 0.35f;
         [SerializeField] private float bubbleSecondsPerCharacter = 0.07f;
         [SerializeField] private float bubbleMinimumSeconds = 2f;
+        [SerializeField] private float systemVoiceWaitSeconds = 5f;
 
         private VoiceRouter router;
         private RecordedVoice recorded;
@@ -53,7 +54,7 @@ namespace Scolita.Game.Voice
             android = Application.platform == RuntimePlatform.Android ? new AndroidTextToSpeechVoice() : null;
             system = android ?? (ISystemVoice)new SilentVoice();
             router = new VoiceRouter(curriculum, recorded, system, bubble,
-                new VoiceTiming(pauseSeconds, bubbleSecondsPerCharacter, bubbleMinimumSeconds));
+                new VoiceTiming(pauseSeconds, bubbleSecondsPerCharacter, bubbleMinimumSeconds, systemVoiceWaitSeconds));
             router.LineMissing += OnLineMissing;
             router.PartStarted += OnPartStarted;
             if (Debug.isDebugBuild)

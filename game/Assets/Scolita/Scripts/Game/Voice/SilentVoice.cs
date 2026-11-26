@@ -10,6 +10,9 @@ namespace Scolita.Game.Voice
     public sealed class SilentVoice : ISystemVoice
     {
         /// <inheritdoc/>
+        public bool IsStarting => false;
+
+        /// <inheritdoc/>
         public bool IsSaying => false;
 
         /// <inheritdoc/>
