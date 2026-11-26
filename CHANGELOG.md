@@ -18,6 +18,43 @@ packages, save-format changes, content added, what the human must do) with
 a link to the brief. The rules are in [`AGENTS.md`](AGENTS.md) →
 "Versioning and releases".
 
+## 0.14.1 (2026-11-26)
+
+A fix from her first try of the letters by hand on the tablet: tracing forgives a letter drawn about 90 % right, the
+pen lift between two strokes is shown as a hop instead of a line, and the unicorn's first line is heard after the
+app starts or comes back.
+
+- **For the child:**
+  - **Tracing is kinder to a finger:** a letter drawn about 90 % right, a little wobbly, a few millimetres off (a
+    thick finger), or turning back up the m's legs a little above the line is accepted in every round. A stroke
+    drawn backwards, one that clearly leaves the letter and one far too short still get their hint.
+  - **The guide is wider:** in the first round the dots sit on a pale road about as wide as a fingertip (8 mm on the
+    Tab A7); the second round's shadow is 6 mm wide (was a 2 mm dotted line and a 4.5 mm shadow).
+  - **The pen lifts between strokes:** after the t's stem, a dotted yellow hop through the air shows the way to dot
+    2 for the bar; no line joins the end of one stroke to the start of the next any more (every letter with more
+    than one stroke, the small pictures beside the board and the "de mână" tile).
+  - **The first line is heard:** after a cold start, or after coming back to the app, the unicorn's first line waits
+    a moment for the tablet's voice instead of showing silently.
+- **For the parent:** nothing new to set; the tolerances are in the learning rules.
+
+### Technical notes
+
+- **Tracing:** `StrokeCheck` passes a turn the stroke makes within the corridor of her finger (the foot of m's stem),
+  prefers the earliest of near-equal samples, and allows three quarters of the start radius at a short stroke's end
+  (never under three fifths of it). `Settings/LearningRules.asset`: corridors 36 / 32 / 30, start radii 38 / 34 / 32,
+  coverage 0.8 / 0.85 / 0.85 (a shape's unit is 0.25 mm on the Tab A7), and a new `traceFingerAllowance` 20: the
+  guide is drawn as wide as the corridor less it (`TraceState.GuideHalfWidth`).
+- **The board:** `StrokeLineGraphic.BeginLine` starts a new line again (it never did once a line held points, so
+  every stroke, slant guide and kept line was joined to the next); a wide strip no longer folds on a tight curve;
+  `Hop` and `HopHead` in both board prefabs.
+- **The voice:** `ISystemVoice.IsStarting`; `VoiceRouter` waits for a starting system voice (up to
+  `VoiceTiming.SystemVoiceWaitSeconds`, 5 s on the Voice prefab), the newest line only; `AndroidTextToSpeechVoice`
+  starts its engine again when Android has let it go while the app was away.
+- No new package, no save-format change, no new content id or voice line.
+- **The human:** try it with her (`local/for-human-next-steps.md`); three draft shapes to check (the print A and E,
+  the handwritten T).
+- Brief: [tasks/done/tablet-feedback-1.md](tasks/done/tablet-feedback-1.md).
+
 ## 0.14.0 (2026-11-25)
 
 Profiles. Each child on the tablet has her own profile, with her own map, stars, stickers, letters and settings,

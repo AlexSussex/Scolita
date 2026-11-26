@@ -48,6 +48,24 @@ parent gate and a setting changed; `profiles` (0.14.0) added choosing a profile 
 The newest release first. Each close-out adds its section here
 (`AGENTS.md` → "Versioning and releases").
 
+### 0.14.1 (2026-11-26): kinder tracing, the pen hop, the first line heard
+
+On the tablet, with the 0.14.1 APK (`local/apks/Scolita-0.14.1-debug.apk`), installed over 0.14.0 without clearing its
+data, sound up, the Romanian and English tablet voices installed. With her, in her profile (or yours as the tester:
+every lesson open).
+
+| # | Screen | Do this | You should see and hear | Tested on |
+| --- | --- | --- | --- | --- |
+| 0.14.1-1 | The t by hand (planet 1, the t lesson) | Look at round 1 before tracing | Dots on a pale road about as wide as a fingertip; nothing joins the end of the t's hook (bottom right) to the bar | |
+| 0.14.1-2 | The t by hand | Trace the stem from dot 1, then lift | „Foarte bine! Acum mergi la punctul cu numărul doi.”; a dotted yellow hop curving from the hook's end to dot 2, with a small arrowhead | |
+| 0.14.1-3 | The t by hand | Trace the bar from dot 2 | Round 2: „Bravo, ai scris litera t de mână! Acum scrie pe umbră.”, a narrower shadow, still no joining line | |
+| 0.14.1-4 | The m by hand (the m lesson) | Let her trace it as well as she can, a little wobbly; then trace it yourself with a thick finger, turning back up each leg a little above the line | Accepted in all three rounds when it looks about 90 % right | |
+| 0.14.1-5 | The m by hand | Trace a leg backwards (from the bottom up), then leave the letter half-way, then draw only half of it | „Urmează săgeata.” and the other hints; never accepted; after two misses the stroke draws itself („Uită-te cum se scrie, apoi încearcă tu.”) | |
+| 0.14.1-6 | Print letters (a, m, t, p, then the capitals) | Trace them as in 0.7.0 | The same wider road and shadow; the print t's bar and the a's stem are reached by a hop | |
+| 0.14.1-7 | Any lesson | Press the tablet's Home button in the middle of a lesson, wait a minute, open Școlița again | The unicorn says the line again (it may start a second after its bubble) | |
+| 0.14.1-8 | The map | Close the app (swipe it away), open it, tap **Hai!** | The map's greeting and the lesson's first line are heard, not only shown | |
+| 0.14.1-9 | The print A and E, the handwritten T (capitals lesson) | Compare the stroke order with her manual | Tell the agent: the A goes down its left side and back up before the right side, the E down its stem and back up before the top bar, the T by hand its top wave first. Are these what her school teaches? | |
+
 ### 0.14.0 (2026-11-25): profiles
 
 On the tablet, with the 0.14.0 APK (`local/apks/Scolita-0.14.0-debug.apk`), installed over 0.13.0 without clearing its

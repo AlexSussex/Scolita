@@ -78,7 +78,7 @@ Each brief file therefore reads, top to bottom:
 | Feature | Status | Brief |
 | --- | --- | --- |
 | `feature/curriculum-research-2` | Ready (docs only): planets 4–6 in both languages, ă earlier or not; the human agrees the curriculum version | [pending/curriculum-research-2.md](pending/curriculum-research-2.md) |
-| `feature/tablet-feedback-1` | In progress (tablet-feedback-1), a fix: tracing too strict for her finger, the t's pen lift, the first line silent after coming back | [pending/tablet-feedback-1.md](pending/tablet-feedback-1.md) |
+| `feature/tablet-feedback-1` | Done 2026-11-26, released as 0.14.1 (a fix: tracing kinder to a finger, the pen hop, the first line heard) | [done/tablet-feedback-1.md](done/tablet-feedback-1.md) |
 | `feature/curriculum-research-names` | In progress (curriculum-research-names), docs only: when and how letter names come in, both languages; draft pushed, waiting for the human | [pending/curriculum-research-names.md](pending/curriculum-research-names.md) |
 | `feature/content-letters-2` | Idea: planets 4–6 (u r c l, b f g h, v z j k), content only; after `curriculum-research-2` (and `-names` for the names after planet 6) | — |
 | `feature/curriculum-research-3` | After `curriculum-research-2` (docs only): planets 7–9, the Romanian groups, the English digraphs, vowel teams and tricky words | [pending/curriculum-research-3.md](pending/curriculum-research-3.md) |
@@ -103,11 +103,10 @@ progress visible"). Empty when nobody is at work.
 | --- | --- | --- | --- | --- | --- |
 | curriculum-research-names | [curriculum-research-names](pending/curriculum-research-names.md) | `docs/curriculum.md`, `design/research/curriculum-research-names.md` (new), `local/for-human-next-steps.md` | none (docs only) | 2026-11-25 | Draft pushed; **Blocked: for the human to agree** the letter-names proposal (`docs/curriculum.md` §9; recommendation and 9 questions in the brief's Progress and names research §7; step in `local/for-human-next-steps.md`) |
 | sound-feel | [sound-feel](pending/sound-feel.md) | `Scripts/Core/Audio` (new), `Scripts/Game/Audio` (new), `Scripts/Editor/Sounds` (new), `Assets/Scolita/Audio` (new), `Prefabs/Audio/SoundPlayer.prefab` (new), `Game/Saving/SaveRoot` (new; every scene's save root), the tablet's `settings.json` (version 2), `Map`, `Lesson`, `Profiles` and `Parent.unity`, `ParentArea.prefab`, `TesterStrip.prefab`, the `App` string tables, `Settings/LearningRules.asset`, `Plugins/Android/LauncherManifest.xml` (VIBRATE), the runners, `RewardsSession`, `LessonEndScreen`, `PlanetView`, the PlayMode test helpers | emulator-5600 | 2026-11-26 | Built and tested on the emulator; reviewed (findings fixed); **Blocked: waiting for the human's Tab A7 numbers** (step 0 in `local/for-human-next-steps.md`), then the close-out as the MVP release |
-| tablet-feedback-1 | [tablet-feedback-1](pending/tablet-feedback-1.md) | `Scripts/Core/Tracing`, `Scripts/Core/Voice`, `Scripts/Game/Voice`, `Scripts/UI/Tracing`, `TraceLetterView.prefab`, `TraceWordView.prefab`, `Settings/LearningRules.asset` (the tracing rows only), the tracing and voice tests; not `Lesson.unity` | emulator-5602 | 2026-11-26 | Claimed; finding the causes |
 
 ## Where we are
 
-_Last updated 2026-11-26 by agent `profiles` (profiles, release 0.14.0)._
+_Last updated 2026-11-26 by agent `tablet-feedback-1` (a fix, release 0.14.1)._
 _Update this section whenever a slice is pushed or a brief is finished._
 
 ### Resume here (2026-11-23)
@@ -219,7 +218,16 @@ _Update this section whenever a slice is pushed or a brief is finished._
   questions; one picture per child), and the tester's profile (every lesson open, a TEST strip, skip a step, a one-tap
   reset; never shown to the children, never opened at start). The avatars are content (`avatars.csv`).
 
+- **Done 2026-11-26:** `tablet-feedback-1`, release 0.14.1 (a fix from her first try on the tablet). Tracing forgives
+  a letter about 90 % right (a turn back a little before the m's foot, a thick finger), with wider corridors and a
+  guide drawn as wide as what a fingertip may touch; strokes are never drawn joined any more (a dotted hop shows the
+  pen lift, the t's bar); the first line waits for the tablet's voice after a start or a return.
+
 ### Open follow-ups across briefs
+
+- **From `tablet-feedback-1`** (full list in its completion record):
+  - The human: try 0.14.1 with her (the road's width, the hop); check the print A and E and the handwritten T's
+    stroke order against her manual.
 
 - **From `profiles`** (full list in its completion record):
   - `sound-feel`: a soft sound when a card is tapped on "Who's playing?".
