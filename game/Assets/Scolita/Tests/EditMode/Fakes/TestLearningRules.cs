@@ -28,8 +28,8 @@ namespace Scolita.Tests.EditMode.Fakes
         }
 
         /// <summary>
-        /// The learning rules asset's default tracing rounds: corridor 32, start radius 34, coverage 0.8; then 28,
-        /// 30, 0.85; then 24, 28, 0.9. Called by the tests.
+        /// The learning rules asset's default tracing rounds: corridor 36, start radius 38, coverage 0.8; then 32,
+        /// 34, 0.85; then 30, 32, 0.85; the join radius 44 and the finger allowance 20. Called by the tests.
         /// </summary>
         public static TracingTuning Tracing()
         {
@@ -43,8 +43,8 @@ namespace Scolita.Tests.EditMode.Fakes
 
         private static TracingTuning MakeTracing()
         {
-            return new TracingTuning(new StrokeTolerance(32f, 34f, 0.8f), new StrokeTolerance(28f, 30f, 0.85f),
-                new StrokeTolerance(24f, 28f, 0.9f), 44f);
+            return new TracingTuning(new StrokeTolerance(36f, 38f, 0.8f), new StrokeTolerance(32f, 34f, 0.85f),
+                new StrokeTolerance(30f, 32f, 0.85f), 44f, 20f);
         }
     }
 }

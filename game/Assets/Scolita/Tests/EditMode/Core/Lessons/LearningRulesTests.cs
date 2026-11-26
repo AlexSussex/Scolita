@@ -50,7 +50,8 @@ namespace Scolita.Tests.EditMode.Core.Lessons
 
         /// <summary>
         /// Tests that <see cref="TracingTuning.ForRound"/> gives each round its tolerance, and that the constructor
-        /// refuses a later round more forgiving than an earlier one, and a tolerance out of range.
+        /// refuses a later round more forgiving than an earlier one, a tolerance out of range, and a finger allowance
+        /// below 0 or leaving no guide in the last round.
         /// </summary>
         [Test]
         public void TestForRound_EachRoundAndItsOrder()
@@ -59,15 +60,18 @@ namespace Scolita.Tests.EditMode.Core.Lessons
             StrokeTolerance middle = new StrokeTolerance(28f, 30f, 0.85f);
             StrokeTolerance tight = new StrokeTolerance(24f, 28f, 0.9f);
 
-            TracingTuning tuning = new TracingTuning(wide, middle, tight, 44f);
+            TracingTuning tuning = new TracingTuning(wide, middle, tight, 44f, 20f);
 
             Assert.That(tuning.ForRound(0).Corridor, Is.EqualTo(32f).Within(0.001f));
             Assert.That(tuning.ForRound(1).StartRadius, Is.EqualTo(30f).Within(0.001f));
             Assert.That(tuning.ForRound(2).Coverage, Is.EqualTo(0.9f).Within(0.001f));
             Assert.That(() => tuning.ForRound(3), Throws.InstanceOf<ArgumentOutOfRangeException>());
-            Assert.That(() => new TracingTuning(tight, middle, wide, 44f), Throws.InstanceOf<ArgumentOutOfRangeException>());
-            Assert.That(() => new TracingTuning(wide, middle, tight, 20f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(tight, middle, wide, 44f, 20f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(wide, middle, tight, 20f, 20f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(wide, middle, tight, 44f, -1f), Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => new TracingTuning(wide, middle, tight, 44f, 24f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(tuning.JoinRadius, Is.EqualTo(44f).Within(0.001f));
+            Assert.That(tuning.FingerAllowance, Is.EqualTo(20f).Within(0.001f));
             Assert.That(() => new StrokeTolerance(0f, 30f, 0.8f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new StrokeTolerance(30f, 0f, 0.8f), Throws.InstanceOf<ArgumentOutOfRangeException>());
             Assert.That(() => new StrokeTolerance(30f, 30f, 1.2f), Throws.InstanceOf<ArgumentOutOfRangeException>());

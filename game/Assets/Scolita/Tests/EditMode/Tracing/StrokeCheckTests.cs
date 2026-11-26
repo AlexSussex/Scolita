@@ -124,13 +124,13 @@ namespace Scolita.Tests.EditMode.Tracing
 
         /// <summary>
         /// Tests that the rounds' tolerances tighten: a line drawn a little beside the stroke is good in round 1
-        /// (the corridor 32) and has left the path in round 3 (the corridor 24).
+        /// (the corridor 36) and has left the path in round 3 (the corridor 30).
         /// </summary>
         [Test]
         public void TestCheck_TheRoundsTighten()
         {
             StrokePath path = TestStrokes.Path(0f, 0f, 0f, 200f);
-            TracePoints sloppy = TestStrokes.Along(path, 0f, 1f, 4f, 27f);
+            TracePoints sloppy = TestStrokes.Along(path, 0f, 1f, 4f, 33f);
             TracingTuning tuning = TestLearningRules.Tracing();
 
             Assert.That(StrokeCheck.Check(path, sloppy, tuning.ForRound(0)).Verdict, Is.EqualTo(StrokeVerdict.Good));
@@ -146,7 +146,7 @@ namespace Scolita.Tests.EditMode.Tracing
         [Test]
         public void TestCheck_AShortBar()
         {
-            StrokePath bar = TestStrokes.Path(0f, 100f, 50f, 100f);
+            StrokePath bar = TestStrokes.Path(0f, 100f, 60f, 100f);
             StrokePath tick = TestStrokes.Path(0f, 100f, 20f, 100f);
 
             Assert.That(StrokeCheck.Check(bar, TestStrokes.Along(bar, 0.5f, 1f, 4f, 0f), Tight()).Verdict,

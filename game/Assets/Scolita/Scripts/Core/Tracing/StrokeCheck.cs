@@ -6,14 +6,19 @@ namespace Scolita.Core.Tracing
     /// Judges one stroke she drew against the stroke of the letter (<c>docs/curriculum.md</c> §4.2,
     /// <c>TraceLetter</c>): pure, and allocating nothing. It follows her line in order along the stroke:
     /// each of her points moves a "reached" mark forward to the nearest sample of the stroke within the
-    /// corridor, never back and never further ahead than she moved, so a stroke that goes back over
-    /// itself (m's stem down and up again) is reached in order, and an o drawn the wrong way round is
-    /// told from one drawn the right way. Her line has left the path where it is farther than the corridor
-    /// from the part of the stroke she has reached (not from any part: a line cutting across m to its last
+    /// corridor, never back and never further ahead than she moved, or than the stroke stays within the corridor of
+    /// her point (so where she turns back a little before the stroke does, at the foot of m's stem, the mark passes
+    /// the turn instead of waiting there; of samples about as near, the earliest), so a stroke that goes back over
+    /// itself (m's stem down and up again) is reached in order, and an o drawn the wrong way round is told from one drawn the right way. Her line has left
+    /// the path where it is farther than the corridor from the part of the stroke she has reached (not from any part: a line cutting across m to its last
     /// stem has left it). The same, followed from the stroke's end, tells a stroke drawn backwards.
     /// </summary>
     public static class StrokeCheck
     {
+        private const float TieDistance = StrokePath.Spacing * 0.5f;
+        private const float EndAllowanceShare = 0.75f;
+        private const float LeastShare = 0.6f;
+
         /// <summary>
         /// The verdict on <paramref name="points"/> (her line, in the shape's units) for
         /// <paramref name="path"/> with <paramref name="tolerance"/>: a dot is <see cref="StrokeVerdict.Good"/>
@@ -21,8 +26,9 @@ namespace Scolita.Core.Tracing
         /// dot, along the stroke, staying on it and covering enough of it is <see cref="StrokeVerdict.Good"/>;
         /// one begun at the stroke's end (for a round stroke, also its start) that covers enough of it backwards
         /// is <see cref="StrokeVerdict.WrongDirection"/>. "Enough" is the part she drew herself, from where her
-        /// first point reached the stroke, and it is the coverage share of the stroke or all of it but half the
-        /// start radius at its end, whichever is less (so a short bar isn't stricter than a long stroke). One
+        /// first point reached the stroke, and it is the coverage share of the stroke or all of it but three quarters
+        /// of the start radius at its end, whichever is less (so a short bar isn't stricter than a long stroke, and a
+        /// finger that lands a little along a short stroke from where she aims still reaches its end). One
         /// begun away from the start dot is <see cref="StrokeVerdict.StartedElsewhere"/>; one that strays from
         /// the stroke for more than the corridor's width is <see cref="StrokeVerdict.LeftThePath"/>; and the
         /// rest (begun right, stayed on, stopped early) is <see cref="StrokeVerdict.TooShort"/>. A line begun where
@@ -99,7 +105,8 @@ namespace Scolita.Core.Tracing
 
         /// <summary>
         /// How much of a stroke <paramref name="length"/> long is enough to be covered with <paramref name="tolerance"/>:
-        /// the coverage share, or all of it but half the start radius at its end, whichever is less, never under half.
+        /// the coverage share, or all of it but three quarters of the start radius at its end, whichever is less, never
+        /// under three fifths (so half a short bar is still too short).
         /// Called by <see cref="Check"/> and <see cref="LineCheck"/>.
         /// </summary>
         public static float EnoughOf(float length, in StrokeTolerance tolerance)
@@ -109,8 +116,8 @@ namespace Scolita.Core.Tracing
 
         private static float EnoughShare(float length, in StrokeTolerance tolerance)
         {
-            float endAllowance = length - tolerance.StartRadius * 0.5f;
-            return Math.Max(0.5f, Math.Min(tolerance.Coverage, endAllowance / length));
+            float endAllowance = length - tolerance.StartRadius * EndAllowanceShare;
+            return Math.Max(LeastShare, Math.Min(tolerance.Coverage, endAllowance / length));
         }
 
         private static float Followed(StrokePath path, TracePoints points, float corridor, bool forwards, out float offLength)
@@ -137,6 +144,11 @@ namespace Scolita.Core.Tracing
                 float y = points.Y(point);
                 float moved = point == 0 ? 0f : Distance(points.X(point - 1), points.Y(point - 1), x, y);
                 int ahead = Math.Min(last, reached + (int)Math.Ceiling((moved + corridor) / step));
+                if (point > 0)
+                {
+                    ahead = WithinReach(path, x, y, ahead, forwards, corridorSquared);
+                }
+
                 int nearest = Nearest(path, x, y, reached, ahead, forwards, corridorSquared);
                 if (nearest > reached)
                 {
@@ -163,6 +175,23 @@ namespace Scolita.Core.Tracing
             return reached;
         }
 
+        private static int WithinReach(StrokePath path, float x, float y, int ahead, bool forwards, float corridorSquared)
+        {
+            int last = path.Count - 1;
+            while (ahead < last)
+            {
+                int sample = forwards ? ahead + 1 : last - ahead - 1;
+                if (DistanceSquared(x, y, path.X(sample), path.Y(sample)) >= corridorSquared)
+                {
+                    break;
+                }
+
+                ahead++;
+            }
+
+            return ahead;
+        }
+
         private static float Along(StrokePath path, int reached, bool forwards)
         {
             return forwards ? path.DistanceAt(reached) : path.Length - path.DistanceAt(path.Count - 1 - reached);
@@ -171,20 +200,30 @@ namespace Scolita.Core.Tracing
         private static int Nearest(StrokePath path, float x, float y, int from, int to, bool forwards, float corridorSquared)
         {
             int last = path.Count - 1;
-            int nearest = -1;
             float nearestSquared = corridorSquared;
             for (int along = from; along <= to; along++)
             {
                 int sample = forwards ? along : last - along;
-                float squared = DistanceSquared(x, y, path.X(sample), path.Y(sample));
-                if (squared < nearestSquared)
+                nearestSquared = Math.Min(nearestSquared, DistanceSquared(x, y, path.X(sample), path.Y(sample)));
+            }
+
+            if (nearestSquared >= corridorSquared)
+            {
+                return -1;
+            }
+
+            float tie = (float)Math.Sqrt(nearestSquared) + TieDistance;
+            float tieSquared = tie * tie;
+            for (int along = from; along <= to; along++)
+            {
+                int sample = forwards ? along : last - along;
+                if (DistanceSquared(x, y, path.X(sample), path.Y(sample)) <= tieSquared)
                 {
-                    nearestSquared = squared;
-                    nearest = along;
+                    return along;
                 }
             }
 
-            return nearest;
+            return -1;
         }
 
         private static float DistanceSquared(float x, float y, ShapePoint point)

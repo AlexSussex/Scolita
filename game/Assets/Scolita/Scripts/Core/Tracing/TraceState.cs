@@ -9,12 +9,14 @@ namespace Scolita.Core.Tracing
     /// </summary>
     public sealed class TraceState
     {
+        private readonly TracingTuning tuning;
+
         /// <summary>
         /// Creates the state of tracing <paramref name="figure"/> in <paramref name="rounds"/> rounds (1 to
-        /// <see cref="TracingTuning.Rounds"/>, the first ones); throws an <see cref="ArgumentOutOfRangeException"/>
-        /// outside them. Called by the tracing rules.
+        /// <see cref="TracingTuning.Rounds"/>, the first ones), judged with <paramref name="tuning"/>; throws an
+        /// <see cref="ArgumentOutOfRangeException"/> outside them. Called by the tracing rules.
         /// </summary>
-        public TraceState(TraceFigure figure, int rounds)
+        public TraceState(TraceFigure figure, int rounds, TracingTuning tuning)
         {
             if (rounds < 1 || rounds > TracingTuning.Rounds)
             {
@@ -22,6 +24,7 @@ namespace Scolita.Core.Tracing
             }
 
             Figure = figure ?? throw new ArgumentNullException(nameof(figure));
+            this.tuning = tuning ?? throw new ArgumentNullException(nameof(tuning));
             Rounds = rounds;
         }
 
@@ -36,6 +39,19 @@ namespace Scolita.Core.Tracing
 
         /// <summary>How many rounds are done (<see cref="Rounds"/> once the step is done).</summary>
         public int RoundsDone { get; private set; }
+
+        /// <summary>
+        /// The tolerance her next line is judged with: the round's, or the first round's while the answer is shown. Read
+        /// by <c>TraceJudging</c>.
+        /// </summary>
+        public StrokeTolerance Tolerance => tuning.ForRound(AnswerShown ? 0 : Round);
+
+        /// <summary>
+        /// How far either side of a stroke its guide reaches, in a shape's units: the corridor of <see cref="Tolerance"/>
+        /// less <see cref="TracingTuning.FingerAllowance"/>, so a fingertip touching the guide's edge is still on the
+        /// stroke. Read by the writing board to draw the guide as wide as what is accepted.
+        /// </summary>
+        public float GuideHalfWidth => Tolerance.Corridor - tuning.FingerAllowance;
 
         /// <summary>Whether every round is done.</summary>
         public bool IsDone => RoundsDone >= Rounds;

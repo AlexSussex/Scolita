@@ -45,7 +45,7 @@ namespace Scolita.Core.Activities
         {
             Language = language;
             this.tuning = tuning ?? throw new ArgumentNullException(nameof(tuning));
-            state = new TraceState(TraceFigure.OfLetter(shape ?? throw new ArgumentNullException(nameof(shape))), rounds);
+            state = new TraceState(TraceFigure.OfLetter(shape ?? throw new ArgumentNullException(nameof(shape))), rounds, tuning);
             bool byHand = shape.Form == LetterForm.Handwritten;
             ActivityChoice choice = shape.Case == LetterCase.Upper
                 ? ActivityChoice.OfCapital(letter, language)

@@ -57,7 +57,7 @@ namespace Scolita.Core.Activities
 
             Language = language;
             this.tuning = tuning ?? throw new ArgumentNullException(nameof(tuning));
-            state = new TraceState(JoinedWord.Of(shapes), rounds);
+            state = new TraceState(JoinedWord.Of(shapes), rounds, tuning);
             Round = new ActivityRound(ActivityKind.TraceWord, language, new[] { ActivityChoice.OfWordToRead(word) }, word.Id);
             Round.Attach(state);
 

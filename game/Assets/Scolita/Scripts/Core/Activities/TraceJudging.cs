@@ -15,7 +15,7 @@ namespace Scolita.Core.Activities
         /// </summary>
         internal static LineResult Judge(TraceState state, TracingTuning tuning, TracePoints points)
         {
-            StrokeTolerance tolerance = tuning.ForRound(state.AnswerShown ? 0 : state.Round);
+            StrokeTolerance tolerance = state.Tolerance;
             if (state.Figure.BeginsAtJoin(state.Stroke))
             {
                 tolerance = tolerance.WithStartRadiusAtLeast(tuning.JoinRadius);
