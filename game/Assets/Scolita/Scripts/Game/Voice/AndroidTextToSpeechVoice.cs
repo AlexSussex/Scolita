@@ -175,7 +175,7 @@ namespace Scolita.Game.Voice
 
         private void StartEngine()
         {
-            int number = ++engineNumber;
+            int number = Interlocked.Increment(ref engineNumber);
             Volatile.Write(ref initStatus, InitPending);
             voicesChecked = false;
             failureLogged = false;
