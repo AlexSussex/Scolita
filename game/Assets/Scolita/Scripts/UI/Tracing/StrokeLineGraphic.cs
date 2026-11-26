@@ -7,7 +7,8 @@ namespace Scolita.UI.Tracing
     /// <summary>
     /// Lines drawn as one mesh on the writing board (design/README.md: the dotted guide, the faint shadow,
     /// her 26 px rainbow trail, the yellow arrow): a strip along each line with round ends, broken with a
-    /// round corner where the line turns back on itself (m's stem), or round dots along it. Its points are
+    /// round corner where the line turns back on itself (m's stem), or round dots along it. On a curve tighter
+    /// than the strip is wide, the inside edge waits instead of folding back, so a wide guide has no spikes. Its points are
     /// kept in buffers made once, so adding a point and rebuilding the mesh allocate nothing; the mesh is
     /// rebuilt only when its points change.
     /// </summary>
@@ -167,6 +168,8 @@ namespace Scolita.UI.Tracing
             float along = 0f;
             AddCap(mesh, points[start], half, ColourAt(along), uv);
             int stripFirst = -1;
+            Vector2 lastLeft = Vector2.zero;
+            Vector2 lastRight = Vector2.zero;
             for (int index = start; index < end; index++)
             {
                 if (index > start)
@@ -187,26 +190,36 @@ namespace Scolita.UI.Tracing
                 Color32 colour = ColourAt(along);
                 if (turnsBack)
                 {
-                    AddEdge(mesh, points[index], before.normalized, half, colour, uv, ref stripFirst);
+                    AddEdge(mesh, points[index], before.normalized, half, colour, uv, ref stripFirst, ref lastLeft, ref lastRight);
                     AddCap(mesh, points[index], half, colour, uv);
                     stripFirst = -1;
                     direction = after.normalized;
                 }
 
-                AddEdge(mesh, points[index], direction, half, colour, uv, ref stripFirst);
+                AddEdge(mesh, points[index], direction, half, colour, uv, ref stripFirst, ref lastLeft, ref lastRight);
             }
 
             AddCap(mesh, points[end - 1], half, ColourAt(along), uv);
         }
 
         private static void AddEdge(VertexHelper mesh, Vector2 point, Vector2 direction, float half, Color32 colour, Vector4 uv,
-            ref int stripFirst)
+            ref int stripFirst, ref Vector2 lastLeft, ref Vector2 lastRight)
         {
             Vector2 normal = new Vector2(-direction.y, direction.x) * half;
+            Vector2 leftSide = point + normal;
+            Vector2 rightSide = point - normal;
+            if (stripFirst >= 0)
+            {
+                leftSide = NotBehind(leftSide, lastLeft, direction);
+                rightSide = NotBehind(rightSide, lastRight, direction);
+            }
+
+            lastLeft = leftSide;
+            lastRight = rightSide;
             float middle = (uv.x + uv.z) * 0.5f;
             int left = mesh.currentVertCount;
-            mesh.AddVert(point + normal, colour, new Vector4(middle, uv.w));
-            mesh.AddVert(point - normal, colour, new Vector4(middle, uv.y));
+            mesh.AddVert(leftSide, colour, new Vector4(middle, uv.w));
+            mesh.AddVert(rightSide, colour, new Vector4(middle, uv.y));
             if (stripFirst >= 0)
             {
                 mesh.AddTriangle(stripFirst, left, left + 1);
@@ -214,6 +227,11 @@ namespace Scolita.UI.Tracing
             }
 
             stripFirst = left;
+        }
+
+        private static Vector2 NotBehind(Vector2 side, Vector2 lastSide, Vector2 direction)
+        {
+            return Vector2.Dot(side - lastSide, direction) < 0f ? lastSide : side;
         }
 
         private static void AddCap(VertexHelper mesh, Vector2 centre, float half, Color32 colour, Vector4 uv)

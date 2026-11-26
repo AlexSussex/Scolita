@@ -31,7 +31,7 @@ namespace Scolita.UI.Tracing
         private const float SlantGuideSpacing = 40f;
         private const float HopStep = 6f;
         private const float HopLift = 0.35f;
-        private const float HopEnd = 0.85f;
+        private const float HopGapShare = 0.45f;
 
         private static readonly string[] Numbers = { "1", "2", "3", "4" };
 
@@ -418,16 +418,18 @@ namespace Scolita.UI.Tracing
             }
 
             Vector2 control = (from + to) * 0.5f + lift;
+            float gap = ((RectTransform)dots[stroke % dots.Length].transform).rect.width * HopGapShare;
+            float end = Mathf.Clamp(1f - gap / Mathf.Max(length, 1f), 0.5f, 1f);
             int steps = Mathf.Max(2, Mathf.CeilToInt(length / (HopStep * fit.Scale)));
             hop.BeginLine();
             Vector2 tip = from;
             for (int step = 0; step <= steps; step++)
             {
-                tip = HopPoint(from, control, to, HopEnd * step / steps);
+                tip = HopPoint(from, control, to, end * step / steps);
                 hop.Add(tip);
             }
 
-            Vector2 behind = HopPoint(from, control, to, HopEnd * (steps - 1) / steps);
+            Vector2 behind = HopPoint(from, control, to, end * (steps - 1) / steps);
             hopHead.anchoredPosition = tip;
             hopHead.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(tip.y - behind.y, tip.x - behind.x) * Mathf.Rad2Deg);
         }
