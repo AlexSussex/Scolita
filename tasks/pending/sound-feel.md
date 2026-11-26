@@ -242,7 +242,7 @@ the sound maker deterministic; the conventions.
 
 **Blocked: waiting for the human's Tab A7 numbers** (step 0 in `local/for-human-next-steps.md`: the frames per second on
 the map and in each activity from the tester's strip, the app and a lesson timed, one lesson heard, sound off, whether
-it ticks). The try APK is `C:\Projects\Scolita\local\apks\Scolita-0.14.0-sound-try-debug.apk`. Next: fix whatever
+it ticks). The try APK is `C:\Projects\Scolita\local\apks\Scolita-0.14.1-sound-try-debug.apk` (built on 0.14.1, `969337c`, so steps 0 and 0b share one install; the earlier 0.14.0 sound-try APK is superseded). Next: fix whatever
 misses a budget, record the numbers here, then the close-out as the MVP release (the next MINOR from `origin/main`,
 the after-MVP order in "Where we are" as the human agrees it).
 
@@ -283,6 +283,14 @@ the after-MVP order in "Where we are" as the human agrees it).
   `SaveStoreTests`).
 
 ### Still to test
+
+- **After 0.14.1** (`tablet-feedback-1`: tracing tolerances, the pen hop, the voice waiting for Android's TTS), which
+  landed on top of this work: the rebase was a fast-forward (no conflict; `LearningRules.asset` keeps both the new
+  `traceFingerAllowance` and the six sound numbers; `VoiceRouter` still raises `Started` and `Finished`, which the
+  ducking follows). Rerun: EditMode 848/848, PlayMode 64/64, `BuildAndroidDebug` fine, no `warning CS`, no temporary
+  save root left. **Not rerun on the emulator:** the ducking while the tablet's voice waits to get ready (Android's TTS,
+  absent on the emulator), and the sound, frame-rate and timing checks above: they go with the human's step 0 and the
+  full run before the close-out.
 
 - **The Tab A7** (the human's step in `local/for-human-next-steps.md`): 60 fps on the map and in each activity, a lesson
   ready within 2 s, the app ready within 5 s, any stutter; one whole lesson heard (the voice never covered); the sound
