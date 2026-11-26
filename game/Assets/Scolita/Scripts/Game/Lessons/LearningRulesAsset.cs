@@ -24,16 +24,17 @@ namespace Scolita.Game.Lessons
         [SerializeField, Range(LetterHuntTuning.FewestStars, LetterHuntTuning.MostStars)] private int huntStars = 10;
         [SerializeField, Min(1)] private int huntRightStars = 4;
         [SerializeField, Min(1f)] private float huntFastestSpeed = 60f;
-        [SerializeField, Min(1f)] private float traceDottedCorridor = 32f;
-        [SerializeField, Min(1f)] private float traceDottedStartRadius = 34f;
+        [SerializeField, Min(1f)] private float traceDottedCorridor = 36f;
+        [SerializeField, Min(1f)] private float traceDottedStartRadius = 38f;
         [SerializeField, Range(0.1f, 1f)] private float traceDottedCoverage = 0.8f;
-        [SerializeField, Min(1f)] private float traceFaintCorridor = 28f;
-        [SerializeField, Min(1f)] private float traceFaintStartRadius = 30f;
+        [SerializeField, Min(1f)] private float traceFaintCorridor = 32f;
+        [SerializeField, Min(1f)] private float traceFaintStartRadius = 34f;
         [SerializeField, Range(0.1f, 1f)] private float traceFaintCoverage = 0.85f;
-        [SerializeField, Min(1f)] private float traceStartDotCorridor = 24f;
-        [SerializeField, Min(1f)] private float traceStartDotStartRadius = 28f;
-        [SerializeField, Range(0.1f, 1f)] private float traceStartDotCoverage = 0.9f;
+        [SerializeField, Min(1f)] private float traceStartDotCorridor = 30f;
+        [SerializeField, Min(1f)] private float traceStartDotStartRadius = 32f;
+        [SerializeField, Range(0.1f, 1f)] private float traceStartDotCoverage = 0.85f;
         [SerializeField, Min(1f)] private float traceJoinRadius = 44f;
+        [SerializeField, Min(0f)] private float traceFingerAllowance = 20f;
         [SerializeField, Min(1)] private int romanianRightsForLearned = 6;
         [SerializeField, Min(1)] private int englishRightsForLearned = 6;
         [SerializeField, Min(1)] private int kindsForLearned = 2;
@@ -69,7 +70,7 @@ namespace Scolita.Game.Lessons
                 new TracingTuning(new StrokeTolerance(traceDottedCorridor, traceDottedStartRadius, traceDottedCoverage),
                     new StrokeTolerance(traceFaintCorridor, traceFaintStartRadius, traceFaintCoverage),
                     new StrokeTolerance(traceStartDotCorridor, traceStartDotStartRadius, traceStartDotCoverage),
-                    traceJoinRadius));
+                    traceJoinRadius, traceFingerAllowance));
         }
 
         /// <summary>

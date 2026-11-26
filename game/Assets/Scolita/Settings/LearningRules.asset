@@ -17,16 +17,17 @@ MonoBehaviour:
   huntStars: 10
   huntRightStars: 4
   huntFastestSpeed: 60
-  traceDottedCorridor: 32
-  traceDottedStartRadius: 34
+  traceDottedCorridor: 36
+  traceDottedStartRadius: 38
   traceDottedCoverage: 0.8
-  traceFaintCorridor: 28
-  traceFaintStartRadius: 30
+  traceFaintCorridor: 32
+  traceFaintStartRadius: 34
   traceFaintCoverage: 0.85
-  traceStartDotCorridor: 24
-  traceStartDotStartRadius: 28
-  traceStartDotCoverage: 0.9
+  traceStartDotCorridor: 30
+  traceStartDotStartRadius: 32
+  traceStartDotCoverage: 0.85
   traceJoinRadius: 44
+  traceFingerAllowance: 20
   romanianRightsForLearned: 6
   englishRightsForLearned: 6
   kindsForLearned: 2
