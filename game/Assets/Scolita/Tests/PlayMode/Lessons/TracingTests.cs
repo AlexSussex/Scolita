@@ -18,8 +18,8 @@ namespace Scolita.Tests.PlayMode.Lessons
     /// Tests <see cref="WritingBoardView"/> and its <see cref="TraceFinger"/> in the real Lesson scene, on
     /// <c>ro-a</c>'s print a: strokes drawn through the finger trace the letter's three rounds to the step's
     /// end; a second finger and a palm are ignored; a stroke drawn backwards gets its hint; and drawing
-    /// allocates nothing. By hand: the handwritten a written in one line, mama letter by letter, and
-    /// <see cref="HandwritingView"/> drawing exactly the stroke data. Each test keeps the Editor's own <c>child-1</c> files as they were.
+    /// allocates nothing. By hand: the handwritten a written in one line, mama letter by letter, the t's bar reached by
+    /// a hop (never a line to trace), and <see cref="HandwritingView"/> drawing exactly the stroke data. Each test keeps the Editor's own <c>child-1</c> files as they were.
     /// </summary>
     public sealed class TracingTests
     {
@@ -277,6 +277,60 @@ namespace Scolita.Tests.PlayMode.Lessons
 
                 Assert.That(handwriting.Pen.Count, Is.EqualTo(index));
                 Object.Destroy(host);
+            }
+            finally
+            {
+                LessonScene.RestoreFile(LessonRunData.FileName, keptRun);
+                LessonScene.RestoreFile(ProgressData.FileName, keptProgress);
+                LessonScene.RestoreFile(LearningSettingsData.FileName, keptSettings);
+            }
+        }
+
+        /// <summary>
+        /// Tests that the handwritten t of <c>ro-t</c> draws each stroke's guide on its own (its stem never joined to its
+        /// bar), shows the dotted hop through the air from the stem's end to the bar's start dot once the stem is done,
+        /// takes the bar from its own start dot, and draws the faint round's guide narrower, as its tolerance is.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestShow_TheTsBarIsAHopNotALine()
+        {
+            string keptRun = LessonScene.KeepFile(LessonRunData.FileName);
+            string keptProgress = LessonScene.KeepFile(ProgressData.FileName);
+            string keptSettings = LessonScene.KeepFile(LearningSettingsData.FileName);
+            try
+            {
+                LessonScene.RestoreFile(ProgressData.FileName, null);
+                yield return LessonScene.OpenAtStep("ro-t", ActivityKind.TraceLetter, "handwritten");
+                LessonRunner runner = SceneSearch.FindInActiveScene<LessonRunner>();
+                WritingBoardView view = (WritingBoardView)runner.ShownView;
+                TraceState trace = runner.Run.Current.Round.Trace;
+                Assert.That(trace.Figure.Strokes.Count, Is.EqualTo(2));
+                Assert.That(view.GuideRoad.LineCount, Is.EqualTo(2));
+                Assert.That(view.ShowsHop, Is.False);
+                float dottedWidth = view.GuideRoad.Width;
+                float dottedHalfWidth = trace.GuideHalfWidth;
+
+                Draw(view, 1, trace.Figure.Strokes[0].Path, false);
+                yield return null;
+
+                Assert.That(trace.Stroke, Is.EqualTo(1));
+                Assert.That(view.ShowsHop, Is.True);
+                Assert.That(view.Hop.LineCount, Is.EqualTo(1));
+                Assert.That(Vector2.Distance(view.Hop.PointAt(0), view.GuideRoad.PointAt(trace.Figure.Strokes[0].Path.Count - 1)),
+                    Is.LessThan(0.01f));
+
+                Draw(view, 1, trace.Figure.Strokes[1].Path, false);
+                yield return null;
+                view.Finger.Press(1, view.ScreenPointOf(trace.Figure.Strokes[0].Path.Start), 0f);
+                yield return null;
+
+                Assert.That(trace.RoundsDone, Is.EqualTo(1));
+                Assert.That(trace.Guide, Is.EqualTo(TraceGuide.Faint));
+                Assert.That(view.ShowsHop, Is.False);
+                Assert.That(view.GuideRoad.LineCount, Is.EqualTo(2));
+                Assert.That(view.GuideRoad.Width / dottedWidth, Is.EqualTo(trace.GuideHalfWidth / dottedHalfWidth).Within(0.01f));
+                Assert.That(trace.GuideHalfWidth, Is.LessThan(dottedHalfWidth));
+                view.Finger.Release(1, true);
             }
             finally
             {
