@@ -9,7 +9,7 @@ namespace Scolita.Core.Voice
     /// <summary>
     /// Turns what is to be said into the <see cref="VoiceUtterance"/>s <see cref="VoiceRouter"/> says
     /// in turn: each spoken segment by its clip when the clip voice has it, else by the system voice
-    /// in the line's language when it speaks it, else in the bubble; slots by their fills; a slow line
+    /// in the line's language when it speaks it (or is still getting ready), else in the bubble; slots by their fills; a slow line
     /// without its own clip by its word's letters' sounds with pauses, and a stretched line without its
     /// own clip by its word's first sound, a pause, then the word (the tablet's voice can't hold a sound,
     /// and would say "t-t-tata" as letter names). Neighbouring texts for the
@@ -179,7 +179,7 @@ namespace Scolita.Core.Voice
 
         private void AddSay(string text, Language language, List<VoiceUtterance> plan)
         {
-            VoiceRoute route = system.Speaks(language) ? VoiceRoute.System : VoiceRoute.Bubble;
+            VoiceRoute route = system.Speaks(language) || system.IsStarting ? VoiceRoute.System : VoiceRoute.Bubble;
             int last = plan.Count - 1;
             if (last >= 0 && plan[last].Route == route && plan[last].Language == language)
             {

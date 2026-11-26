@@ -7,7 +7,8 @@ namespace Scolita.Tests.EditMode.Fakes
 {
     /// <summary>
     /// An <see cref="ISystemVoice"/> for tests: it speaks the languages it is given, writes what it is
-    /// asked into a shared log, and speaks until <see cref="FinishSaying"/>. Used by <c>VoiceRouterTests</c>.
+    /// asked into a shared log, and speaks until <see cref="FinishSaying"/>; it can be starting (ready late), and
+    /// start again when asked to say something. Used by <c>VoiceRouterTests</c>.
     /// </summary>
     public sealed class FakeSystemVoice : ISystemVoice
     {
@@ -24,13 +25,22 @@ namespace Scolita.Tests.EditMode.Fakes
         /// <summary>Whether <see cref="Say"/> refuses (the engine failing); set by tests.</summary>
         public bool RefusesToSay { get; set; }
 
+        /// <summary>
+        /// Whether the next <see cref="Say"/> finds the engine gone: it refuses and starts again (<see cref="IsStarting"/>
+        /// becomes true), as Android's does after the app comes back; set by tests.
+        /// </summary>
+        public bool LostOnNextSay { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsStarting { get; set; }
+
         /// <inheritdoc/>
         public bool IsSaying { get; private set; }
 
         /// <inheritdoc/>
         public bool Speaks(Language language)
         {
-            return languages.Contains(language);
+            return !IsStarting && languages.Contains(language);
         }
 
         /// <inheritdoc/>
@@ -38,6 +48,14 @@ namespace Scolita.Tests.EditMode.Fakes
         {
             if (RefusesToSay)
             {
+                return false;
+            }
+
+            if (LostOnNextSay)
+            {
+                LostOnNextSay = false;
+                IsStarting = true;
+                log.Add("lost, starting again");
                 return false;
             }
 

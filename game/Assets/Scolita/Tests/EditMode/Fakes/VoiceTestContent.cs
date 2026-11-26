@@ -18,7 +18,7 @@ namespace Scolita.Tests.EditMode.Fakes
         public const string SoundA = "ro-sound-a.ogg";
 
         /// <summary>The timings the voice tests use: a 0.3 s pause, and the bubble for at least 1.5 s.</summary>
-        public static VoiceTiming Timing => new VoiceTiming(0.3f, 0.08f, 1.5f);
+        public static VoiceTiming Timing => new VoiceTiming(0.3f, 0.08f, 1.5f, 3f);
 
         /// <summary>The content's CSVs, by file name; called by the voice tests, which may change them before <see cref="Read"/>.</summary>
         public static Dictionary<string, string> Csvs()

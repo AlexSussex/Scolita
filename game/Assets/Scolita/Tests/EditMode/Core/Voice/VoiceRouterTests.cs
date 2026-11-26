@@ -312,5 +312,155 @@ namespace Scolita.Tests.EditMode.Core.Voice
                 Throws.TypeOf<InvalidOperationException>());
             Assert.That(router.IsSpeaking, Is.False);
         }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Speak"/> waits while the system voice is still starting (Android's engine after
+        /// the app starts or comes back), showing nothing, then says the line once the voice is ready.
+        /// </summary>
+        [Test]
+        public void TestSpeak_WaitsForTheSystemVoiceToStart()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian) { IsStarting = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+            List<VoiceRoute> parts = new List<VoiceRoute>();
+            router.PartStarted += part => parts.Add(part.Route);
+
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Tick(1f);
+            router.Tick(1f);
+            bool speakingWhileWaiting = router.IsSpeaking;
+            List<string> saidWhileWaiting = new List<string>(log);
+            system.IsStarting = false;
+            router.Tick(0.1f);
+            VoiceTestContent.Drain(router, clips, system);
+
+            Assert.That(speakingWhileWaiting, Is.True);
+            Assert.That(saidWhileWaiting, Is.Empty);
+            Assert.That(log, Is.EqualTo(new[] { "say ro me" }));
+            Assert.That(parts, Is.EqualTo(new[] { VoiceRoute.System }));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Speak"/> asked again while the system voice is starting keeps only the newest
+        /// line: the older one finishes unsaid and the newer one is said once the voice is ready.
+        /// </summary>
+        [Test]
+        public void TestSpeak_OnlyTheNewestLineWaits()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian, Language.English) { IsStarting = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+            List<string> events = new List<string>();
+            router.Started += line => events.Add("started " + line);
+            router.Finished += line => events.Add("finished " + line);
+
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Tick(0.5f);
+            router.Speak(VoiceTestContent.Line("en-name-m"));
+            router.Tick(0.5f);
+            system.IsStarting = false;
+            VoiceTestContent.Drain(router, clips, system);
+
+            Assert.That(log, Is.EqualTo(new[] { "say en em" }));
+            Assert.That(events, Is.EqualTo(new[]
+            {
+                "started ro-name-m", "finished ro-name-m", "started en-name-m", "finished en-name-m"
+            }));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Speak"/> shows the line in the bubble when the system voice is still not ready
+        /// after the timing's wait, so a tablet whose voice never starts still shows every line.
+        /// </summary>
+        [Test]
+        public void TestSpeak_ShowsTheBubbleWhenTheSystemVoiceNeverStarts()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian) { IsStarting = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Tick(2.9f);
+            List<string> beforeTheWaitEnds = new List<string>(log);
+            router.Tick(0.2f);
+            router.Tick(5f);
+
+            Assert.That(beforeTheWaitEnds, Is.Empty);
+            Assert.That(log, Is.EqualTo(new[] { "show ro me", "hide" }));
+            Assert.That(router.IsSpeaking, Is.False);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Speak"/> waits when the system voice refuses a line because it is starting
+        /// again (Android let the engine go while the app was away), then says it once ready.
+        /// </summary>
+        [Test]
+        public void TestSpeak_WaitsWhenTheSystemVoiceStartsAgain()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian) { LostOnNextSay = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Tick(1f);
+            system.IsStarting = false;
+            VoiceTestContent.Drain(router, clips, system);
+
+            Assert.That(log, Is.EqualTo(new[] { "lost, starting again", "say ro me" }));
+        }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Stop"/> while a line waits for the system voice forgets it: it finishes and is
+        /// never said when the voice gets ready.
+        /// </summary>
+        [Test]
+        public void TestStop_ForgetsAWaitingLine()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian) { IsStarting = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+            List<string> finished = new List<string>();
+            router.Finished += line => finished.Add(line.ToString());
+
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Stop();
+            system.IsStarting = false;
+            router.Tick(1f);
+
+            Assert.That(log, Is.Empty);
+            Assert.That(finished, Is.EqualTo(new[] { "ro-name-m" }));
+            Assert.That(router.IsSpeaking, Is.False);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="VoiceRouter.Tick"/> allocates nothing while a line waits for the system voice, so waiting
+        /// in an activity's frame loop makes no garbage.
+        /// </summary>
+        [Test]
+        public void TestTick_WaitingAllocatesNothing()
+        {
+            List<string> log = new List<string>();
+            FakeClipVoice clips = new FakeClipVoice(log);
+            FakeSystemVoice system = new FakeSystemVoice(log, Language.Romanian) { IsStarting = true };
+            VoiceRouter router = new VoiceRouter(VoiceTestContent.Read(VoiceTestContent.Csvs()), clips, system,
+                new FakeSpeechBubble(log), VoiceTestContent.Timing);
+            router.Speak(VoiceTestContent.Line("ro-name-m"));
+            router.Tick(0.01f);
+
+            TestDelegate tick = () => router.Tick(0.01f);
+
+            Assert.That(tick, UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+        }
     }
 }

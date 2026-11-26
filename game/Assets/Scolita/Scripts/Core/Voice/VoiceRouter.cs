@@ -7,8 +7,10 @@ namespace Scolita.Core.Voice
     /// <summary>
     /// The app's voice (<see cref="IVoice"/>): says each part of a line by its clip, else by the
     /// system voice, else in the bubble (<see cref="VoicePlanner"/> chooses), one after another, and
-    /// never two lines at once: a new line stops the one being said. Driven by <see cref="Tick"/>
-    /// every frame; nothing allocates while it speaks. A line that isn't in the content is reported
+    /// never two lines at once: a new line stops the one being said. A part for the system voice waits
+    /// while that voice gets ready (<see cref="ISystemVoice.IsStarting"/>, up to the timing's wait), so
+    /// the first line after the app starts or comes back is heard; a newer line replaces the waiting one.
+    /// Driven by <see cref="Tick"/> every frame; nothing allocates while it speaks or waits. A line that isn't in the content is reported
     /// through <see cref="LineMissing"/> and skipped.
     /// </summary>
     public sealed class VoiceRouter : IVoice
@@ -26,6 +28,8 @@ namespace Scolita.Core.Voice
         private VoiceRoute activeRoute;
         private float remainingSeconds;
         private bool bubbleShown;
+        private bool waitingForSystem;
+        private float waitLeft;
         private int generation;
 
         /// <summary>
@@ -120,6 +124,19 @@ namespace Scolita.Core.Voice
                 return;
             }
 
+            if (waitingForSystem)
+            {
+                waitLeft -= seconds;
+                if (system.IsStarting && waitLeft > 0f)
+                {
+                    return;
+                }
+
+                waitingForSystem = false;
+                SayOrShow(plan[index], false);
+                return;
+            }
+
             switch (activeRoute)
             {
                 case VoiceRoute.Clip:
@@ -192,12 +209,12 @@ namespace Scolita.Core.Voice
                     }
                     else
                     {
-                        SayOrShow(utterance);
+                        SayOrShow(utterance, true);
                     }
 
                     break;
                 case VoiceRoute.System:
-                    SayOrShow(utterance);
+                    SayOrShow(utterance, true);
                     break;
                 case VoiceRoute.Bubble:
                     ShowBubble(utterance);
@@ -210,8 +227,14 @@ namespace Scolita.Core.Voice
             }
         }
 
-        private void SayOrShow(VoiceUtterance utterance)
+        private void SayOrShow(VoiceUtterance utterance, bool mayWait)
         {
+            if (mayWait && system.IsStarting)
+            {
+                WaitForSystem();
+                return;
+            }
+
             if (system.Speaks(utterance.Language) && system.Say(utterance.Text, utterance.Language))
             {
                 activeRoute = VoiceRoute.System;
@@ -219,7 +242,20 @@ namespace Scolita.Core.Voice
                 return;
             }
 
+            if (mayWait && system.IsStarting)
+            {
+                WaitForSystem();
+                return;
+            }
+
             ShowBubble(utterance);
+        }
+
+        private void WaitForSystem()
+        {
+            activeRoute = VoiceRoute.Pause;
+            waitingForSystem = true;
+            waitLeft = timing.SystemVoiceWaitSeconds;
         }
 
         private void ShowBubble(VoiceUtterance utterance)
@@ -242,6 +278,7 @@ namespace Scolita.Core.Voice
 
         private void Finish()
         {
+            waitingForSystem = false;
             HideBubble();
             IsSpeaking = false;
             Finished?.Invoke(Current);
